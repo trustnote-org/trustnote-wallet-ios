@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		281AF2752063A958009FDB6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281AF2742063A958009FDB6A /* AppDelegate.swift */; };
+		281AF2772063A958009FDB6A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281AF2762063A958009FDB6A /* ViewController.swift */; };
+		281AF27A2063A958009FDB6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 281AF2782063A958009FDB6A /* Main.storyboard */; };
+		281AF27C2063A958009FDB6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 281AF27B2063A958009FDB6A /* Assets.xcassets */; };
+		281AF27F2063A958009FDB6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 281AF27D2063A958009FDB6A /* LaunchScreen.storyboard */; };
+		281AF28A2063A958009FDB6A /* TrustNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281AF2892063A958009FDB6A /* TrustNoteTests.swift */; };
+		281AF2952063A958009FDB6A /* TrustNoteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281AF2942063A958009FDB6A /* TrustNoteUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		281AF2862063A958009FDB6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281AF2692063A958009FDB6A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 281AF2702063A958009FDB6A;
+			remoteInfo = TrustNote;
+		};
+		281AF2912063A958009FDB6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281AF2692063A958009FDB6A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 281AF2702063A958009FDB6A;
+			remoteInfo = TrustNote;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		281AF2712063A958009FDB6A /* TrustNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrustNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		281AF2742063A958009FDB6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		281AF2762063A958009FDB6A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		281AF2792063A958009FDB6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		281AF27B2063A958009FDB6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		281AF27E2063A958009FDB6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		281AF2802063A958009FDB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		281AF2852063A958009FDB6A /* TrustNoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrustNoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		281AF2892063A958009FDB6A /* TrustNoteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustNoteTests.swift; sourceTree = "<group>"; };
+		281AF28B2063A958009FDB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		281AF2902063A958009FDB6A /* TrustNoteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrustNoteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		281AF2942063A958009FDB6A /* TrustNoteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustNoteUITests.swift; sourceTree = "<group>"; };
+		281AF2962063A958009FDB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		281AF26E2063A958009FDB6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		281AF2822063A958009FDB6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		281AF28D2063A958009FDB6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		281AF2682063A958009FDB6A = {
+			isa = PBXGroup;
+			children = (
+				281AF2732063A958009FDB6A /* TrustNote */,
+				281AF2882063A958009FDB6A /* TrustNoteTests */,
+				281AF2932063A958009FDB6A /* TrustNoteUITests */,
+				281AF2722063A958009FDB6A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		281AF2722063A958009FDB6A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				281AF2712063A958009FDB6A /* TrustNote.app */,
+				281AF2852063A958009FDB6A /* TrustNoteTests.xctest */,
+				281AF2902063A958009FDB6A /* TrustNoteUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		281AF2732063A958009FDB6A /* TrustNote */ = {
+			isa = PBXGroup;
+			children = (
+				281AF2742063A958009FDB6A /* AppDelegate.swift */,
+				281AF2762063A958009FDB6A /* ViewController.swift */,
+				281AF2782063A958009FDB6A /* Main.storyboard */,
+				281AF27B2063A958009FDB6A /* Assets.xcassets */,
+				281AF27D2063A958009FDB6A /* LaunchScreen.storyboard */,
+				281AF2802063A958009FDB6A /* Info.plist */,
+			);
+			path = TrustNote;
+			sourceTree = "<group>";
+		};
+		281AF2882063A958009FDB6A /* TrustNoteTests */ = {
+			isa = PBXGroup;
+			children = (
+				281AF2892063A958009FDB6A /* TrustNoteTests.swift */,
+				281AF28B2063A958009FDB6A /* Info.plist */,
+			);
+			path = TrustNoteTests;
+			sourceTree = "<group>";
+		};
+		281AF2932063A958009FDB6A /* TrustNoteUITests */ = {
+			isa = PBXGroup;
+			children = (
+				281AF2942063A958009FDB6A /* TrustNoteUITests.swift */,
+				281AF2962063A958009FDB6A /* Info.plist */,
+			);
+			path = TrustNoteUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		281AF2702063A958009FDB6A /* TrustNote */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 281AF2992063A958009FDB6A /* Build configuration list for PBXNativeTarget "TrustNote" */;
+			buildPhases = (
+				281AF26D2063A958009FDB6A /* Sources */,
+				281AF26E2063A958009FDB6A /* Frameworks */,
+				281AF26F2063A958009FDB6A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrustNote;
+			productName = TrustNote;
+			productReference = 281AF2712063A958009FDB6A /* TrustNote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		281AF2842063A958009FDB6A /* TrustNoteTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 281AF29C2063A958009FDB6A /* Build configuration list for PBXNativeTarget "TrustNoteTests" */;
+			buildPhases = (
+				281AF2812063A958009FDB6A /* Sources */,
+				281AF2822063A958009FDB6A /* Frameworks */,
+				281AF2832063A958009FDB6A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				281AF2872063A958009FDB6A /* PBXTargetDependency */,
+			);
+			name = TrustNoteTests;
+			productName = TrustNoteTests;
+			productReference = 281AF2852063A958009FDB6A /* TrustNoteTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		281AF28F2063A958009FDB6A /* TrustNoteUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 281AF29F2063A958009FDB6A /* Build configuration list for PBXNativeTarget "TrustNoteUITests" */;
+			buildPhases = (
+				281AF28C2063A958009FDB6A /* Sources */,
+				281AF28D2063A958009FDB6A /* Frameworks */,
+				281AF28E2063A958009FDB6A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				281AF2922063A958009FDB6A /* PBXTargetDependency */,
+			);
+			name = TrustNoteUITests;
+			productName = TrustNoteUITests;
+			productReference = 281AF2902063A958009FDB6A /* TrustNoteUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		281AF2692063A958009FDB6A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = org.trustnote;
+				TargetAttributes = {
+					281AF2702063A958009FDB6A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					281AF2842063A958009FDB6A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 281AF2702063A958009FDB6A;
+					};
+					281AF28F2063A958009FDB6A = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 281AF2702063A958009FDB6A;
+					};
+				};
+			};
+			buildConfigurationList = 281AF26C2063A958009FDB6A /* Build configuration list for PBXProject "TrustNote" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 281AF2682063A958009FDB6A;
+			productRefGroup = 281AF2722063A958009FDB6A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				281AF2702063A958009FDB6A /* TrustNote */,
+				281AF2842063A958009FDB6A /* TrustNoteTests */,
+				281AF28F2063A958009FDB6A /* TrustNoteUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		281AF26F2063A958009FDB6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				281AF27F2063A958009FDB6A /* LaunchScreen.storyboard in Resources */,
+				281AF27C2063A958009FDB6A /* Assets.xcassets in Resources */,
+				281AF27A2063A958009FDB6A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		281AF2832063A958009FDB6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		281AF28E2063A958009FDB6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		281AF26D2063A958009FDB6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				281AF2772063A958009FDB6A /* ViewController.swift in Sources */,
+				281AF2752063A958009FDB6A /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		281AF2812063A958009FDB6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				281AF28A2063A958009FDB6A /* TrustNoteTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		281AF28C2063A958009FDB6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				281AF2952063A958009FDB6A /* TrustNoteUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		281AF2872063A958009FDB6A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 281AF2702063A958009FDB6A /* TrustNote */;
+			targetProxy = 281AF2862063A958009FDB6A /* PBXContainerItemProxy */;
+		};
+		281AF2922063A958009FDB6A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 281AF2702063A958009FDB6A /* TrustNote */;
+			targetProxy = 281AF2912063A958009FDB6A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		281AF2782063A958009FDB6A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				281AF2792063A958009FDB6A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		281AF27D2063A958009FDB6A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				281AF27E2063A958009FDB6A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		281AF2972063A958009FDB6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		281AF2982063A958009FDB6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		281AF29A2063A958009FDB6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WMGPANC873;
+				INFOPLIST_FILE = TrustNote/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = smartwallet.TrustNote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		281AF29B2063A958009FDB6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WMGPANC873;
+				INFOPLIST_FILE = TrustNote/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = smartwallet.TrustNote;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		281AF29D2063A958009FDB6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WMGPANC873;
+				INFOPLIST_FILE = TrustNoteTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = smartwallet.TrustNoteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrustNote.app/TrustNote";
+			};
+			name = Debug;
+		};
+		281AF29E2063A958009FDB6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WMGPANC873;
+				INFOPLIST_FILE = TrustNoteTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = smartwallet.TrustNoteTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrustNote.app/TrustNote";
+			};
+			name = Release;
+		};
+		281AF2A02063A958009FDB6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WMGPANC873;
+				INFOPLIST_FILE = TrustNoteUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = smartwallet.TrustNoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TrustNote;
+			};
+			name = Debug;
+		};
+		281AF2A12063A958009FDB6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = WMGPANC873;
+				INFOPLIST_FILE = TrustNoteUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = smartwallet.TrustNoteUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TrustNote;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		281AF26C2063A958009FDB6A /* Build configuration list for PBXProject "TrustNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				281AF2972063A958009FDB6A /* Debug */,
+				281AF2982063A958009FDB6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		281AF2992063A958009FDB6A /* Build configuration list for PBXNativeTarget "TrustNote" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				281AF29A2063A958009FDB6A /* Debug */,
+				281AF29B2063A958009FDB6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		281AF29C2063A958009FDB6A /* Build configuration list for PBXNativeTarget "TrustNoteTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				281AF29D2063A958009FDB6A /* Debug */,
+				281AF29E2063A958009FDB6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		281AF29F2063A958009FDB6A /* Build configuration list for PBXNativeTarget "TrustNoteUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				281AF2A02063A958009FDB6A /* Debug */,
+				281AF2A12063A958009FDB6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 281AF2692063A958009FDB6A /* Project object */;
+}

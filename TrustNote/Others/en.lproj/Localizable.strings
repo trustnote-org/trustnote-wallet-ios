@@ -1,0 +1,62 @@
+/* 
+  Localizable.strings
+  TrustNote
+
+  Created by zenghailong on 2018/3/23.
+  Copyright © 2018年 org.trustnote. All rights reserved.
+*/
+
+/*************protocol**************/
+"Protocol.first" = "The software you are about to use functions as a free, open source, and multi-signature digital wallet.";
+
+"Protocol.second" = "The software does not constitute an account where the developer of this software or other third parties serve as financial intermediaries or custodians of your notes or other valuables.";
+
+"Protocol.third" = "While the software has undergone beta testing and continues to be improved by feedback from the open-source user and developer community, we cannot guarantee that there will be no bugs in the software.";
+
+"Protocol.fourth" = "You acknowledge that your use of this software is at your own discretion and in compliance with all applicable laws.";
+
+"Protocol.fifth" = "You are responsible for safekeeping your passwords, private key pairs, PINs and any other codes you use to access the software.";
+
+"Protocol.sixth" = "IF YOU LOSE ACCESS TO YOUR TRUSTNOTE WALLET, YOU ACKNOWLEDGE AND AGREE THAT ANY NOTES OR OTHER VALUABLES YOU HAVE ASSOCIATED WITH THAT TRUSTNOTE WALLET WILL BECOME INACCESSIBLE.";
+
+"Protocol.seventh" = "The authors of the software cannot retrieve your private keys or passwords if you lose or forget them and cannot guarantee transaction confirmation as they do not have control over the TrustNote network.";
+
+"Protocol.eighth" = "To the fullest extent permitted by law, this software is provided “as is” and no representations or warranties can be made of any kind, express or implied, including but not limited to the warranties of merchantability, fitness or a particular purpose and noninfringement.";
+
+"Protocol.ninth" = "You assume any and all risks associated with the use of the software.";
+
+"Protocol.tenth" = "In no event shall the authors of the software be held liable for any claim, damages or other liability, whether in an action of contract, tort, or otherwise, arising from, out of or in connection with the software.";
+
+"Protocol.eleventh" = "We reserve the right to modify this disclaimer from time to time.";
+
+"Protocol.agree" = "I affirm that I have read, understood, and agree with these terms.";
+
+"Button.agree" = "AGREE";
+
+"Terms of Use" = "TERMS OF USE";
+
+"Welocme To TrustNote" = "Welocme To TrustNote";
+
+"DeviceName.instruction" = "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu. Also in the Settings menu, you will find security options such as setting a password.";
+
+"Next" = "NEXT";
+
+"Create Wallet" = "CREATE WALLET";
+
+"Restore Wallet" = "RESTORE WALLET";
+
+"Create Wallet and Backup Your Seed Phrase" = "Create Wallet and Backup Your Seed Phrase";
+
+"CreateWallet.instruction" = "We highly recommend you write the Mnemonic words(Backup Phrase) on Paper and keep it in a safe place, anyone get it can access or spend your assets. Also get start with a small amout of assets.";
+
+"Backup Your Seed Phrase" = "Backup Your Seed Phrase";
+
+"Backup.warning" = "Don't Screenshot\nPlease backup the mnemonic word";
+
+"Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
+
+"Confirm your mnemonic words" = "Confirm your mnemonic words";
+
+"Backup.tips" = "Please write the mnemonic words in order and make sure your mnemonic was correct written.";
+
+"Last Step" = "LAST STEP";

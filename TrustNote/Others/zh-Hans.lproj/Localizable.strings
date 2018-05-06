@@ -1,0 +1,61 @@
+/* 
+  Localizable.strings
+  TrustNote
+
+  Created by zenghailong on 2018/3/23.
+  Copyright © 2018年 org.trustnote. All rights reserved.
+*/
+
+/*******protocol page string************/
+"Protocol.first" = "您即将使用的是一款免费开源的数字钱包软件。";
+
+"Protocol.second" = "本软件不会开设账户，以使软件开发者或其它第三方机构成为您的TTT或其它有价资产的金融中介或保管者。";
+
+"Protocol.third" = "鉴于本软件已完成公开测试并会根据开源用户和开发者社区的反馈进行持续改进，我们不保证本软件不存在缺陷。";
+
+"Protocol.fourth" = "请您确定使用本软件是您自己的决定并遵守所有适用的法律。";
+
+"Protocol.fifth" = "您有责任妥善保管您的登录口令、私钥、交易密码和您用以访问本软件的其它代码。";
+
+"Protocol.sixth" = "若您失去对本钱包的控制权，您知悉并接受任何与本钱包关联的TTT和其它有价资产将无法找回。";
+
+"Protocol.seventh" = "软件作者无法帮您恢复丢失或忘记的私钥或密码，也不能保证交易会被确认，因为他们并没有TrustNote网络的控制权。";
+
+"Protocol.eighth" = "在法律允许的最大范围内，本软件会以当前形式提供，不存在一切其它明示或默示保证，包括（但不限于）关于适销性、合理性或某一特定用途以及非侵权的默示保证。";
+
+"Protocol.ninth" = "您自愿承担与使用本软件相关的所有风险和其它后果。";
+
+"Protocol.tenth" = "任何情况下，本软件的作者不对任何合同诉讼、侵权行为或其它与本软件无关或相关内容产生的任何索赔、损伤或其它责任负责。";
+
+"Protocol.eleventh" = "我们保留更新此声明的权利。";
+
+"Protocol.agree" = "我确定我已经读过，理解并且同意这些条款。";
+"Button.agree" = "同意";
+
+"Terms of Use" = "使用条款";
+
+"Welocme To TrustNote" = "欢迎来到TrustNote";
+
+"DeviceName.instruction" = "您的钱包将在此设备上创建，请确认设备足够安全，并及时备份钱包。此外，在钱包设置中，您可以设置交易密码。";
+
+"Next" = "下一步";
+
+"Create Wallet" = "创建钱包";
+
+"Restore Wallet" = "恢复钱包";
+
+"Create Wallet and Backup Your Seed Phrase" = "创建钱包并备份您的口令";
+
+"CreateWallet.instruction" = "备份钱包，导出“口令”并抄写到安全的地方，千万不要保存到网络上。然后尝试转入，转出小额资产开始使用。";
+
+"Backup Your Seed Phrase" = "备份钱包助记词";
+
+"Backup.warning" = "请勿截图\n请立即备份您的钱包口令";
+
+"Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
+
+"Confirm your mnemonic words" = "确认您的钱包口令";
+
+"Backup.tips" = "请按顺序输入口令以确认您的备份口令正确";
+
+"Last Step" = "上一步";

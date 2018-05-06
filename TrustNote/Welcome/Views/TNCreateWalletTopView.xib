@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iJD-rb-nWE" customClass="TNCreateWalletTopView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="392" height="152"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="whiteLogo" translatesAutoresizingMaskIntoConstraints="NO" id="oYd-SJ-Iia">
+                    <rect key="frame" x="156" y="0.0" width="80" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="WKV-Kk-lRa"/>
+                        <constraint firstAttribute="width" constant="80" id="rgD-pa-AxO"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TrustNote" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tn-nC-nEu">
+                    <rect key="frame" x="159.5" y="90" width="72" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LIFGT · FAST · SWEET" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5mc-O6-t7y">
+                    <rect key="frame" x="102.5" y="124.5" width="187" height="21.5"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="2tn-nC-nEu" firstAttribute="centerX" secondItem="oYd-SJ-Iia" secondAttribute="centerX" id="27v-pq-3Yz"/>
+                <constraint firstItem="oYd-SJ-Iia" firstAttribute="centerX" secondItem="iJD-rb-nWE" secondAttribute="centerX" id="32Y-I3-wz1"/>
+                <constraint firstItem="oYd-SJ-Iia" firstAttribute="top" secondItem="iJD-rb-nWE" secondAttribute="top" id="G9s-oS-egF"/>
+                <constraint firstItem="5mc-O6-t7y" firstAttribute="centerX" secondItem="2tn-nC-nEu" secondAttribute="centerX" id="WfV-VL-AJC"/>
+                <constraint firstItem="5mc-O6-t7y" firstAttribute="top" secondItem="2tn-nC-nEu" secondAttribute="bottom" constant="15" id="aCZ-Vf-ngM"/>
+                <constraint firstItem="2tn-nC-nEu" firstAttribute="top" secondItem="oYd-SJ-Iia" secondAttribute="bottom" constant="10" id="mR8-q7-cHF"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="lEM-g5-IVn"/>
+            <point key="canvasLocation" x="40" y="-201"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="whiteLogo" width="128" height="128"/>
+    </resources>
+</document>

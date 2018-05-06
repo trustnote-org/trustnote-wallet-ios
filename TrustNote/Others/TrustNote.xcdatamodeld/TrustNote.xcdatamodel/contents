@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="13772" systemVersion="17D102" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Extended_pubkeys" representedClassName="Extended_pubkeys" syncable="YES" codeGenerationType="class">
+        <attribute name="approval_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="creation_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="device_address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="extended_pubkey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="member_ready_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wallet" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="My_addresses" representedClassName="My_addresses" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="address_index" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="creation_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="definition" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_change" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wallet" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="My_Witnesses" representedClassName="My_Witnesses" syncable="YES" codeGenerationType="class">
+        <attribute name="witness_address" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Wallet_signing_paths" representedClassName="Wallet_signing_paths" syncable="YES" codeGenerationType="class">
+        <attribute name="creation_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="device_address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="signing_path" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wallet" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Wallets" representedClassName="Wallets" syncable="YES" codeGenerationType="class">
+        <attribute name="account" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="creation_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="definition_template" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="full_approval_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="ready_date" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wallet" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Extended_pubkeys" positionX="-36" positionY="81" width="128" height="135"/>
+        <element name="My_addresses" positionX="-63" positionY="-9" width="128" height="135"/>
+        <element name="My_Witnesses" positionX="-63" positionY="-18" width="128" height="60"/>
+        <element name="Wallet_signing_paths" positionX="-45" positionY="81" width="128" height="105"/>
+        <element name="Wallets" positionX="-54" positionY="45" width="128" height="135"/>
+    </elements>
+</model>

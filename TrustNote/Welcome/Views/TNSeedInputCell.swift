@@ -50,11 +50,11 @@ class TNSeedInputCell: UICollectionViewCell {
     
     public let textField = UITextField().then {
         
-        $0.backgroundColor = UIColor.hexColor(rgbValue: 0xededed)
+        $0.backgroundColor = UIColor.hexColor(rgbValue: 0xf5f5f5)
         $0.textAlignment = NSTextAlignment.center
         $0.keyboardType = .asciiCapable
-        $0.font = UIFont.systemFont(ofSize: 16.0)
-        $0.textColor = UIColor.hexColor(rgbValue: 0x333333)
+        $0.font = UIFont.boldSystemFont(ofSize: IS_iphone5 ? 14.0 : 16.0)
+        $0.textColor = kThemeTextColor
     }
     
     override init(frame: CGRect) {
@@ -72,7 +72,7 @@ extension TNSeedInputCell {
     fileprivate func configureSubView() {
        
         layer.masksToBounds = true
-        layer.cornerRadius = 3.0
+        layer.cornerRadius = kCornerRadius
         contentView.addSubview(textField)
         
         textField.snp.makeConstraints { (make) in
@@ -84,10 +84,9 @@ extension TNSeedInputCell {
 
 final class TNSeedContainerView: UIView {
     
-    fileprivate struct Metric {
-        
+    struct Metric {
         static let Total_Mnemonic_Count: Int = 12
-        static let lineSpacing: CGFloat = 8.0
+        static let lineSpacing: CGFloat = 6.0
         static let TextField_Tag_Begin: Int = 50
         static let Max_Words_Count: Int = 3
         static let Input_Char_Limited: Int = 8
@@ -103,11 +102,16 @@ final class TNSeedContainerView: UIView {
     
     fileprivate var resultWords: [String] = []
     
-    fileprivate var textFields: [UITextField] = []
-    
     fileprivate var queryWord: String = ""
     
+    var isCanEdit: Bool = true
+    var textFields: [UITextField] = []
+    var mnmnemonicsArr: [String] = []
+    
     fileprivate var isDisplay: BehaviorRelay<Bool> =  BehaviorRelay(value: false) // Whether to display a search list
+    public var isVerifyButtonEnable: BehaviorRelay<Bool> = BehaviorRelay(value: false)
+    
+    public var isBeingEdited: BehaviorRelay<Bool> = BehaviorRelay(value: false) // Whether or not it is being edited
     
     fileprivate lazy var layout: UICollectionViewFlowLayout = {
        
@@ -140,7 +144,6 @@ final class TNSeedContainerView: UIView {
     }()
     
     private var collectionView: UICollectionView!
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -227,7 +230,6 @@ final class TNSeedContainerView: UIView {
                 }
             }
         })
-        
     }
 }
 
@@ -244,6 +246,12 @@ extension TNSeedContainerView: UICollectionViewDelegate, UICollectionViewDataSou
             textFields.removeAll()
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TNSeedInputCellIndentifier", for: indexPath) as! TNSeedInputCell
+        guard isCanEdit else {
+            cell.textField.isEnabled = isCanEdit
+            cell.textField.text = mnmnemonicsArr[indexPath.item]
+            return cell
+        }
+        cell.textField.isEnabled = isCanEdit
         cell.textField.delegate = self
         cell.textField.inputView = keyboardView
         cell.textField.tag = indexPath.item + Metric.TextField_Tag_Begin
@@ -318,6 +326,7 @@ extension TNSeedContainerView: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
+        isBeingEdited.accept(true)
         if isDisplay.value && selectedIndex != textField.tag - Metric.TextField_Tag_Begin {
              isDisplay.accept(false)
         }
@@ -326,13 +335,24 @@ extension TNSeedContainerView: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-       
+        
+        isBeingEdited.accept(false)
+        var flag = true
+        for textField in textFields {
+            if textField.text?.count == 0 {
+                flag = false
+                break
+            }
+        }
+        isVerifyButtonEnable.accept(flag)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
        
-        if textField.text?.count == Metric.Input_Char_Limited
-        {
+        if textField.text?.count == Metric.Input_Char_Limited {
+            return false
+        }
+        if string == " " {
             return false
         }
         return true
@@ -345,7 +365,7 @@ extension TNSeedContainerView {
     fileprivate func setupSearchresultList() {
         
         searchResultListView.reloadData()
-         isDisplay.accept(true)
+        isDisplay.accept(true)
     }
     
     fileprivate func searchAction() {

@@ -47,7 +47,7 @@ class TNProtocolViewCell: UITableViewCell, RegisterCellFromNib {
         let crcleLayer = CAShapeLayer()
         crcleLayer.path = path.cgPath
         
-        let drawColor = UIColor.hexColor(rgbValue: 0x333333)
+        let drawColor = kThemeTextColor
         crcleLayer.fillColor = drawColor.cgColor
         crcleLayer.strokeColor = drawColor.cgColor
         layer.addSublayer(crcleLayer)

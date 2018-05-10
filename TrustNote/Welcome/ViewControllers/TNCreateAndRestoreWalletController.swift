@@ -12,28 +12,24 @@ import RxSwift
 
 
 class TNCreateAndRestoreWalletController: TNBaseViewController {
+    
+    let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 80) : 80
+    let topPadding = IS_iphone5 ? (88 + kStatusbarH) : (128 + kStatusbarH)
     let test = TNRestoreWalletViewModel()
-    private let backgroungImageView = UIImageView().then {
-        $0.image = UIImage(named: "bigBackground")
-    }
-    
-    private let creatWalletBtn = UIButton().then {
-        $0.backgroundColor = UIColor.white
+   
+    private let creatWalletBtn = TNButton().then {
+        $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
         $0.setTitle(NSLocalizedString("Create Wallet", comment: ""), for: .normal)
-        $0.setTitleColor(UIColor.hexColor(rgbValue: 0x009aff), for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        $0.layer.cornerRadius = 20.0
-        $0.layer.masksToBounds = true
+        $0.setTitleColor(UIColor.white, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
     }
     
-    private let restoreWalletBtn = UIButton().then {
-        $0.backgroundColor = UIColor.clear
+    private let restoreWalletBtn = TNButton().then {
+        $0.backgroundColor = UIColor.white
         $0.setTitle(NSLocalizedString("Restore Wallet", comment: ""), for: .normal)
-        $0.setTitleColor(UIColor.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        $0.layer.cornerRadius = 20.0
-        $0.layer.masksToBounds = true
-        $0.layer.borderColor = UIColor.white.cgColor
+        $0.setTitleColor(kGlobalColor, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.layer.borderColor = kGlobalColor.cgColor
         $0.layer.borderWidth = 1.0
     }
     
@@ -45,7 +41,6 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        isSetStatusBar = true
 
         /// handle events
         creatWalletBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
@@ -55,8 +50,14 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
                 isWait = true
                 TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic!)
             }
-            let vc = TNCreateWalletController(titleText: NSLocalizedString("Create Wallet", comment: ""), wait: isWait)
-            self.navigationController?.pushViewController(vc, animated: true)
+            var targetVC: UIViewController? = nil
+            let encryptionPassword = Preferences[.encryptionPassword]
+            if encryptionPassword?.count != 0 {
+                targetVC = TNVBackupsSeedController()
+            } else {
+                targetVC = TNSetupPasswordController(nibName: "\(TNSetupPasswordController.self)", bundle: nil)
+            }
+            self.navigationController?.pushViewController(targetVC!, animated: true)
             
         }).disposed(by: self.disposeBag)
         
@@ -70,35 +71,28 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
 extension TNCreateAndRestoreWalletController {
     
     fileprivate func setupUI() {
-        view.addSubview(backgroungImageView)
-        backgroungImageView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(kStatusbarH)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
-        }
-        
+       
         view.addSubview(topView)
         topView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(80 + kStatusbarH)
+            make.top.equalToSuperview().offset(topPadding)
             make.left.right.equalToSuperview()
-            make.height.equalTo(150)
+            make.height.equalTo(190)
+        }
+        
+        view.addSubview(restoreWalletBtn)
+        restoreWalletBtn.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(-bottomPadding)
+            make.centerX.equalToSuperview()
+            make.left.equalToSuperview().offset(26)
+            make.height.equalTo(48)
         }
         
         view.addSubview(creatWalletBtn)
         creatWalletBtn.snp.makeConstraints { (make) in
             make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview().offset(30)
-            make.width.equalTo(160)
-            make.height.equalTo(40)
-        }
-        
-        view.addSubview(restoreWalletBtn)
-        restoreWalletBtn.snp.makeConstraints { (make) in
-            make.top.equalTo(creatWalletBtn.snp.bottom).offset(30)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(creatWalletBtn.snp.width)
-            make.height.equalTo(creatWalletBtn.snp.height)
+            make.left.equalTo(restoreWalletBtn.snp.left)
+            make.bottom.equalTo(restoreWalletBtn.snp.top).offset(-24)
+            make.height.equalTo(restoreWalletBtn.snp.height)
         }
     }
 }

@@ -79,6 +79,7 @@ extension UIView {
             center                  = tempCenter;
         }
     }
+    
 }
 
 /// MARK: load nib
@@ -122,6 +123,13 @@ extension UICollectionView {
     
     func tn_dequeueReusableCell<T: UICollectionViewCell>(indexPath: IndexPath) -> T where T: RegisterCellFromNib {
         return dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath) as! T
+    }
+}
+
+extension UILabel {
+    
+    func textSize(text : String , font : UIFont , maxSize : CGSize) -> CGSize {
+        return text.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : font], context: nil).size  
     }
 }
 

@@ -34,13 +34,29 @@
 
 "Terms of Use" = "使用条款";
 
-"Welocme To TrustNote" = "欢迎来到TrustNote";
+"Welocme To TrustNote" = "欢迎来到TrustNote钱包";
 
-"DeviceName.instruction" = "您的钱包将在此设备上创建，请确认设备足够安全，并及时备份钱包。此外，在钱包设置中，您可以设置交易密码。";
+"DeviceName.instruction" = "您可以自定义设备名称，朋友加您好友后，在聊天列表里很容易找到您。";
 
+"DeviceName.warning" = "不超过20个字符";
+
+"Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
+"Password.secondWarning" = "TrustNote不存储密码，也无法帮您找回，请务必牢记";
+"Password.titleText" = "设置密码";
+"Password.passwordLengthValid"  = "不少于8位字符，建议混合大小写字母、数字、特殊符号";
+"Password.passwordSecurity" = "密码强度太弱，极易被黑客破解";
+"Password.checkInput" = "两次输入密码不一致，请重新输入";
+"Password.weakLevel" = "弱";
+"Password.middleLevel" = "中";
+"Password.strongLevel" = "强";
+
+"Confirm" = "确定";
+"Cancel" = "取消";
 "Next" = "下一步";
 
 "Create Wallet" = "创建钱包";
+
+"Create.slogan" = "信任 · 通证 · 万物";
 
 "Restore Wallet" = "恢复钱包";
 
@@ -48,14 +64,27 @@
 
 "CreateWallet.instruction" = "备份钱包，导出“口令”并抄写到安全的地方，千万不要保存到网络上。然后尝试转入，转出小额资产开始使用。";
 
-"Backup Your Seed Phrase" = "备份钱包助记词";
 
-"Backup.warning" = "请勿截图\n请立即备份您的钱包口令";
+"Backup Your Seed Phrase" = "备份助记词";
+"Backup.detail" = "最后一步：立即备份你的12个助记词";
+"Backup.description" = "您只能用这些单词恢复钱包！一旦丢失，资产将无法找回！一旦泄露，资产将会被盗！";
+"Backup.firstWarning" = "建议手写或保存在离线设备中";
+"Backup.lastWarning" = "建议创建完成钱包后立即恢复一次，以确保助记词正确";
+"Backup done" = "完成备份";
+"Backup mode reminding" = "请认真抄写助记词，不要用截屏的方式保管助记词。";
+"Make sure have been backed up" = "确认已经保存了助记词? ";
+
+"Verifying notes" = "验证助记词";
+"Verifying.description" = "根据你记下的助记词，按顺序输入，验证你备份的助记词正确无误";
+"Verification done" = "完成验证";
+"Verification error" = "助记词验证错误，请检查后重试";
+"Verifying words correct" = "验证助记词正确";
+"VerifyingCompletion.instruction" = "您的助记词正确，为了确保您的钱包安全，建议您删除显示在设备中的助记词";
+"Make sure delete words" = "确认删除助记词？";
+"Delete words" = "删除助记词";
+"Skip" = "跳过";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
-
 "Confirm your mnemonic words" = "确认您的钱包口令";
-
 "Backup.tips" = "请按顺序输入口令以确认您的备份口令正确";
-
 "Last Step" = "上一步";

@@ -44,8 +44,7 @@ class TNBackupSeedFrontView: UIView {
             make.left.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
         }
-        // generate 12 mnemonics
-        mnemonicLabel.text = TNGlobalHelper.shared.mnemonic
+     
         setupSubViews()
         
         nextButton.rx.tap.asObservable().subscribe(onNext: {[unowned self] in

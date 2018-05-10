@@ -148,7 +148,6 @@ class TNNavigationController: TNBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isSetStatusBar = false
         view.addSubview(navigationBar)
         navigationBar.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
@@ -160,7 +159,6 @@ class TNNavigationController: TNBaseViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
     }
 }
 

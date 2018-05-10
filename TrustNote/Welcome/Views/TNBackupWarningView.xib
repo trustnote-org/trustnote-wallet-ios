@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="diq-zF-bO8" customClass="TNBackupWarningView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="86"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="建议手写或保存在离线设备中" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDp-ty-S5b">
+                    <rect key="frame" x="23" y="15" width="344" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-4K-zxH">
+                    <rect key="frame" x="10" y="18" width="6.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNm-RW-W0r">
+                    <rect key="frame" x="10" y="39" width="6.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msC-Kl-b8u">
+                    <rect key="frame" x="23" y="36" width="344" height="33.5"/>
+                    <string key="text">建议创建完成钱包后立即恢复一次，以确保助记词正确
+务必牢记</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.96078431369999995" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="msC-Kl-b8u" firstAttribute="leading" secondItem="jDp-ty-S5b" secondAttribute="leading" id="AVE-9s-rdi"/>
+                <constraint firstItem="jDp-ty-S5b" firstAttribute="leading" secondItem="diq-zF-bO8" secondAttribute="leading" constant="23" id="JDV-Ue-Wjm"/>
+                <constraint firstItem="jDp-ty-S5b" firstAttribute="top" secondItem="diq-zF-bO8" secondAttribute="top" constant="15" id="POY-El-x04"/>
+                <constraint firstItem="jDp-ty-S5b" firstAttribute="top" secondItem="2Yb-4K-zxH" secondAttribute="top" constant="-3" id="R94-Jb-CCp"/>
+                <constraint firstAttribute="trailing" secondItem="jDp-ty-S5b" secondAttribute="trailing" constant="8" id="WG2-bM-ocG"/>
+                <constraint firstItem="fNm-RW-W0r" firstAttribute="centerX" secondItem="2Yb-4K-zxH" secondAttribute="centerX" id="XrI-5N-uBJ"/>
+                <constraint firstItem="msC-Kl-b8u" firstAttribute="top" secondItem="fNm-RW-W0r" secondAttribute="top" constant="-3" id="eio-z9-pNL"/>
+                <constraint firstItem="msC-Kl-b8u" firstAttribute="trailing" secondItem="jDp-ty-S5b" secondAttribute="trailing" id="lPL-Me-PFF"/>
+                <constraint firstItem="2Yb-4K-zxH" firstAttribute="leading" secondItem="diq-zF-bO8" secondAttribute="leading" constant="10" id="o3C-CW-Jj8"/>
+                <constraint firstItem="msC-Kl-b8u" firstAttribute="top" secondItem="jDp-ty-S5b" secondAttribute="bottom" constant="4" id="sdr-aa-yoa"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="d9t-Oz-cC8"/>
+            <connections>
+                <outlet property="firstWarningLabel" destination="jDp-ty-S5b" id="Y9h-Zh-I3o"/>
+                <outlet property="lastWarningLabel" destination="msC-Kl-b8u" id="PG4-V5-IMG"/>
+            </connections>
+        </view>
+    </objects>
+</document>

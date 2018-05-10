@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 class TNTradeRecordViewModel: NSObject {
+    
     var transactionRecords: [TNTransactionRecord]?
     
 }

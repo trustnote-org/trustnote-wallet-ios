@@ -93,7 +93,6 @@ extension TNConfigFileManager {
                 }
             }
         }
-
     }
     
     func readConfigFile() -> NSDictionary {

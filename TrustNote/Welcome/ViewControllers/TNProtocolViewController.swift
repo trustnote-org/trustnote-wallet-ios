@@ -30,7 +30,6 @@ class TNProtocolViewController: TNBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isSetStatusBar = true
         self.view.backgroundColor = TNControllerViewBackgroundColor
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in

@@ -36,13 +36,24 @@
 "Terms of Use" = "TERMS OF USE";
 
 "Welocme To TrustNote" = "Welocme To TrustNote";
-
 "DeviceName.instruction" = "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu. Also in the Settings menu, you will find security options such as setting a password.";
+"DeviceName.warning" = "不超过20个字符";
 
+"Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
+"Password.secondWarning" = "TrustNote不存储密码，也无法帮您找回，请务必牢记";
+"Password.titleText" = "设置密码";
+"Password.passwordLengthValid"  = "不少于8位字符，建议混合大小写字母、数字、特殊符号";
+"Password.passwordSecurity" = "密码强度太弱，极易被黑客破解";
+"Password.checkInput" = "两次输入密码不一致，请重新输入";
+"Password.weakLevel" = "弱";
+"Password.middleLevel" = "中";
+"Password.strongLevel" = "强";
+
+"Confirm" = "确定";
+"Cancel" = "取消";
 "Next" = "NEXT";
-
 "Create Wallet" = "CREATE WALLET";
-
+"Create.slogan" = "信任 · 通证 · 万物";
 "Restore Wallet" = "RESTORE WALLET";
 
 "Create Wallet and Backup Your Seed Phrase" = "Create Wallet and Backup Your Seed Phrase";
@@ -50,13 +61,25 @@
 "CreateWallet.instruction" = "We highly recommend you write the Mnemonic words(Backup Phrase) on Paper and keep it in a safe place, anyone get it can access or spend your assets. Also get start with a small amout of assets.";
 
 "Backup Your Seed Phrase" = "Backup Your Seed Phrase";
+"Backup.detail" = "最后一步：立即备份你的12个助记词";
+"Backup.description" = "您只能用这些单词恢复钱包！一旦丢失，资产将无法找回！一旦泄露，资产将会被盗！";
+"Backup.firstWarning" = "建议手写或保存在离线设备中";
+"Backup.lastWarning" = "建议创建完成钱包后立即恢复一次，以确保助记词正确";
+"Backup done" = "完成备份";
+"Backup mode reminding" = "请认真抄写助记词，不要用截屏的方式保管助记词。";
+"Make sure have been backed up" = "确认已经保存了助记词? ";
 
-"Backup.warning" = "Don't Screenshot\nPlease backup the mnemonic word";
+"Verifying notes" = "验证助记词";
+"Verifying.description" = "根据你记下的助记词，按顺序输入，验证你备份的助记词正确无误";
+"Verification done" = "完成验证";
+"Verification error" = "助记词验证错误，请检查后重试";
+"Verifying words correct" = "验证助记词正确";
+"VerifyingCompletion.instruction" = "您的助记词正确，为了确保您的钱包安全，建议您删除显示在设备中的助记词";
+"Make sure delete words" = "确认删除助记词？";
+"Delete words" = "删除助记词";
+"Skip" = "跳过";
 
 "Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
-
 "Confirm your mnemonic words" = "Confirm your mnemonic words";
-
 "Backup.tips" = "Please write the mnemonic words in order and make sure your mnemonic was correct written.";
-
 "Last Step" = "LAST STEP";

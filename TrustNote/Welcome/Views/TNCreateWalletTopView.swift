@@ -10,8 +10,13 @@ import UIKit
 
 class TNCreateWalletTopView: UIView {
 
+    @IBOutlet weak var sloganLable: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        sloganLable.font = UIFont(name: "PingFangSC-Medium", size: 22)
+        sloganLable.textColor = kGlobalColor
+        sloganLable.text = NSLocalizedString("Create.slogan", comment: "")
     }
 
 }

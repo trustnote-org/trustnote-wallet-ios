@@ -33,16 +33,6 @@ class TNBaseViewController: UIViewController {
    
     let disposeBag = DisposeBag()
     
-    var isSetStatusBar: Bool = true {
-        didSet {
-            guard isSetStatusBar else {
-                //setStatusBarBackgroundColor(color: .clear)
-                return
-            }
-            setStatusBarBackgroundColor(color: .black)
-            UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
-        }
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white

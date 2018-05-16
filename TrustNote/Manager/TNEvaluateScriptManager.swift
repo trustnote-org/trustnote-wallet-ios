@@ -39,12 +39,7 @@ final class TNEvaluateScriptManager {
                 self.generateMnemonic()
             }
             TNGlobalHelper.shared.isComlpetion = true
-            if !TNGlobalHelper.shared.xPrivKey.isEmpty {
-                self.getEcdsaPubkey(xPrivKey: TNGlobalHelper.shared.xPrivKey, path: "m/1", completed: {
-                    TNHubViewModel.loginHub()
-                })
-                self.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-            }
+            
             guard TNGlobalHelper.shared.tempDeviceKey.isEmpty else {
                 TNEvaluateScriptManager.sharedInstance.generateTempPublicKey(tempPrivateKey: TNGlobalHelper.shared.tempDeviceKey)
                 return
@@ -66,13 +61,12 @@ extension TNEvaluateScriptManager {
     public func generateMnemonic() {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
-               let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"
+               let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
 
                 TNGlobalHelper.shared.mnemonic = mnemonic1 //as? String
                 TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: mnemonic1)
-                TNWebSocketManager.sharedInstance.generateHUbAddress()
-                TNWebSocketManager.sharedInstance.webSocketOpen()
-                //"together knife slab material electric broom wagon heart harvest side copper vote"
+                let hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: true)
+                TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub)
             }
         }
     }
@@ -87,12 +81,17 @@ extension TNEvaluateScriptManager {
         let js = String(format:"window.Client.xPrivKey('%@')", arguments:[mnemonic])
         webView.evaluateJavaScript(js) {[unowned self] (any, _) in
             if let xPrivKey = any {
-                TNGlobalHelper.shared.xPrivKey = xPrivKey as! String
-                self.getEcdsaPubkey(xPrivKey: xPrivKey as! String, path: "m/1", completed: {
+                TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
+                if let passsword = TNGlobalHelper.shared.password {
+                    let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passsword)
+                    TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+                    TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+                }
+
+                self.getEcdsaPrivkey(xPrivKey: xPrivKey as! String, completed: {
                     TNHubViewModel.loginHub()
                 })
-                TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: xPrivKey)
-                let notificationName = Notification.Name(rawValue: TNDidGeneratedPrivateKey)
+                let notificationName = Notification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)
                 NotificationCenter.default.post(name: notificationName, object: nil)
             }
         }
@@ -130,7 +129,7 @@ extension TNEvaluateScriptManager {
                     let version = "1.0.0"
                     let timeInterval: TimeInterval = Date().timeIntervalSince1970
                     let creatOn = Int(timeInterval)
-                    let profileDict: NSDictionary = ["version" : version, "creatOn" : creatOn, "xPrivKey" : "", "tempDeviceKey" : tempDeviceKey,  "mnemonic" : "", "my_device_address" : "",  "credentials" : []]
+                    let profileDict: NSDictionary = ["version" : version, "creatOn" : creatOn, "xPrivKey" : "", "tempDeviceKey" : tempDeviceKey, "prevTempDeviceKey" : "", "mnemonic" : "", "my_device_address" : "",  "credentials" : []]
                     TNConfigFileManager.sharedInstance.saveDataToProfile(profileDict)
                     return
                 }
@@ -154,6 +153,21 @@ extension TNEvaluateScriptManager {
     }
     
     /**
+     * 生成m/1私钥
+     * @method m1PrivKey
+     * @for Base
+     * @param {string}  根私钥
+     * @return {string} m/1私钥
+     */
+    public func getEcdsaPrivkey(xPrivKey: String, completed: (() -> Swift.Void)?) {
+        let js = String(format:"window.Client.m1PrivKey('%@')", arguments:[xPrivKey])
+        webView.evaluateJavaScript(js) {[unowned self] (any, _) in
+            TNGlobalHelper.shared.ecdsaPrivkey = any as! String
+            self.getEcdsaPubkey(xPrivKey: xPrivKey, path: "m/1'", completed: completed)
+        }
+    }
+    
+    /**
      * 生成ecdsa签名公钥
      * @method ecdsaPubkey
      * @for Base
@@ -162,7 +176,7 @@ extension TNEvaluateScriptManager {
      * @return {string} 签名公钥
      */
     public func getEcdsaPubkey(xPrivKey: String, path: String, completed: (() -> Swift.Void)?) {
-        let js = String(format:"window.Client.ecdsaPubkey('%@', '%@')", arguments:[xPrivKey, path])
+        let js = String(format:"window.Client.ecdsaPubkey('%@', \"%@\")", arguments:[xPrivKey, path])
         webView.evaluateJavaScript(js) { (any, _) in
             if let ecdsaPubkey = any {
                 TNGlobalHelper.shared.ecdsaPubkey = ecdsaPubkey as! String
@@ -316,14 +330,14 @@ extension TNEvaluateScriptManager {
         
         getDeviceMessageHashToSign(unit: unit) {[unowned self] (b64_hash) in
              let signHash = b64_hash
-             self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.xPrivKey, path: "m/1", completionHandler: completionHandler)
+             self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.ecdsaPrivkey, path: "null", completionHandler: completionHandler)
         }
     }
     
     public func getParamsSignForSendingTempPubkey(unit: String, completionHandler: ((String) -> Swift.Void)?) {
         getDeviceMessageHashToSign(unit: unit) {[unowned self] (b64_hash) in
             let signHash = b64_hash
-            self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.xPrivKey, path: "m/1", completionHandler: completionHandler)
+            self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.ecdsaPrivkey, path: "null", completionHandler: completionHandler)
         }
     }
     

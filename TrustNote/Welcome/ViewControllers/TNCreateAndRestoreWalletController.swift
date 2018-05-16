@@ -15,7 +15,6 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
     
     let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 80) : 80
     let topPadding = IS_iphone5 ? (88 + kStatusbarH) : (128 + kStatusbarH)
-    let test = TNRestoreWalletViewModel()
    
     private let creatWalletBtn = TNButton().then {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
@@ -41,29 +40,29 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
+        if (TNGlobalHelper.shared.mnemonic?.isEmpty)! {
+            TNEvaluateScriptManager.sharedInstance.generateMnemonic()
+        }
         /// handle events
         creatWalletBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             
-            var isWait = false
-            if TNGlobalHelper.shared.xPrivKey.isEmpty {
-                isWait = true
+            if TNGlobalHelper.shared.encryptePrivKey.isEmpty {
                 TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic!)
             }
-            var targetVC: UIViewController? = nil
-            let encryptionPassword = Preferences[.encryptionPassword]
-            if encryptionPassword?.count != 0 {
-                targetVC = TNVBackupsSeedController()
-            } else {
-                targetVC = TNSetupPasswordController(nibName: "\(TNSetupPasswordController.self)", bundle: nil)
-            }
-            self.navigationController?.pushViewController(targetVC!, animated: true)
+            self.isEnterSetupPassword(vc: TNVBackupsSeedController())
             
         }).disposed(by: self.disposeBag)
         
         restoreWalletBtn.rx.tap.asObservable().subscribe {[weak self] _ in
-            self?.test.createNewWalletWhenRestoreWallet()
+            self?.isEnterSetupPassword(vc: TNRecoveryWalletController())
         }.disposed(by: self.disposeBag)
+        
+        if Preferences[.isBackupWords] {
+            let vc = TNVerifyPasswordController()
+            self.navigationController?.present(vc, animated: false, completion: {
+                vc.passwordAlertView.passwordTextField.becomeFirstResponder()
+            })
+        }
     }
 }
 
@@ -94,6 +93,21 @@ extension TNCreateAndRestoreWalletController {
             make.bottom.equalTo(restoreWalletBtn.snp.top).offset(-24)
             make.height.equalTo(restoreWalletBtn.snp.height)
         }
+    }
+}
+
+extension TNCreateAndRestoreWalletController {
+    fileprivate func isEnterSetupPassword(vc: UIViewController) {
+        var targetVC: UIViewController? = nil
+        let encryptionPassword = Preferences[.encryptionPassword]
+        if encryptionPassword?.count != 0 {
+            targetVC = vc
+        } else {
+            let setupVC = TNSetupPasswordController(nibName: "\(TNSetupPasswordController.self)", bundle: nil)
+            setupVC.isCreateWallet = vc.isKind(of: TNVBackupsSeedController.self) ? true : false
+            targetVC = setupVC
+        }
+        self.navigationController?.pushViewController(targetVC!, animated: true)
     }
 }
 

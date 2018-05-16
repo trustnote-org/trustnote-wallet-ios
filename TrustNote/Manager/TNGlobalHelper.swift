@@ -10,16 +10,33 @@ import Foundation
 
 final class TNGlobalHelper {
     
+    var isVerifyPasswdForMain = true
+    var password: String? = nil
     var isComlpetion: Bool = false
     var isNeedGenerateSeed: Bool = false
-    
-    var xPrivKey: String = ""            // root privatekey
+    var encryptePrivKey = ""
+    var tempPrivKey = ""
+    var xPrivKey: String {
+        set{}
+        get {
+            if let psw_key = password {
+                let decryptPrivKey: String = AES128CBC_Unit.aes128Decrypt(encryptePrivKey, key: psw_key)
+                if decryptPrivKey.contains("\0") {
+                    let result = decryptPrivKey.replacingOccurrences(of: "\0", with: "")
+                    return result
+                }
+                return decryptPrivKey
+            }
+            return tempPrivKey
+        }
+    }          // root privatekey
     var xPubkey: String = ""             // root publickey
     var tempDeviceKey: String = ""       // temp privateKey
     var tempPublicKey:String  = ""       // temp publicKey
     var prevTempDeviceKey: String = ""   // previous temp privatekey
     var mnemonic: String? = nil           //
     var ecdsaPubkey: String = ""
+    var ecdsaPrivkey: String = ""
     var my_device_address: String = ""
     
     var currentWallet: TNWalletModel = TNWalletModel()
@@ -42,10 +59,11 @@ final class TNGlobalHelper {
         let profile = TNConfigFileManager.sharedInstance.readProfileFile() as! [String: Any]
         if profile.keys.contains("mnemonic") {
             mnemonic = profile["mnemonic"] as? String
-            TNWebSocketManager.sharedInstance.webSocketOpen() 
+            let hubViewModel = TNHubViewModel()
+            TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hubViewModel.hubAddress) 
         }
         if profile.keys.contains("xPrivKey") {
-            xPrivKey = profile["xPrivKey"] as! String
+            encryptePrivKey = profile["xPrivKey"] as! String
         }
         if profile.keys.contains("tempDeviceKey") {
             tempDeviceKey = profile["tempDeviceKey"] as! String
@@ -56,5 +74,30 @@ final class TNGlobalHelper {
         TNSQLiteManager.sharedManager.queryDataFromWitnesses(sql: "SELECT * FROM my_witnesses") { (results) in
             self.witnesses = results as! [String]
         }
+        
+        let config: NSDictionary = TNConfigFileManager.sharedInstance.readConfigFile()
+        let rootWindow = config["keywindowRoot"] as! Int
+        guard rootWindow == 4 else {return}
+        let sql = "SELECT Count(*) FROM wallets WHERE is_local = 1"
+        TNSQLiteManager.sharedManager.queryCount(sql: sql) { (count) in
+            if count == 0 {
+                self.createNewWallet()
+            }
+        }
+    }
+    
+    func createNewWallet() {
+        
+        let walletViewModel = TNWalletViewModel()
+        walletViewModel.generateNewWalletByDatabaseNumber {
+            walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
+            walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
+            if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
+                walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
+                    walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                })
+            }
+        }
     }
 }
+

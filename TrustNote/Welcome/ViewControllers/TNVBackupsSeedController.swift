@@ -50,8 +50,7 @@ class TNVBackupsSeedController: TNBaseViewController {
     
     fileprivate lazy var warningView: TNBackupWarningView = {[weak self] in
         let warningView = TNBackupWarningView.backupWarningView()
-        warningView.layer.cornerRadius = kCornerRadius
-        warningView.layer.masksToBounds = true
+        warningView.setupRadiusCorner(radius: kCornerRadius)
         return warningView
     }()
     
@@ -63,6 +62,12 @@ class TNVBackupsSeedController: TNBaseViewController {
         layoutAllSubviews()
         seedView.seedContainerView.isCanEdit = false
         seedView.seedContainerView.mnmnemonicsArr = (TNGlobalHelper.shared.mnemonic?.components(separatedBy: " "))!
+        if TNGlobalHelper.shared.my_device_address.isEmpty {
+            generateMyDeviceAddress()
+        }
+        if TNGlobalHelper.shared.xPubkey.isEmpty {
+            generateRootPubkey()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,7 +167,20 @@ extension TNVBackupsSeedController {
     @objc fileprivate func backupCompleted() {
         
         alertAction(self, NSLocalizedString("Make sure have been backed up", comment: ""), message: nil, sureActionText: NSLocalizedString("Confirm", comment: ""), cancelActionText: NSLocalizedString("Cancel", comment: ""), isChange: true) {[weak self] in
-            self?.navigationController?.pushViewController(TNVerifySeedViewController(), animated: true)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
+                self?.navigationController?.pushViewController(TNVerifySeedViewController(), animated: true)
+            }
         }
+    }
+}
+
+extension TNVBackupsSeedController {
+    
+    fileprivate func generateRootPubkey() {
+        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
+    }
+    
+    fileprivate func generateMyDeviceAddress() {
+        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
     }
 }

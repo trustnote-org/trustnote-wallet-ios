@@ -34,10 +34,9 @@
 
 "Terms of Use" = "使用条款";
 
+"Please enter device name" = "请输入设备名称";
 "Welocme To TrustNote" = "欢迎来到TrustNote钱包";
-
 "DeviceName.instruction" = "您可以自定义设备名称，朋友加您好友后，在聊天列表里很容易找到您。";
-
 "DeviceName.warning" = "不超过20个字符";
 
 "Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
@@ -64,7 +63,7 @@
 
 "CreateWallet.instruction" = "备份钱包，导出“口令”并抄写到安全的地方，千万不要保存到网络上。然后尝试转入，转出小额资产开始使用。";
 
-
+/******* beckup seed string************/
 "Backup Your Seed Phrase" = "备份助记词";
 "Backup.detail" = "最后一步：立即备份你的12个助记词";
 "Backup.description" = "您只能用这些单词恢复钱包！一旦丢失，资产将无法找回！一旦泄露，资产将会被盗！";
@@ -74,6 +73,7 @@
 "Backup mode reminding" = "请认真抄写助记词，不要用截屏的方式保管助记词。";
 "Make sure have been backed up" = "确认已经保存了助记词? ";
 
+/******* verify seed string************/
 "Verifying notes" = "验证助记词";
 "Verifying.description" = "根据你记下的助记词，按顺序输入，验证你备份的助记词正确无误";
 "Verification done" = "完成验证";
@@ -83,6 +83,19 @@
 "Make sure delete words" = "确认删除助记词？";
 "Delete words" = "删除助记词";
 "Skip" = "跳过";
+
+/******* verify password string************/
+"Input password" = "输入密码";
+"Please input password" = "请输入密码";
+"Verify password error" = "密码错误，请重新输入";
+"The wallet has been encrypted" = "钱包已加密";
+"Click continue" = "点击继续";
+/******* verify password string************/
+"Recover wallet" = "恢复钱包";
+"Wallet mnemonic" = "钱包助记词";
+"Use the phrase to restore the wallet" = "使用助记词恢复钱包";
+"Restore the wallet and delete the phrase" = "恢复钱包并删除助记词";
+
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

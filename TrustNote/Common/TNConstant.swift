@@ -31,6 +31,7 @@ let kCornerRadius: CGFloat = 2.0
 let TNWebSocketURLScheme: String = "wss://"
 
 let kNetworkTimeout = 30
+let kTempPubkeyInterval = 3600
 
 /// MARK:- Color
 let TNControllerViewBackgroundColor = UIColor.hexColor(rgbValue: 0xF5F5F5)
@@ -40,9 +41,14 @@ let kGlobalColor = UIColor.hexColor(rgbValue: 0x0052CC)
 let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
 
 /// MARK: Notificaton Name
-let TNDidGeneratedPrivateKey           = "TNDidGeneratePrivateKey"
-let TNDidFinishedGetHistoryTransaction = "TNDidFinishGetHistoryTransaction"
-let TNDidReceiveRestoreWalletResponse  = "TNDidReceiveRestoreWalletResponse"
+let TNDidGeneratedPrivateKeyNotification     = "TNDidGeneratePrivateKeyNotification"
+let TNDidFinishedGetHistoryTransaction       = "TNDidFinishGetHistoryTransaction"
+let TNDidReceiveRestoreWalletResponse        = "TNDidReceiveRestoreWalletResponse"
+let TNDidFinishRecoverWalletNotification     = "TNDidFinishRecoverWalletNotification"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="
+
+/// MARK: Timer Name
+let kGetHistoryTimer = "MonitorNetworkResponse"
+let kSendTempPubkeyTimer = "SendTempPubkeyTimer"

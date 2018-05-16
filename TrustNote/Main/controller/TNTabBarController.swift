@@ -17,6 +17,13 @@ class TNTabBarController: UITabBarController {
         tabbar.isTranslucent = false
         tabbar.barTintColor = kThemeWhiteColor
         addChildViewControllers()
+        
+//        if TNGlobalHelper.shared.isVerifyPasswdForMain {
+//            let vc = TNVerifyPasswordController()
+//            self.navigationController?.present(vc, animated: false, completion: {
+//                vc.passwordAlertView.passwordTextField.becomeFirstResponder()
+//            })
+//        }
     }
    
     private func addChildViewControllers() {

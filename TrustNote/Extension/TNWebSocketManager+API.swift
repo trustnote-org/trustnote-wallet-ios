@@ -112,6 +112,15 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
             TNEvaluateScriptManager.sharedInstance.updateTempPrivKeyAndTempPubKey(completionHandler: {
                 TNConfigFileManager.sharedInstance.updateProfile(key: "tempDeviceKey", value: TNGlobalHelper.shared.tempDeviceKey)
                 TNConfigFileManager.sharedInstance.updateProfile(key: "prevTempDeviceKey", value: TNGlobalHelper.shared.prevTempDeviceKey)
+                TNTimerHelper.shared.scheduledDispatchTimer(WithTimerName: kSendTempPubkeyTimer, timeInterval: 1.0, queue: .main, repeats: true) {
+                    TNWebSocketManager.sharedInstance.tempPubkeyTimeConsume += 1
+                    guard TNWebSocketManager.sharedInstance.tempPubkeyTimeConsume == kTempPubkeyInterval else {
+                        return
+                    }
+                    TNHubViewModel.sendTempPubkeyToHub()
+                    TNWebSocketManager.sharedInstance.tempPubkeyTimeConsume = 0
+                    TNTimerHelper.shared.cancleTimer(WithTimerName: kSendTempPubkeyTimer)
+                }
             })
         }
     }
@@ -144,7 +153,7 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
             requestJsonStr = "\(JSON(requestParams))"
             TNWebSocketManager.sharedInstance.sendData(requestJsonStr!)
         }
-        TNTimerHelper.shared.scheduledDispatchTimer(WithTimerName: "MonitorNetworkResponse", timeInterval: 1.0, queue: .main, repeats: true) {
+        TNTimerHelper.shared.scheduledDispatchTimer(WithTimerName: kGetHistoryTimer, timeInterval: 1.0, queue: .main, repeats: true) {
             TNWebSocketManager.sharedInstance.timeConsume += 1
             guard TNWebSocketManager.sharedInstance.isCompleted else {
                 if TNWebSocketManager.sharedInstance.timeConsume == kNetworkTimeout {
@@ -154,7 +163,7 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
             }
             TNWebSocketManager.sharedInstance.isCompleted = false
             TNWebSocketManager.sharedInstance.timeConsume = 0
-            TNTimerHelper.shared.cancleTimer(WithTimerName: "MonitorNetworkResponse")
+            TNTimerHelper.shared.cancleTimer(WithTimerName: kGetHistoryTimer)
         }
         
         TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in

@@ -15,7 +15,7 @@ import RxCocoa
 #endif
 import Differentiator
 
-open class  RxTableViewSectionedReloadDataSource<S: SectionModelType>
+open class RxTableViewSectionedReloadDataSource<S: SectionModelType>
     : TableViewSectionedDataSource<S>
     , RxTableViewDataSourceType {
     public typealias Element = [S]

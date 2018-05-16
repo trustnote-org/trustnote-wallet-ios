@@ -138,6 +138,7 @@ extension TNVerifySeedViewController {
 extension TNVerifySeedViewController {
     
     @objc fileprivate func goBack() {
+        view.endEditing(true)
         navigationController?.popViewController(animated: true)
     }
     
@@ -159,7 +160,25 @@ extension TNVerifySeedViewController {
             warningImageView.isHidden = true
             warningLabel.isHidden = true
         }
+        
+        Preferences[.isBackupWords] = false
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
         navigationController?.pushViewController(TNVerifyCompletionController(), animated: true)
+        createNewWallet()
+    }
+    
+    func createNewWallet() {
+        
+        let walletViewModel = TNWalletViewModel()
+        walletViewModel.generateNewWalletByDatabaseNumber {
+            walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
+            walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
+            if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
+                walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
+                    walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                })
+            }
+        }
     }
 }
+

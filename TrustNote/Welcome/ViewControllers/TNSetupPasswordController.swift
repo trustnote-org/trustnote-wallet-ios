@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import IQKeyboardManagerSwift
 
 class TNSetupPasswordController: TNBaseViewController {
     
     let textValidCount = 8
+    var isCreateWallet: Bool?
     
     @IBOutlet weak var titleTextLabel: UILabel!
     @IBOutlet weak var lastDeleteBtn: UIButton!
@@ -19,7 +21,9 @@ class TNSetupPasswordController: TNBaseViewController {
     @IBOutlet weak var lastWarningLabel: UILabel!
     @IBOutlet weak var firstWarningLabel: UILabel!
     @IBOutlet weak var confirmButton: UIButton!
-    @IBOutlet weak var conflictButton: UIButton!
+    @IBOutlet weak var conflictView: UIView!
+    @IBOutlet weak var conflictLabel: UILabel!
+    
     @IBOutlet weak var lastLineView: UIView!
     @IBOutlet weak var firstLineView: UIView!
     @IBOutlet weak var inputTextField: UITextField!
@@ -37,15 +41,12 @@ class TNSetupPasswordController: TNBaseViewController {
        
         titleTextLabel.text = NSLocalizedString("Password.titleText", comment: "")
         warningDescLabel.text = NSLocalizedString("Password.passwordLengthValid", comment: "")
-        conflictButton.setTitle(NSLocalizedString("Password.checkInput", comment: ""), for: .normal)
         confirmBtnBottomConstraint.constant = IS_iphone5 ? 30 : 50
-        confirmButton.layer.cornerRadius = kCornerRadius
-        confirmButton.layer.masksToBounds = true
+        confirmButton.setupRadiusCorner(radius: kCornerRadius)
         confirmButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
-        backgroundFrameView.layer.cornerRadius = kCornerRadius
+        backgroundFrameView.setupRadiusCorner(radius: kCornerRadius) 
         backgroundFrameView.layer.masksToBounds = true
-        conflictButton.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0)
-        conflictButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+        conflictLabel.text = NSLocalizedString("Password.checkInput", comment: "")
         
         firstWarningLabel.attributedText = getAttributeStringWithString(NSLocalizedString("Password.firstWarning", comment: ""), lineSpace: 5.0)
         lastWarningLabel.attributedText = getAttributeStringWithString(NSLocalizedString("Password.secondWarning", comment: ""), lineSpace: 5.0)
@@ -61,8 +62,11 @@ class TNSetupPasswordController: TNBaseViewController {
         confirmTextField.addTarget(self, action: #selector(TNSetupPasswordController.textInputDidChange(_:)), for: .editingChanged)
         
         setupUI()
+        
+        IQKeyboardManager.shared.enable = false
+        distance = IS_iphone5 ? 100 : 0
+        isNeedMove = true
     }
-   
 }
 
 /// MARK: Handle Event
@@ -79,12 +83,23 @@ extension TNSetupPasswordController {
             return
         }
         guard inputTextField.text == confirmTextField.text else {
-           conflictButton.isHidden = false
+           conflictView.isHidden = false
+            conflictView.shakeAnimation(scope: 5.0)
            return
         }
         let md5Psword = inputTextField.text?.md5()
         Preferences[.encryptionPassword] = md5Psword
-        navigationController?.pushViewController(TNVBackupsSeedController(), animated: true)
+        TNGlobalHelper.shared.password = inputTextField.text
+        if isCreateWallet! {
+            let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: inputTextField.text)
+            TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+            TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+            TNGlobalHelper.shared.tempPrivKey = ""
+        }
+        let vc = isCreateWallet! ? TNVBackupsSeedController() : TNRecoveryWalletController()
+        Preferences[.isBackupWords] = true
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @IBAction func deleteAction(_ sender: UIButton) {
@@ -102,8 +117,8 @@ extension TNSetupPasswordController {
         if (sender == lastDeleteBtn) {
             confirmTextField.text = nil
             lastDeleteBtn.isHidden = true
-            if !conflictButton.isHidden {
-                conflictButton.isHidden = true
+            if !conflictView.isHidden {
+                conflictView.isHidden = true
             }
         }
         confirmButton.isEnabled = false
@@ -214,8 +229,8 @@ extension TNSetupPasswordController: UITextFieldDelegate {
             warningIconView.isHidden = true
         }
         
-        if !conflictButton.isHidden {
-            conflictButton.isHidden = true
+        if !conflictView.isHidden {
+            conflictView.isHidden = true
         }
     }
     
@@ -230,6 +245,11 @@ extension TNSetupPasswordController: UITextFieldDelegate {
         if string == " " {
             return false
         }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }

@@ -24,6 +24,7 @@ class TNWebSocketManager {
     }
     fileprivate var heartBeat: Timer!
     fileprivate var socket: WebSocket!
+    fileprivate var disConnectCount = 0
     
     fileprivate let rootHubs: [String] = ["shawtest.trustnote.org", "raytest.trustnote.org"]
     
@@ -35,12 +36,15 @@ class TNWebSocketManager {
     public var is_getting_history = false
     public var isCompleted = false
     public var timeConsume = 0
+    public var tempPubkeyTimeConsume = 0
     
     public var HandleJustsayingBlock: ((Any) ->Void)? = nil
     public var GetHistoryCompletionBlock: ((Any) ->Void)? = nil
     public var SendTempPubkeyCompletionBlock: ((Any) ->Void)? = nil
     public var GetWitnessCompletionBlock: ((Any) ->Void)? = nil
     public var HandleRequestBlock: ((Any) ->Void)? = nil
+    
+    public var generateNewPrivkeyBlock: (() -> Void)?
     
     class var sharedInstance: TNWebSocketManager {
         
@@ -54,14 +58,12 @@ class TNWebSocketManager {
 /// MARK: connect and didConnect
 extension TNWebSocketManager {
 
-    func webSocketOpen() {
+    func webSocketOpen(hubAddress: String) {
         
-        let hubViewModel = TNHubViewModel()
-        let socketUrl = hubViewModel.hubAddress
-        guard socketUrl.count != 0 else {
+        guard hubAddress.count != 0 else {
             return
         }
-        socket = WebSocket(url: NSURL(string: TNWebSocketURLScheme + socketUrl)! as URL)
+        socket = WebSocket(url: NSURL(string: TNWebSocketURLScheme + hubAddress)! as URL)
         if !socket.isConnected {
             socket.delegate = self
             socket.connect()
@@ -74,12 +76,16 @@ extension TNWebSocketManager {
         }
     }
     
-    func generateHUbAddress() {
+    func generateHUbAddress(isSave: Bool) -> String {
         let md5Str = TNGlobalHelper.shared.mnemonic?.md5()
         let firstChar = String(md5Str![(md5Str?.startIndex)!])
         let num = String.getAscii(character: firstChar)
         let index = num % UInt32(rootHubs.count)
+        guard isSave else {
+            return rootHubs[Int(index)]
+        }
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: rootHubs[Int(index)])
+        return rootHubs[Int(index)]
     }
     
     private func initHeartBeat() {
@@ -96,13 +102,26 @@ extension TNWebSocketManager: WebSocketDelegate {
         initHeartBeat()
         isConnected = true
         TNHubViewModel.getMyWitnessesList()
+        if let generateNewPrivkeyBlock = generateNewPrivkeyBlock {
+            generateNewPrivkeyBlock()
+        }
         TNDebugLogManager.debugLog(item: "Websocket Connected")
     }
 
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
         
         isConnected = false
-        socket.connect()
+        disConnectCount += 1
+        if (disConnectCount == 4) {
+            let hub = TNHubViewModel().hubAddress
+            for tempHub in rootHubs {
+                if tempHub == hub {continue}
+                webSocketOpen(hubAddress: tempHub)
+                break
+            }
+        } else {
+           socket.connect()
+        }
         TNDebugLogManager.debugLog(item: "websocket is disconnected: \(String(describing: error?.localizedDescription))")
     }
 

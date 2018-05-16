@@ -41,6 +41,8 @@ class TNRestoreWalletViewModel {
                     self.createWalletAddress(num: self.addressIndex)
                     return
                 }
+                let notificationName = Notification.Name(rawValue: TNDidFinishRecoverWalletNotification)
+                NotificationCenter.default.post(name: notificationName, object: nil)
                 self.saveData()
             } else {
                 self.isChange = false

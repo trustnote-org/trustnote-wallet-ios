@@ -38,6 +38,8 @@ class TNModifyDeviceNameController: TNBaseViewController {
         $0.font = UIFont(name: "PingFangSC-Medium", size: 18)
         $0.keyboardType = .asciiCapable
         $0.text = UIDevice.current.name
+        $0.placeholder = NSLocalizedString(
+            "Please enter device name", comment: "")
     }
     
     private let lineView = UIView().then {

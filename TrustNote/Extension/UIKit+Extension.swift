@@ -8,7 +8,16 @@
 
 import UIKit
 
-extension UIView {
+protocol ViewRadiusCornerProtocol {
+    func setupRadiusCorner(radius: CGFloat)
+}
+
+extension UIView: ViewRadiusCornerProtocol {
+    func setupRadiusCorner(radius: CGFloat) {
+        self.layer.cornerRadius = radius
+        self.layer.masksToBounds = true
+    }
+    
     
     /// x
     var x: CGFloat {
@@ -79,7 +88,6 @@ extension UIView {
             center                  = tempCenter;
         }
     }
-    
 }
 
 /// MARK: load nib

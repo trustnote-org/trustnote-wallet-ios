@@ -50,14 +50,26 @@ class TNVerifyCompletionController: TNBaseViewController {
         super.viewDidLoad()
 
         layoutAllSubviews()
-        
+        TNGlobalHelper.shared.mnemonic = nil
+        TNGlobalHelper.shared.password = nil
         deleteBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] _ in
             self.deleteSeedPhrase()
         }).disposed(by: self.disposeBag)
         
         skipBtn.rx.tap.asObservable().subscribe(onNext: { _ in
+            TNGlobalHelper.shared.isVerifyPasswdForMain = false
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
         }).disposed(by: self.disposeBag)
+        
+        TNSQLiteManager.sharedManager.queryAmountFromOutputs(walletId: /*"RoW6sFKEumL5VW7HM9BFhfrMN9qeyFKCSlrjptxdgn8="*/"LyzbDDiDedJh+fUHMFAXpWSiIw/Z1Tgve0J1+KOfT3w=") { (results) in
+            
+            var balance: Int = 0
+            for balanceModel in results as! [TNWalletBalance] {
+                balance += Int(balanceModel.amount)!
+            }
+            let fBalance = Double(balance) / 1000000.0
+            print(String(format: "%.5f", fBalance))
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -117,6 +129,7 @@ extension TNVerifyCompletionController {
     
     fileprivate func deleteSeedPhrase() {
         alertAction(self, NSLocalizedString("Make sure delete words", comment: ""), message: nil, sureActionText: NSLocalizedString("Confirm", comment: ""), cancelActionText: NSLocalizedString("Cancel", comment: ""), isChange: true) {
+            TNGlobalHelper.shared.isVerifyPasswdForMain = false
             TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
         }

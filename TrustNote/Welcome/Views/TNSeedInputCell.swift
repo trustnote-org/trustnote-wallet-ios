@@ -221,7 +221,7 @@ final class TNSeedContainerView: UIView {
         }).disposed(by: disposeBag)
         
         // Notice to monitor the disappearance of the keyboard
-        _ = NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide).takeUntil(self.rx.deallocated).subscribe(onNext: { [unowned self] _ in
+    NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide).takeUntil(self.rx.deallocated).subscribe(onNext: { [unowned self] _ in
 
             if self.isDisplay.value {
                 
@@ -229,7 +229,7 @@ final class TNSeedContainerView: UIView {
                     self.isDisplay.accept(false)
                 }
             }
-        })
+        }).disposed(by: disposeBag)
     }
 }
 

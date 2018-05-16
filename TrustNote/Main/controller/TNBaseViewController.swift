@@ -33,6 +33,31 @@ class TNBaseViewController: UIViewController {
    
     let disposeBag = DisposeBag()
     
+    var distance: CGFloat = 0.0
+    
+    var isNeedMove = false {
+        didSet {
+            if isNeedMove {
+                NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillShow)
+                .subscribe(onNext: { [unowned self] (notify) in
+                    let info = notify.userInfo!
+                    let keyboardFrame = (info[UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue
+                    let keyboardHeight = kScreenH - (keyboardFrame?.size.height)!
+                    if self.distance < keyboardHeight {
+                        self.view.y -= self.distance
+                    } else {
+                        self.view.y -= keyboardHeight
+                    }
+                }).disposed(by: disposeBag)
+                
+                NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide)
+                    .subscribe(onNext: { [unowned self] (notify) in
+                        self.view.y = 0
+                    }).disposed(by: disposeBag)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white

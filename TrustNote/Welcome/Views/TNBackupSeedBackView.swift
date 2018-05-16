@@ -13,11 +13,7 @@ import RxCocoa
 class TNBackupSeedBackView: UIView {
     
     private(set) var disposeBag = DisposeBag()
-    
-    typealias ClickedButtonBlock = () -> Void
-    
-    var clickedLastStepBlock: ClickedButtonBlock?
-    
+
     
     @IBOutlet weak var seedContainerView: TNSeedContainerView!
 

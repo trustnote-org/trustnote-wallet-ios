@@ -127,7 +127,6 @@ extension TNWebSocketManager: WebSocketDelegate {
 
     func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
         TNDebugLogManager.debugLog(item: "got some data: \(data.count)")
-        
     }
 
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
@@ -165,9 +164,7 @@ extension TNWebSocketManager {
     }
 
     func sendData(_ params: String) {
-        
-        // let jsonString = resp.toJSONString()! // 从对象实例转换到JSON字符串
-
+    
         TNWebSocketManager.sharedInstance.socket.write(string: params)
         TNDebugLogManager.debugLog(item:  "send---->\(params)")
     }

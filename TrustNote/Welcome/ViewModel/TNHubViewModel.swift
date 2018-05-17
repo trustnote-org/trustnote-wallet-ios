@@ -40,9 +40,9 @@ struct TNHubViewModel {
         TNWebSocketManager.getMyWitnessFromHub()
     }
     
-    static func getMyTransactionHistory(addresses: [String], isRecoverWallet: Bool) {
+    static func getMyTransactionHistory(addresses: [String]) {
         
-        guard TNGlobalHelper.shared.witnesses.count > 0 else {
+        guard !TNGlobalHelper.shared.witnesses.isEmpty else {
             return
         }
         TNWebSocketManager.getTransactionHistoryRecords(witnesses: TNGlobalHelper.shared.witnesses, addresses: addresses, requested_joints: nil, known_stable_units: nil)

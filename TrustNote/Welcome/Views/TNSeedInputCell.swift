@@ -136,6 +136,18 @@ final class TNSeedContainerView: UIView {
         return keyboard
     }()
     
+    lazy var containerView: UIView = {
+        let containerView = UIView()
+        containerView.backgroundColor = UIColor.hexColor(rgbValue: 0xE0E0E0)
+        containerView.frame = CGRect(x: 0, y: 0, width: keyboardView.width, height: keyboardView.height + kSafeAreaBottomH)
+        containerView.addSubview(keyboardView)
+        keyboardView.snp.makeConstraints({ (make) in
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
+        })
+        return containerView
+    }()
+    
     lazy var allWords: [String] = {
         
         let path = Bundle.main.path(forResource: "BIP39Words", ofType: "plist")
@@ -246,14 +258,15 @@ extension TNSeedContainerView: UICollectionViewDelegate, UICollectionViewDataSou
             textFields.removeAll()
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TNSeedInputCellIndentifier", for: indexPath) as! TNSeedInputCell
-        guard isCanEdit else {
-            cell.textField.isEnabled = isCanEdit
-            cell.textField.text = mnmnemonicsArr[indexPath.item]
-            return cell
-        }
+//        guard isCanEdit else {
+//            cell.textField.isEnabled = isCanEdit
+//            cell.textField.text = mnmnemonicsArr[indexPath.item]
+//            return cell
+//        }
+        cell.textField.text = mnmnemonicsArr[indexPath.item]
         cell.textField.isEnabled = isCanEdit
         cell.textField.delegate = self
-        cell.textField.inputView = keyboardView
+        cell.textField.inputView = containerView
         cell.textField.tag = indexPath.item + Metric.TextField_Tag_Begin
         textFields.append(cell.textField)
         cell.textField

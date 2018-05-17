@@ -14,6 +14,7 @@ let loopCount: Int = 21
 class TNRestoreWalletViewModel {
    
     let disposeBag = DisposeBag()
+    public var isRecoverWallet = true
     private var addressModels: [TNWalletAddressModel] = []
     private var wallets: [TNWalletModel] = []
     private var tempAddressModels: [TNWalletAddressModel] = []
@@ -23,10 +24,12 @@ class TNRestoreWalletViewModel {
     
     required init() {
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishedGetHistoryTransaction), object: nil).subscribe(onNext: {[unowned self] _ in
+            guard self.isRecoverWallet else {return}
             self.getHistoryTransaction()
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidReceiveRestoreWalletResponse), object: nil).subscribe(onNext: {[unowned self] (notify) in
+            guard self.isRecoverWallet else {return}
             let response = notify.object as! [String : Any]
             guard response.count == 0 else {
                 self.tempAddressModels.removeAll()
@@ -41,8 +44,6 @@ class TNRestoreWalletViewModel {
                     self.createWalletAddress(num: self.addressIndex)
                     return
                 }
-                let notificationName = Notification.Name(rawValue: TNDidFinishRecoverWalletNotification)
-                NotificationCenter.default.post(name: notificationName, object: nil)
                 self.saveData()
             } else {
                 self.isChange = false
@@ -86,10 +87,10 @@ class TNRestoreWalletViewModel {
         guard !TNWebSocketManager.sharedInstance.is_getting_history else {
             return
         }
-        guard addresses.count != 0 else {
+        guard !addresses.isEmpty else {
             return
         }
-        TNHubViewModel.getMyTransactionHistory(addresses: addresses, isRecoverWallet: true)
+        TNHubViewModel.getMyTransactionHistory(addresses: addresses)
     }
     
     private func generateWalletBySerialNumber(_ walletIndex: Int) {
@@ -117,6 +118,11 @@ class TNRestoreWalletViewModel {
         for wallet in wallets {
             walletViewModel.saveWalletDataToDatabase(wallet)
             walletViewModel.saveNewWalletToProfile(wallet)
+        }
+        let viewModel = TNWalletBalanceViewModel()
+        viewModel.queryAllWallets { _ in
+            let notificationName = Notification.Name(rawValue: TNDidFinishRecoverWalletNotification)
+            NotificationCenter.default.post(name: notificationName, object: nil)
         }
     }
 }

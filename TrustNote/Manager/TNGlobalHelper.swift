@@ -11,6 +11,7 @@ import Foundation
 final class TNGlobalHelper {
     
     var isVerifyPasswdForMain = true
+    var isNeedLoadData = true
     var password: String? = nil
     var isComlpetion: Bool = false
     var isNeedGenerateSeed: Bool = false

@@ -127,15 +127,7 @@ extension TNWalletViewModel {
                 let is_change = walletAddressModel.is_change
                 let sql = "INSERT INTO my_addresses (wallet, address, is_change, creation_date, definition, address_index) VALUES(?,?,?,?,?,?)"
                 TNSQLiteManager.sharedManager.updateData(sql: sql, values: [walletAddressModel.walletId, walletAddressModel.walletAddress, is_change, walletAddressModel.creation_date!, "\(JSON(definition))", address_index])
-        }
-            /// TEST
-//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
-//                TNWebSocketManager.sharedInstance.is_getting_history = true
-//                TNSQLiteManager.sharedManager.queryData(sql: "SELECT * FROM my_addresses") { (results) in
-//                    let myAddresses = results as! [String]
-//                    TNHubViewModel.getMyTransactionHistory(addresses: myAddresses, isRecoverWallet: false)
-//                }
-//            }
+            }
         }
     }
     

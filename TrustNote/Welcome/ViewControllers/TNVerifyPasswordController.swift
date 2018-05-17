@@ -13,6 +13,8 @@ class TNVerifyPasswordController: TNBaseViewController {
     
     let topPadding = IS_iphone5 ? (88 + kStatusbarH) : (128 + kStatusbarH)
     
+    var isDismissAnimated: Bool?
+    
     public var passwordAlertView = TNPasswordAlertView.loadViewFromNib()
     
     fileprivate lazy var topView: TNCreateWalletTopView = {
@@ -42,7 +44,12 @@ class TNVerifyPasswordController: TNBaseViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNVerifyPasswordController.handleTapGesture))
         view.addGestureRecognizer(tap)
         passwordAlertView.verifyCorrectBlock = {[unowned self] in
-            self.dismiss(animated: true, completion: nil)
+            if self.isDismissAnimated! {
+               self.dismiss(animated: true, completion: nil)
+            } else {
+                TNGlobalHelper.shared.isVerifyPasswdForMain = false
+                UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
+            }
         }
         passwordAlertView.didClickedCancelBlock = {[unowned self] in
             self.backgroundView.removeFromSuperview()

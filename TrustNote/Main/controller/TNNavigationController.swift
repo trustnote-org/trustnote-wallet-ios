@@ -9,7 +9,7 @@
 import UIKit
 import Then
 
-private let Nav_Bar_Button_Width: CGFloat = 50
+private let Nav_Bar_Button_Width: CGFloat = 44
 private let Nav_Bar_Button_Height: CGFloat = 44
 
 class TNNavigationBar: UIView {
@@ -112,7 +112,7 @@ extension TNNavigationBar {
     private func layoutNavBarLeftItem(_ navButton: UIButton) {
         
         navButton.snp.makeConstraints { (make) in
-            make.left.equalToSuperview()
+            make.left.equalToSuperview().offset(kLeftMargin)
             make.bottom.equalToSuperview()
             make.width.equalTo(Nav_Bar_Button_Width)
             make.height.equalTo(Nav_Bar_Button_Height)
@@ -165,7 +165,7 @@ class TNNavigationController: TNBaseViewController {
 extension TNNavigationController {
     
     public func setBackButton() {
-        _ = navigationBar.setLeftButtonImage(imageName: "Nav_Back", target: self, action: #selector(backButtonClicked))
+        _ = navigationBar.setLeftButtonImage(imageName: "welcome_back", target: self, action: #selector(backButtonClicked))
     }
     
    @objc private func backButtonClicked() {

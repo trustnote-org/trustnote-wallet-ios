@@ -52,6 +52,7 @@ class TNVerifyCompletionController: TNBaseViewController {
         layoutAllSubviews()
         TNGlobalHelper.shared.mnemonic = nil
         TNGlobalHelper.shared.password = nil
+        TNGlobalHelper.shared.isNeedLoadData = false
         deleteBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] _ in
             self.deleteSeedPhrase()
         }).disposed(by: self.disposeBag)
@@ -60,16 +61,6 @@ class TNVerifyCompletionController: TNBaseViewController {
             TNGlobalHelper.shared.isVerifyPasswdForMain = false
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
         }).disposed(by: self.disposeBag)
-        
-        TNSQLiteManager.sharedManager.queryAmountFromOutputs(walletId: /*"RoW6sFKEumL5VW7HM9BFhfrMN9qeyFKCSlrjptxdgn8="*/"LyzbDDiDedJh+fUHMFAXpWSiIw/Z1Tgve0J1+KOfT3w=") { (results) in
-            
-            var balance: Int = 0
-            for balanceModel in results as! [TNWalletBalance] {
-                balance += Int(balanceModel.amount)!
-            }
-            let fBalance = Double(balance) / 1000000.0
-            print(String(format: "%.5f", fBalance))
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

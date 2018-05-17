@@ -94,6 +94,21 @@
 "Use the phrase to restore the wallet" = "使用助记词恢复钱包";
 "Restore the wallet and delete the phrase" = "恢复钱包并删除助记词";
 
+/******* tabBar string************/
+"Wallet" = "钱包";
+"Message" = "消息";
+"Profile" = "我的";
+
+/******* wallet string************/
+"Total assets" = "总资产";
+"Network connections are unavailable" = "网络连接不可用";
+"Observation" = "观察";
+
+/******* createwallet string************/
+"Create a TTT wallet" = "创建TTT钱包";
+"Common wallet" = "普通钱包";
+"Observe wallet" = "观察钱包";
+
 "Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
 "Confirm your mnemonic words" = "Confirm your mnemonic words";
 "Backup.tips" = "Please write the mnemonic words in order and make sure your mnemonic was correct written.";

@@ -38,6 +38,8 @@ class TNWalletModel: HandyJSON {
     var m: String = "1"
     var n: String = "1"
     var creation_date: String = ""
+    var isLocal = true
+    var balance = "0.0000"
     
     required init() {}
 }

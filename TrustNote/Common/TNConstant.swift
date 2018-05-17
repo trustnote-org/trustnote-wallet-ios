@@ -35,7 +35,7 @@ let kTempPubkeyInterval = 3600
 
 /// MARK:- Color
 let TNControllerViewBackgroundColor = UIColor.hexColor(rgbValue: 0xF5F5F5)
-let Navigation_Bar_Color = UIColor.black
+let Navigation_Bar_Color = UIColor.white
 let kThemeWhiteColor = UIColor.hexColor(rgbValue: 0xFFFFFF)
 let kGlobalColor = UIColor.hexColor(rgbValue: 0x0052CC)
 let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
@@ -45,6 +45,7 @@ let TNDidGeneratedPrivateKeyNotification     = "TNDidGeneratePrivateKeyNotificat
 let TNDidFinishedGetHistoryTransaction       = "TNDidFinishGetHistoryTransaction"
 let TNDidReceiveRestoreWalletResponse        = "TNDidReceiveRestoreWalletResponse"
 let TNDidFinishRecoverWalletNotification     = "TNDidFinishRecoverWalletNotification"
+let TNDidFinishUpdateDatabaseNotification    = "TNDidFinishUpdateDatabaseNotification"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

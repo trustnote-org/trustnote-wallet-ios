@@ -81,18 +81,21 @@ extension TNEvaluateScriptManager {
         let js = String(format:"window.Client.xPrivKey('%@')", arguments:[mnemonic])
         webView.evaluateJavaScript(js) {[unowned self] (any, _) in
             if let xPrivKey = any {
-                TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
-                if let passsword = TNGlobalHelper.shared.password {
-                    let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passsword)
-                    TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
-                    TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
-                }
-
-                self.getEcdsaPrivkey(xPrivKey: xPrivKey as! String, completed: {
-                    TNHubViewModel.loginHub()
-                })
                 let notificationName = Notification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)
-                NotificationCenter.default.post(name: notificationName, object: nil)
+                if xPrivKey is Int && (xPrivKey as! Int) == 0 {
+                   NotificationCenter.default.post(name: notificationName, object: "0")
+                } else if xPrivKey is String {
+                    TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
+                    if let passsword = TNGlobalHelper.shared.password {
+                        let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passsword)
+                        TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+                        TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+                    }
+                    self.getEcdsaPrivkey(xPrivKey: xPrivKey as! String, completed: {
+                        TNHubViewModel.loginHub()
+                    })
+                    NotificationCenter.default.post(name: notificationName, object: "success")
+                }
             }
         }
     }

@@ -98,12 +98,20 @@ class TNRecoveryWalletController: TNBaseViewController {
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)).subscribe(onNext: {[unowned self] value in
-            self.finishGeneratePrivateKey()
+            let result: String = value.object as! String
+            guard  result == "0" else {
+                self.finishGeneratePrivateKey()
+                return
+            }
+            self.warningImageView.isHidden = false
+            self.warningLabel.isHidden = false
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishRecoverWalletNotification), object: nil).subscribe(onNext: {[unowned self] _ in
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
+        
+        seedView.seedContainerView.mnmnemonicsArr = (TNGlobalHelper.shared.mnemonic?.components(separatedBy: " "))!
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -233,10 +241,12 @@ extension TNRecoveryWalletController {
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
         TNGlobalHelper.shared.tempPrivKey = ""
         TNSQLiteManager.sharedManager.deleteAllWallets()
+        viewModel.isRecoverWallet = true
         viewModel.createNewWalletWhenRestoreWallet()
     }
     
     fileprivate func finishRecoverWallet() {
+        viewModel.isRecoverWallet = false
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: hub!)
         TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
         TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
@@ -249,6 +259,12 @@ extension TNRecoveryWalletController {
         TNGlobalHelper.shared.mnemonic = nil
         TNGlobalHelper.shared.password = nil
         TNGlobalHelper.shared.isVerifyPasswdForMain = false
-        UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
+        TNGlobalHelper.shared.isNeedLoadData = false
+        TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
+        }
+        
     }
 }

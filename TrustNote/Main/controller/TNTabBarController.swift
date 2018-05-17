@@ -17,33 +17,29 @@ class TNTabBarController: UITabBarController {
         tabbar.isTranslucent = false
         tabbar.barTintColor = kThemeWhiteColor
         addChildViewControllers()
-        
-//        if TNGlobalHelper.shared.isVerifyPasswdForMain {
-//            let vc = TNVerifyPasswordController()
-//            self.navigationController?.present(vc, animated: false, completion: {
-//                vc.passwordAlertView.passwordTextField.becomeFirstResponder()
-//            })
-//        }
     }
-   
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     private func addChildViewControllers() {
-        setChildViewController(TNWalletViewController(), title: "钱包", imageName: "Home")
-        setChildViewController(UIViewController(), title: "消息", imageName: "Home")
-        setChildViewController(UIViewController(), title: "我的", imageName: "Home")
+        setChildViewController(TNWalletHomeController(), title: NSLocalizedString("Wallet", comment: ""), imageName: "tabbar_wallet")
+        setChildViewController(UIViewController(), title: NSLocalizedString("Message", comment: ""), imageName: "tabbar_message")
+        setChildViewController(UIViewController(), title: NSLocalizedString("Profile", comment: ""), imageName: "tabbar_profile")
     }
     
     private func setChildViewController(_ childController: UIViewController, title: String, imageName: String) {
         
-        let navController = UINavigationController(rootViewController: childController)
+        let navController = TNBaseNavigationController(rootViewController: childController)
         childController.view.backgroundColor = UIColor.white
         navController.setNavigationBarHidden(true, animated: true)
         
         navController.tabBarItem.title = title
-        navController.tabBarItem.image = UIImage(named: imageName)
+        navController.tabBarItem.image = UIImage(named: imageName + "_copy")
         navController.tabBarItem.selectedImage = UIImage(named: imageName)
-       navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.black], for: .normal)
-        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : UIColor.blue], for: .selected)
-        navController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -2)
+       navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.hexColor(rgbValue: 0x4B5461, alpha: 0.6)], for: .normal)
+        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : kGlobalColor], for: .selected)
+        navController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -1)
         addChildViewController(navController)
     }
 }

@@ -96,13 +96,15 @@ extension TNHistoryRecordsViewModel {
         }
         
         if let joints = historyTransactionModel.joints.flatMap({ $0 }) {
-            guard joints.count != 0 else {return}
+            guard !joints.isEmpty else {return}
             for unit in joints {
                 let objUnit: TNUnitModel = unit.unit!
                 saveDataToUnitsTable(unit: objUnit)
             }
             
             fixIsSpentFlag(joints: joints)
+            
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishUpdateDatabaseNotification), object: nil)
         }
     }
     

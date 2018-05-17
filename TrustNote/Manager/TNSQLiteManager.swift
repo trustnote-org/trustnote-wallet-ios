@@ -21,14 +21,14 @@ class TNSQLiteManager: NSObject {
             .appendingPathComponent("TrustNote.sqlite")
         dbQueue = FMDatabaseQueue(url: fileURL)
         database = FMDatabase(url: fileURL)
-       super.init()
-       createTable()
+        super.init()
+        createTable()
     }
     
     private func createTable() {
         let witnesses = "CREATE TABLE IF NOT EXISTS my_witnesses(" +
             "address VARCHAR(32) NOT NULL PRIMARY KEY" +
-            ");"
+        ");"
         let addresses = "CREATE TABLE IF NOT EXISTS my_addresses (" +
             "address CHAR(32) NOT NULL PRIMARY KEY," +
             "wallet CHAR(44) NOT NULL," +
@@ -38,7 +38,7 @@ class TNSQLiteManager: NSObject {
             "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
             "UNIQUE (wallet, is_change, address_index)," +
             "FOREIGN KEY (wallet) REFERENCES wallets(wallet)" +
-            ");"
+        ");"
         let wallet = "CREATE TABLE IF NOT EXISTS wallets ( " +
             "wallet CHAR(44) NOT NULL PRIMARY KEY," +
             "account INT NOT NULL," +
@@ -47,7 +47,7 @@ class TNSQLiteManager: NSObject {
             "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
             "full_approval_date TIMESTAMP NULL," +
             "ready_date TIMESTAMP NULL" +
-           ");"
+        ");"
         let extend_pubkeys = "CREATE TABLE IF NOT EXISTS extended_pubkeys( " +
             "wallet CHAR(44) NOT NULL, " +
             "extended_pubkey CHAR(112) NULL," +
@@ -56,14 +56,14 @@ class TNSQLiteManager: NSObject {
             "approval_date TIMESTAMP NULL," +
             "member_ready_date TIMESTAMP NULL, " +
             "PRIMARY KEY (wallet, device_address)" +
-            ");"
+        ");"
         let wallet_signing_paths = "CREATE TABLE IF NOT EXISTS wallet_signing_paths( " +
-        "wallet CHAR(44) NOT NULL," +
-        "signing_path VARCHAR(255) NULL," +
-        "device_address CHAR(33) NOT NULL," +
-        "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
-        "PRIMARY KEY (wallet, signing_path)," +
-        "FOREIGN KEY (wallet) REFERENCES wallets(wallet)" +
+            "wallet CHAR(44) NOT NULL," +
+            "signing_path VARCHAR(255) NULL," +
+            "device_address CHAR(33) NOT NULL," +
+            "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
+            "PRIMARY KEY (wallet, signing_path)," +
+            "FOREIGN KEY (wallet) REFERENCES wallets(wallet)" +
         ");"
         let input = "CREATE TABLE IF NOT EXISTS inputs( " +
             "unit CHAR(44) NOT NULL," +
@@ -86,7 +86,7 @@ class TNSQLiteManager: NSObject {
             "UNIQUE  (type, from_main_chain_index, address, is_unique)," +
             "UNIQUE  (asset, denomination, serial_number, address, is_unique)," +
             "FOREIGN KEY (unit) REFERENCES units(unit)" +
-            ");"
+        ");"
         let output = "CREATE TABLE IF NOT EXISTS outputs( " +
             "output_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
             "unit CHAR(44) NOT NULL," +
@@ -102,19 +102,19 @@ class TNSQLiteManager: NSObject {
             "is_spent TINYINT NOT NULL DEFAULT 0," +
             "UNIQUE (unit, message_index, output_index)," +
             "FOREIGN KEY (unit) REFERENCES units(unit)" +
-            " );"
+        " );"
         let message = "CREATE TABLE IF NOT EXISTS messages( " +
-           "unit CHAR(44) NOT NULL," +
-           "message_index TINYINT NOT NULL," +
-           "app VARCHAR(30) NOT NULL," +
-           "payload_location TEXT CHECK (payload_location IN ('inline','uri','none')) NOT NULL," +
-           "payload_hash VARCHAR(44) NOT NULL," +
-           "payload TEXT NULL," +
-           "payload_uri_hash VARCHAR(44) NULL," +
-           "payload_uri VARCHAR(500) NULL," +
-           "PRIMARY KEY (unit, message_index)," +
-           "FOREIGN KEY (unit) REFERENCES units(unit)" +
-           " );"
+            "unit CHAR(44) NOT NULL," +
+            "message_index TINYINT NOT NULL," +
+            "app VARCHAR(30) NOT NULL," +
+            "payload_location TEXT CHECK (payload_location IN ('inline','uri','none')) NOT NULL," +
+            "payload_hash VARCHAR(44) NOT NULL," +
+            "payload TEXT NULL," +
+            "payload_uri_hash VARCHAR(44) NULL," +
+            "payload_uri VARCHAR(500) NULL," +
+            "PRIMARY KEY (unit, message_index)," +
+            "FOREIGN KEY (unit) REFERENCES units(unit)" +
+        " );"
         let unit = "CREATE TABLE IF NOT EXISTS units( " +
             "unit CHAR(44) NOT NULL PRIMARY KEY," +
             "creation_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP," +
@@ -135,7 +135,7 @@ class TNSQLiteManager: NSObject {
             "sequence TEXT CHECK (sequence IN('good','temp-bad','final-bad')) NOT NULL DEFAULT 'good'," +
             "best_parent_unit CHAR(44) NULL," +
             "FOREIGN KEY (best_parent_unit) REFERENCES units(unit)" +
-            " );"
+        " );"
         let author = "CREATE TABLE IF NOT EXISTS unit_authors( " +
             "unit CHAR(44) NOT NULL," +
             "address CHAR(32) NOT NULL," +
@@ -143,10 +143,10 @@ class TNSQLiteManager: NSObject {
             "PRIMARY KEY (unit, address)," +
             "FOREIGN KEY (unit) REFERENCES units(unit)," +
             "FOREIGN KEY (definition_chash) REFERENCES definitions(definition_chash)" +
-            " );"
-    
+        " );"
+        
         dbQueue.inDatabase { (db) -> Void in
-
+            
             if db.executeUpdate(input, withArgumentsIn: []) {
                 TNDebugLogManager.debugLog(item: "CREATE INPUTS SUCCESS!")
             }
@@ -182,10 +182,10 @@ extension TNSQLiteManager {
     }
     
     public func updateData(sql: String, values: [Any]) {
-
+        
         dbQueue.inDatabase { (database) in
             do {
-                 try database.executeUpdate(sql, values: values)
+                try database.executeUpdate(sql, values: values)
             } catch {
                 print("failed: \(error.localizedDescription)")
             }
@@ -241,14 +241,14 @@ extension TNSQLiteManager {
         }
     }
     public func queryAmountFromOutputs(walletId: String, completionHandle: (([Any]) -> Swift.Void)?) {
-       var queryResults: [Any] = []
-       let sql = "SELECT outputs.address, COALESCE(outputs.asset, 'base') as asset, sum(outputs.amount) as amount\n" +
+        var queryResults: [Any] = []
+        let sql = "SELECT outputs.address, COALESCE(outputs.asset, 'base') as asset, sum(outputs.amount) as amount\n" +
             "FROM outputs, my_addresses " +
             "WHERE outputs.address = my_addresses.address " +
             "AND my_addresses.wallet = ? " +
             "AND outputs.is_spent=0 " +
             "GROUP BY outputs.address, outputs.asset " +
-            "ORDER BY my_addresses.address_index ASC"
+        "ORDER BY my_addresses.address_index ASC"
         dbQueue.inDatabase { (database) in
             do {
                 let set = try database.executeQuery(sql, values: [walletId])
@@ -294,7 +294,24 @@ extension TNSQLiteManager {
             }
         }
     }
-        
+    
+    public func queryAllWalletAddress(sql: String, completionHandle: (([String]) -> Swift.Void)?) {
+        var queryResults: [String] = []
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: nil)
+                if set.next() {
+                    let address = set.string(forColumn: "address")!
+                    queryResults.append(address)
+                }
+                completionHandle!(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     public func queryCount(sql: String, completionHandle: ((Int) -> Swift.Void)?) {
         var count = 0
         dbQueue.inDatabase { (database) in
@@ -309,6 +326,6 @@ extension TNSQLiteManager {
                 print("failed: \(error.localizedDescription)")
             }
         }
-       completionHandle!(count)
+        completionHandle!(count)
     }
 }

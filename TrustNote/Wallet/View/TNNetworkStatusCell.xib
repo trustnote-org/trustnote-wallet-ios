@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="TNNetworkStatusCell" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p7p-17-dSk">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wallet_warning" translatesAutoresizingMaskIntoConstraints="NO" id="5Ka-rJ-Q3j">
+                                <rect key="frame" x="20" y="16.5" width="14" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="5Ka-rJ-Q3j" secondAttribute="height" multiplier="1:1" id="Yib-aD-qkW"/>
+                                    <constraint firstAttribute="width" constant="14" id="mGX-SH-6NQ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="网络连接不可用" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Qs-Be-NrY">
+                                <rect key="frame" x="40" y="15.5" width="100" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="0.96078431369999995" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="1Qs-Be-NrY" firstAttribute="leading" secondItem="5Ka-rJ-Q3j" secondAttribute="trailing" constant="6" id="MiG-dM-I5K"/>
+                            <constraint firstItem="5Ka-rJ-Q3j" firstAttribute="centerY" secondItem="p7p-17-dSk" secondAttribute="centerY" id="eOw-iX-NaL"/>
+                            <constraint firstItem="5Ka-rJ-Q3j" firstAttribute="leading" secondItem="p7p-17-dSk" secondAttribute="leading" constant="20" id="owP-11-jut"/>
+                            <constraint firstItem="1Qs-Be-NrY" firstAttribute="centerY" secondItem="5Ka-rJ-Q3j" secondAttribute="centerY" id="v7h-XU-2F9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="DWg-z7-GUx"/>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="p7p-17-dSk" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="cel-Zf-YWv"/>
+                    <constraint firstItem="p7p-17-dSk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="hJU-2a-9WQ"/>
+                    <constraint firstAttribute="bottom" secondItem="p7p-17-dSk" secondAttribute="bottom" id="kLV-Gi-S7L"/>
+                    <constraint firstAttribute="trailing" secondItem="p7p-17-dSk" secondAttribute="trailing" id="sUR-U9-r0j"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="disconnectLabel" destination="1Qs-Be-NrY" id="39I-ya-RT4"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="wallet_warning" width="14" height="14"/>
+    </resources>
+</document>

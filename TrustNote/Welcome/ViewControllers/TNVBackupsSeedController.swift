@@ -10,6 +10,8 @@ import UIKit
 
 class TNVBackupsSeedController: TNBaseViewController {
     
+    let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 26) : 26
+    
     private let backBtn = UIButton().then {
         $0.setImage(UIImage(named: "welcome_back"), for: .normal)
         $0.addTarget(self, action: #selector(TNVBackupsSeedController.goBack), for: .touchUpInside)
@@ -139,7 +141,7 @@ extension TNVBackupsSeedController {
         doneButton.snp.makeConstraints { (make) in
             make.left.equalTo(seedView.snp.left)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-26)
+            make.bottom.equalToSuperview().offset(-bottomPadding)
             make.height.equalTo(48)
         }
         

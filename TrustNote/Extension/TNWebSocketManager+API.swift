@@ -32,9 +32,9 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
      *  @param
      */
     static func sendClientVersion() {
-       
+        
         let sendBody: [String : Any] = ["subject":"version", "body":["protocol_version": "1.0", "alt": "1", "library": "trustnote-common", "library_version":"0.1.0", "program":"TTT", "program_version":"1.1.0"]]
-            
+        
         let request: [Any] = ["justsaying", sendBody]
         TNWebSocketManager.sharedInstance.sendData("\(JSON(request))")
     }
@@ -53,7 +53,7 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
             TNWebSocketManager.sharedInstance.sendData("\(JSON(request))")
         }
         TNWebSocketManager.sharedInstance.GetWitnessCompletionBlock = { (anyObject) in
-    
+            
             TNGlobalHelper.shared.witnesses = anyObject as! [String]
             let listData = TNGlobalHelper.shared.witnesses
             for address in listData {
@@ -100,7 +100,7 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
             let params: [String : Any] = ["temp_pubkey":temp_pubkey, "pubkey":pubkey, "signature":signature]
             request["params"] = params
             TNWebSocketManager.getRequestParamsBase64Hash(request, completionHandler: { (objectHash) in
-                 TNWebSocketManager.sharedInstance.responseTag.tempPubkeyTag = objectHash
+                TNWebSocketManager.sharedInstance.responseTag.tempPubkeyTag = objectHash
                 let requestBody: [String : Any] = ["command": "hub/temp_pubkey", "params":params, "tag": objectHash]
                 let requestParams: [Any] = ["request", requestBody]
                 TNWebSocketManager.sharedInstance.sendData("\(JSON(requestParams))")
@@ -147,10 +147,11 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
         var requestJsonStr: String?
         
         TNWebSocketManager.getRequestParamsBase64Hash(request) { (objectHash) in
-             TNWebSocketManager.sharedInstance.responseTag.getHistoryTag = objectHash
+            TNWebSocketManager.sharedInstance.responseTag.getHistoryTag = objectHash
             let requestBody: [String : Any] = ["command": "light/get_history", "params":params, "tag": objectHash]
             let requestParams: [Any] = ["request", requestBody]
             requestJsonStr = "\(JSON(requestParams))"
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             TNWebSocketManager.sharedInstance.sendData(requestJsonStr!)
         }
         TNTimerHelper.shared.scheduledDispatchTimer(WithTimerName: kGetHistoryTimer, timeInterval: 1.0, queue: .main, repeats: true) {
@@ -167,7 +168,7 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
         }
         
         TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
-           
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             TNWebSocketManager.sharedInstance.isCompleted = true
             if TNWebSocketManager.sharedInstance.is_getting_history {
                 

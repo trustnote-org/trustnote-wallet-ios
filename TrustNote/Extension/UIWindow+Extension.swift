@@ -29,6 +29,11 @@ extension UIWindow {
             case .newWallet:
                 return TNBaseNavigationController(rootViewController: TNCreateAndRestoreWalletController())
             case .main:
+                if TNGlobalHelper.shared.isVerifyPasswdForMain {
+                    let vc = TNVerifyPasswordController()
+                    vc.isDismissAnimated = false
+                    return  vc
+                }
                 return TNTabBarController()
             }
         }

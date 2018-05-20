@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNAuthDoneAlertView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="371" height="519"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="完成授权" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgG-MC-MBj">
+                    <rect key="frame" x="30" y="30" width="311" height="24"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="扫描授权钱包页面的二维码，导入签名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9he-SD-XBw">
+                    <rect key="frame" x="30" y="68" width="311" height="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="导入签名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cs9-G5-JQW">
+                    <rect key="frame" x="30" y="150" width="73.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zM0-CA-U3h">
+                    <rect key="frame" x="311" y="134" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="zM0-CA-U3h" secondAttribute="height" multiplier="1:1" id="ehG-iC-8nC"/>
+                        <constraint firstAttribute="width" constant="40" id="uXT-q5-RkN"/>
+                    </constraints>
+                    <state key="normal" image="wallet_sao"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="扫描授权钱包二维码" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xj-dk-Xtw">
+                    <rect key="frame" x="30" y="191" width="311" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l9z-fv-u4e">
+                    <rect key="frame" x="30" y="219" width="311" height="1"/>
+                    <color key="backgroundColor" red="0.79607843137254897" green="0.83529411764705885" blue="0.8901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="aFI-nX-Scf"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mn3-Ub-8H6">
+                    <rect key="frame" x="30" y="431" width="311" height="48"/>
+                    <color key="backgroundColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="8LM-6t-9wG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="完成授权">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="cs9-G5-JQW" firstAttribute="top" secondItem="9he-SD-XBw" secondAttribute="bottom" constant="65" id="3OB-Ga-qcs"/>
+                <constraint firstItem="9he-SD-XBw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4LT-CJ-LDW"/>
+                <constraint firstItem="l9z-fv-u4e" firstAttribute="top" secondItem="cs9-G5-JQW" secondAttribute="bottom" constant="48" id="DSH-h5-UZE"/>
+                <constraint firstItem="l9z-fv-u4e" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="HP4-lP-fqN"/>
+                <constraint firstItem="sgG-MC-MBj" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="K1H-1s-KI7"/>
+                <constraint firstItem="5Xj-dk-Xtw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="OXk-nP-9Ja"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="mn3-Ub-8H6" secondAttribute="bottom" constant="40" id="Sv4-Dd-D6e"/>
+                <constraint firstItem="sgG-MC-MBj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="U0U-5G-Oyg"/>
+                <constraint firstItem="l9z-fv-u4e" firstAttribute="leading" secondItem="sgG-MC-MBj" secondAttribute="leading" id="VQb-jf-OIo"/>
+                <constraint firstItem="mn3-Ub-8H6" firstAttribute="leading" secondItem="sgG-MC-MBj" secondAttribute="leading" id="a3c-yo-IUs"/>
+                <constraint firstItem="sgG-MC-MBj" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="a7j-1y-TUB"/>
+                <constraint firstItem="9he-SD-XBw" firstAttribute="leading" secondItem="sgG-MC-MBj" secondAttribute="leading" id="dVm-Q8-MOc"/>
+                <constraint firstItem="9he-SD-XBw" firstAttribute="top" secondItem="sgG-MC-MBj" secondAttribute="bottom" constant="14" id="hUA-Cz-tNI"/>
+                <constraint firstItem="cs9-G5-JQW" firstAttribute="leading" secondItem="sgG-MC-MBj" secondAttribute="leading" id="j5G-mF-ySo"/>
+                <constraint firstItem="zM0-CA-U3h" firstAttribute="bottom" secondItem="cs9-G5-JQW" secondAttribute="bottom" constant="3" id="n1C-Sg-D0R"/>
+                <constraint firstItem="5Xj-dk-Xtw" firstAttribute="top" secondItem="cs9-G5-JQW" secondAttribute="bottom" constant="20" id="ouI-qF-nnL"/>
+                <constraint firstItem="5Xj-dk-Xtw" firstAttribute="leading" secondItem="cs9-G5-JQW" secondAttribute="leading" id="xUM-Z5-C85"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="zM0-CA-U3h" secondAttribute="trailing" constant="20" id="xd4-YT-B2R"/>
+                <constraint firstItem="mn3-Ub-8H6" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="zZK-eM-EeB"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="actionLabel" destination="cs9-G5-JQW" id="anO-Ej-bMU"/>
+                <outlet property="descLabel" destination="9he-SD-XBw" id="Spb-kz-zU1"/>
+                <outlet property="doneBtn" destination="mn3-Ub-8H6" id="ctj-xt-V6U"/>
+                <outlet property="lineTopMarginConstraint" destination="DSH-h5-UZE" id="aud-Ka-rXH"/>
+                <outlet property="placeHolderLabel" destination="5Xj-dk-Xtw" id="TdS-Zs-ls8"/>
+                <outlet property="scanningBtn" destination="zM0-CA-U3h" id="RPA-98-R3X"/>
+                <outlet property="titleLabel" destination="sgG-MC-MBj" id="aPU-fA-8df"/>
+            </connections>
+            <point key="canvasLocation" x="35.5" y="-20.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="wallet_sao" width="26" height="26"/>
+    </resources>
+</document>

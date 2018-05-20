@@ -34,11 +34,13 @@
 
 "Terms of Use" = "使用条款";
 
+/******* device name string************/
 "Please enter device name" = "请输入设备名称";
 "Welocme To TrustNote" = "欢迎来到TrustNote钱包";
 "DeviceName.instruction" = "您可以自定义设备名称，朋友加您好友后，在聊天列表里很容易找到您。";
 "DeviceName.warning" = "不超过20个字符";
 
+/******* setup password string************/
 "Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
 "Password.secondWarning" = "TrustNote不存储密码，也无法帮您找回，请务必牢记";
 "Password.titleText" = "设置密码";
@@ -51,7 +53,7 @@
 
 "Confirm" = "确定";
 "Cancel" = "取消";
-"Next" = "下一步";
+
 
 "Create Wallet" = "创建钱包";
 
@@ -110,6 +112,10 @@
 "Create a TTT wallet" = "创建TTT钱包";
 "Common wallet" = "普通钱包";
 "Observe wallet" = "观察钱包";
+"No more than 20 characters" = "不超过20个字符";
+"CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
+"CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
+"Next" = "下一步";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

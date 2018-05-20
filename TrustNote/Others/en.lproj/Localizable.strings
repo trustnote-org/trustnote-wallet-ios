@@ -35,11 +35,13 @@
 
 "Terms of Use" = "TERMS OF USE";
 
+/******* device name string************/
 "Please enter device name" = "请输入设备名称";
 "Welocme To TrustNote" = "Welocme To TrustNote";
 "DeviceName.instruction" = "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu. Also in the Settings menu, you will find security options such as setting a password.";
 "DeviceName.warning" = "不超过20个字符";
 
+/******* setup password string************/
 "Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
 "Password.secondWarning" = "TrustNote不存储密码，也无法帮您找回，请务必牢记";
 "Password.titleText" = "设置密码";
@@ -52,7 +54,7 @@
 
 "Confirm" = "确定";
 "Cancel" = "取消";
-"Next" = "NEXT";
+
 "Create Wallet" = "CREATE WALLET";
 "Create.slogan" = "信任 · 通证 · 万物";
 "Restore Wallet" = "RESTORE WALLET";
@@ -108,6 +110,10 @@
 "Create a TTT wallet" = "创建TTT钱包";
 "Common wallet" = "普通钱包";
 "Observe wallet" = "观察钱包";
+"No more than 20 characters" = "不超过20个字符";
+"CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
+"CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
+"Next" = "NEXT";
 
 "Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
 "Confirm your mnemonic words" = "Confirm your mnemonic words";

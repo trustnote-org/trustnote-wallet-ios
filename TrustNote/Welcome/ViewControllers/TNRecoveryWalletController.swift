@@ -239,6 +239,7 @@ extension TNRecoveryWalletController {
     fileprivate func finishGeneratePrivateKey() {
 
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
+        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
         TNGlobalHelper.shared.tempPrivKey = ""
         TNSQLiteManager.sharedManager.deleteAllWallets()
         viewModel.isRecoverWallet = true
@@ -249,7 +250,6 @@ extension TNRecoveryWalletController {
         viewModel.isRecoverWallet = false
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: hub!)
         TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
         
         if isDeleteMnemonic! {
             TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")

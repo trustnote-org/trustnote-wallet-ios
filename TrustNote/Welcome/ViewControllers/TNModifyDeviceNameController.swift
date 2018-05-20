@@ -13,6 +13,7 @@ import RxCocoa
 class TNModifyDeviceNameController: TNBaseViewController {
     
     let topPadding = IS_iphone5 ? 70.0 : 90.0
+     let maxInputCount = 21
     
     private let iconView = UIImageView().then {
         $0.backgroundColor = UIColor.clear
@@ -72,17 +73,20 @@ class TNModifyDeviceNameController: TNBaseViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
+        deviceTextField.delegate = self
         setupUI()
-       
-        let devicelowerObserver = deviceTextField.rx.text.orEmpty.asDriver()
-            .debounce(0.1)
-            .map {$0.count > 0 && $0.count < 21}
-        let deviceUpperObserver = deviceTextField.rx.text.orEmpty.asDriver().debounce(0.1).map {$0.count > 20}
-        devicelowerObserver.drive(confirmBtn.rx_validState).disposed(by: self.disposeBag)
-        deviceUpperObserver.drive(warningBtn.rx_HiddenState).disposed(by: self.disposeBag)
-        deviceUpperObserver.drive(lineView.rx_highlightState).disposed(by: self.disposeBag)
         
-        confirmBtn.rx.tap.asObservable().subscribe(onNext: { _ in
+        let deviceObserver = deviceTextField.rx.text.orEmpty.asDriver().debounce(0.1).map {$0.count > 0}
+        deviceObserver.drive(confirmBtn.rx_validState).disposed(by: self.disposeBag)
+        deviceObserver.drive(clearButton.rx_HiddenState).disposed(by: self.disposeBag)
+       
+        confirmBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] _ in
+            guard (self.deviceTextField.text?.count)! < self.maxInputCount else {
+                self.lineView.height = 2.0
+                self.lineView.backgroundColor = kGlobalColor
+                self.warningBtn.isHidden = false
+                return
+            }
             TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 3)
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .newWallet)
         }).disposed(by: self.disposeBag)
@@ -92,6 +96,7 @@ class TNModifyDeviceNameController: TNBaseViewController {
             self.confirmBtn.isEnabled = false
             self.confirmBtn.alpha = 0.3
             self.warningBtn.isHidden = true
+            self.clearButton.isHidden = true
         }).disposed(by: self.disposeBag)
     }
     
@@ -100,7 +105,7 @@ class TNModifyDeviceNameController: TNBaseViewController {
 extension TNModifyDeviceNameController {
     
     fileprivate func setupUI() {
-    
+        
         view.addSubview(iconView)
         iconView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(topPadding)
@@ -161,12 +166,14 @@ extension TNModifyDeviceNameController {
 }
 
 
-extension UIView {
-    var rx_highlightState: AnyObserver<Bool> {
-        return Binder(self) { line, highlighted in
-            line.backgroundColor = highlighted ? kGlobalColor : UIColor.hexColor(rgbValue: 0xdddddd)
-            line.height = highlighted ? 2.0 : 1.0
-        }.asObserver()
+extension TNModifyDeviceNameController: UITextFieldDelegate {
+   
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if !warningBtn.isHidden {
+            warningBtn.isHidden = true
+            lineView.height = 1.0
+            lineView.backgroundColor = UIColor.hexColor(rgbValue: 0xCBD5E3)
+        }
     }
 }
 

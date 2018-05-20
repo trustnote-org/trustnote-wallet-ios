@@ -119,12 +119,14 @@ class TNPopView: UIView {
     
     @objc func popCtrlClick(popCtrl: TNPopControl) {
         guard delegate == nil else {
+            self.alpha = 0
+            self.removeFromSuperview()
             delegate?.popCtrlCellClick(tag: popCtrl.tag)
-            UIView.animate(withDuration: 0.25, animations: {
-                self.alpha = 0
-            }, completion: { (view) in
-                self.removeFromSuperview()
-            })
+//            UIView.animate(withDuration: 0.25, animations: {
+//                
+//            }, completion: { (view) in
+//               
+//            })
             return
         }
     }

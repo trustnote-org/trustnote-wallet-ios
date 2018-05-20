@@ -41,15 +41,18 @@ let kGlobalColor = UIColor.hexColor(rgbValue: 0x0052CC)
 let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
 
 /// MARK: Notificaton Name
-let TNDidGeneratedPrivateKeyNotification     = "TNDidGeneratePrivateKeyNotification"
-let TNDidFinishedGetHistoryTransaction       = "TNDidFinishGetHistoryTransaction"
-let TNDidReceiveRestoreWalletResponse        = "TNDidReceiveRestoreWalletResponse"
-let TNDidFinishRecoverWalletNotification     = "TNDidFinishRecoverWalletNotification"
-let TNDidFinishUpdateDatabaseNotification    = "TNDidFinishUpdateDatabaseNotification"
+let TNDidGeneratedPrivateKeyNotification       = "TNDidGeneratePrivateKeyNotification"
+let TNDidFinishedGetHistoryTransaction         = "TNDidFinishGetHistoryTransaction"
+let TNDidReceiveRestoreWalletResponse          = "TNDidReceiveRestoreWalletResponse"
+let TNDidFinishRecoverWalletNotification       = "TNDidFinishRecoverWalletNotification"
+let TNDidFinishUpdateDatabaseNotification      = "TNDidFinishUpdateDatabaseNotification"
+let TNFinishCreateCommonWalletNotification     = "TNFinishCreateCommonWalletNotification"
+
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="
 
 /// MARK: Timer Name
-let kGetHistoryTimer = "MonitorNetworkResponse"
-let kSendTempPubkeyTimer = "SendTempPubkeyTimer"
+let kGetHistoryTimer      = "MonitorNetworkResponse"
+let kSendTempPubkeyTimer  = "SendTempPubkeyTimer"
+let kScanCodeTimer        = "ScanCodeTimer"

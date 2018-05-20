@@ -39,7 +39,7 @@ class TNButton: UIButton{
     
 }
 
-extension TNButton {
+extension UIButton {
     var rx_validState: AnyObserver<Bool> {
         return Binder(self) { button, valid in
             button.isEnabled = valid
@@ -53,3 +53,4 @@ extension TNButton {
         }.asObserver()
     }
 }
+

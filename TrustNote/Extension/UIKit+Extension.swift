@@ -139,6 +139,17 @@ extension UILabel {
     func textSize(text : String , font : UIFont , maxSize : CGSize) -> CGSize {
         return text.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : font], context: nil).size  
     }
+    
+    func getAttributeStringWithString(_ string: String, lineSpace: CGFloat
+        ) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: string)
+        let paragraphStye = NSMutableParagraphStyle()
+        
+        paragraphStye.lineSpacing = lineSpace
+        let rang = NSMakeRange(0, CFStringGetLength(string as CFString!))
+        attributedString .addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStye, range: rang)
+        return attributedString
+    }
 }
 
 

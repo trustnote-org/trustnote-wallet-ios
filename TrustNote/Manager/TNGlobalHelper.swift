@@ -72,6 +72,9 @@ final class TNGlobalHelper {
         if profile.keys.contains("prevTempDeviceKey") {
             prevTempDeviceKey = profile["prevTempDeviceKey"] as! String
         }
+        if profile.keys.contains("my_device_address") {
+            my_device_address = profile["my_device_address"] as! String
+        }
         TNSQLiteManager.sharedManager.queryDataFromWitnesses(sql: "SELECT * FROM my_witnesses") { (results) in
             self.witnesses = results as! [String]
         }

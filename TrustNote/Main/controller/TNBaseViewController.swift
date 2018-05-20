@@ -17,6 +17,12 @@ class TNBaseNavigationController: UINavigationController  {
         self.interactivePopGestureRecognizer?.delegate = self
     }
     
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        if !self.viewControllers.isEmpty {
+            viewController.hidesBottomBarWhenPushed = true
+        }
+        super.pushViewController(viewController, animated: true)
+    }
 }
 
 extension TNBaseNavigationController: UIGestureRecognizerDelegate {

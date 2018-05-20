@@ -70,6 +70,16 @@ class TNWalletHomeController: TNBaseViewController {
                 self.tableView.reloadData()
             })
         }).disposed(by: disposeBag)
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNFinishCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.dataSource.removeAll()
+            let profile = TNConfigFileManager.sharedInstance.readProfileFile()
+            let credentials  = profile["credentials"] as! [[String:Any]]
+            for dict in credentials {
+                let walletModel = TNWalletModel.deserialize(from: dict)
+                self.dataSource.append(walletModel!)
+            }
+            self.tableView.reloadData()
+        }).disposed(by: disposeBag)
         if TNGlobalHelper.shared.isNeedLoadData {
             loadData()
         }
@@ -157,7 +167,7 @@ extension TNWalletHomeController: TNPopCtrlCellClickDelegate {
         case TNPopItem.contacts.rawValue :
              break
         case TNPopItem.wallet.rawValue:
-            break
+            navigationController?.pushViewController(TNCreateWalletController(), animated: true)
         case TNPopItem.code.rawValue:
             break
         default:

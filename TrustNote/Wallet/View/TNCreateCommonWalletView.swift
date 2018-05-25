@@ -16,6 +16,12 @@ class TNCreateCommonWalletView: UIView {
     let disposeBag = DisposeBag()
     let walletViewModel = TNWalletViewModel()
     
+    typealias CreateCommonWalletCompleted = () -> Void
+    
+    var ceateCommonWalletCompleted: CreateCommonWalletCompleted?
+    
+    fileprivate var isDisplayWarning: BehaviorRelay<Bool> =  BehaviorRelay(value: false)
+    
     @IBOutlet weak var inputTextField: UITextField!
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var lineView: UIView!
@@ -33,6 +39,7 @@ class TNCreateCommonWalletView: UIView {
         let inputObserver = inputTextField.rx.text.orEmpty.asDriver().debounce(0.1).map {$0.count > 0}
         inputObserver.drive(createButton.validState).disposed(by: disposeBag)
         inputObserver.drive(clearButton.rx_HiddenState).disposed(by: disposeBag)
+        isDisplayWarning.asDriver().drive(lineView.rx_HighlightState).disposed(by: disposeBag)
     }
 }
 
@@ -42,8 +49,7 @@ extension TNCreateCommonWalletView {
         
         guard (inputTextField.text?.count)! < maxInputCount + 1 else {
             warningView.isHidden = false
-            lineView.height = 2.0
-            lineView.backgroundColor = kGlobalColor
+            isDisplayWarning.accept(true)
             return
         }
         createNewWallet()
@@ -62,13 +68,14 @@ extension TNCreateCommonWalletView {
     func createNewWallet() {
         
         TNGlobalHelper.shared.currentWallet.walletName = inputTextField.text!
-        walletViewModel.generateNewWalletByDatabaseNumber {[unowned self] in
+        walletViewModel.generateNewWalletByDatabaseNumber(isLocal: true) {[unowned self] in
             self.walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
             self.walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TNFinishCreateCommonWalletNotification), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TNCreateCommonWalletNotification), object: nil)
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 self.walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     self.walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                    self.ceateCommonWalletCompleted?()
                 })
             }
         }
@@ -88,8 +95,7 @@ extension TNCreateCommonWalletView: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if !warningView.isHidden {
             warningView.isHidden = true
-            lineView.height = 1.0
-            lineView.backgroundColor = UIColor.hexColor(rgbValue: 0xCBD5E3)
+            isDisplayWarning.accept(false)
         }
     }
 }

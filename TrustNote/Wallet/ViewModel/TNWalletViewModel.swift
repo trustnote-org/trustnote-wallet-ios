@@ -18,10 +18,14 @@ final class TNWalletViewModel {
 }
 extension TNWalletViewModel {
     /// create a new wallet
-    public func generateNewWalletByDatabaseNumber(comletionHandle: (() -> Swift.Void)?) {
-    
-        readNextAccount{ (accountIndex) in
-            self.generateNewWallet(accountIndex, comletionHandle: comletionHandle)
+    public func generateNewWalletByDatabaseNumber(isLocal: Bool, comletionHandle: (() -> Swift.Void)?) {
+        
+        TNGlobalHelper.shared.currentWallet.isLocal = isLocal
+        guard isLocal else {
+            return
+        }
+        readNextAccount(isLocal: isLocal) { (accountIndex) in
+           self.generateNewWallet(accountIndex, comletionHandle: comletionHandle)
         }
     }
     
@@ -34,9 +38,10 @@ extension TNWalletViewModel {
         }
     }
     
-    private func readNextAccount(comletionHandle: ((Int) -> Swift.Void)?) {
+    private func readNextAccount(isLocal: Bool, comletionHandle: ((Int) -> Swift.Void)?) {
         
-        let sql = "SELECT Count(*) FROM wallets WHERE is_local = 1"
+        let is_local = isLocal ? 1 : 0
+        let sql = String(format:"SELECT Count(*) FROM wallets WHERE is_local = %d", arguments:[is_local])
         TNSQLiteManager.sharedManager.queryCount(sql: sql, completionHandle: comletionHandle)
     }
     
@@ -48,8 +53,9 @@ extension TNWalletViewModel {
             guard count == 0 else {return}
             let definition_template = ["sig", ["pubkey" : wallet.xPubKey]] as [Any]
             let creation_date = wallet.creation_date
-            let sql = "INSERT INTO wallets (wallet, account, definition_template, creation_date, full_approval_date, ready_date) VALUES(?,?,?,?,?,?)"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, wallet.account, "\(JSON(definition_template))", creation_date, creation_date, creation_date])
+            let isLocal = wallet.isLocal ? 1:0
+            let sql = "INSERT INTO wallets (wallet, account, definition_template, creation_date, full_approval_date, ready_date, is_local) VALUES(?,?,?,?,?,?,?)"
+            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, wallet.account, "\(JSON(definition_template))", creation_date, creation_date, creation_date, isLocal])
         }
     }
     

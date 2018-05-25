@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 protocol ViewRadiusCornerProtocol {
     func setupRadiusCorner(radius: CGFloat)
 }
 
 extension UIView: ViewRadiusCornerProtocol {
+    
     func setupRadiusCorner(radius: CGFloat) {
         self.layer.cornerRadius = radius
         self.layer.masksToBounds = true
@@ -152,4 +155,13 @@ extension UILabel {
     }
 }
 
+extension UIView {
+    
+    var rx_HighlightState: AnyObserver<Bool> {
+        return Binder(self) { view, hightlight in
+            view.height = hightlight ? 2.0 : 1.0
+            view.backgroundColor = hightlight ? kGlobalColor : UIColor.hexColor(rgbValue: 0xdddddd)
+            }.asObserver()
+    }
+}
 

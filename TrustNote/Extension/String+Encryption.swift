@@ -39,64 +39,30 @@ extension String {
     }
 }
 
-//extension String {
-//
-//    static func Endcode_AES_ECB(strToEncode: String) -> String {
-//
-//        let ps = strToEncode.dataUsingEncoding(NSUTF8StringEncoding)
-//
-//        var encrypted: [UInt8] = []
-//
-//        let key: [UInt8] = ("YourKey".dataUsingEncoding(NSUTF8StringEncoding)?.arrayOfBytes())!
-//        let iv: [UInt8] = []
-//
-//        do {
-//            encrypted = try AES(key: key, iv: iv, blockMode: .ECB).encrypt((ps?.arrayOfBytes())!, padding: PKCS7())
-//        } catch AES.Error.BlockSizeExceeded {
-//            // block size exceeded
-//        } catch {
-//            // some error
-//        let encoded = NSData.init(bytes: encrypted)
-//        //加密结果要用Base64转码
-//        return encoded.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-//    }
-//
-//
-//    //AES-ECB128解密
-//    static func Decode_AES_ECB(strToDecode:String) -> String {
-//        //decode base64
-//        let data = NSData(base64EncodedString: strToDecode, options: NSDataBase64DecodingOptions.init(rawValue: 0))
-//
-//        let encrypted = data!.arrayOfBytes()
-//
-//
-//
-//        var decrypted: [UInt8] = []
-//
-//        let key: [UInt8] = ("YourKey".dataUsingEncoding(NSUTF8StringEncoding)?.arrayOfBytes())!
-//        let iv: [UInt8] = []
-//
-//        do {
-//            decrypted = try AES(key: key, iv: iv, blockMode: .ECB).decrypt(encrypted, padding: PKCS7())
-//        } catch AES.Error.BlockSizeExceeded {
-//            // block size exceeded
-//        } catch {
-//            // some error
-//        }
-//
-//        let encoded = NSData.init(bytes: decrypted)
-//        var str = ""
-//        str = String(data: encoded, encoding: NSUTF8StringEncoding)!
-//        return str
-//     }
-//
-//    static func Encode_SHA1(str: String) -> String {
-//
-//        let data = NSData.init(bytes: (str.dataUsingEncoding(NSUTF8StringEncoding)?.arrayOfBytes())!)
-//
-//        var sha1 = data.sha1String()
-//        return sha1
-//    }
-//}
 
+extension String {
+    var length: Int {
+        return self.count
+    }
+    
+    subscript (i: Int) -> String {
+        return self[i ..< i + 1]
+    }
+    
+    func substring(fromIndex: Int) -> String {
+        return self[min(fromIndex, length) ..< length]
+    }
+    
+    func substring(toIndex: Int) -> String {
+        return self[0 ..< max(0, toIndex)]
+    }
+    
+    subscript (r: Range<Int>) -> String {
+        let range = Range(uncheckedBounds: (lower: max(0, min(length, r.lowerBound)), upper: min(length, max(0, r.upperBound))))
+        let start = index(startIndex, offsetBy: range.lowerBound)
+        let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+        return String(self[start ..< end])
+    }
+    
+}
 

@@ -17,7 +17,7 @@ class TNVerifySeedViewController: TNBaseViewController {
     
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Verifying notes", comment: "")
-        $0.textColor = UIColor.hexColor(rgbValue: 0x111111)
+        $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24.0)
     }
     
@@ -170,7 +170,7 @@ extension TNVerifySeedViewController {
     func createNewWallet() {
         
         let walletViewModel = TNWalletViewModel()
-        walletViewModel.generateNewWalletByDatabaseNumber {
+        walletViewModel.generateNewWalletByDatabaseNumber(isLocal: true) {
             walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
             walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {

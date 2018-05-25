@@ -59,7 +59,7 @@ class TNBaseViewController: UIViewController {
                 NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide)
                     .subscribe(onNext: { [unowned self] (notify) in
                         self.view.y = 0
-                    }).disposed(by: disposeBag)
+                }).disposed(by: disposeBag)
             }
         }
     }

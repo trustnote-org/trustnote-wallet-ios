@@ -60,6 +60,7 @@ struct TNMessageModel: HandyJSON {
 struct TNPayloadModel: HandyJSON {
     var inputs: [TNInputModel]?
     var outputs: [TNOutputModel]?
+    var asset: String?
 }
 
 struct TNInputModel: HandyJSON {

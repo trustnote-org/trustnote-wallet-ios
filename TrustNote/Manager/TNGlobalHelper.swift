@@ -11,6 +11,9 @@ import Foundation
 final class TNGlobalHelper {
     
     var isVerifyPasswdForMain = true
+    var isRecoveringCommonWallet = false
+    var isRecoveringObserveWallet = false
+    
     var isNeedLoadData = true
     var password: String? = nil
     var isComlpetion: Bool = false
@@ -35,7 +38,7 @@ final class TNGlobalHelper {
     var tempDeviceKey: String = ""       // temp privateKey
     var tempPublicKey:String  = ""       // temp publicKey
     var prevTempDeviceKey: String = ""   // previous temp privatekey
-    var mnemonic: String? = nil           //
+    var mnemonic: String = ""          //
     var ecdsaPubkey: String = ""
     var ecdsaPrivkey: String = ""
     var my_device_address: String = ""
@@ -59,7 +62,7 @@ final class TNGlobalHelper {
         }
         let profile = TNConfigFileManager.sharedInstance.readProfileFile() as! [String: Any]
         if profile.keys.contains("mnemonic") {
-            mnemonic = profile["mnemonic"] as? String
+            mnemonic = profile["mnemonic"] as! String
             let hubViewModel = TNHubViewModel()
             TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hubViewModel.hubAddress) 
         }
@@ -93,7 +96,7 @@ final class TNGlobalHelper {
     func createNewWallet() {
         
         let walletViewModel = TNWalletViewModel()
-        walletViewModel.generateNewWalletByDatabaseNumber {
+        walletViewModel.generateNewWalletByDatabaseNumber(isLocal: true) {
             walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
             walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {

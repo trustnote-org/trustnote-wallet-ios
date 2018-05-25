@@ -244,11 +244,11 @@ extension TNSQLiteManager {
         var queryResults: [Any] = []
         let sql = "SELECT outputs.address, COALESCE(outputs.asset, 'base') as asset, sum(outputs.amount) as amount\n" +
             "FROM outputs, my_addresses " +
-            "WHERE outputs.address = my_addresses.address " +
+            "WHERE outputs.address = my_addresses.address and outputs.asset IS NULL " +
             "AND my_addresses.wallet = ? " +
             "AND outputs.is_spent=0 " +
             "GROUP BY outputs.address, outputs.asset " +
-        "ORDER BY my_addresses.address_index ASC"
+            "ORDER BY my_addresses.address_index ASC"
         dbQueue.inDatabase { (database) in
             do {
                 let set = try database.executeQuery(sql, values: [walletId])
@@ -295,12 +295,29 @@ extension TNSQLiteManager {
         }
     }
     
-    public func queryAllWalletAddress(sql: String, completionHandle: (([String]) -> Swift.Void)?) {
+    public func queryWalletAddress(sql: String, walletId: String, isChange: Int, completionHandle: (([String]) -> Swift.Void)?) {
         var queryResults: [String] = []
         dbQueue.inDatabase { (database) in
             do {
-                let set = try database.executeQuery(sql, values: nil)
-                if set.next() {
+                let set = try database.executeQuery(sql, values: [walletId, isChange])
+                while set.next() {
+                    let address = set.string(forColumn: "address")!
+                    queryResults.append(address)
+                }
+                completionHandle!(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func queryFirstWalletAddress(sql: String, walletId: String, completionHandle: (([String]) -> Swift.Void)?) {
+        var queryResults: [String] = []
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: [walletId])
+                while set.next() {
                     let address = set.string(forColumn: "address")!
                     queryResults.append(address)
                 }

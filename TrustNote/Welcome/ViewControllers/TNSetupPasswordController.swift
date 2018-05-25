@@ -38,7 +38,6 @@ class TNSetupPasswordController: TNBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         titleTextLabel.text = NSLocalizedString("Password.titleText", comment: "")
         warningDescLabel.text = NSLocalizedString("Password.passwordLengthValid", comment: "")
         confirmBtnBottomConstraint.constant = IS_iphone5 ? 30 : 50

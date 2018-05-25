@@ -19,7 +19,7 @@ class TNVerifyCompletionController: TNBaseViewController {
     }
     
     private let textLabel = UILabel().then {
-        $0.textColor = UIColor.hexColor(rgbValue: 0x111111)
+        $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24.0)
         $0.text = NSLocalizedString("Verifying words correct", comment: "")
     }
@@ -50,7 +50,7 @@ class TNVerifyCompletionController: TNBaseViewController {
         super.viewDidLoad()
 
         layoutAllSubviews()
-        TNGlobalHelper.shared.mnemonic = nil
+        TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
         TNGlobalHelper.shared.isNeedLoadData = false
         deleteBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] _ in

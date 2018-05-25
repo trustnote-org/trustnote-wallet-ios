@@ -29,9 +29,9 @@ class TNNavigationBar: UIView {
     
     private let titleLabel = UILabel().then {
         $0.backgroundColor = UIColor.clear
-        $0.textColor = UIColor.white
+        $0.textColor = kTitleTextColor
         $0.textAlignment = .center
-        $0.font = UIFont.systemFont(ofSize: 18.0)
+        $0.font = UIFont.boldSystemFont(ofSize: 20)
     }
     
     
@@ -104,8 +104,8 @@ extension TNNavigationBar {
     private func navBarButton() -> UIButton {
         
         let navBarButton = UIButton(type: .custom)
-        navBarButton.setTitleColor(UIColor.white, for: .normal)
-        navBarButton.titleLabel?.font = UIFont.systemFont(ofSize: 15.0)
+        navBarButton.setTitleColor(UIColor.hexColor(rgbValue: 0x0076FF), for: .normal)
+        navBarButton.titleLabel?.font = UIFont(name: "PingFangSC-Medium", size: 16)
         return navBarButton
     }
     
@@ -123,7 +123,7 @@ extension TNNavigationBar {
     private func layoutNavBarRightItem(_ navButton: UIButton) {
         
         navButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview()
+            make.right.equalToSuperview().offset(-15)
             make.bottom.equalToSuperview()
             make.width.equalTo(Nav_Bar_Button_Width)
             make.height.equalTo(Nav_Bar_Button_Height)

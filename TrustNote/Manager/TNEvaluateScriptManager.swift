@@ -61,9 +61,18 @@ extension TNEvaluateScriptManager {
     public func generateMnemonic() {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
+                //let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
                let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
 
-                TNGlobalHelper.shared.mnemonic = mnemonic1 //as? String
+                TNGlobalHelper.shared.mnemonic = mnemonic1 //as! String
+                guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
+                    let version = "1.0.0"
+                    let timeInterval: TimeInterval = Date().timeIntervalSince1970
+                    let creatOn = Int(timeInterval)
+                    let profileDict: NSDictionary = ["version" : version, "creatOn" : creatOn, "xPrivKey" : "", "tempDeviceKey" : "", "prevTempDeviceKey" : "", "mnemonic" : mnemonic1, "my_device_address" : "",  "credentials" : []]
+                    TNConfigFileManager.sharedInstance.saveDataToProfile(profileDict)
+                    return
+                }
                 TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: mnemonic1)
                 let hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: true)
                 TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub)
@@ -268,7 +277,6 @@ extension TNEvaluateScriptManager {
     public func getWalletID(walletPubKey: String, completed: (() -> Swift.Void)?) {
         let js = String(format:"window.Client.walletID('%@')", arguments:[walletPubKey])
         webView.evaluateJavaScript(js) { (any, _) in
-            
             if let walletId = any {
                 TNGlobalHelper.shared.currentWallet.walletId = walletId as! String
                 if let completed = completed {

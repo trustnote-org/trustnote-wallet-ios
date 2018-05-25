@@ -22,7 +22,7 @@ protocol TNPopCtrlCellClickDelegate: NSObjectProtocol {
 class TNPopView: UIView {
 
    weak var delegate: TNPopCtrlCellClickDelegate?
-   
+    var containerView: UIView?
     init(frame: CGRect, imageNameArr:[String], titleArr:[String]) {
         super.init(frame: UIScreen.main.bounds)
         self.frame = UIScreen.main.bounds
@@ -79,7 +79,7 @@ class TNPopView: UIView {
             ww = 12.0
         }
         
-        let small_x = UIScreen.main.bounds.size.width - 10 - ww - small_w
+        let small_x = UIScreen.main.bounds.size.width - 12 - ww - small_w
         var small_rect = CGRect()
         small_rect.origin.x = small_x
         small_rect.origin.y = small_y
@@ -91,7 +91,6 @@ class TNPopView: UIView {
         
         UIApplication.shared.keyWindow?.addSubview(self)
     }
-    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         UIView.animate(withDuration: 0.25, animations: {
@@ -122,11 +121,6 @@ class TNPopView: UIView {
             self.alpha = 0
             self.removeFromSuperview()
             delegate?.popCtrlCellClick(tag: popCtrl.tag)
-//            UIView.animate(withDuration: 0.25, animations: {
-//                
-//            }, completion: { (view) in
-//               
-//            })
             return
         }
     }

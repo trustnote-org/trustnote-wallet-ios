@@ -40,14 +40,14 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        if (TNGlobalHelper.shared.mnemonic?.isEmpty)! {
+        if TNGlobalHelper.shared.mnemonic.isEmpty {
             TNEvaluateScriptManager.sharedInstance.generateMnemonic()
         }
         /// handle events
         creatWalletBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             
             if TNGlobalHelper.shared.encryptePrivKey.isEmpty {
-                TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic!)
+                TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic)
             }
             self.isEnterSetupPassword(vc: TNVBackupsSeedController())
             

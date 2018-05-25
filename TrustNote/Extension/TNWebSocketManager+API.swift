@@ -151,32 +151,16 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
             let requestBody: [String : Any] = ["command": "light/get_history", "params":params, "tag": objectHash]
             let requestParams: [Any] = ["request", requestBody]
             requestJsonStr = "\(JSON(requestParams))"
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             TNWebSocketManager.sharedInstance.sendData(requestJsonStr!)
         }
-        TNTimerHelper.shared.scheduledDispatchTimer(WithTimerName: kGetHistoryTimer, timeInterval: 1.0, queue: .main, repeats: true) {
-            TNWebSocketManager.sharedInstance.timeConsume += 1
-            guard TNWebSocketManager.sharedInstance.isCompleted else {
-                if TNWebSocketManager.sharedInstance.timeConsume == kNetworkTimeout {
-                    TNWebSocketManager.sharedInstance.sendData(requestJsonStr!)
-                }
-                return
-            }
-            TNWebSocketManager.sharedInstance.isCompleted = false
-            TNWebSocketManager.sharedInstance.timeConsume = 0
-            TNTimerHelper.shared.cancleTimer(WithTimerName: kGetHistoryTimer)
-        }
-        
+       
         TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            TNWebSocketManager.sharedInstance.isCompleted = true
-            if TNWebSocketManager.sharedInstance.is_getting_history {
-                
-                TNWebSocketManager.sharedInstance.is_getting_history = false
-                let notificationName = Notification.Name(rawValue: TNDidFinishedGetHistoryTransaction)
-                NotificationCenter.default.post(name: notificationName, object: nil)
-            } else {
+            
+            if TNGlobalHelper.shared.isRecoveringCommonWallet || TNGlobalHelper.shared.isRecoveringObserveWallet {
                 let notificationName = Notification.Name(rawValue: TNDidReceiveRestoreWalletResponse)
+                NotificationCenter.default.post(name: notificationName, object: anyObject)
+            } else {
+                let notificationName = Notification.Name(rawValue: TNDidFinishedGetHistoryTransaction)
                 NotificationCenter.default.post(name: notificationName, object: anyObject)
             }
             let model = TNHistoryTransactionModel.deserialize(from: anyObject as? [String : Any] )

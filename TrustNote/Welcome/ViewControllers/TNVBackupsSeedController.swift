@@ -19,7 +19,7 @@ class TNVBackupsSeedController: TNBaseViewController {
     
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Backup Your Seed Phrase", comment: "")
-        $0.textColor = UIColor.hexColor(rgbValue: 0x111111)
+        $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24.0)
     }
     
@@ -63,7 +63,7 @@ class TNVBackupsSeedController: TNBaseViewController {
 
         layoutAllSubviews()
         seedView.seedContainerView.isCanEdit = false
-        seedView.seedContainerView.mnmnemonicsArr = (TNGlobalHelper.shared.mnemonic?.components(separatedBy: " "))!
+        seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
         if TNGlobalHelper.shared.my_device_address.isEmpty {
             generateMyDeviceAddress()
         }

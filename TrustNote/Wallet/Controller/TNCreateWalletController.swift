@@ -15,10 +15,13 @@ class TNCreateWalletController: TNNavigationController {
     
     let scrollViewTopConstraint: CGFloat = 142
     
+    let walletViewModel = TNWalletViewModel()
+    let recoverOperation = TNRecoverObserveWallet()
+    
     fileprivate var isImportValid: BehaviorRelay<Bool> =  BehaviorRelay(value: false)
     fileprivate var isCompletionValid: BehaviorRelay<Bool> =  BehaviorRelay(value: false)
     
-    var inputMsg: String?
+    var scanningResultDict: [String : Any]?
     
     let startAuthAlert = TNObserveWaletAlertView.observeWaletAlertView()
     let authCompletedAlert = TNAuthDoneAlertView.authDoneAlertView()
@@ -26,7 +29,7 @@ class TNCreateWalletController: TNNavigationController {
     
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Create a TTT wallet", comment: "")
-        $0.textColor = UIColor.hexColor(rgbValue: 0x111111)
+        $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24.0)
     }
     
@@ -60,17 +63,24 @@ class TNCreateWalletController: TNNavigationController {
         scrollView.delegate = self
         layoutAllSubviews()
         startScanning()
+        commonWalletView.ceateCommonWalletCompleted = {[unowned self] in
+            self.navigationController?.popViewController(animated: true
+            )
+        }
         observeWalletView.clickedImportButtonBlock = {[unowned self] in
             let marginX: CGFloat = 6.0
             let marginY: CGFloat = 58.0
             let alertFrame = CGRect(x: marginX, y: marginY, width: kScreenW - 2 * marginX, height: kScreenH - 2 * marginY)
-            let authAlertView = TNCustomAlertView(alert: self.startAuthAlert, alertFrame: alertFrame, isShowAnimated: true)
-            self.startAuthAlert.dimissBlock = {
-                authAlertView.removeFromSuperview()
+            self.generateQRCodeInputMsg {
+                let value = self.scanningResultDict!["v"] as! Int
+                let qrInput = String(format:"TTT:{\"type\":\"%@\",\"id\":\"%@\",\"v\":%@}", arguments:["h1", TNGlobalHelper.shared.currentWallet.walletId , String(value)])
+                /// create qrCode
+                self.startAuthAlert.qrCodeImageView.image = UIImage.createHDQRImage(input: qrInput , imgSize: self.startAuthAlert.qrCodeImageView.size)
+                 let authAlertView = TNCustomAlertView(alert: self.startAuthAlert, alertFrame: alertFrame, isShowAnimated: true)
+                self.startAuthAlert.dimissBlock = {
+                    authAlertView.removeFromSuperview()
+                }
             }
-            /// create qrCode
-            let qrInput = self.generateQRCodeInputMsg(self.inputMsg!)
-            self.startAuthAlert.qrCodeImageView.image = UIImage.createHDQRImage(input: qrInput , imgSize: self.startAuthAlert.qrCodeImageView.size)
         }
         
         startAuthAlert.clickedNextButtonBlock = {[unowned self] in
@@ -79,15 +89,24 @@ class TNCreateWalletController: TNNavigationController {
             let marginY: CGFloat = 78.0
             let alertFrame = CGRect(x: marginX, y: marginY, width: kScreenW - 2 * marginX, height: kScreenH - 2 * marginY)
             self.authCompletedAlertView = TNCustomAlertView(alert: self.authCompletedAlert, alertFrame: alertFrame, isShowAnimated: false)
-            self.authCompletedAlert.dimissBlock = {
-                self.authCompletedAlertView?.removeFromSuperview()
-            }
-            self.authCompletedAlert.backActionBlock = {
-                self.navigationController?.popViewController(animated: true)
-            }
         }
+        authCompletedAlert.clickedDoneButtonBlock = {[unowned self] in
+            self.walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
+            self.walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
+            self.recoverOperation.isRecoverWallet = true
+            TNGlobalHelper.shared.isRecoveringObserveWallet = true
+            self.recoverOperation.recoverObserveWallet(TNGlobalHelper.shared.currentWallet)
+            self.authCompletedAlertView?.removeFromSuperview()
+        }
+        
         isImportValid.asDriver().drive(observeWalletView.importButton.rx_validState).disposed(by: self.disposeBag)
         isCompletionValid.asDriver().drive(authCompletedAlert.doneBtn.rx_validState).disposed(by: self.disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishRecoverWalletNotification)).subscribe(onNext: {[unowned self] value in
+             TNGlobalHelper.shared.isRecoveringObserveWallet = false
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TNCreateObserveWalletNotification), object: nil)
+             self.navigationController?.popViewController(animated: true)
+        }).disposed(by: disposeBag)
     }
 }
 
@@ -142,17 +161,32 @@ extension TNCreateWalletController: TNCreateWalletSwitchViewDelegate {
                 self.observeWalletView.identCodeLabel.textColor = kThemeTextColor
                 let codeSize = self.observeWalletView.identCodeLabel.textSize(text: result, font: self.observeWalletView.identCodeLabel.font, maxSize: CGSize(width: kScreenW - CGFloat(2 * kLeftMargin), height: CGFloat(MAXFLOAT)))
                 self.observeWalletView.lineViewTopMarginConstraint.constant = codeSize.height + 30
-                let isValid = self.verifyCode(result)
+                let isValid = self.verifyFirstCode(result)
                 self.isImportValid.accept(isValid)
                 self.observeWalletView.invalidLabel.isHidden = isValid ? true : false
                 self.observeWalletView.invalidImgview.isHidden = isValid ? true : false
-                self.inputMsg = result
+                if isValid {
+                    TNGlobalHelper.shared.currentWallet.isLocal = false
+                    let dict = self.covertJSonStingToDictionary(result)
+                    self.scanningResultDict = dict
+                    if dict.keys.contains("n") {
+                        TNGlobalHelper.shared.currentWallet.account = dict["n"] as! Int
+                    }
+                    if dict.keys.contains("name") {
+                        TNGlobalHelper.shared.currentWallet.walletName = dict["name"] as! String
+                    }
+                    if dict.keys.contains("pub") {
+                        TNGlobalHelper.shared.currentWallet.publicKeyRing = [["xPubKey": dict["pub"]]]
+                    }
+                    TNGlobalHelper.shared.currentWallet.creation_date = NSDate.getCurrentFormatterTime()
+                    TNGlobalHelper.shared.currentWallet.xPubKey = dict["pub"] as! String
+                }
             }
         }
         
         authCompletedAlert.clickedScanButtonBlock = {[unowned self] in
             let scanningVC = TNScanViewController()
-            self.authCompletedAlert.dimissBlock?()
+           self.authCompletedAlertView?.removeFromSuperview()
             self.navigationController?.pushViewController(scanningVC, animated: true)
             scanningVC.scanningCompletionBlock = { (result) in
                 let keyWindow = UIApplication.shared.keyWindow
@@ -163,7 +197,13 @@ extension TNCreateWalletController: TNCreateWalletSwitchViewDelegate {
                 let codeSize = self.authCompletedAlert.placeHolderLabel.textSize(text: result, font: self.authCompletedAlert.placeHolderLabel.font, maxSize: CGSize(width: kScreenW - CGFloat(2 * (kLeftMargin + 30)), height: CGFloat(MAXFLOAT)))
                 self.authCompletedAlert.lineTopMarginConstraint.constant = codeSize.height + 30
                 // TODO
-                self.isCompletionValid.accept(true)
+                let isValid = self.verifySecondCode(result)
+                self.authCompletedAlert.invalidImgview.isHidden = isValid ? true : false
+                self.authCompletedAlert.invalidLabel.isHidden = isValid ? true : false
+                self.isCompletionValid.accept(isValid)
+                if isValid {
+                    TNGlobalHelper.shared.my_device_address = self.scanningResultDict!["addr"] as! String
+                }
             }
         }
     }
@@ -185,7 +225,7 @@ extension TNCreateWalletController: UIScrollViewDelegate {
 
 extension TNCreateWalletController {
     
-    fileprivate func verifyCode(_ identCode: String) -> Bool {
+    fileprivate func verifyFirstCode(_ identCode: String) -> Bool {
         
         guard identCode.hasPrefix("TTT") else {
             return false
@@ -196,21 +236,35 @@ extension TNCreateWalletController {
         return true
     }
     
-    fileprivate func generateQRCodeInputMsg(_ inputStr: String) -> String {
-        
-        if self.verifyCode(inputStr) {
-            
-            let result = inputStr.replacingOccurrences(of:"TTT:", with: "")
-            let jsonData:Data = result.data(using: .utf8)!
-            let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! [String : Any]
-            
-            var splitStr = ""
-            if (dict?.keys.contains("pub"))! &&  (dict?.keys.contains("v"))! {
-                let value = dict!["v"] as! Int
-                splitStr = String(format:"TTT:{\"type\":\"%@\",\"id\":\"%@\",\"v\":%@}", arguments:["h1", dict!["pub"] as! String, String(value)])
-            }
-            return splitStr
+    fileprivate func verifySecondCode(_ identCode: String) -> Bool {
+        guard identCode.hasPrefix("TTT") else {
+            return false
         }
-        return ""
+        guard identCode.contains("\"type\":\"c2\"") else {
+            return false
+        }
+        let codeDict = covertJSonStingToDictionary(identCode)
+        if codeDict.keys.contains("v") {
+            let value = codeDict["v"] as! Int
+            if value == (scanningResultDict!["v"] as! Int) && codeDict.keys.contains("addr") {
+                scanningResultDict = codeDict
+                return true
+            }
+        }
+        return false
+    }
+    
+    fileprivate func generateQRCodeInputMsg(completion: (() -> Swift.Void)?) {
+        
+        if scanningResultDict!.keys.contains("pub") &&  scanningResultDict!.keys.contains("v") {
+            TNEvaluateScriptManager.sharedInstance.getWalletID(walletPubKey: scanningResultDict?["pub"] as! String, completed: completion)
+        }
+    }
+    
+    fileprivate func covertJSonStingToDictionary(_ inputStr: String) -> [String : Any] {
+        let result = inputStr.replacingOccurrences(of:"TTT:", with: "")
+        let jsonData:Data = result.data(using: .utf8)!
+        let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! [String : Any]
+        return dict!
     }
 }

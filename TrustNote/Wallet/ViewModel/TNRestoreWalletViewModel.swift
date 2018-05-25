@@ -9,12 +9,13 @@
 import Foundation
 import RxSwift
 
-let loopCount: Int = 21
+let loopCount: Int = 20
 
 class TNRestoreWalletViewModel {
    
     let disposeBag = DisposeBag()
     public var isRecoverWallet = true
+    private var isGenerateFrontAddress = true
     private var addressModels: [TNWalletAddressModel] = []
     private var wallets: [TNWalletModel] = []
     private var tempAddressModels: [TNWalletAddressModel] = []
@@ -23,10 +24,6 @@ class TNRestoreWalletViewModel {
     private var isChange = false
     
     required init() {
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishedGetHistoryTransaction), object: nil).subscribe(onNext: {[unowned self] _ in
-            guard self.isRecoverWallet else {return}
-            self.getHistoryTransaction()
-        }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidReceiveRestoreWalletResponse), object: nil).subscribe(onNext: {[unowned self] (notify) in
             guard self.isRecoverWallet else {return}
@@ -37,7 +34,7 @@ class TNRestoreWalletViewModel {
                 return
             }
             if !self.isChange {
-                guard self.addressIndex == loopCount else {
+                guard self.addressIndex == loopCount + 1 else {
                     self.isChange = true
                     self.addressIndex = 0
                     self.tempAddressModels.removeAll()
@@ -49,6 +46,7 @@ class TNRestoreWalletViewModel {
                 self.isChange = false
                 self.addressIndex = 0
                 self.tempAddressModels.removeAll()
+                self.isGenerateFrontAddress = true
                 self.createNewWalletWhenRestoreWallet()
             }
 
@@ -66,12 +64,14 @@ class TNRestoreWalletViewModel {
     }
     
     private func createWalletAddress(num: Int) {
-        self.walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: self.isChange, num: num, comletionHandle: { (walletAddressModel) in
+        let tempLoopCount = self.isGenerateFrontAddress ? loopCount + 1 : loopCount
+        walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: self.isChange, num: num, comletionHandle: { (walletAddressModel) in
             self.tempAddressModels.append(walletAddressModel)
             self.addressIndex += 1
-            if self.tempAddressModels.count == loopCount {
+            if self.tempAddressModels.count ==  tempLoopCount {
                 self.addressModels += self.tempAddressModels
                 self.getHistoryTransaction()
+                self.isGenerateFrontAddress = false
             } else {
                 self.createWalletAddress(num: self.addressIndex)
             }
@@ -83,9 +83,6 @@ class TNRestoreWalletViewModel {
         var addresses: [String] = []
         for addressModel in tempAddressModels {
             addresses.append(addressModel.walletAddress)
-        }
-        guard !TNWebSocketManager.sharedInstance.is_getting_history else {
-            return
         }
         guard !addresses.isEmpty else {
             return
@@ -104,10 +101,10 @@ class TNRestoreWalletViewModel {
     }
     
     private func saveData() {
-        let walletViewModel = TNWalletViewModel()
+       
         if wallets.count > 1 {
             wallets.removeLast()
-            let index = addressModels.count - loopCount
+            let index = addressModels.count - (loopCount + 1)
             let newAddressModels = addressModels[..<index]
             for address in newAddressModels {
                 walletViewModel.insertWalletAddressToDatabase(walletAddressModel: address)

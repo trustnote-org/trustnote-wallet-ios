@@ -18,9 +18,9 @@ class TNTradeRecordViewModel: NSObject {
 
 extension TNTradeRecordViewModel {
     
-    func getTransactionRecords() -> Observable<[TNRecordSection]> {
+    func getTransactionRecords(_ walletId: String) -> Observable<[TNRecordSection]> {
         return Observable.create { [weak self] (observer) -> Disposable in
-            self?.queryTransactionRecordList(walletId: "LyzbDDiDedJh+fUHMFAXpWSiIw/Z1Tgve0J1+KOfT3w=", completionHandle: { (transactionRecords) in
+            self?.queryTransactionRecordList(walletId: walletId, completionHandle: { (transactionRecords) in
                 self?.transactionRecords = transactionRecords
                 observer.onNext([TNRecordSection(items: transactionRecords)])
                    observer.onCompleted()
@@ -43,7 +43,7 @@ extension TNTradeRecordViewModel {
             "FROM units " +
             "JOIN outputs USING(unit) " +
             "JOIN my_addresses USING(address) " +
-            "WHERE wallet= ? " +
+            "WHERE wallet= ? and asset IS NULL " +
             "GROUP BY unit, address " +
             "UNION " +
             "SELECT unit, level, is_stable, sequence, address, units.creation_date as ts, headers_commission+payload_commission AS fee, " +
@@ -51,7 +51,7 @@ extension TNTradeRecordViewModel {
             "FROM units " +
             "JOIN inputs USING(unit) " +
             "JOIN my_addresses USING(address) " +
-            "WHERE wallet= ? " +
+            "WHERE wallet= ? and asset IS NULL " +
             "ORDER BY ts DESC"
         TNSQLiteManager.sharedManager.queryTxUnitsFromUnits(sql: sql, value: walletId) { (results) in
             self.handleTxUnits(txUnits: results, walleId: walletId, completionHandle: completionHandle)
@@ -59,9 +59,15 @@ extension TNTradeRecordViewModel {
     }
     
     private func handleTxUnits(txUnits: [TNTxUnits], walleId: String, completionHandle: (([TNTransactionRecord]) -> Swift.Void)?) {
+        print("----------------------------------------------------")
+        for tx in txUnits {
+            print(tx)
+            print("-----------------")
+        }
+        print("-----------------------------------------------------")
         var assocMovements: [String : TNTxUnits] = [:]
         for txUnit in txUnits {
-            var assocUnits = assocMovements[txUnit.unit] != nil ? assocMovements[txUnit.unit] : txUnit
+            var assocUnits = assocMovements.keys.contains(txUnit.unit) ? assocMovements[txUnit.unit] : txUnit
             if let to_address = txUnit.to_address {
                 if !to_address.isEmpty {
                     assocUnits?.plus += txUnit.amount
@@ -137,6 +143,12 @@ extension TNTradeRecordViewModel {
                 }
             }
         }
+        print("----------------------------------------------------")
+        for test in arrTransactions {
+             print(test)
+            print("-----------------")
+        }
+        print("-----------------------------------------------------")
         let arrTransactionsSorted = arrTransactions.sorted {
             $0.time > $1.time
         }

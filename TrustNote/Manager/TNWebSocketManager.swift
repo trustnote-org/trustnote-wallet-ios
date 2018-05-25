@@ -33,9 +33,6 @@ class TNWebSocketManager {
     public var isConnected: Bool = false
     public var hubStatus: HubConnectedStatus = HubConnectedStatus(isLogin: false)
     public var responseTag = ResponseTag()
-    public var is_getting_history = false
-    public var isCompleted = false
-    public var timeConsume = 0
     public var tempPubkeyTimeConsume = 0
     
     public var HandleJustsayingBlock: ((Any) ->Void)? = nil
@@ -77,8 +74,8 @@ extension TNWebSocketManager {
     }
     
     func generateHUbAddress(isSave: Bool) -> String {
-        let md5Str = TNGlobalHelper.shared.mnemonic?.md5()
-        let firstChar = String(md5Str![(md5Str?.startIndex)!])
+        let md5Str = TNGlobalHelper.shared.mnemonic.md5()
+        let firstChar = String(md5Str[(md5Str.startIndex)])
         let num = String.getAscii(character: firstChar)
         let index = num % UInt32(rootHubs.count)
         guard isSave else {

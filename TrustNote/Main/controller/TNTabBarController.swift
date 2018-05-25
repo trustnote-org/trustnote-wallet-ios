@@ -24,8 +24,8 @@ class TNTabBarController: UITabBarController {
     
     private func addChildViewControllers() {
         setChildViewController(TNWalletHomeController(), title: NSLocalizedString("Wallet", comment: ""), imageName: "tabbar_wallet")
-        setChildViewController(UIViewController(), title: NSLocalizedString("Message", comment: ""), imageName: "tabbar_message")
-        setChildViewController(UIViewController(), title: NSLocalizedString("Profile", comment: ""), imageName: "tabbar_profile")
+        setChildViewController(TNContactViewController(), title: NSLocalizedString("Message", comment: ""), imageName: "tabbar_message")
+        setChildViewController(TNProfileViewController(), title: NSLocalizedString("Profile", comment: ""), imageName: "tabbar_profile")
     }
     
     private func setChildViewController(_ childController: UIViewController, title: String, imageName: String) {

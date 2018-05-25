@@ -23,12 +23,12 @@ extension NSDate {
         return formatter.string(from: nowDate)
     }
     
-    static func getDateFromIntervalTime(timeStamp: String) -> String {
+    static func getFormatterTime(timeStamp: String, formatter: String) -> String {
         
         let timeInterval: TimeInterval = TimeInterval(timeStamp)!
         let date = NSDate(timeIntervalSince1970: timeInterval)
         let dformatter = DateFormatter()
-        dformatter.dateFormat = "yyyy年MM月dd日 HH:mm:ss"
+        dformatter.dateFormat = formatter
         return  dformatter.string(from: date as Date)
     }
     
@@ -46,28 +46,28 @@ extension NSDate {
         let now = Date()
         let interval = Int(now.timeIntervalSince(date))
         if now.compare(date) == .orderedAscending {
-            return "a minute ago"
+            return "1分钟前"
         }
         if interval < 60 * minute {
             if interval / minute < 1 || interval / minute == 1 {
-                return "a minute ago"
+                return "1分钟前"
             }
-           return String(format:"%d minute ago", arguments:[interval / minute])
+           return String(format:"%d分钟前", arguments:[interval / minute])
         } else if interval < 24 * hour {
             if interval / hour < 1 || interval / hour == 1 {
-                return "a hour ago"
+                return "1小时前"
             }
-            return String(format:"%d hours ago", arguments:[interval / hour])
+            return String(format:"%d小时前", arguments:[interval / hour])
         } else if interval < 30 * day {
             if interval / day < 1 || interval / day == 1 {
                 return "a day ago"
             }
-            return String(format:"%d days ago", arguments:[interval / day])
+            return String(format:"%d天前", arguments:[interval / day])
         } else if interval < 12 * month {
             if interval / month < 1 || interval / month == 1 {
-                return "a month ago"
+                return "1个月前"
             }
-            return String(format:"%d months ago", arguments:[interval / month])
+            return String(format:"%d个月前", arguments:[interval / month])
         } else {
             if interval / year < 1 || interval / year == 1 {
                 return "a year ago"

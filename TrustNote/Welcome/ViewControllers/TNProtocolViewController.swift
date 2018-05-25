@@ -30,7 +30,7 @@ class TNProtocolViewController: TNBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = TNControllerViewBackgroundColor
+        self.view.backgroundColor = UIColor.white
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview().inset(UIEdgeInsetsMake(kStatusbarH, 0, 0, 0))

@@ -34,11 +34,12 @@ let kNetworkTimeout = 30
 let kTempPubkeyInterval = 3600
 
 /// MARK:- Color
-let TNControllerViewBackgroundColor = UIColor.hexColor(rgbValue: 0xF5F5F5)
 let Navigation_Bar_Color = UIColor.white
 let kThemeWhiteColor = UIColor.hexColor(rgbValue: 0xFFFFFF)
 let kGlobalColor = UIColor.hexColor(rgbValue: 0x0052CC)
 let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
+let kTitleTextColor = UIColor.hexColor(rgbValue: 0x111111)
+let kBackgroundColor = UIColor.hexColor(rgbValue: 0xF6F7F9)
 
 /// MARK: Notificaton Name
 let TNDidGeneratedPrivateKeyNotification       = "TNDidGeneratePrivateKeyNotification"
@@ -46,8 +47,9 @@ let TNDidFinishedGetHistoryTransaction         = "TNDidFinishGetHistoryTransacti
 let TNDidReceiveRestoreWalletResponse          = "TNDidReceiveRestoreWalletResponse"
 let TNDidFinishRecoverWalletNotification       = "TNDidFinishRecoverWalletNotification"
 let TNDidFinishUpdateDatabaseNotification      = "TNDidFinishUpdateDatabaseNotification"
-let TNFinishCreateCommonWalletNotification     = "TNFinishCreateCommonWalletNotification"
-
+let TNCreateCommonWalletNotification           = "TNCreateCommonWalletNotification"
+let TNCreateObserveWalletNotification          = "TNCreateObserveWalletNotification"
+let TNEditInfoCompletionNotification           = "TNEditInfoCompletionNotification"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

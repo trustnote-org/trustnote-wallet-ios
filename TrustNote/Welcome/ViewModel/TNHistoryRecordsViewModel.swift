@@ -20,7 +20,7 @@ extension TNHistoryRecordsViewModel {
         func saveDataToUnitsTable(unit: TNUnitModel) {
             let fields = "unit, version, alt, witness_list_unit, last_ball_unit, headers_commission, payload_commission, sequence, main_chain_index, creation_date"
             let values = "?,?,?,?,?,?,?,?,?,?"
-            let params = [unit.unit, unit.version, unit.alt, unit.witness_list_unit, unit.last_ball_unit, unit.headers_commission, unit.payload_commission, "good", unit.main_chain_index, NSDate.getDateFromIntervalTime(timeStamp: unit.timestamp)] as [Any]
+            let params = [unit.unit, unit.version, unit.alt, unit.witness_list_unit, unit.last_ball_unit, unit.headers_commission, unit.payload_commission, "good", unit.main_chain_index, NSDate.getFormatterTime(timeStamp: unit.timestamp, formatter: "yyyy年MM月dd日 HH:mm:ss")] as [Any]
             
             let sql = String(format:"INSERT INTO units (%@) VALUES (%@);", arguments:[fields, values])
             let selectSQL = String(format:"SELECT Count(*) FROM units WHERE unit = '%@'", arguments:[unit.unit])
@@ -76,9 +76,16 @@ extension TNHistoryRecordsViewModel {
                 let src_message_index = input.message_index
                 let src_output_index = input.output_index
                 let address = objUnit.authors?.count == 1 ? objUnit.authors?.first?.address : input.address
-                let sql = "INSERT INTO inputs (unit, message_index, input_index, type, src_unit, src_message_index, src_output_index, denomination, amount, serial_number, is_unique, address) VALUES(?,?,?,?,?,?,?,1,?,?,1,?)"
-                let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, address!] as [Any]
-                TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
+               
+                if let asset = playload.asset {
+                    let sql = "INSERT INTO inputs (unit, message_index, input_index, type, src_unit, src_message_index, src_output_index, denomination, amount, serial_number, asset, is_unique, address) VALUES(?,?,?,?,?,?,?,1,?,?,?,1,?)"
+                    let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, asset, address!] as [Any]
+                    TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
+                } else {
+                    let sql = "INSERT INTO inputs (unit, message_index, input_index, type, src_unit, src_message_index, src_output_index, denomination, amount, serial_number, is_unique, address) VALUES(?,?,?,?,?,?,?,1,?,?,1,?)"
+                    let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, address!] as [Any]
+                    TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
+                }
             }
         }
         
@@ -89,9 +96,17 @@ extension TNHistoryRecordsViewModel {
                 if output.denomination == nil {
                     denomination = 1
                 }
-                let sql = "INSERT INTO outputs (unit, message_index, output_index, address, amount, denomination, is_serial) VALUES(?,?,?,?,?,?,1)"
-                let params = [objUnit.unit, messageIndex, outputIndex, output.address, output.amount, denomination] as [Any]
-                TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
+                
+                if let asset = playload.asset {
+                    let sql = "INSERT INTO outputs (unit, message_index, output_index, address, amount, denomination, is_serial, asset) VALUES(?,?,?,?,?,?,1,?)"
+                    let params = [objUnit.unit, messageIndex, outputIndex, output.address, output.amount, denomination, asset] as [Any]
+                    TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
+                } else {
+                    let sql = "INSERT INTO outputs (unit, message_index, output_index, address, amount, denomination, is_serial) VALUES(?,?,?,?,?,?,1)"
+                    let params = [objUnit.unit, messageIndex, outputIndex, output.address, output.amount, denomination] as [Any]
+                    TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
+                }
+                
             }
         }
         
@@ -125,7 +140,7 @@ extension TNHistoryRecordsViewModel {
             "FROM outputs JOIN inputs ON outputs.unit=inputs.src_unit " +
             "AND outputs.message_index=inputs.src_message_index " +
             "AND outputs.output_index=inputs.src_output_index " +
-            "WHERE is_spent=0"
+            "WHERE is_spent=0 and outputs.asset IS NULL and inputs.asset IS NULL"
         TNSQLiteManager.sharedManager.queryDataFromOutputs(sql: sql) { (outputs) in
             for row  in outputs as! [[Any]] {
                 guard TNSQLiteManager.sharedManager.database.open() else {return}

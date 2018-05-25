@@ -23,7 +23,7 @@ class TNRecoveryWalletController: TNBaseViewController {
     
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Recover wallet", comment: "")
-        $0.textColor = UIColor.hexColor(rgbValue: 0x111111)
+        $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24.0)
     }
     
@@ -70,11 +70,11 @@ class TNRecoveryWalletController: TNBaseViewController {
         let seedView = TNBackupSeedBackView.backupSeedBackView()
         seedView.seedContainerView.isCanEdit = true
         return seedView
-    }()
+        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         layoutAllSubviews()
         seedView.seedContainerView.isVerifyButtonEnable.asDriver()
             .drive(recoverBtn.rx_validState)
@@ -90,11 +90,11 @@ class TNRecoveryWalletController: TNBaseViewController {
         }).disposed(by: disposeBag)
         
         recoverBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] value in
-           self.validationInput(isDelete: false)
+            self.validationInput(isDelete: false)
         }).disposed(by: disposeBag)
         
         deleteBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] value in
-           self.validationInput(isDelete: true)
+            self.validationInput(isDelete: true)
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)).subscribe(onNext: {[unowned self] value in
@@ -108,10 +108,13 @@ class TNRecoveryWalletController: TNBaseViewController {
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishRecoverWalletNotification), object: nil).subscribe(onNext: {[unowned self] _ in
+            guard !TNGlobalHelper.shared.isRecoveringObserveWallet else {
+                return
+            }
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
         
-        seedView.seedContainerView.mnmnemonicsArr = (TNGlobalHelper.shared.mnemonic?.components(separatedBy: " "))!
+       seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -237,26 +240,30 @@ extension TNRecoveryWalletController {
     }
     
     fileprivate func finishGeneratePrivateKey() {
-
+        
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
         TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
         TNGlobalHelper.shared.tempPrivKey = ""
         TNSQLiteManager.sharedManager.deleteAllWallets()
         viewModel.isRecoverWallet = true
+        TNGlobalHelper.shared.isRecoveringCommonWallet = true
         viewModel.createNewWalletWhenRestoreWallet()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     fileprivate func finishRecoverWallet() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
         viewModel.isRecoverWallet = false
+        TNGlobalHelper.shared.isRecoveringCommonWallet = false
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: hub!)
         TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
         
         if isDeleteMnemonic! {
             TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
         } else {
-            TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: TNGlobalHelper.shared.mnemonic!)
+            TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: TNGlobalHelper.shared.mnemonic)
         }
-        TNGlobalHelper.shared.mnemonic = nil
+        TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
         TNGlobalHelper.shared.isVerifyPasswdForMain = false
         TNGlobalHelper.shared.isNeedLoadData = false

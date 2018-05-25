@@ -26,6 +26,8 @@ class TNWalletHomeController: TNBaseViewController {
     var isReachable: Bool = true
     var totalAssert = 0.0
     
+    var syncOperation: TNSynchroHistoryData = TNSynchroHistoryData()
+    
     private let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
         $0.register(UINib(nibName: Reusable.networkStatusCell, bundle: nil), forCellReuseIdentifier: Reusable.networkStatusCell)
@@ -49,6 +51,7 @@ class TNWalletHomeController: TNBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = kBackgroundColor
         observeNetworkStatus()
         getWalletList()
         tableView.delegate = self
@@ -70,16 +73,14 @@ class TNWalletHomeController: TNBaseViewController {
                 self.tableView.reloadData()
             })
         }).disposed(by: disposeBag)
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNFinishCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
-            self.dataSource.removeAll()
-            let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-            let credentials  = profile["credentials"] as! [[String:Any]]
-            for dict in credentials {
-                let walletModel = TNWalletModel.deserialize(from: dict)
-                self.dataSource.append(walletModel!)
-            }
-            self.tableView.reloadData()
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.refreshAction()
         }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateObserveWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.refreshAction()
+        }).disposed(by: disposeBag)
+        
         if TNGlobalHelper.shared.isNeedLoadData {
             loadData()
         }
@@ -156,8 +157,12 @@ extension TNWalletHomeController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let walletModel = dataSource[indexPath.row]
+        let listVC = TNTradeRecordsListController(wallet: walletModel)
+        navigationController?.pushViewController(listVC, animated: true)
     }
 }
+
 extension TNWalletHomeController: TNPopCtrlCellClickDelegate {
     
     func popCtrlCellClick(tag: Int) {
@@ -165,7 +170,7 @@ extension TNWalletHomeController: TNPopCtrlCellClickDelegate {
         case TNPopItem.scan.rawValue :
             break
         case TNPopItem.contacts.rawValue :
-             break
+            break
         case TNPopItem.wallet.rawValue:
             navigationController?.pushViewController(TNCreateWalletController(), animated: true)
         case TNPopItem.code.rawValue:
@@ -196,6 +201,17 @@ extension TNWalletHomeController {
         }
     }
     
+    fileprivate func refreshAction() {
+        dataSource.removeAll()
+        let profile = TNConfigFileManager.sharedInstance.readProfileFile()
+        let credentials  = profile["credentials"] as! [[String:Any]]
+        for dict in credentials {
+            let walletModel = TNWalletModel.deserialize(from: dict)
+            dataSource.append(walletModel!)
+        }
+        tableView.reloadData()
+    }
+    
     fileprivate func getWalletList() {
         totalAssert = 0.0
         let profile = TNConfigFileManager.sharedInstance.readProfileFile()
@@ -213,23 +229,25 @@ extension TNWalletHomeController {
         let popH: CGFloat = 44.0
         let popX = kScreenW - popW - 12.0
         let popY: CGFloat = topBar.frame.maxY + 8.0
-        
         let imageNameArr = ["wallet_sao", "wallet_contact", "wallet_group", "wallet_code"]
-
         let titleArr = ["扫一扫", "添加联系人","创建钱包", "我的配对码"]
-        
         let popView = TNPopView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), imageNameArr: imageNameArr, titleArr: titleArr)
         popView.delegate = self
     }
     
     fileprivate func loadData() {
         
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2.0) {
-            TNWebSocketManager.sharedInstance.is_getting_history = true
-            TNSQLiteManager.sharedManager.queryAllWalletAddress(sql: "SELECT * FROM my_addresses") { (results) in
-                TNHubViewModel.getMyTransactionHistory(addresses: results)
-            }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            self.syncData()
         }
+    }
+    
+}
+
+extension TNWalletHomeController {
+    
+    fileprivate func syncData() {
+        syncOperation.syncHistoryData(wallets: dataSource)
     }
 }
 

@@ -10,10 +10,12 @@ import UIKit
 import RxSwift
 import RxCocoa
 
+ let maxInputCount = 21
+
 class TNModifyDeviceNameController: TNBaseViewController {
     
     let topPadding = IS_iphone5 ? 70.0 : 90.0
-     let maxInputCount = 21
+    
     
     private let iconView = UIImageView().then {
         $0.backgroundColor = UIColor.clear
@@ -21,7 +23,7 @@ class TNModifyDeviceNameController: TNBaseViewController {
     }
     
     private let textLabel = UILabel().then {
-        $0.textColor = UIColor.hexColor(rgbValue: 0x111111)
+        $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24.0)
         $0.text = NSLocalizedString("Welocme To TrustNote", comment: "")
     }
@@ -71,8 +73,6 @@ class TNModifyDeviceNameController: TNBaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = UIColor.white
         deviceTextField.delegate = self
         setupUI()
         
@@ -81,13 +81,14 @@ class TNModifyDeviceNameController: TNBaseViewController {
         deviceObserver.drive(clearButton.rx_HiddenState).disposed(by: self.disposeBag)
        
         confirmBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] _ in
-            guard (self.deviceTextField.text?.count)! < self.maxInputCount else {
+            guard (self.deviceTextField.text?.count)! < maxInputCount else {
                 self.lineView.height = 2.0
                 self.lineView.backgroundColor = kGlobalColor
                 self.warningBtn.isHidden = false
                 return
             }
             TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 3)
+            TNConfigFileManager.sharedInstance.updateConfigFile(key: "deviceName", value: self.deviceTextField.text!)
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .newWallet)
         }).disposed(by: self.disposeBag)
         
@@ -97,6 +98,8 @@ class TNModifyDeviceNameController: TNBaseViewController {
             self.confirmBtn.alpha = 0.3
             self.warningBtn.isHidden = true
             self.clearButton.isHidden = true
+            self.lineView.backgroundColor = UIColor.hexColor(rgbValue: 0xdddddd)
+            self.lineView.height = 1.0
         }).disposed(by: self.disposeBag)
     }
     

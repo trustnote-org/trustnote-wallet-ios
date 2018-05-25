@@ -17,9 +17,7 @@ class TNAuthDoneAlertView: UIView {
     
     var clickedScanButtonBlock: ClickedScanButtonBlock?
     
-    var dimissBlock: ClickedDismissButtonBlock?
-    
-    var backActionBlock: ClickedDismissButtonBlock?
+    var clickedDoneButtonBlock: ClickedScanButtonBlock?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descLabel: UILabel!
@@ -28,6 +26,8 @@ class TNAuthDoneAlertView: UIView {
     @IBOutlet weak var scanningBtn: UIButton!
     @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var lineTopMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var invalidImgview: UIImageView!
+    @IBOutlet weak var invalidLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,8 +45,7 @@ extension TNAuthDoneAlertView {
     fileprivate func handleEvent() {
         
         doneBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self]  in
-            self.dimissBlock?()
-            self.backActionBlock?()
+            self.clickedDoneButtonBlock?()
         }).disposed(by: disposeBag)
         
         scanningBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self]  in

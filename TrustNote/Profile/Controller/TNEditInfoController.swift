@@ -10,17 +10,36 @@ import UIKit
 
 class TNEditInfoController: TNNavigationController {
     
+    var isEditInfo: Bool!
+    
+    var limitedInputCount: Int!
+    
+    var wallet: TNWalletModel?
+    
     fileprivate lazy var editInfoView: TNEditInfoView = {
         let editInfoView = TNEditInfoView.editInfoView()
         return editInfoView
     }()
     
+    init(isEditInfo: Bool) {
+        super.init()
+        self.isEditInfo = isEditInfo
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setBackButton()
-        navigationBar.titleText = "个人信息"
+        navigationBar.titleText = isEditInfo ? "Personal information".localized : "Wallet name".localized
         _ = navigationBar.setRightButtonTitle(title: "完成", target: self, action: #selector(self.editDone))
+        limitedInputCount = isEditInfo ? 20 : 10
+        editInfoView.isEditInfo = isEditInfo
+        if let walletModel = wallet {
+            editInfoView.inputTextField.text = walletModel.walletName
+        }
         view.addSubview(editInfoView)
         editInfoView.snp.makeConstraints { (make) in
             make.top.equalTo(navigationBar.snp.bottom).offset(10)
@@ -43,12 +62,27 @@ extension TNEditInfoController {
         
         guard (editInfoView.inputTextField.text?.isEmpty)! else {
             
-            guard editInfoView.inputTextField.text!.count < maxInputCount else {
+            guard editInfoView.inputTextField.text!.count < limitedInputCount else {
                 editInfoView.warningView.isHidden = false
                 return
             }
-            TNConfigFileManager.sharedInstance.updateConfigFile(key: "deviceName", value: editInfoView.inputTextField.text!)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TNEditInfoCompletionNotification), object: editInfoView.inputTextField.text!)
+            if isEditInfo {
+                TNConfigFileManager.sharedInstance.updateConfigFile(key: "deviceName", value: editInfoView.inputTextField.text!)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TNEditInfoCompletionNotification), object: editInfoView.inputTextField.text!)
+            } else {
+                let profile = TNConfigFileManager.sharedInstance.readProfileFile()
+                var credentials  = profile["credentials"] as! [[String:Any]]
+                for (index, dict) in credentials.enumerated() {
+                    if dict["walletId"] as? String == wallet?.walletId {
+                        var newDict = dict
+                        newDict["walletName"] = editInfoView.inputTextField.text!
+                        credentials[index] = newDict
+                        break
+                    }
+                }
+                TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: credentials)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TNModifyWalletNameNotification), object: editInfoView.inputTextField.text!)
+            }
             navigationController?.popViewController(animated: true)
             return
         }

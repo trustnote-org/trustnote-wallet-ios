@@ -55,8 +55,8 @@ class TNTradeRecordCell: UITableViewCell {
                 let realAmount = Double((model?.amount)!) / 1000000.0
                 let assert = String(format: "%.4f", realAmount)
                 let sign = transactionType == .received ? "+" : "-"
-                amountLabel.text = sign + assert.substring(toIndex: assert.length - 4)
-                decimalLabel.text = assert.substring(fromIndex: assert.length - 4)
+                amountLabel.text = sign + assert.substring(toIndex: assert.length - TNGlobalHelper.shared.unitDecimals)
+                decimalLabel.text = assert.substring(fromIndex: assert.length - TNGlobalHelper.shared.unitDecimals)
             }
         }
     }

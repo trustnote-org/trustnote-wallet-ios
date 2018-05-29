@@ -11,9 +11,10 @@ import UIKit
 class TNManageWalletController: TNNavigationController {
    
     var dataSource: [TNWalletModel] = []
+    var addressArr: [String] = []
     
     let titlelabel = UILabel().then {
-        $0.text = "管理钱包"
+        $0.text = "Manage wallet".localized
         $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24)
     }
@@ -25,7 +26,6 @@ class TNManageWalletController: TNNavigationController {
     
     let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
-        $0.tn_registerCell(cell: TNProfileViewCell.self)
         $0.showsVerticalScrollIndicator = false
         $0.tableFooterView = UIView()
         $0.separatorStyle = .none
@@ -39,6 +39,19 @@ class TNManageWalletController: TNNavigationController {
         getWalletList()
         tableView.delegate = self
         tableView.dataSource = self
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNModifyWalletNameNotification)).subscribe(onNext: { [unowned self] value in
+            self.refreshWalletList()
+        }).disposed(by: disposeBag)
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishDeleteWalletNotification)).subscribe(onNext: { [unowned self] value in
+            self.refreshWalletList()
+        }).disposed(by: disposeBag)
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.refreshWalletList()
+        }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateObserveWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.refreshWalletList()
+        }).disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,7 +69,18 @@ extension TNManageWalletController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TNManageWalletCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
+        cell.getFirstAddressBlock = {[unowned self] address in
+            guard !self.dataSource.isEmpty && self.dataSource.count != self.addressArr.count else {
+                return
+            }
+            self.addressArr.append(address)
+        }
         cell.walletModel = dataSource[indexPath.row]
+        cell.touchBtn.tag = Button_Tag_Begin + indexPath.row
+        cell.checkoutWalletDetailBlock = { cellIndex in
+            let vc =  TNWalletDetailController(wallet: self.dataSource[cellIndex], address: self.addressArr[cellIndex])
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
         return cell
     }
     
@@ -67,8 +91,15 @@ extension TNManageWalletController: UITableViewDelegate, UITableViewDataSource {
 
 /// MARK: Action
 extension TNManageWalletController {
+    
     @objc fileprivate func addWallet() {
-        
+        navigationController?.pushViewController(TNCreateWalletController(), animated: true)
+    }
+    
+    fileprivate func refreshWalletList() {
+       dataSource.removeAll()
+       getWalletList()
+      tableView.reloadData()
     }
 }
 

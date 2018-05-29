@@ -40,6 +40,7 @@ let kGlobalColor = UIColor.hexColor(rgbValue: 0x0052CC)
 let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
 let kTitleTextColor = UIColor.hexColor(rgbValue: 0x111111)
 let kBackgroundColor = UIColor.hexColor(rgbValue: 0xF6F7F9)
+let kThemeMarkColor = UIColor.hexColor(rgbValue: 0xF6782F)
 
 /// MARK: Notificaton Name
 let TNDidGeneratedPrivateKeyNotification       = "TNDidGeneratePrivateKeyNotification"
@@ -50,6 +51,8 @@ let TNDidFinishUpdateDatabaseNotification      = "TNDidFinishUpdateDatabaseNotif
 let TNCreateCommonWalletNotification           = "TNCreateCommonWalletNotification"
 let TNCreateObserveWalletNotification          = "TNCreateObserveWalletNotification"
 let TNEditInfoCompletionNotification           = "TNEditInfoCompletionNotification"
+let TNModifyWalletNameNotification             = "TNModifyWalletNameNotification"
+let TNDidFinishDeleteWalletNotification        = "TNDidFinishDeleteWalletNotification"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

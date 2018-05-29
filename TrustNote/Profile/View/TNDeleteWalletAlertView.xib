@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="60B-nI-ASx" customClass="TNDeleteWalletAlertView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="376" height="260"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M0m-aj-uDZ">
+                    <rect key="frame" x="39" y="172" width="150" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Wwo-Ac-OjL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="取消"/>
+                    <connections>
+                        <action selector="cancelAction:" destination="60B-nI-ASx" eventType="touchUpInside" id="jyi-4W-qxU"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wqk-yq-8ib">
+                    <rect key="frame" x="196" y="172" width="150" height="48"/>
+                    <color key="backgroundColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="ot7-Jq-QgR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="confirmAction:" destination="60B-nI-ASx" eventType="touchUpInside" id="HAt-XN-Oxk"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_delete_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="G4a-4C-QCi">
+                    <rect key="frame" x="160.5" y="29" width="55" height="55"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ElA-5u-7O3">
+                    <rect key="frame" x="30" y="105" width="316" height="50.5"/>
+                    <string key="text">即将删除此钱包，若您想生成该钱包，则需要您使用助记词恢复钱包！
+</string>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="UPM-3I-BpA" firstAttribute="bottom" secondItem="wqk-yq-8ib" secondAttribute="bottom" constant="40" id="6yG-yo-XQh"/>
+                <constraint firstItem="wqk-yq-8ib" firstAttribute="leading" secondItem="M0m-aj-uDZ" secondAttribute="trailing" constant="7" id="Egs-Qv-4v3"/>
+                <constraint firstItem="wqk-yq-8ib" firstAttribute="width" secondItem="M0m-aj-uDZ" secondAttribute="width" id="Mct-3L-tTY"/>
+                <constraint firstItem="ElA-5u-7O3" firstAttribute="leading" secondItem="UPM-3I-BpA" secondAttribute="leading" constant="30" id="MjI-52-UHY"/>
+                <constraint firstItem="M0m-aj-uDZ" firstAttribute="leading" secondItem="UPM-3I-BpA" secondAttribute="leading" constant="39" id="dEj-1X-IZQ"/>
+                <constraint firstItem="UPM-3I-BpA" firstAttribute="bottom" secondItem="M0m-aj-uDZ" secondAttribute="bottom" constant="40" id="lue-jb-1v7"/>
+                <constraint firstItem="ElA-5u-7O3" firstAttribute="centerX" secondItem="60B-nI-ASx" secondAttribute="centerX" id="qnf-Th-MsJ"/>
+                <constraint firstItem="G4a-4C-QCi" firstAttribute="top" secondItem="UPM-3I-BpA" secondAttribute="top" constant="29" id="sos-5p-210"/>
+                <constraint firstItem="UPM-3I-BpA" firstAttribute="trailing" secondItem="wqk-yq-8ib" secondAttribute="trailing" constant="30" id="vO2-Bm-GAE"/>
+                <constraint firstItem="G4a-4C-QCi" firstAttribute="centerX" secondItem="60B-nI-ASx" secondAttribute="centerX" id="yvC-EU-fvW"/>
+                <constraint firstItem="ElA-5u-7O3" firstAttribute="top" secondItem="G4a-4C-QCi" secondAttribute="bottom" constant="21" id="zog-fU-Ff7"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="UPM-3I-BpA"/>
+            <connections>
+                <outlet property="cancelBtn" destination="M0m-aj-uDZ" id="yhB-mx-ruG"/>
+                <outlet property="confirmBtn" destination="wqk-yq-8ib" id="Vmx-cO-2kc"/>
+                <outlet property="descLabel" destination="ElA-5u-7O3" id="nCt-Ug-wYN"/>
+            </connections>
+            <point key="canvasLocation" x="-56" y="-13"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="profile_delete_wallet" width="55" height="55"/>
+    </resources>
+</document>

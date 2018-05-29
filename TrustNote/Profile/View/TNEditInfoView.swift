@@ -17,10 +17,25 @@ class TNEditInfoView: UIView, UITextFieldDelegate {
     @IBOutlet weak var clearBtn: UIButton!
     @IBOutlet weak var warningView: UIView!
     
+    var isEditInfo: Bool? {
+        didSet {
+            guard isEditInfo! else {
+                inputTextField.placeholder = NSLocalizedString(
+                    "Please enter the name of the wallet", comment: "")
+                warningLabel.text = "不超过10个字符"
+                return
+            }
+            inputTextField.placeholder = NSLocalizedString(
+                "Please enter device name", comment: "")
+             warningLabel.text = "不超过20个字符"
+            let defaultConfig = TNConfigFileManager.sharedInstance.readConfigFile()
+            inputTextField.text = defaultConfig["deviceName"] as? String
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        inputTextField.placeholder = NSLocalizedString(
-            "Please enter device name", comment: "")
+    
         inputTextField.rx.text.orEmpty.asDriver().debounce(0.1)
             .map {$0.count > 0}
             .drive(clearBtn.rx_HiddenState)
@@ -31,8 +46,6 @@ class TNEditInfoView: UIView, UITextFieldDelegate {
             self.clearBtn.isHidden = true
             self.warningView.isHidden = true
         }).disposed(by: disposeBag)
-        let defaultConfig = TNConfigFileManager.sharedInstance.readConfigFile()
-        inputTextField.text = defaultConfig["deviceName"] as? String
         inputTextField.delegate = self
         inputTextField.becomeFirstResponder()
     }

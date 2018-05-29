@@ -92,11 +92,13 @@
 "Verify password error" = "密码错误，请重新输入";
 "The wallet has been encrypted" = "钱包已加密";
 "Click continue" = "点击继续";
-/******* verify password string************/
+
+/******* mnemonic string************/
 "Recover wallet" = "恢复钱包";
 "Wallet mnemonic" = "钱包助记词";
 "Use the phrase to restore the wallet" = "使用助记词恢复钱包";
 "Restore the wallet and delete the phrase" = "恢复钱包并删除助记词";
+"Restore from the mnemonic" = "助记词恢复钱包";
 
 /******* tabBar string************/
 "Wallet" = "钱包";
@@ -108,7 +110,7 @@
 "Network connections are unavailable" = "网络连接不可用";
 "Observation" = "观察";
 
-/******* createwallet string************/
+/******* create wallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
 "Common wallet" = "普通钱包";
 "Observe wallet" = "观察钱包";
@@ -116,6 +118,33 @@
 "CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
 "CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
 "Next" = "下一步";
+
+/******* profile string************/
+"Welcome to the TrustNote World" = "欢迎来到TrustNote世界";
+"Transaction records" = "交易记录";
+"My pairing code" = "我的配对码";
+"PairngCode.desc" = "使用其他设备扫描以下配对码，或将以下配对码发送给其他设备，加我好友";
+"Copy paire code" = "复制配对码";
+"Copy success"    = "复制成功";
+"Wallet tools" = "钱包工具";
+"Sync from cloned wallet" = "克隆钱包同步";
+"Settings" = "系统设置";
+"About trustNote" = "关于TrustNote";
+"Language" = "语言";
+"Wallet password" = "钱包密码";
+"Version" = "版本";
+"Hash value" = "哈希值";
+"Personal information" = "个人信息";
+
+/******* manage wallet string************/
+"Manage wallet" = "管理钱包";
+"Wallet name" = "钱包名称";
+"Cold wallet authentication code" = "冷钱包认证码";
+"Wallet ID" = "钱包ID";
+"Delete wallet" = "删除钱包";
+"Please enter the name of the wallet" = "请输入钱包名称";
+"Delete the wallet warning" = "即将删除此钱包，若您想生成该钱包，则需要您使用助记词恢复钱包！";
+"Unable to delete hints" = "该钱包内有资产，无法删除钱包";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

@@ -16,6 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
+        setAppLanguage()
+        
         /// MARK: Make IQKeyboardManager Effective
         IQKeyboardManager.shared.enable = true
         IQKeyboardManager.shared.enableAutoToolbar = false
@@ -43,6 +45,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-    
 }
 
+ extension AppDelegate {
+    
+    func setAppLanguage() {
+        var languege: String = ""
+        if  (UserDefaults.standard.value(forKey: "langeuage")) != nil {
+            languege = UserDefaults.standard.value(forKey: "langeuage") as! String
+        }
+        TNLocalizationTool.shared.setLanguage(langeuage: languege)
+    }
+    
+    func resetRootViewController() {
+        TNGlobalHelper.shared.isNeedLoadData = false
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        let tabBarController = TNTabBarController()
+        window?.rootViewController = tabBarController
+        tabBarController.selectedIndex = (tabBarController.viewControllers?.count)! - 1
+        let nav = tabBarController.selectedViewController as! TNBaseNavigationController
+        let profile = nav.topViewController as! TNProfileViewController
+        profile.enterIntoSetting()
+    }
+ }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="XeY-PB-Vhd" customClass="TNWalletDetailCell" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XeY-PB-Vhd" id="jmC-N8-sEd">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="钱包名称" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6IL-hO-5Ji">
+                        <rect key="frame" x="26" y="13.5" width="57.5" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="OK9-jO-pGI">
+                        <rect key="frame" x="273" y="9" width="26" height="26"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAr-8e-xng">
+                        <rect key="frame" x="100" y="22.5" width="170" height="0.0"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CcL-C3-Kd3">
+                        <rect key="frame" x="26" y="43.5" width="294" height="0.5"/>
+                        <color key="backgroundColor" red="0.93333333333333335" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="0.59999999999999998" id="3j1-hI-l5u"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="qAr-8e-xng" firstAttribute="centerY" secondItem="jmC-N8-sEd" secondAttribute="centerY" id="2aX-6s-zW3"/>
+                    <constraint firstItem="OK9-jO-pGI" firstAttribute="centerY" secondItem="jmC-N8-sEd" secondAttribute="centerY" id="DxW-qp-Wjl"/>
+                    <constraint firstItem="6IL-hO-5Ji" firstAttribute="centerY" secondItem="jmC-N8-sEd" secondAttribute="centerY" id="Gib-28-dzo"/>
+                    <constraint firstAttribute="trailing" secondItem="CcL-C3-Kd3" secondAttribute="trailing" id="PaT-8j-fwd"/>
+                    <constraint firstAttribute="bottom" secondItem="CcL-C3-Kd3" secondAttribute="bottom" id="U19-Zr-Zba"/>
+                    <constraint firstItem="qAr-8e-xng" firstAttribute="leading" secondItem="jmC-N8-sEd" secondAttribute="leading" constant="100" id="chx-K0-afb"/>
+                    <constraint firstAttribute="trailing" secondItem="OK9-jO-pGI" secondAttribute="trailing" constant="21" id="d1z-D0-9Fw"/>
+                    <constraint firstAttribute="trailing" secondItem="qAr-8e-xng" secondAttribute="trailing" constant="50" id="iAf-iw-1yg"/>
+                    <constraint firstItem="6IL-hO-5Ji" firstAttribute="leading" secondItem="jmC-N8-sEd" secondAttribute="leading" constant="26" id="veg-bm-eNf"/>
+                    <constraint firstItem="CcL-C3-Kd3" firstAttribute="leading" secondItem="6IL-hO-5Ji" secondAttribute="leading" id="xZ3-kD-238"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="arrowImageView" destination="OK9-jO-pGI" id="d5g-Zu-Ev3"/>
+                <outlet property="detailLabel" destination="qAr-8e-xng" id="3wc-Tf-GlO"/>
+                <outlet property="detailRightMarginConstraint" destination="iAf-iw-1yg" id="lLb-3X-yct"/>
+                <outlet property="lineView" destination="CcL-C3-Kd3" id="qNw-k9-xik"/>
+                <outlet property="titleTextLabel" destination="6IL-hO-5Ji" id="51i-Wd-2kO"/>
+            </connections>
+            <point key="canvasLocation" x="14.5" y="25"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="profile_arrow" width="26" height="26"/>
+    </resources>
+</document>

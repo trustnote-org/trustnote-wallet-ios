@@ -333,6 +333,20 @@ extension TNEvaluateScriptManager {
              completionHandler!(any as! String)
         }
     }
+    
+    /**
+     * 生成随机字节数
+     * @method randomBytes
+     * @for Base
+     * @param {int}     字节数
+     * @return {string} 随机数的base64
+     */
+    public func generateRandomBytes(num: Int, completionHandler: ((String) -> Swift.Void)?) {
+         let js = String(format:"window.Client.randomBytes(%d)", arguments:[num])
+        webView.evaluateJavaScript(js) {(any, _) in
+            completionHandler!(any as! String)
+        }
+    }
 }
 
 extension TNEvaluateScriptManager {

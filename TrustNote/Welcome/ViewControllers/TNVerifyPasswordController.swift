@@ -54,7 +54,6 @@ class TNVerifyPasswordController: TNBaseViewController {
         passwordAlertView.didClickedCancelBlock = {[unowned self] in
             self.backgroundView.removeFromSuperview()
         }
-        passwordAlertView.setupRadiusCorner(radius: kCornerRadius * 2)
         IQKeyboardManager.shared.enable = false
         distance = 40.0
         isNeedMove = true

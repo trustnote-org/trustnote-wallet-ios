@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNWalletAuthCodePopView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="368" height="440"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="冷钱包认证码" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OtD-x7-QK6">
+                    <rect key="frame" x="30" y="30" width="122.5" height="24"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gvF-3Q-bwJ">
+                    <rect key="frame" x="312" y="8" width="48" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="3w3-jT-oDb"/>
+                        <constraint firstAttribute="height" constant="48" id="fWE-LR-fvN"/>
+                    </constraints>
+                    <state key="normal" image="wallet_frame_dismiss"/>
+                    <connections>
+                        <action selector="dismissPopView:" destination="iN0-l3-epB" eventType="touchUpInside" id="61Z-4S-Zvu"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ZKWUHD6P3CRLTX64TGPIDQ7U4PM7R7AI232342354254252" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBs-nt-uNs">
+                    <rect key="frame" x="30" y="78" width="308" height="33.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wallet_frame" translatesAutoresizingMaskIntoConstraints="NO" id="IlG-PH-UmF">
+                    <rect key="frame" x="89.5" y="136.5" width="189" height="189"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="189" id="2V8-dY-mWg"/>
+                        <constraint firstAttribute="width" secondItem="IlG-PH-UmF" secondAttribute="height" multiplier="1:1" id="CG4-g0-TPX"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Ci-Bt-nQb">
+                    <rect key="frame" x="102.5" y="149.5" width="163" height="163"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="163" id="ARt-IG-W47"/>
+                        <constraint firstAttribute="width" secondItem="8Ci-Bt-nQb" secondAttribute="height" multiplier="1:1" id="a3M-Yk-1cn"/>
+                    </constraints>
+                </imageView>
+                <view alpha="0.80000000000000004" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2aH-ch-2Y1">
+                    <rect key="frame" x="0.0" y="325.5" width="368" height="70"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_pop_bottom" translatesAutoresizingMaskIntoConstraints="NO" id="kbj-IY-CCR">
+                            <rect key="frame" x="0.0" y="-0.5" width="368" height="70"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.82745098039215681" green="0.87450980392156863" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="kbj-IY-CCR" firstAttribute="leading" secondItem="2aH-ch-2Y1" secondAttribute="leading" id="L1j-6n-yoK"/>
+                        <constraint firstItem="kbj-IY-CCR" firstAttribute="top" secondItem="2aH-ch-2Y1" secondAttribute="top" id="Ofe-Ol-pDj"/>
+                        <constraint firstAttribute="trailing" secondItem="kbj-IY-CCR" secondAttribute="trailing" id="a5w-if-pIg"/>
+                        <constraint firstAttribute="bottom" secondItem="kbj-IY-CCR" secondAttribute="bottom" id="igs-U8-btx"/>
+                        <constraint firstAttribute="height" constant="70" id="xNy-vz-kz6"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请使用观察钱包扫描冷钱包认证码" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cil-lp-I5R">
+                    <rect key="frame" x="30" y="397" width="308" height="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2aH-ch-2Y1" secondAttribute="trailing" id="7xy-9z-2h6"/>
+                <constraint firstItem="GBs-nt-uNs" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="8Q6-b9-Zcp"/>
+                <constraint firstItem="GBs-nt-uNs" firstAttribute="top" secondItem="OtD-x7-QK6" secondAttribute="bottom" constant="24" id="8Yg-cY-2JA"/>
+                <constraint firstItem="gvF-3Q-bwJ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="Bg7-kY-VBc"/>
+                <constraint firstItem="OtD-x7-QK6" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="KvN-lP-sng"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="cil-lp-I5R" secondAttribute="bottom" constant="26" id="Pgm-Ap-HxI"/>
+                <constraint firstItem="cil-lp-I5R" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="Qtf-wY-s1H"/>
+                <constraint firstItem="IlG-PH-UmF" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TTY-tP-SGn"/>
+                <constraint firstItem="8Ci-Bt-nQb" firstAttribute="centerY" secondItem="IlG-PH-UmF" secondAttribute="centerY" id="eaf-wr-DWQ"/>
+                <constraint firstItem="2aH-ch-2Y1" firstAttribute="top" secondItem="IlG-PH-UmF" secondAttribute="bottom" id="iso-k8-IyW"/>
+                <constraint firstItem="cil-lp-I5R" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="lhz-6V-PrN"/>
+                <constraint firstItem="OtD-x7-QK6" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="30" id="ppB-D0-exw"/>
+                <constraint firstItem="IlG-PH-UmF" firstAttribute="top" secondItem="GBs-nt-uNs" secondAttribute="bottom" constant="25" id="qnz-Rv-Yuy"/>
+                <constraint firstItem="8Ci-Bt-nQb" firstAttribute="centerX" secondItem="IlG-PH-UmF" secondAttribute="centerX" id="s4h-k6-4rL"/>
+                <constraint firstItem="GBs-nt-uNs" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="vn2-yK-BTE"/>
+                <constraint firstItem="2aH-ch-2Y1" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="vpi-v5-cRZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="gvF-3Q-bwJ" secondAttribute="trailing" constant="8" id="x0v-A2-OT0"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="codeImageView" destination="8Ci-Bt-nQb" id="j8w-Pz-8NC"/>
+                <outlet property="descLabel" destination="cil-lp-I5R" id="LFB-sO-y8F"/>
+                <outlet property="pubkeyLabel" destination="GBs-nt-uNs" id="gPC-wS-NUr"/>
+                <outlet property="titleLabel" destination="OtD-x7-QK6" id="Ymc-w4-7xZ"/>
+            </connections>
+            <point key="canvasLocation" x="30" y="-157"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="profile_pop_bottom" width="323" height="80"/>
+        <image name="wallet_frame" width="189" height="188"/>
+        <image name="wallet_frame_dismiss" width="14" height="14"/>
+    </resources>
+</document>

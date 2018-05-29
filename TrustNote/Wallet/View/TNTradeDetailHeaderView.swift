@@ -19,7 +19,7 @@ class TNTradeDetailHeaderView: UIView {
     var detailModel: TNTransactionRecord? {
         didSet {
             let assert = String(format: "%.4f",  Double((detailModel?.amount!)!) / 1000000.0)
-            let assertStr = assert.substring(toIndex: assert.length - 4)
+            let assertStr = assert.substring(toIndex: assert.length - TNGlobalHelper.shared.unitDecimals)
             if detailModel?.action?.rawValue == "RECEIVED" {
                 assertLabel.text = "+" + assertStr
                 assertLabel.textColor = kGlobalColor
@@ -29,10 +29,10 @@ class TNTradeDetailHeaderView: UIView {
                 assertLabel.text = "-" + assertStr
                 assertLabel.textColor = kThemeTextColor
                 decimalLabel.textColor = kThemeTextColor
-                 descLabel.text = "已发送(MN)"
+                descLabel.text = "已发送(MN)"
             }
             
-            decimalLabel.text = assert.substring(fromIndex: assert.length - 4)
+            decimalLabel.text = assert.substring(fromIndex: assert.length - TNGlobalHelper.shared.unitDecimals)
         }
     }
     override func awakeFromNib() {

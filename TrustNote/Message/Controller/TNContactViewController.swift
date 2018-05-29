@@ -51,7 +51,17 @@ extension TNContactViewController: TNPopCtrlCellClickDelegate {
         case TNPopItem.wallet.rawValue:
             navigationController?.pushViewController(TNCreateWalletController(), animated: true)
         case TNPopItem.code.rawValue:
-            break
+            let myPairingCodeView = TNMyPairingCodeView.loadViewFromNib()
+            myPairingCodeView.generateQRcode {
+                let popX = CGFloat(kLeftMargin)
+                let popH: CGFloat  = IS_iphone5 ? 512 : 492
+                let popY = (kScreenH - popH) / 2
+                let popW = kScreenW - popX * 2
+                let alertView = TNCustomAlertView(alert: myPairingCodeView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .transform)
+                myPairingCodeView.dimissBlock = {
+                    alertView.removeFromSuperview()
+                }
+            }
         default:
             break
         }

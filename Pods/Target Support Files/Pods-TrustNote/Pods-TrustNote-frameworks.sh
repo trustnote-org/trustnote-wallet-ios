@@ -138,6 +138,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/HandyJSON/HandyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReusableKit/ReusableKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework"
@@ -147,12 +148,14 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Then/Then.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/pop/pop.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/HandyJSON/HandyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ReusableKit/ReusableKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework"
@@ -162,6 +165,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Then/Then.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/pop/pop.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

@@ -8,7 +8,11 @@
 
 import UIKit
 
+ let Button_Tag_Begin = 100
+
 class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
+    
+    let Button_Tag_Begin = 100
     
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var walletNameLabel: UILabel!
@@ -17,14 +21,19 @@ class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
     @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var assertLabel: UILabel!
     @IBOutlet weak var decimalLabel: UILabel!
+    @IBOutlet weak var touchBtn: UIButton!
+    
+    var getFirstAddressBlock: ((String) -> Void)?
+    
+    var checkoutWalletDetailBlock: ((Int) -> Void)?
     
     var walletModel: TNWalletModel? {
         didSet {
             walletNameLabel.text = walletModel?.walletName
             markLabel.isHidden = (walletModel?.isLocal)! ? true : false
             let length = walletModel?.balance.length
-            assertLabel.text = walletModel?.balance.substring(toIndex: length! - 4)
-            decimalLabel.text = walletModel?.balance.substring(fromIndex: length! - 4)
+            assertLabel.text = walletModel?.balance.substring(toIndex: length! - TNGlobalHelper.shared.unitDecimals)
+            decimalLabel.text = walletModel?.balance.substring(fromIndex: length! - TNGlobalHelper.shared.unitDecimals)
             if let walletId = walletModel?.walletId {
                  queryWallet(walletId)
             }
@@ -33,17 +42,18 @@ class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.selectionStyle = .none
         containerView.layer.cornerRadius = kCornerRadius
         containerView.layer.shadowColor = UIColor.hexColor(rgbValue: 0xD4E0F1).cgColor
         containerView.layer.shadowOffset = CGSize(width: 0, height: 8.0)
         containerView.layer.shadowOpacity = 0.2
         containerView.layer.shadowRadius = 10.0
-        markLabel.layer.borderColor = UIColor.hexColor(rgbValue: 0xF6782F).cgColor
+        markLabel.layer.borderColor = kThemeMarkColor.cgColor
         markLabel.layer.borderWidth = 1.0
     }
     
-    @IBAction func selectAction(_ sender: Any) {
-        
+    @IBAction func selectAction(_ sender: UIButton) {
+        checkoutWalletDetailBlock?(sender.tag - Button_Tag_Begin)
     }
     
     private func queryWallet(_ walletId: String) {
@@ -59,6 +69,7 @@ class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
                 let backPartStr = address.substring(fromIndex: length - 8)
                 self.addressLabel.text = frontPartStr + "..." + backPartStr
             }
+            self.getFirstAddressBlock?(address)
         }
     }
 }

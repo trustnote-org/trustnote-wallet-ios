@@ -13,6 +13,7 @@ import RxSwift
 class TNPasswordAlertView: UIView, TNNibLoadable {
     
     typealias ClickedButtonBlock = () -> Void
+    
     let disposeBag = DisposeBag()
     
     var verifyCorrectBlock: ClickedButtonBlock?
@@ -28,6 +29,10 @@ class TNPasswordAlertView: UIView, TNNibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         setupProperties()
+        setupRadiusCorner(radius: kCornerRadius * 2)
+        layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        layer.shadowOpacity = 0.3
+        layer.shadowRadius = 20.0
         cancelButton.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             UIView.animate(withDuration: 0.5,
                            delay:0.01,

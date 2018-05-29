@@ -26,7 +26,7 @@ class TNWalletHomeController: TNBaseViewController {
     var isReachable: Bool = true
     var totalAssert = 0.0
     
-    var syncOperation: TNSynchroHistoryData = TNSynchroHistoryData()
+    var syncOperation: TNSynchroHistoryData?
     
     private let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
@@ -81,7 +81,11 @@ class TNWalletHomeController: TNBaseViewController {
             self.refreshAction()
         }).disposed(by: disposeBag)
         
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishDeleteWalletNotification)).subscribe(onNext: { [unowned self] value in
+            self.refreshAction()
+        }).disposed(by: disposeBag)
         if TNGlobalHelper.shared.isNeedLoadData {
+            syncOperation = TNSynchroHistoryData()
             loadData()
         }
     }
@@ -174,7 +178,17 @@ extension TNWalletHomeController: TNPopCtrlCellClickDelegate {
         case TNPopItem.wallet.rawValue:
             navigationController?.pushViewController(TNCreateWalletController(), animated: true)
         case TNPopItem.code.rawValue:
-            break
+            let myPairingCodeView = TNMyPairingCodeView.loadViewFromNib()
+            myPairingCodeView.generateQRcode {
+                let popX = CGFloat(kLeftMargin)
+                let popH: CGFloat  = IS_iphone5 ? 512 : 492
+                let popY = (kScreenH - popH) / 2
+                let popW = kScreenW - popX * 2
+                let alertView = TNCustomAlertView(alert: myPairingCodeView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .transform)
+                myPairingCodeView.dimissBlock = {
+                    alertView.removeFromSuperview()
+                }
+            }
         default:
             break
         }
@@ -236,7 +250,7 @@ extension TNWalletHomeController {
     }
     
     fileprivate func loadData() {
-        
+    
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
             self.syncData()
         }
@@ -247,7 +261,13 @@ extension TNWalletHomeController {
 extension TNWalletHomeController {
     
     fileprivate func syncData() {
-        syncOperation.syncHistoryData(wallets: dataSource)
+        if let syncOperation = syncOperation {
+            syncOperation.syncHistoryData(wallets: dataSource)
+        } else {
+            syncOperation = TNSynchroHistoryData()
+            syncOperation?.syncHistoryData(wallets: dataSource)
+        }
+        
     }
 }
 

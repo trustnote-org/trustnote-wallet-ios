@@ -76,7 +76,7 @@ class TNCreateWalletController: TNNavigationController {
                 let qrInput = String(format:"TTT:{\"type\":\"%@\",\"id\":\"%@\",\"v\":%@}", arguments:["h1", TNGlobalHelper.shared.currentWallet.walletId , String(value)])
                 /// create qrCode
                 self.startAuthAlert.qrCodeImageView.image = UIImage.createHDQRImage(input: qrInput , imgSize: self.startAuthAlert.qrCodeImageView.size)
-                 let authAlertView = TNCustomAlertView(alert: self.startAuthAlert, alertFrame: alertFrame, isShowAnimated: true)
+                let authAlertView = TNCustomAlertView(alert: self.startAuthAlert, alertFrame: alertFrame, AnimatedType: .transform)
                 self.startAuthAlert.dimissBlock = {
                     authAlertView.removeFromSuperview()
                 }
@@ -88,7 +88,7 @@ class TNCreateWalletController: TNNavigationController {
             let marginX: CGFloat = 26.0
             let marginY: CGFloat = 78.0
             let alertFrame = CGRect(x: marginX, y: marginY, width: kScreenW - 2 * marginX, height: kScreenH - 2 * marginY)
-            self.authCompletedAlertView = TNCustomAlertView(alert: self.authCompletedAlert, alertFrame: alertFrame, isShowAnimated: false)
+            self.authCompletedAlertView = TNCustomAlertView(alert: self.authCompletedAlert, alertFrame: alertFrame, AnimatedType: .none)
         }
         authCompletedAlert.clickedDoneButtonBlock = {[unowned self] in
             self.walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
@@ -107,37 +107,6 @@ class TNCreateWalletController: TNNavigationController {
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNCreateObserveWalletNotification), object: nil)
              self.navigationController?.popViewController(animated: true)
         }).disposed(by: disposeBag)
-    }
-}
-
-extension TNCreateWalletController {
-    
-    fileprivate func layoutAllSubviews() {
-        view.addSubview(titleTextLabel)
-        titleTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(navigationBar.snp.bottom).offset(9)
-            make.left.equalToSuperview().offset(kLeftMargin)
-        }
-        
-        view.addSubview(switchView)
-        switchView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(titleTextLabel.snp.bottom).offset(19)
-            make.height.equalTo(46)
-        }
-        
-        view.addSubview(scrollView)
-        scrollView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(switchView.snp.bottom)
-            make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
-        }
-        commonWalletView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - scrollViewTopConstraint - kStatusbarH)
-        scrollView.addSubview(commonWalletView)
-        
-        observeWalletView.frame =  CGRect(x: kScreenW, y: 0, width: kScreenW, height: commonWalletView.height)
-        scrollView.addSubview(observeWalletView)
-        
     }
 }
 
@@ -268,3 +237,35 @@ extension TNCreateWalletController {
         return dict!
     }
 }
+
+extension TNCreateWalletController {
+    
+    fileprivate func layoutAllSubviews() {
+        view.addSubview(titleTextLabel)
+        titleTextLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(navigationBar.snp.bottom).offset(9)
+            make.left.equalToSuperview().offset(kLeftMargin)
+        }
+        
+        view.addSubview(switchView)
+        switchView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(titleTextLabel.snp.bottom).offset(19)
+            make.height.equalTo(46)
+        }
+        
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(switchView.snp.bottom)
+            make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
+        }
+        commonWalletView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - scrollViewTopConstraint - kStatusbarH)
+        scrollView.addSubview(commonWalletView)
+        
+        observeWalletView.frame =  CGRect(x: kScreenW, y: 0, width: kScreenW, height: commonWalletView.height)
+        scrollView.addSubview(observeWalletView)
+        
+    }
+}
+

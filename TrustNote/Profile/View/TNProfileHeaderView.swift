@@ -30,6 +30,9 @@ class TNProfileHeaderView: UIView {
         super.awakeFromNib()
         containerView.layer.cornerRadius = kCornerRadius
         containerView.layer.masksToBounds = true
+        descLabel.text = "Welcome to the TrustNote World".localized
+        checkBtn.setTitle("Transaction records".localized, for: .normal)
+        manageBtn.setTitle("Manage wallet".localized, for: .normal)
         checkBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
         checkBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0)
         manageBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)

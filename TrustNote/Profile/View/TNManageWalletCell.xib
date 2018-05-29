@@ -132,6 +132,7 @@
                 <outlet property="containerView" destination="bOx-Ax-y2x" id="Q2k-4J-PQ8"/>
                 <outlet property="decimalLabel" destination="wgC-LU-LoH" id="c6q-ad-WSw"/>
                 <outlet property="markLabel" destination="U76-vC-89A" id="RR2-d8-wcQ"/>
+                <outlet property="touchBtn" destination="jJF-my-dnw" id="Kyp-qv-vCx"/>
                 <outlet property="unitLabel" destination="IEh-7h-0pG" id="EnF-XY-hbx"/>
                 <outlet property="walletNameLabel" destination="cTY-dD-x7r" id="CPt-qQ-MYu"/>
             </connections>

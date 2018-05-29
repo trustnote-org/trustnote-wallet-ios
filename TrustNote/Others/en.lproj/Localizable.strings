@@ -63,7 +63,7 @@
 
 "CreateWallet.instruction" = "We highly recommend you write the Mnemonic words(Backup Phrase) on Paper and keep it in a safe place, anyone get it can access or spend your assets. Also get start with a small amout of assets.";
 /******* beckup seed string************/
-"Backup Your Seed Phrase" = "Backup Your Seed Phrase";
+"Backup Your Seed Phrase" = "Backup the mnemonic";
 "Backup.detail" = "最后一步：立即备份你的12个助记词";
 "Backup.description" = "您只能用这些单词恢复钱包！一旦丢失，资产将无法找回！一旦泄露，资产将会被盗！";
 "Backup.firstWarning" = "建议手写或保存在离线设备中";
@@ -90,16 +90,17 @@
 "The wallet has been encrypted" = "钱包已加密";
 "Click continue" = "点击继续";
 
-/******* verify password string************/
+/******* mnemonic string************/
 "Recover wallet" = "恢复钱包";
 "Wallet mnemonic" = "钱包助记词";
 "Use the phrase to restore the wallet" = "使用助记词恢复钱包";
 "Restore the wallet and delete the phrase" = "恢复钱包并删除助记词";
+"Restore from the mnemonic" = "Restore from the mnemonic";
 
 /******* tabBar string************/
-"Wallet" = "钱包";
-"Message" = "消息";
-"Profile" = "我的";
+"Wallet" = "Wallet";
+"Message" = "Message";
+"Profile" = "Profile";
 
 /******* wallet string************/
 "Total assets" = "总资产";
@@ -114,6 +115,34 @@
 "CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
 "CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
 "Next" = "NEXT";
+
+/******* profile string************/
+"Welcome to the TrustNote World" = "Welcome to the TrustNote World";
+"Transaction records" = "Transaction records";
+"My pairing code" = "My Matching code";
+"PairngCode.desc" = "Use other device to scan the QT code below, or send the QR code to other devices, add me as friends";
+"Copy paire code" = "Copy Device Code";
+"Copy success"    = "复制成功";
+"Wallet tools" = "Wallet tools";
+"Sync from cloned wallet" = "Sync from cloned wallet";
+"Settings" = "Settings";
+"About trustNote" = "About TrustNote";
+"Language" = "Language";
+"Wallet password" = "钱包密码";
+"Version" = "Version";
+"Hash value" = "Hash Value";
+"Personal information" = "个人信息";
+
+/******* manage wallet string************/
+"Manage wallet" = "Manage wallet";
+"Wallet name" = "Wallet name";
+"Cold wallet authentication code" = "Cold wallet authentication code";
+"Wallet ID" = "Wallet ID";
+"Delete wallet" = "Delete wallet";
+"Please enter the name of the wallet" = "请输入钱包名称";
+"Delete the wallet warning" = "Permanently delete the wallet. If you want to restore the wallet, you must use your mnemonic";
+"Unable to delete hints" = "The wallet can’t be deleted beause it contains assets";
+
 
 "Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
 "Confirm your mnemonic words" = "Confirm your mnemonic words";

@@ -47,6 +47,7 @@ final class TNGlobalHelper {
     
     var witnesses: [String] = []
     
+    let  unitDecimals: Int = 4
     class var shared: TNGlobalHelper {
         
         struct Static {

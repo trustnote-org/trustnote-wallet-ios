@@ -59,7 +59,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJ6-SD-3KS">
-                            <rect key="frame" x="20" y="155" width="129" height="48"/>
+                            <rect key="frame" x="10" y="155" width="157" height="48"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <state key="normal" title="管理钱包" image="profile_wallet">
                                 <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -69,7 +69,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpb-Tg-6dx">
-                            <rect key="frame" x="186" y="155" width="129" height="48"/>
+                            <rect key="frame" x="173" y="155" width="157" height="48"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <state key="normal" title="交易记录" image="profile_transaction">
                                 <color key="titleColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -93,7 +93,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="9vV-kr-d2D" firstAttribute="leading" secondItem="e0P-rR-p9j" secondAttribute="trailing" id="0Ek-rV-7ro"/>
-                        <constraint firstItem="I8d-Jk-oxu" firstAttribute="leading" secondItem="DJ6-SD-3KS" secondAttribute="trailing" constant="18" id="3Et-M7-t9N"/>
+                        <constraint firstItem="I8d-Jk-oxu" firstAttribute="leading" secondItem="DJ6-SD-3KS" secondAttribute="trailing" id="3Et-M7-t9N"/>
                         <constraint firstItem="I8d-Jk-oxu" firstAttribute="centerX" secondItem="vlA-3b-6KZ" secondAttribute="centerX" id="ABG-MN-OZ4"/>
                         <constraint firstItem="BcM-rQ-nTK" firstAttribute="top" secondItem="tbi-Td-Ak2" secondAttribute="bottom" constant="32" id="CcT-QI-Duc"/>
                         <constraint firstAttribute="trailing" secondItem="9vV-kr-d2D" secondAttribute="trailing" constant="22" id="DST-gv-fUg"/>
@@ -109,11 +109,11 @@
                         <constraint firstItem="e0P-rR-p9j" firstAttribute="top" secondItem="tbi-Td-Ak2" secondAttribute="top" constant="2" id="R8F-M5-UWU"/>
                         <constraint firstItem="DuY-43-Imf" firstAttribute="bottom" secondItem="tbi-Td-Ak2" secondAttribute="bottom" constant="-2" id="bVj-K7-Igz"/>
                         <constraint firstAttribute="bottom" secondItem="DJ6-SD-3KS" secondAttribute="bottom" constant="10" id="dsI-ke-iuw"/>
-                        <constraint firstItem="DJ6-SD-3KS" firstAttribute="leading" secondItem="vlA-3b-6KZ" secondAttribute="leading" constant="20" id="eEh-Vh-ZZU"/>
+                        <constraint firstItem="DJ6-SD-3KS" firstAttribute="leading" secondItem="vlA-3b-6KZ" secondAttribute="leading" constant="10" id="eEh-Vh-ZZU"/>
                         <constraint firstAttribute="bottom" secondItem="I8d-Jk-oxu" secondAttribute="bottom" constant="24" id="ecF-lo-9MA"/>
                         <constraint firstItem="fpb-Tg-6dx" firstAttribute="width" secondItem="DJ6-SD-3KS" secondAttribute="width" id="f28-xS-U1T"/>
                         <constraint firstItem="BcM-rQ-nTK" firstAttribute="leading" secondItem="tbi-Td-Ak2" secondAttribute="leading" id="fHQ-CJ-r0e"/>
-                        <constraint firstItem="fpb-Tg-6dx" firstAttribute="leading" secondItem="I8d-Jk-oxu" secondAttribute="trailing" constant="18" id="fvs-Sg-w7c"/>
+                        <constraint firstItem="fpb-Tg-6dx" firstAttribute="leading" secondItem="I8d-Jk-oxu" secondAttribute="trailing" constant="5" id="fvs-Sg-w7c"/>
                     </constraints>
                 </view>
             </subviews>

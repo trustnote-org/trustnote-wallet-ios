@@ -112,7 +112,7 @@ class TNSynchroHistoryData {
     
     private func createWalletAddress(num: Int) {
         
-        walletViewModel.generateWalletAddress(wallet_xPubKey: currentWallet!.xPubKey, change: is_change_address, num: num) {[unowned self] (walletAddressModel) in
+        walletViewModel.generateWalletAddress(wallet_xPubKey: currentWallet!.xPubKey, change: is_change_address, num: num) { (walletAddressModel) in
             
             let addressIndex = num + 1
             var model: TNWalletAddressModel = walletAddressModel

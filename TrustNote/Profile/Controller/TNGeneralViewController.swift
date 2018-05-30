@@ -117,6 +117,11 @@ extension TNGeneralViewController {
         let vc = TNLanguageSwitchController(selectedItem: selectedItem!)
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    @objc fileprivate func syncFromClonedWallet() {
+        let vc = TNCloneWalletController(nibName: "\(TNCloneWalletController.self)", bundle: nil)
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 /// Setup Subviews

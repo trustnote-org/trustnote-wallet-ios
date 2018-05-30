@@ -22,14 +22,13 @@ class TNMyPairingCodeView: UIView, TNNibLoadable {
     @IBOutlet weak var codeImageView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
-        titlelabel.text = NSLocalizedString("My pairing code", comment: "")
-        descLabel.text = NSLocalizedString("PairngCode.desc", comment: "")
-        copyBtn.setTitle(NSLocalizedString("Copy paire code", comment: ""), for: .normal)
+        titlelabel.text = "My pairing code".localized
+        descLabel.text = "PairngCode.desc".localized
+        copyBtn.setTitle("Copy paire code".localized, for: .normal)
         setupRadiusCorner(radius: kCornerRadius * 2)
         copyBtn.setupRadiusCorner(radius: kCornerRadius)
         containerView.layer.borderColor = UIColor.hexColor(rgbValue: 0xF2F2F2).cgColor
         containerView.layer.borderWidth = 4.0
-        pubkeyLabel.text = TNGlobalHelper.shared.ecdsaPubkey
     }
     
 }
@@ -46,7 +45,7 @@ extension TNMyPairingCodeView {
         }
         UIPasteboard.general.string = pairingCode
         let customView = UIImageView(image: UIImage(named: "profile_success"))
-        MBProgress_TNExtension.showAlertMessage(alertMessage: NSLocalizedString("Copy success", comment: ""), customView: customView)
+        MBProgress_TNExtension.showAlertMessage(alertMessage: "Copy success".localized, customView: customView)
     }
 }
 
@@ -59,6 +58,7 @@ extension TNMyPairingCodeView {
             let inputMsg = TNGlobalHelper.shared.ecdsaPubkey + "@" + hub + "#" + randomBytes
             self.pairingCode = inputMsg
             self.codeImageView.image = UIImage.createHDQRImage(input: inputMsg, imgSize: self.codeImageView.size)
+            self.pubkeyLabel.text = inputMsg
             completionHandle()
         }
     }

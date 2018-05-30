@@ -106,6 +106,8 @@
 "Total assets" = "总资产";
 "Network connections are unavailable" = "网络连接不可用";
 "Observation" = "观察";
+"ScanDescription" = "Align QR Code within frame to scan";
+"Tap to turn light on" = "Tap to turn light on";
 
 /******* createwallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -115,14 +117,15 @@
 "CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
 "CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
 "Next" = "NEXT";
+"Done" = "Complete";
 
 /******* profile string************/
 "Welcome to the TrustNote World" = "Welcome to the TrustNote World";
 "Transaction records" = "Transaction records";
-"My pairing code" = "My Matching code";
+"My pairing code" = "My Matching Code";
 "PairngCode.desc" = "Use other device to scan the QT code below, or send the QR code to other devices, add me as friends";
 "Copy paire code" = "Copy Device Code";
-"Copy success"    = "复制成功";
+"Copy success"    = "Copied";
 "Wallet tools" = "Wallet tools";
 "Sync from cloned wallet" = "Sync from cloned wallet";
 "Settings" = "Settings";
@@ -132,6 +135,14 @@
 "Version" = "Version";
 "Hash value" = "Hash Value";
 "Personal information" = "个人信息";
+"Sync Cloned Wallets" = "Sync Cloned Wallets";
+"Press the button to sync" = "Press the button to sync";
+"Sync Wallets" = "Sync Wallets";
+"SyncClonedWallets.warning" = "Caution:We don't recommend cloning your wallet because your wallet is safe as long as your mnemonic is well protected. However,if you experience data inconsistency issue between the original wallet and its clone,you can fix it by using the\"Sync Cloned Wallets\"feature on both wallets.";
+"SyncLoading" = "同步中，切勿退出软件…";
+"Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
+"Signing succeed" = "Signing succeed";
+"Scan auth success description" = "To complete the authoization process, use the watch-only wallet to scan the signature QR code";
 
 /******* manage wallet string************/
 "Manage wallet" = "Manage wallet";

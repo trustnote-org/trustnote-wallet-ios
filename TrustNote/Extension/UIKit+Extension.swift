@@ -18,7 +18,7 @@ extension UIView: ViewRadiusCornerProtocol {
     
     func setupRadiusCorner(radius: CGFloat) {
         self.layer.cornerRadius = radius
-        self.layer.masksToBounds = true
+      //  self.layer.masksToBounds = true
     }
     
     

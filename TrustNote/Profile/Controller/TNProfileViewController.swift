@@ -140,7 +140,7 @@ extension TNProfileViewController {
         let dataArr = [
             [["title" : "Backup Your Seed Phrase".localized, "detail" : "", "action" : "", "isCanSelected" : true],
                          ["title" : "Restore from the mnemonic".localized, "detail" : "", "action" : "", "isCanSelected" : true]],
-                        [["title" : "Sync from cloned wallet".localized, "detail" : "", "action" : "", "isCanSelected" : true]]
+                        [["title" : "Sync from cloned wallet".localized, "detail" : "", "action" : "syncFromClonedWallet", "isCanSelected" : true]]
                       ] as [Any]
         let vc = TNGeneralViewController(dataSource: dataArr, titleText: TNLocalizationTool.shared.valueWithKey(key: "Wallet tools"))
         navigationController?.pushViewController(vc, animated: true)

@@ -94,6 +94,7 @@ extension TNEvaluateScriptManager {
                 if xPrivKey is Int && (xPrivKey as! Int) == 0 {
                    NotificationCenter.default.post(name: notificationName, object: "0")
                 } else if xPrivKey is String {
+                    
                     TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
                     if let passsword = TNGlobalHelper.shared.password {
                         let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passsword)

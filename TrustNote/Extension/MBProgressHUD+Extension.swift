@@ -49,7 +49,7 @@ extension MBProgress_TNExtension {
         hud.label.font = UIFont.systemFont(ofSize: 12)
         hud.label.numberOfLines = 0
         hud.bezelView.alpha = 0.8
-        hud.hide(animated: true, afterDelay: 1.5)
+        hud.hide(animated: true, afterDelay: 1.0)
     }
 
 }

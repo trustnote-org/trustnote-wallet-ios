@@ -28,7 +28,7 @@ class TNSynchroHistoryData {
     required init() {
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishedGetHistoryTransaction), object: nil).subscribe(onNext: {[unowned self] (notify) in
-            guard !TNGlobalHelper.shared.isRecoveringObserveWallet else {return}
+            guard TNGlobalHelper.shared.recoverStyle == .none else {return}
             let response = notify.object as! [String : Any]
             guard !self.is_change_address  else {
                 guard !response.isEmpty else {
@@ -64,7 +64,7 @@ class TNSynchroHistoryData {
     }
     
     func syncHistoryData(wallets: [TNWalletModel]) {
-        guard !TNGlobalHelper.shared.isRecoveringCommonWallet && !TNGlobalHelper.shared.isRecoveringObserveWallet else {
+        guard TNGlobalHelper.shared.recoverStyle == .none else {
             return
         }
         guard operationWallets.isEmpty else {

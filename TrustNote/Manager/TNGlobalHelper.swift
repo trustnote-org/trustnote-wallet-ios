@@ -8,11 +8,19 @@
 
 import Foundation
 
+enum TNWalletRecoverStyle {
+    case all
+    case observed
+    case syncCloned
+    case none
+}
+
 final class TNGlobalHelper {
     
     var isVerifyPasswdForMain = true
-    var isRecoveringCommonWallet = false
-    var isRecoveringObserveWallet = false
+//    var isRecoveringCommonWallet = false
+//    var isRecoveringObserveWallet = false
+    var recoverStyle: TNWalletRecoverStyle = .none
     
     var isNeedLoadData = true
     var password: String? = nil

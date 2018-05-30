@@ -53,6 +53,7 @@ let TNCreateObserveWalletNotification          = "TNCreateObserveWalletNotificat
 let TNEditInfoCompletionNotification           = "TNEditInfoCompletionNotification"
 let TNModifyWalletNameNotification             = "TNModifyWalletNameNotification"
 let TNDidFinishDeleteWalletNotification        = "TNDidFinishDeleteWalletNotification"
+let TNDidFinishSyncClonedWalletNotify          = "TNDidFinishSyncClonedWalletNotify"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

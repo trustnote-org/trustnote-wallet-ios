@@ -109,6 +109,8 @@
 "Total assets" = "总资产";
 "Network connections are unavailable" = "网络连接不可用";
 "Observation" = "观察";
+"ScanDescription" = "将二维码放入框内，自动扫描";
+"Tap to turn light on" = "轻触点亮";
 
 /******* create wallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -118,6 +120,7 @@
 "CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
 "CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
 "Next" = "下一步";
+"Done" = "完成";
 
 /******* profile string************/
 "Welcome to the TrustNote World" = "欢迎来到TrustNote世界";
@@ -125,7 +128,7 @@
 "My pairing code" = "我的配对码";
 "PairngCode.desc" = "使用其他设备扫描以下配对码，或将以下配对码发送给其他设备，加我好友";
 "Copy paire code" = "复制配对码";
-"Copy success"    = "复制成功";
+"Copy success"    = "已复制";
 "Wallet tools" = "钱包工具";
 "Sync from cloned wallet" = "克隆钱包同步";
 "Settings" = "系统设置";
@@ -135,6 +138,14 @@
 "Version" = "版本";
 "Hash value" = "哈希值";
 "Personal information" = "个人信息";
+"Sync Cloned Wallets" = "克隆钱包同步";
+"Press the button to sync" = "点击按钮同步";
+"Sync Wallets" = "同步钱包";
+"SyncClonedWallets.warning" = "不建议您克隆钱包，保护好您的助记词就是安全的。如果您遇到克隆钱包导致的数据不同步，请在两个钱包上使用克隆钱包同步功能。";
+"SyncLoading" = "同步中，切勿退出软件…";
+"Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
+"Signing succeed" = "授权成功";
+"Scan auth success description" = "使用对应观察钱包扫描上方二维码完成授权";
 
 /******* manage wallet string************/
 "Manage wallet" = "管理钱包";

@@ -156,13 +156,20 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
        
         TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
             
-            if TNGlobalHelper.shared.isRecoveringCommonWallet || TNGlobalHelper.shared.isRecoveringObserveWallet {
-                let notificationName = Notification.Name(rawValue: TNDidReceiveRestoreWalletResponse)
-                NotificationCenter.default.post(name: notificationName, object: anyObject)
-            } else {
+            if TNGlobalHelper.shared.recoverStyle == .none {
                 let notificationName = Notification.Name(rawValue: TNDidFinishedGetHistoryTransaction)
                 NotificationCenter.default.post(name: notificationName, object: anyObject)
+            } else {
+                let notificationName = Notification.Name(rawValue: TNDidReceiveRestoreWalletResponse)
+                NotificationCenter.default.post(name: notificationName, object: anyObject)
             }
+//            if TNGlobalHelper.shared.isRecoveringCommonWallet || TNGlobalHelper.shared.isRecoveringObserveWallet {
+//                let notificationName = Notification.Name(rawValue: TNDidReceiveRestoreWalletResponse)
+//                NotificationCenter.default.post(name: notificationName, object: anyObject)
+//            } else {
+//                let notificationName = Notification.Name(rawValue: TNDidFinishedGetHistoryTransaction)
+//                NotificationCenter.default.post(name: notificationName, object: anyObject)
+//            }
             let model = TNHistoryTransactionModel.deserialize(from: anyObject as? [String : Any] )
             let historyRecordsViewModel = TNHistoryRecordsViewModel()
             historyRecordsViewModel.historyTransactionModel = model!

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNSyncClonedWalletsView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="340" height="190"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_sync" translatesAutoresizingMaskIntoConstraints="NO" id="N8T-p3-Iwf">
+                    <rect key="frame" x="142.5" y="48" width="55" height="55"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_loading" translatesAutoresizingMaskIntoConstraints="NO" id="eJ3-6S-Lak">
+                    <rect key="frame" x="170" y="75" width="20" height="20"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="恢复中，请勿关闭软件" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JbP-F0-kVm">
+                    <rect key="frame" x="99" y="128" width="143" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="N8T-p3-Iwf" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="48" id="Jju-tR-cdl"/>
+                <constraint firstItem="JbP-F0-kVm" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NrX-SS-oGh"/>
+                <constraint firstItem="eJ3-6S-Lak" firstAttribute="centerX" secondItem="N8T-p3-Iwf" secondAttribute="centerX" constant="10" id="Wp4-CM-AVY"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="JbP-F0-kVm" secondAttribute="bottom" constant="45" id="d8u-li-FDE"/>
+                <constraint firstItem="eJ3-6S-Lak" firstAttribute="bottom" secondItem="N8T-p3-Iwf" secondAttribute="bottom" constant="-8" id="i3o-1r-Ng2"/>
+                <constraint firstItem="N8T-p3-Iwf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="sjx-fa-oc7"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="loadingImageView" destination="eJ3-6S-Lak" id="fxx-UG-Dy1"/>
+                <outlet property="loadingText" destination="JbP-F0-kVm" id="OrC-XS-ZZ1"/>
+            </connections>
+            <point key="canvasLocation" x="16" y="-156"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="profile_loading" width="20" height="20"/>
+        <image name="profile_sync" width="55" height="55"/>
+    </resources>
+</document>

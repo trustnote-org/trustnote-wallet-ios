@@ -25,10 +25,6 @@ class TNWalletDetailController: TNNavigationController {
         return deleteWalletAlertView
     }()
     
-    fileprivate lazy var walletAuthCodePopView: TNWalletAuthCodePopView = {
-        let walletAuthCodePopView = TNWalletAuthCodePopView.walletAuthCodePopView()
-        return walletAuthCodePopView
-    }()
     
     let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
@@ -129,17 +125,9 @@ extension TNWalletDetailController: UITableViewDelegate, UITableViewDataSource {
             navigationController?.pushViewController(vc, animated: true)
         }
         if indexPath.row == tableView.numberOfRows(inSection: 0) - 1 {
-            let qrInput = TNWalletAuthCode().generateWalletAuthCode(wallet: walletModel)
-            walletAuthCodePopView.codeImageView.image = UIImage.createHDQRImage(input: qrInput, imgSize: walletAuthCodePopView.codeImageView.size)
-            walletAuthCodePopView.pubkeyLabel.text = walletModel.xPubKey
-            let authCodePopView = createPopView(walletAuthCodePopView, height: 440, animatedType: .transform)
-            deleteBtn.layer.borderColor = kThemeMarkColor.cgColor
-            deleteBtn.setTitleColor(kThemeMarkColor, for: .normal)
-            walletAuthCodePopView.dimissBlock = {[unowned self] in
-                authCodePopView.removeFromSuperview()
-                self.deleteBtn.layer.borderColor = kGlobalColor.cgColor
-                self.deleteBtn.setTitleColor(kGlobalColor, for: .normal)
-            }
+            let vc = TNWalletAuthCodeController(nibName: "\(TNWalletAuthCodeController.self)", bundle: nil)
+            vc.wallet = walletModel
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

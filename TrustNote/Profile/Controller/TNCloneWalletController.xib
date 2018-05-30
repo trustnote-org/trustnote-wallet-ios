@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TNCloneWalletController" customModule="TrustNote" customModuleProvider="target">
+            <connections>
+                <outlet property="containerView" destination="Dcc-jY-334" id="nuZ-2m-PBe"/>
+                <outlet property="containerViewheightConstraint" destination="YvK-Cx-x4P" id="Mtm-vT-4Ve"/>
+                <outlet property="contentLabel" destination="x7z-7p-Jk3" id="UGA-oq-zxq"/>
+                <outlet property="descLabel" destination="V2Z-DI-4wS" id="YkV-qf-TyV"/>
+                <outlet property="imageTopMarginConstraint" destination="WPZ-CY-ymy" id="evh-RW-zid"/>
+                <outlet property="imageWidthConstraint" destination="OmY-jy-lKt" id="FQv-HU-ONQ"/>
+                <outlet property="syncBtn" destination="uhL-52-sJi" id="c76-78-OD2"/>
+                <outlet property="syncBtnTopMarginConstraint" destination="6lW-1n-fjO" id="YuN-PW-boz"/>
+                <outlet property="titleLabel" destination="UQW-8J-c6H" id="WhO-ps-RVo"/>
+                <outlet property="topMarginConstraint" destination="Ul3-AO-b28" id="lF0-VA-GBV"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OXW-wb-YkO">
+                    <rect key="frame" x="26" y="20" width="44" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="8q4-3I-Zgq"/>
+                        <constraint firstAttribute="width" constant="44" id="r6U-I7-LHM"/>
+                    </constraints>
+                    <state key="normal" image="welcome_back"/>
+                    <connections>
+                        <action selector="goBack:" destination="-1" eventType="touchUpInside" id="f3p-yK-iWm"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="克隆钱包同步" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQW-8J-c6H">
+                    <rect key="frame" x="26" y="73" width="323" height="29"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                    <color key="textColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="点击按钮同步" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V2Z-DI-4wS">
+                    <rect key="frame" x="26" y="116" width="86" height="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_clone_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="g44-6B-YHq">
+                    <rect key="frame" x="77" y="187" width="220" height="220"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="g44-6B-YHq" secondAttribute="height" multiplier="1:1" id="61r-YX-eaW"/>
+                        <constraint firstAttribute="width" constant="220" id="OmY-jy-lKt"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uhL-52-sJi">
+                    <rect key="frame" x="26" y="593" width="323" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Xqi-3x-DhX"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <state key="normal" title="同步钱包">
+                        <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="syncWallet:" destination="-1" eventType="touchUpInside" id="JiV-5e-ESz"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dcc-jY-334">
+                    <rect key="frame" x="26" y="481" width="323" height="80"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="不建议您克隆钱包，保护好您的助记词就是安全的。如果您遇到克隆钱包导致的数据不同步，请在两个钱包上使用克隆钱包同步功能。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x7z-7p-Jk3">
+                            <rect key="frame" x="23" y="10" width="288" height="50.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.8784313725490196" green="0.35686274509803922" blue="0.25490196078431371" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XPE-2O-RrK">
+                            <rect key="frame" x="10" y="13" width="7" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="0.96078431372549022" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="XPE-2O-RrK" firstAttribute="leading" secondItem="Dcc-jY-334" secondAttribute="leading" constant="10" id="Mso-hj-6QE"/>
+                        <constraint firstItem="x7z-7p-Jk3" firstAttribute="top" secondItem="XPE-2O-RrK" secondAttribute="top" constant="-3" id="Qw7-YA-ji4"/>
+                        <constraint firstAttribute="height" constant="80" id="YvK-Cx-x4P"/>
+                        <constraint firstAttribute="trailing" secondItem="x7z-7p-Jk3" secondAttribute="trailing" constant="12" id="emg-c9-5lZ"/>
+                        <constraint firstItem="x7z-7p-Jk3" firstAttribute="top" secondItem="Dcc-jY-334" secondAttribute="top" constant="10" id="kYb-6l-Cel"/>
+                        <constraint firstItem="x7z-7p-Jk3" firstAttribute="leading" secondItem="Dcc-jY-334" secondAttribute="leading" constant="23" id="unE-ki-JCJ"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="uhL-52-sJi" secondAttribute="bottom" constant="26" id="1vS-5E-PAZ"/>
+                <constraint firstItem="UQW-8J-c6H" firstAttribute="leading" secondItem="OXW-wb-YkO" secondAttribute="leading" id="2qi-WF-FJM"/>
+                <constraint firstItem="uhL-52-sJi" firstAttribute="top" secondItem="Dcc-jY-334" secondAttribute="bottom" constant="32" id="6lW-1n-fjO"/>
+                <constraint firstItem="UQW-8J-c6H" firstAttribute="top" secondItem="OXW-wb-YkO" secondAttribute="bottom" constant="9" id="Kad-2L-Rxd"/>
+                <constraint firstItem="OXW-wb-YkO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="26" id="LXb-LA-MxE"/>
+                <constraint firstItem="V2Z-DI-4wS" firstAttribute="top" secondItem="UQW-8J-c6H" secondAttribute="bottom" constant="14" id="RdR-r9-E3v"/>
+                <constraint firstItem="V2Z-DI-4wS" firstAttribute="leading" secondItem="UQW-8J-c6H" secondAttribute="leading" id="SFT-5S-qgc"/>
+                <constraint firstItem="g44-6B-YHq" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Td4-MV-gcf"/>
+                <constraint firstItem="OXW-wb-YkO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="Ul3-AO-b28"/>
+                <constraint firstItem="g44-6B-YHq" firstAttribute="top" secondItem="V2Z-DI-4wS" secondAttribute="bottom" constant="54" id="WPZ-CY-ymy"/>
+                <constraint firstItem="Dcc-jY-334" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Z23-TD-NYY"/>
+                <constraint firstItem="uhL-52-sJi" firstAttribute="leading" secondItem="Dcc-jY-334" secondAttribute="leading" id="cAO-Tn-oDb"/>
+                <constraint firstItem="UQW-8J-c6H" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hrm-VM-lxk"/>
+                <constraint firstItem="uhL-52-sJi" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="lz4-Ja-qy2"/>
+                <constraint firstItem="uhL-52-sJi" firstAttribute="leading" secondItem="UQW-8J-c6H" secondAttribute="leading" id="wdH-se-ZI4"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="profile_clone_wallet" width="220" height="220"/>
+        <image name="welcome_back" width="44" height="44"/>
+    </resources>
+</document>

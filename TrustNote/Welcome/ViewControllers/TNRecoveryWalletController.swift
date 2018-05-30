@@ -15,6 +15,7 @@ class TNRecoveryWalletController: TNBaseViewController {
     let viewModel = TNRestoreWalletViewModel()
     var hub: String?
     var isDeleteMnemonic: Bool?
+    var syncLoadingView : TNCustomAlertView?
     
     private let backBtn = UIButton().then {
         $0.setImage(UIImage(named: "welcome_back"), for: .normal)
@@ -66,6 +67,13 @@ class TNRecoveryWalletController: TNBaseViewController {
         $0.alpha = 0.3
     }
     
+    
+    fileprivate lazy var loadingView: TNSyncClonedWalletsView = {
+        let loadingView = TNSyncClonedWalletsView.loadViewFromNib()
+        loadingView.loadingText.text = "SyncLoading".localized
+        return loadingView
+    }()
+    
     fileprivate lazy var seedView: TNBackupSeedBackView = {[weak self] in
         let seedView = TNBackupSeedBackView.backupSeedBackView()
         seedView.seedContainerView.isCanEdit = true
@@ -108,7 +116,7 @@ class TNRecoveryWalletController: TNBaseViewController {
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishRecoverWalletNotification), object: nil).subscribe(onNext: {[unowned self] _ in
-            guard !TNGlobalHelper.shared.isRecoveringObserveWallet else {
+            guard TNGlobalHelper.shared.recoverStyle == .all && self.viewModel.isRecoverWallet else {
                 return
             }
             self.finishRecoverWallet()
@@ -131,6 +139,95 @@ class TNRecoveryWalletController: TNBaseViewController {
         super.viewDidDisappear(animated)
         if navigationController?.viewControllers.count == 3 {
             navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        }
+    }
+}
+
+/// MARK: event handle
+extension TNRecoveryWalletController {
+    
+    @objc fileprivate func goBack() {
+        view.endEditing(true)
+        for childViewController in (navigationController?.viewControllers)! {
+            if childViewController.isKind(of: TNCreateAndRestoreWalletController.self) {
+                navigationController?.popToViewController(childViewController, animated: true)
+            }
+        }
+    }
+    
+    fileprivate func validationInput(isDelete: Bool) {
+        isDeleteMnemonic = isDelete
+        loadingView.startAnimation()
+        let popX = CGFloat(kLeftMargin)
+        let popH: CGFloat = 190
+        let popY = (kScreenH - popH) / 2
+        let popW = kScreenW - popX * 2
+        syncLoadingView = TNCustomAlertView(alert: loadingView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .none)
+        var flag = true
+        for (index, textField) in seedView.seedContainerView.textFields.enumerated() {
+            if !seedView.seedContainerView.allWords.contains(textField.text!) {
+                flag = false
+                break
+            }
+            seedPhrase.append(textField.text!)
+            if index != seedView.seedContainerView.textFields.count - 1 {
+                seedPhrase.append(" ")
+            }
+        }
+        guard flag else {
+            loadingView.stopAnimation()
+            syncLoadingView?.removeFromSuperview()
+            warningImageView.isHidden = false
+            warningLabel.isHidden = false
+            return
+        }
+        TNGlobalHelper.shared.mnemonic = seedPhrase
+        hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: false)
+        TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub!)
+        TNWebSocketManager.sharedInstance.generateNewPrivkeyBlock = {
+            self.createPrivateKey()
+        }
+    }
+    
+    fileprivate func createPrivateKey() {
+        
+        TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: seedPhrase)
+    }
+    
+    fileprivate func finishGeneratePrivateKey() {
+        
+        TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
+        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
+        TNGlobalHelper.shared.tempPrivKey = ""
+        TNSQLiteManager.sharedManager.deleteAllWallets()
+        viewModel.isRecoverWallet = true
+        TNGlobalHelper.shared.recoverStyle = .all
+        viewModel.createNewWalletWhenRestoreWallet()
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    fileprivate func finishRecoverWallet() {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        viewModel.isRecoverWallet = false
+        TNGlobalHelper.shared.recoverStyle = .none
+        TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: hub!)
+        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
+        
+        if isDeleteMnemonic! {
+            TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
+        } else {
+            TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: TNGlobalHelper.shared.mnemonic)
+        }
+        TNGlobalHelper.shared.mnemonic = ""
+        TNGlobalHelper.shared.password = nil
+        TNGlobalHelper.shared.isVerifyPasswdForMain = false
+        TNGlobalHelper.shared.isNeedLoadData = false
+        TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+            self.loadingView.stopAnimation()
+            self.syncLoadingView?.removeFromSuperview()
+            UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
         }
     }
 }
@@ -194,84 +291,5 @@ extension TNRecoveryWalletController {
             make.bottom.equalTo(deleteBtn.snp.top).offset(-24)
             make.height.equalTo(deleteBtn.snp.height)
         }
-    }
-}
-
-/// MARK: event handle
-extension TNRecoveryWalletController {
-    
-    @objc fileprivate func goBack() {
-        view.endEditing(true)
-        for childViewController in (navigationController?.viewControllers)! {
-            if childViewController.isKind(of: TNCreateAndRestoreWalletController.self) {
-                navigationController?.popToViewController(childViewController, animated: true)
-            }
-        }
-    }
-    
-    fileprivate func validationInput(isDelete: Bool) {
-        isDeleteMnemonic = isDelete
-        var flag = true
-        for (index, textField) in seedView.seedContainerView.textFields.enumerated() {
-            if !seedView.seedContainerView.allWords.contains(textField.text!) {
-                flag = false
-                break
-            }
-            seedPhrase.append(textField.text!)
-            if index != seedView.seedContainerView.textFields.count - 1 {
-                seedPhrase.append(" ")
-            }
-        }
-        guard flag else {
-            warningImageView.isHidden = false
-            warningLabel.isHidden = false
-            return
-        }
-        TNGlobalHelper.shared.mnemonic = seedPhrase
-        hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: false)
-        TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub!)
-        TNWebSocketManager.sharedInstance.generateNewPrivkeyBlock = {
-            self.createPrivateKey()
-        }
-    }
-    
-    fileprivate func createPrivateKey() {
-        TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: seedPhrase)
-    }
-    
-    fileprivate func finishGeneratePrivateKey() {
-        
-        TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
-        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        TNGlobalHelper.shared.tempPrivKey = ""
-        TNSQLiteManager.sharedManager.deleteAllWallets()
-        viewModel.isRecoverWallet = true
-        TNGlobalHelper.shared.isRecoveringCommonWallet = true
-        viewModel.createNewWalletWhenRestoreWallet()
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-    }
-    
-    fileprivate func finishRecoverWallet() {
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        viewModel.isRecoverWallet = false
-        TNGlobalHelper.shared.isRecoveringCommonWallet = false
-        TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: hub!)
-        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        
-        if isDeleteMnemonic! {
-            TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
-        } else {
-            TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: TNGlobalHelper.shared.mnemonic)
-        }
-        TNGlobalHelper.shared.mnemonic = ""
-        TNGlobalHelper.shared.password = nil
-        TNGlobalHelper.shared.isVerifyPasswdForMain = false
-        TNGlobalHelper.shared.isNeedLoadData = false
-        TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
-        }
-        
     }
 }

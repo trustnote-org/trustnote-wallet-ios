@@ -19,7 +19,7 @@ enum TNAlertAnimatedStyle {
 
 class TNCustomAlertView: UIView {
     
-    var alertView: UIView?
+    weak var alertView: UIView?
     
     var alertBounds: CGRect!
     

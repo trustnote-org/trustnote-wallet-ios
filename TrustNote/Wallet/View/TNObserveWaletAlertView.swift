@@ -13,7 +13,7 @@ class TNObserveWaletAlertView: UIView {
     
     let disposeBag = DisposeBag()
     
-    var dimissBlock: ClickedDismissButtonBlock?
+    var dismissBlock: ClickedDismissButtonBlock?
     
     typealias ClickedNextButtonBlock = () -> Void
     
@@ -32,7 +32,7 @@ class TNObserveWaletAlertView: UIView {
         nextBtn.layer.masksToBounds = true
         
         dimissBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self]  in
-            self.dimissBlock?()
+            self.dismissBlock?()
         }).disposed(by: disposeBag)
         
         nextBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self]  in

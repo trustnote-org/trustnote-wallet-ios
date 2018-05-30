@@ -22,8 +22,9 @@ class TNDeleteWalletAlertView: UIView, TNNibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         setupRadiusCorner(radius: kCornerRadius * 2)
+        layer.shadowColor = kGlobalColor.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 2.0)
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = 0.2
         layer.shadowRadius = 20.0
         confirmBtn.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
         cancelBtn.setTitle(NSLocalizedString("Cancel", comment: ""), for: .normal)

@@ -23,6 +23,8 @@ class TNScanViewController: UIViewController {
     
     var scanningCompletionBlock: ((String) -> Void)?
     
+    var isPush: Bool = true
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.clear
@@ -32,10 +34,12 @@ class TNScanViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        UIApplication.shared.statusBarStyle = .lightContent
         addTimer()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        UIApplication.shared.statusBarStyle = .`default`
         stopTimer()
     }
     
@@ -49,20 +53,17 @@ extension TNScanViewController {
     
     fileprivate func creatControl() {
         let scanW: CGFloat = kScreenW * 0.65
-        let tabbarH: CGFloat = 64 + kSafeAreaBottomH
-        let cornerW: CGFloat = 26.0
+        let tabbarH: CGFloat = 84 + kSafeAreaBottomH
         let marginX: CGFloat = (kScreenW - scanW) * 0.5
         let maskH: CGFloat = kScreenH - tabbarH - kNavBarHeight
         let marginY: CGFloat = (maskH - scanW) * 0.5
         
         let topBarView = UIView(frame: CGRect(x: 0, y: 0, width: kScreenW, height: kNavBarHeight))
-        topBarView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        topBarView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.addSubview(topBarView)
         
-        let backBtn = UIButton(frame: CGRect(x: 0, y: kStatusbarH, width: 50, height: 44))
-        backBtn.setTitle("返回", for: .normal)
-        backBtn.setTitleColor(UIColor.white, for: .normal)
-        backBtn.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        let backBtn = UIButton(frame: CGRect(x: CGFloat(kLeftMargin), y: kStatusbarH, width: 50, height: 44))
+        backBtn.setImage(UIImage(named: "back_white"), for: .normal)
         backBtn.addTarget(self, action: #selector(TNScanViewController.goBack), for: .touchUpInside)
         topBarView.addSubview(backBtn)
         
@@ -87,33 +88,44 @@ extension TNScanViewController {
         scanView.addSubview(line!)
         
         let borderView = UIView(frame: CGRect(x: 0, y: 0, width: scanW, height: scanW))
-        borderView.layer.borderColor = UIColor.white.cgColor
-        borderView.layer.borderWidth = 1.0
+        borderView.layer.borderColor = UIColor.white.withAlphaComponent(0.3).cgColor
+        borderView.layer.borderWidth = 0.3
         scanView.addSubview(borderView)
         
-        for i in 0..<4 {
-            let imgViewX = (scanW - cornerW) * CGFloat(i % 2)
-            let imgViewY = (scanW - cornerW) * CGFloat(i / 2)
-            let imgView = UIImageView(frame: CGRect(x: imgViewX, y: imgViewY, width: cornerW, height: cornerW))
-            if (i == 0 || i == 1) {
-                imgView.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi / 2 * Double(i)))
-            } else {
-                imgView.transform = CGAffineTransform(rotationAngle: CGFloat(-Double.pi / 2 * Double(i - 1)))
-            }
-            drawImageForImageView(imgView)
-            scanView.addSubview(imgView)
-        }
+        let lightTextLabel = UILabel()
+        lightTextLabel.text = "Tap to turn light on".localized
+        lightTextLabel.font = UIFont.systemFont(ofSize: 14)
+        lightTextLabel.textColor = UIColor.white
+        lightTextLabel.sizeToFit()
+        lightTextLabel.center = CGPoint(x: scanW * 0.5, y: scanW - (16 + lightTextLabel.height * 0.5))
+        scanView.addSubview(lightTextLabel)
+        let lightBtn = UIButton()
+        lightBtn.setImage(UIImage(named: "light_off"), for: .normal)
+        lightBtn.setImage(UIImage(named: "light_on"), for: .selected)
+        lightBtn.sizeToFit()
+        lightBtn.addTarget(self, action: #selector(self.lightBtnOnClick(btn:)), for: .touchUpInside)
+        lightBtn.center = CGPoint(x: scanW * 0.5, y: lightTextLabel.frame.minY - 20)
+        scanView.addSubview(lightBtn)
+        
+        
+        let frameView = UIImageView(image: UIImage(named: "sao_frame"))
+        frameView.size = CGSize(width: scanW + 10, height: scanW + 10)
+        frameView.center = scanView.center
+        maskView?.addSubview(frameView)
+        
+        let descLabel = UILabel()
+        descLabel.text = "ScanDescription".localized
+        descLabel.textColor = UIColor.white.withAlphaComponent(0.7)
+        descLabel.font = UIFont.systemFont(ofSize: 14.0)
+        descLabel.sizeToFit()
+        descLabel.y = scanView.frame.maxY + 24
+        descLabel.centerX = kScreenW * 0.5
+        maskView?.addSubview(descLabel)
         
         let tabBarView = UIView(frame: CGRect(x: 0, y: kScreenH - tabbarH, width: kScreenW, height: tabbarH))
-        tabBarView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        tabBarView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         view.addSubview(tabBarView)
         
-        let lightBtn = UIButton(frame: CGRect(x: kScreenW - 100, y: 0, width: 100, height: tabbarH - kSafeAreaBottomH))
-        lightBtn.titleLabel?.font = UIFont.systemFont(ofSize: 16.0)
-        lightBtn.setTitle("开启照明", for: .normal)
-        lightBtn.setTitle("关闭照明", for: .selected)
-        lightBtn.addTarget(self, action: #selector(TNScanViewController.lightBtnOnClick), for: .touchUpInside)
-        tabBarView.addSubview(lightBtn)
     }
     
     fileprivate func drawLineForImageView(_ imageView: UIImageView) {
@@ -121,8 +133,8 @@ extension TNScanViewController {
         UIGraphicsBeginImageContext(size)
         let context = UIGraphicsGetCurrentContext()
         let colorSpace = CGColorSpaceCreateDeviceRGB()
-        let startColorComponents = UIColor.green.cgColor.components
-        let endColorComponents = UIColor.white.cgColor.components
+        let startColorComponents = kGlobalColor.cgColor.components
+        let endColorComponents = kGlobalColor.cgColor.components
         let components = [startColorComponents![0], startColorComponents![1], startColorComponents![2], startColorComponents![3], endColorComponents![0], endColorComponents![1]]
         let locations = [CGFloat(0.0), CGFloat(1.0)]
         let gradient = CGGradient(colorSpace: colorSpace, colorComponents: components, locations: locations, count: 2)
@@ -194,7 +206,11 @@ extension TNScanViewController {
     }
     
     @objc fileprivate func goBack() {
-        navigationController?.popViewController(animated: true)
+        if isPush {
+           navigationController?.popViewController(animated: true)
+        } else {
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc fileprivate func lightBtnOnClick(btn: UIButton) {
@@ -242,19 +258,32 @@ extension TNScanViewController: AVCaptureMetadataOutputObjectsDelegate {
             session.stopRunning()
             let object = metadataObjects[0]
             let resultStr: String = (object as AnyObject).stringValue
-            if let url = URL(string: resultStr) {
+            if resultStr.hasPrefix("http") {
+                guard let url = URL(string: resultStr) else {
+                    return
+                }
                 if UIApplication.shared.canOpenURL(url) {
                     if #available(iOS 10.0, *) {
                         UIApplication.shared.open(url)
                     } else {
                         UIApplication.shared.openURL(url)
                     }
-                    navigationController?.popViewController(animated: false)
+                    if isPush {
+                        navigationController?.popViewController(animated: true)
+                    } else {
+                       dismiss(animated: true, completion: nil)
+                    }
                 }
             } else {
                 if let scanningCompletionBlock = scanningCompletionBlock {
-                    scanningCompletionBlock(resultStr)
-                    navigationController?.popViewController(animated: true)
+                    if isPush {
+                        scanningCompletionBlock(resultStr)
+                        navigationController?.popViewController(animated: true)
+                    } else {
+                        dismiss(animated: true, completion: {
+                            scanningCompletionBlock(resultStr)
+                        })
+                    }
                 }
             }
         }

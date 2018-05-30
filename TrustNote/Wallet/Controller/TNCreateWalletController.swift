@@ -26,6 +26,7 @@ class TNCreateWalletController: TNNavigationController {
     let startAuthAlert = TNObserveWaletAlertView.observeWaletAlertView()
     let authCompletedAlert = TNAuthDoneAlertView.authDoneAlertView()
     var authCompletedAlertView: TNCustomAlertView?
+    var syncLoadingView : TNCustomAlertView?
     
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Create a TTT wallet", comment: "")
@@ -39,6 +40,12 @@ class TNCreateWalletController: TNNavigationController {
         $0.isPagingEnabled = true
         $0.contentSize = CGSize(width: 2 * kScreenW, height: 0)
     }
+    
+    fileprivate lazy var loadingView: TNSyncClonedWalletsView = {
+        let loadingView = TNSyncClonedWalletsView.loadViewFromNib()
+        loadingView.loadingText.text = "SyncLoading".localized
+        return loadingView
+    }()
     
     fileprivate lazy var switchView: TNCreateWalletSwitchView = {
         let switchView = TNCreateWalletSwitchView.createWalletSwitchView()
@@ -77,14 +84,14 @@ class TNCreateWalletController: TNNavigationController {
                 /// create qrCode
                 self.startAuthAlert.qrCodeImageView.image = UIImage.createHDQRImage(input: qrInput , imgSize: self.startAuthAlert.qrCodeImageView.size)
                 let authAlertView = TNCustomAlertView(alert: self.startAuthAlert, alertFrame: alertFrame, AnimatedType: .transform)
-                self.startAuthAlert.dimissBlock = {
+                self.startAuthAlert.dismissBlock = {
                     authAlertView.removeFromSuperview()
                 }
             }
         }
         
         startAuthAlert.clickedNextButtonBlock = {[unowned self] in
-            self.startAuthAlert.dimissBlock?()
+            self.startAuthAlert.dismissBlock?()
             let marginX: CGFloat = 26.0
             let marginY: CGFloat = 78.0
             let alertFrame = CGRect(x: marginX, y: marginY, width: kScreenW - 2 * marginX, height: kScreenH - 2 * marginY)
@@ -94,7 +101,13 @@ class TNCreateWalletController: TNNavigationController {
             self.walletViewModel.saveNewWalletToProfile(TNGlobalHelper.shared.currentWallet)
             self.walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
             self.recoverOperation.isRecoverWallet = true
-            TNGlobalHelper.shared.isRecoveringObserveWallet = true
+            TNGlobalHelper.shared.recoverStyle = .observed
+            self.loadingView.startAnimation()
+            let popX = CGFloat(kLeftMargin)
+            let popH: CGFloat = 190
+            let popY = (kScreenH - popH) / 2
+            let popW = kScreenW - popX * 2
+            self.syncLoadingView = TNCustomAlertView(alert: self.loadingView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .none)
             self.recoverOperation.recoverObserveWallet(TNGlobalHelper.shared.currentWallet)
             self.authCompletedAlertView?.removeFromSuperview()
         }
@@ -103,9 +116,12 @@ class TNCreateWalletController: TNNavigationController {
         isCompletionValid.asDriver().drive(authCompletedAlert.doneBtn.rx_validState).disposed(by: self.disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishRecoverWalletNotification)).subscribe(onNext: {[unowned self] value in
-             TNGlobalHelper.shared.isRecoveringObserveWallet = false
+            TNGlobalHelper.shared.recoverStyle = .none
+            self.recoverOperation.isRecoverWallet = false
+            self.loadingView.stopAnimation()
+            self.syncLoadingView?.removeFromSuperview()
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNCreateObserveWalletNotification), object: nil)
-             self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }).disposed(by: disposeBag)
     }
 }
@@ -155,7 +171,7 @@ extension TNCreateWalletController: TNCreateWalletSwitchViewDelegate {
         
         authCompletedAlert.clickedScanButtonBlock = {[unowned self] in
             let scanningVC = TNScanViewController()
-           self.authCompletedAlertView?.removeFromSuperview()
+            self.authCompletedAlertView?.removeFromSuperview()
             self.navigationController?.pushViewController(scanningVC, animated: true)
             scanningVC.scanningCompletionBlock = { (result) in
                 let keyWindow = UIApplication.shared.keyWindow

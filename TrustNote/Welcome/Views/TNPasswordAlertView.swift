@@ -31,8 +31,9 @@ class TNPasswordAlertView: UIView, TNNibLoadable {
         setupProperties()
         setupRadiusCorner(radius: kCornerRadius * 2)
         layer.shadowOffset = CGSize(width: 0, height: 2.0)
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = 0.2
         layer.shadowRadius = 20.0
+        layer.shadowColor = kGlobalColor.cgColor
         cancelButton.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             UIView.animate(withDuration: 0.5,
                            delay:0.01,

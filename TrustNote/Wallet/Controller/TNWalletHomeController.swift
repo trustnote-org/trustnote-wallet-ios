@@ -77,13 +77,19 @@ class TNWalletHomeController: TNBaseViewController {
             self.refreshAction()
         }).disposed(by: disposeBag)
         
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateObserveWalletNotification)).subscribe(onNext: {[unowned self] value in
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishSyncClonedWalletNotify)).subscribe(onNext: {[unowned self] value in
             self.refreshAction()
+        }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateObserveWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.dataSource.removeAll()
+            self.getWalletList()
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishDeleteWalletNotification)).subscribe(onNext: { [unowned self] value in
             self.refreshAction()
         }).disposed(by: disposeBag)
+        
         if TNGlobalHelper.shared.isNeedLoadData {
             syncOperation = TNSynchroHistoryData()
             loadData()

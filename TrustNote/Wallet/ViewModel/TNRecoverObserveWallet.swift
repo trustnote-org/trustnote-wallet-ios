@@ -13,13 +13,14 @@ class TNRecoverObserveWallet {
     
     let disposeBag = DisposeBag()
     private let walletViewModel = TNWalletViewModel()
-    public var isRecoverWallet = true
+    public  var isRecoverWallet = true
     private var isGenerateFrontAddress = true
     private var addressIndex = 0
     private var isChange = false
     private var currentWallet: TNWalletModel?
     private var addressModels: [TNWalletAddressModel] = []
     private var tempAddressModels: [TNWalletAddressModel] = []
+    
     required init() {
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidReceiveRestoreWalletResponse), object: nil).subscribe(onNext: {[unowned self] (notify) in

@@ -59,10 +59,9 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
         
         if Preferences[.isBackupWords] {
             let vc = TNVerifyPasswordController()
-            vc.isDismissAnimated = true
-            self.navigationController?.present(vc, animated: false, completion: {
+            navigationController?.present(vc, animated: false) {
                 vc.passwordAlertView.passwordTextField.becomeFirstResponder()
-            })
+            }
         }
     }
 }

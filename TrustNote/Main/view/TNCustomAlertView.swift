@@ -26,7 +26,7 @@ class TNCustomAlertView: UIView {
     init(alert: UIView, alertFrame: CGRect, AnimatedType: TNAlertAnimatedStyle) {
         super.init(frame: UIScreen.main.bounds)
         
-        self.backgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1, alpha: 0.8)
+        self.backgroundColor = kAlertBackgroundColor
         alertView = alert
         alert.frame = alertFrame
         alertBounds = CGRect(x: 0, y: 0, width: alertFrame.size.width, height: alertFrame.size.height)

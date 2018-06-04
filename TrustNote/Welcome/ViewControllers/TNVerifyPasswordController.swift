@@ -23,7 +23,7 @@ class TNVerifyPasswordController: TNBaseViewController {
     }()
     
     private let backgroundView = UIView().then {
-        $0.backgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1)
+        $0.backgroundColor = kAlertBackgroundColor
     }
     
     private let textLabel = UILabel().then {
@@ -44,11 +44,11 @@ class TNVerifyPasswordController: TNBaseViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNVerifyPasswordController.handleTapGesture))
         view.addGestureRecognizer(tap)
         passwordAlertView.verifyCorrectBlock = {[unowned self] in
-            if self.isDismissAnimated! {
-               self.dismiss(animated: true, completion: nil)
-            } else {
-                TNGlobalHelper.shared.isVerifyPasswdForMain = false
-                UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
+            TNGlobalHelper.shared.isVerifyPasswdForMain = false
+            self.dismiss(animated: true, completion: nil)
+            let delegate = UIApplication.shared.delegate as! AppDelegate
+            if delegate.isTabBarRootController() {
+                TNGlobalHelper.shared.password = nil
             }
         }
         passwordAlertView.didClickedCancelBlock = {[unowned self] in

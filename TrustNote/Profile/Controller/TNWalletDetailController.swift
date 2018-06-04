@@ -13,7 +13,8 @@ class TNWalletDetailController: TNNavigationController {
     var walletModel: TNWalletModel!
     var address: String!
     var passwordAlertView: TNPasswordAlertView?
-    let items = ["Wallet name".localized, "Wallet ID".localized, "Cold wallet authentication code".localized]
+    var verifyPasswordView: TNCustomAlertView?
+    let items = [["title": "Wallet name".localized,  "action": "modifyWalletName"], ["title": "Wallet ID".localized,  "action": ""], ["title": "Cold wallet authentication code".localized,  "action": "checkoutAuthCode"]]
     
     fileprivate lazy var detailHeaderView: TNWalletDetailHeaderView = {
         let detailHeaderView = TNWalletDetailHeaderView.walletDetailHeaderView()
@@ -72,12 +73,12 @@ class TNWalletDetailController: TNNavigationController {
         
         NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillShow)
             .subscribe(onNext: { [unowned self] _ in
-                self.passwordAlertView?.y -= 40
+                self.verifyPasswordView?.y -= 40
             }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide)
             .subscribe(onNext: { [unowned self] (notify) in
-                self.passwordAlertView?.y += 40
+                 self.verifyPasswordView?.y = 0
             }).disposed(by: disposeBag)
     }
     
@@ -90,12 +91,15 @@ class TNWalletDetailController: TNNavigationController {
 extension TNWalletDetailController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        if walletModel.isLocal {
+            return items.count
+        }
+        return items.count - 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TNWalletDetailCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
-        cell.titleTextLabel.text = items[indexPath.row]
+        cell.titleTextLabel.text = items[indexPath.row]["title"]
         if indexPath.row == 0 {
             cell.detailLabel.text = walletModel.walletName
         }
@@ -119,20 +123,28 @@ extension TNWalletDetailController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 0 {
-            let vc = TNEditInfoController(isEditInfo: false)
-            vc.wallet = walletModel
-            navigationController?.pushViewController(vc, animated: true)
+        let action: String = items[indexPath.row]["action"]! 
+        guard !action.isEmpty else {
+            return
         }
-        if indexPath.row == tableView.numberOfRows(inSection: 0) - 1 {
-            let vc = TNWalletAuthCodeController(nibName: "\(TNWalletAuthCodeController.self)", bundle: nil)
-            vc.wallet = walletModel
-            navigationController?.pushViewController(vc, animated: true)
-        }
+        let control: UIControl = UIControl()
+        control.sendAction(Selector(action), to: self, for: nil)
     }
 }
 /// MARK: Handle event
 extension TNWalletDetailController {
+   
+    @objc fileprivate func modifyWalletName() {
+        let vc = TNEditInfoController(isEditInfo: false)
+        vc.wallet = walletModel
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc fileprivate func checkoutAuthCode() {
+        let vc = TNWalletAuthCodeController(nibName: "\(TNWalletAuthCodeController.self)", bundle: nil)
+        vc.wallet = walletModel
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     @objc fileprivate func deleteCurrentWallet() {
         
@@ -143,32 +155,34 @@ extension TNWalletDetailController {
         deleteWalletAlertView.didClickedConfirmBlock = {[unowned self] in
             
             deleteWarningView.removeFromSuperview()
-            guard Double(self.walletModel.balance)! > 0 else {
-            
-                self.passwordAlertView = TNPasswordAlertView.loadViewFromNib()
-                let verifyPasswordView = self.createPopView(self.passwordAlertView!, height: 320, animatedType: .pop)
-                let tap = UITapGestureRecognizer(target: self, action: #selector(TNWalletDetailController.handleTapGesture))
-                verifyPasswordView.addGestureRecognizer(tap)
-                self.passwordAlertView!.verifyCorrectBlock = {
-                    verifyPasswordView.removeFromSuperview()
-                    let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-                    var credentials  = profile["credentials"] as! [[String:Any]]
-                    for (index, dict) in credentials.enumerated() {
-                        if dict["walletId"] as? String == self.walletModel.walletId {
-                            credentials.remove(at: index)
-                            break
-                        }
-                    }
-                    TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: credentials)
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishDeleteWalletNotification), object: nil)
-                    self.navigationController?.popViewController(animated: true)
-                }
-                self.passwordAlertView!.didClickedCancelBlock = {
-                    verifyPasswordView.removeFromSuperview()
-                }
+            guard Double(self.walletModel.balance)! > 0 && self.walletModel!.isLocal else {
+                self.verifyWalletPassword()
                 return
             }
             self.alertAction(self, "Unable to delete hints".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
+        }
+    }
+    fileprivate func verifyWalletPassword() {
+        passwordAlertView = TNPasswordAlertView.loadViewFromNib()
+        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .pop)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(TNWalletDetailController.handleTapGesture))
+        verifyPasswordView?.addGestureRecognizer(tap)
+        passwordAlertView!.verifyCorrectBlock = {[unowned self] in
+            self.verifyPasswordView?.removeFromSuperview()
+            let profile = TNConfigFileManager.sharedInstance.readProfileFile()
+            var credentials  = profile["credentials"] as! [[String:Any]]
+            for (index, dict) in credentials.enumerated() {
+                if dict["walletId"] as? String == self.walletModel.walletId {
+                    credentials.remove(at: index)
+                    break
+                }
+            }
+            TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: credentials)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishDeleteWalletNotification), object: nil)
+            self.navigationController?.popViewController(animated: true)
+        }
+       passwordAlertView!.didClickedCancelBlock = {[unowned self] in
+            self.verifyPasswordView?.removeFromSuperview()
         }
     }
     

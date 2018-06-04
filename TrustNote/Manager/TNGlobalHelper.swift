@@ -18,10 +18,7 @@ enum TNWalletRecoverStyle {
 final class TNGlobalHelper {
     
     var isVerifyPasswdForMain = true
-//    var isRecoveringCommonWallet = false
-//    var isRecoveringObserveWallet = false
     var recoverStyle: TNWalletRecoverStyle = .none
-    
     var isNeedLoadData = true
     var password: String? = nil
     var isComlpetion: Bool = false

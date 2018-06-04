@@ -166,12 +166,12 @@ class TNSQLiteManager: NSObject {
 
 extension TNSQLiteManager {
     
-    public func deleteAllWallets() {
-        let tables = ["my_addresses", "wallets", "extended_pubkeys", "inputs", "outputs", "messages", "units", "unit_authors"]
+    public func deleteAllLocalData() {
+        let tables = ["my_addresses", "wallets", "extended_pubkeys", "wallet_signing_paths", "inputs", "outputs", "messages", "units", "unit_authors"]
         dbQueue.inDatabase { (database) in
             do {
                 for tableName in tables {
-                    let sql = String(format:"TRUNCATE FROM %@", arguments:[tableName])
+                    let sql = String(format:"delete from %@", arguments:[tableName])
                     try database.executeUpdate(sql, values: nil)
                 }
                 

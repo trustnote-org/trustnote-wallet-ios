@@ -28,7 +28,7 @@ class TNMyPairingCodeView: UIView, TNNibLoadable {
         setupRadiusCorner(radius: kCornerRadius * 2)
         copyBtn.setupRadiusCorner(radius: kCornerRadius)
         containerView.layer.borderColor = UIColor.hexColor(rgbValue: 0xF2F2F2).cgColor
-        containerView.layer.borderWidth = 4.0
+        containerView.layer.borderWidth = kCornerRadius
     }
     
 }

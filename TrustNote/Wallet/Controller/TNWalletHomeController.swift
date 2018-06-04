@@ -47,6 +47,13 @@ class TNWalletHomeController: TNBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if TNGlobalHelper.shared.isVerifyPasswdForMain {
+            let vc = TNVerifyPasswordController()
+            navigationController?.present(vc, animated: false) {
+                TNGlobalHelper.shared.mnemonic = ""
+                vc.passwordAlertView.passwordTextField.becomeFirstResponder()
+            }
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -15,14 +15,22 @@ class TNBackupWarningView: UIView {
     
     var dynamicHeight: CGFloat = 0.0
     
+    var tips: [String]? {
+        didSet{
+            firstWarningLabel.attributedText = firstWarningLabel.getAttributeStringWithString(tips!.first!, lineSpace: 3.0)
+            lastWarningLabel.attributedText = lastWarningLabel.getAttributeStringWithString(tips!.last!, lineSpace: 3.0)
+            let fontSize = CGSize(width: kScreenW - 83, height: CGFloat(MAXFLOAT))
+            let firstSize = firstWarningLabel.textSize(text: tips!.first!, font: firstWarningLabel.font, maxSize: fontSize)
+            let lastSize = lastWarningLabel.textSize(text: tips!.last!, font: firstWarningLabel.font, maxSize: fontSize)
+            dynamicHeight = firstSize.height + lastSize.height + 30
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
-        firstWarningLabel.attributedText = firstWarningLabel.getAttributeStringWithString(NSLocalizedString("Backup.firstWarning", comment: ""), lineSpace: 5.0)
-        lastWarningLabel.attributedText = lastWarningLabel.getAttributeStringWithString(NSLocalizedString("Backup.lastWarning", comment: ""), lineSpace: 5.0)
-        let fontSize = CGSize(width: kScreenW - 83, height: CGFloat(MAXFLOAT))
-        let firstSize = firstWarningLabel.textSize(text: NSLocalizedString("Backup.firstWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
-        let lastSize = lastWarningLabel.textSize(text: NSLocalizedString("Backup.lastWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
-        dynamicHeight = firstSize.height + lastSize.height + 44
+        if IS_iphone5 {
+            firstWarningLabel.font = UIFont.systemFont(ofSize: 13)
+            lastWarningLabel.font = UIFont.systemFont(ofSize: 13)
+        }
     }
 }
 

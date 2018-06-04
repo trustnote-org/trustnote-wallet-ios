@@ -36,7 +36,7 @@ class TNSyncClonedWallet {
                 self.addressIndex = 0
                 self.isChange = true
                 self.tempAddressModels.removeAll()
-                self.createWalletAddresses(num: self.addressIndex)
+                self.handleWallet(wallet: self.wallets.first!, isChange: self.isChange)
             } else {
                 self.wallets.removeFirst()
                 guard self.wallets.isEmpty else {
@@ -79,7 +79,9 @@ extension TNSyncClonedWallet {
     func createWalletAddresses(num: Int) {
         walletViewModel.generateWalletAddress(wallet_xPubKey: currentWallet!.xPubKey, change: self.isChange, num: num) { (walletAddressModel) in
             self.addressIndex += 1
-            self.tempAddressModels.append(walletAddressModel)
+            var model = walletAddressModel
+            model.walletId = self.currentWallet!.walletId
+            self.tempAddressModels.append(model)
             guard self.tempAddressModels.count == loopCount * 2 else {
                 self.createWalletAddresses(num: self.addressIndex)
                 return

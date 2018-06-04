@@ -19,6 +19,7 @@ class TNProfileHeaderView: UIView {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var descLabel: UILabel!
+    @IBOutlet weak var containerLeftMarginConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var checkBtn: UIButton!
     @IBOutlet weak var manageBtn: UIButton!
@@ -30,13 +31,22 @@ class TNProfileHeaderView: UIView {
         super.awakeFromNib()
         containerView.layer.cornerRadius = kCornerRadius
         containerView.layer.masksToBounds = true
+        containerLeftMarginConstraint.constant = IS_iphone5 ? 10 : 20
+        if IS_iphone5 {
+            descLabel.font = UIFont.systemFont(ofSize: 13)
+        }
         descLabel.text = "Welcome to the TrustNote World".localized
         checkBtn.setTitle("Transaction records".localized, for: .normal)
         manageBtn.setTitle("Manage wallet".localized, for: .normal)
-        checkBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        checkBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0)
-        manageBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
-        manageBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0)
+        if TNLocalizationTool.shared.currentLanguage == "en" {
+            checkBtn.relayoutButton()
+            manageBtn.relayoutButton()
+        } else {
+            checkBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+            checkBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0)
+            manageBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
+            manageBtn.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0)
+        }
         lnitialsLabel.layer.cornerRadius = 25
         lnitialsLabel.layer.masksToBounds = true
         let defaultConfig = TNConfigFileManager.sharedInstance.readConfigFile()
@@ -69,3 +79,4 @@ extension TNProfileHeaderView: TNNibLoadable {
         return TNProfileHeaderView.loadViewFromNib()
     }
 }
+

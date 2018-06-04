@@ -47,9 +47,14 @@
 "Password.passwordLengthValid"  = "不少于8位字符，建议混合大小写字母、数字、特殊符号";
 "Password.passwordSecurity" = "密码强度太弱，极易被黑客破解";
 "Password.checkInput" = "两次输入密码不一致，请重新输入";
+"Password must be at least 8 characters" = "密码不少于8位字符";
 "Password.weakLevel" = "弱";
 "Password.middleLevel" = "中";
 "Password.strongLevel" = "强";
+"Please enter your old password" = "请输入原密码";
+"Please enter your new password" = "请输入新密码";
+"Please re-confirm your password" = "请再次确认密码";
+"Original password input error" = "原密码输入错误";
 
 "Confirm" = "确定";
 "Cancel" = "取消";
@@ -68,9 +73,10 @@
 /******* beckup seed string************/
 "Backup Your Seed Phrase" = "备份助记词";
 "Backup.detail" = "最后一步：立即备份你的12个助记词";
+"Backup your 12 words mnemonic now" = "立即备份你的12个助记词";
 "Backup.description" = "您只能用这些单词恢复钱包！一旦丢失，资产将无法找回！一旦泄露，资产将会被盗！";
 "Backup.firstWarning" = "建议手写或保存在离线设备中";
-"Backup.lastWarning" = "建议创建完成钱包后立即恢复一次，以确保助记词正确";
+"Backup.lastWarning" = "建议完成备份助记词后立即恢复一次，以确保助记词正确";
 "Backup done" = "完成备份";
 "Backup mode reminding" = "请认真抄写助记词，不要用截屏的方式保管助记词。";
 "Make sure have been backed up" = "确认已经保存了助记词? ";
@@ -111,6 +117,13 @@
 "Observation" = "观察";
 "ScanDescription" = "将二维码放入框内，自动扫描";
 "Tap to turn light on" = "轻触点亮";
+"Send" = "转账";
+"Receive" = "收款";
+"Recent transaction records" = "最近交易记录";
+"My receiving address" = "我的收款地址";
+"Fixed amount" = "设置固定金额";
+"Copy the receiving address" = "复制收款地址";
+"Clear the amount" = "清除金额";
 
 /******* create wallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -143,9 +156,17 @@
 "Sync Wallets" = "同步钱包";
 "SyncClonedWallets.warning" = "不建议您克隆钱包，保护好您的助记词就是安全的。如果您遇到克隆钱包导致的数据不同步，请在两个钱包上使用克隆钱包同步功能。";
 "SyncLoading" = "同步中，切勿退出软件…";
+"RecoverLoading" = "恢复中，切勿退出软件…";
 "Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
 "Signing succeed" = "授权成功";
 "Scan auth success description" = "使用对应观察钱包扫描上方二维码完成授权";
+"Recover wallet tips" = "请确认当前钱包中的助记词已备份，使用其他助记词恢复钱包后，当前钱包将在该设备中移除！";
+"Show the mnemonic" = "显示钱包助记词";
+"Hide the mnemonic" = "隐藏钱包助记词";
+"Backup mnemonic" = "备份助记词";
+"Mnemonic words have been deleted" = "助记词已删除";
+"Profile.setupPassword" = "设置密码";
+
 
 /******* manage wallet string************/
 "Manage wallet" = "管理钱包";
@@ -156,6 +177,7 @@
 "Please enter the name of the wallet" = "请输入钱包名称";
 "Delete the wallet warning" = "即将删除此钱包，若您想生成该钱包，则需要您使用助记词恢复钱包！";
 "Unable to delete hints" = "该钱包内有资产，无法删除钱包";
+"No more than 10 characters" = "不超过10个字符";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

@@ -28,6 +28,10 @@ let kNavBarHeight: CGFloat = IS_iPhoneX ? 84.0 : 64.0
 
 let kCornerRadius: CGFloat = 2.0
 
+let kTitleFont = UIFont(name: "PingFangSC-Semibold", size: 24)
+
+let kButtonFont = UIFont.systemFont(ofSize: 18.0)
+
 let TNWebSocketURLScheme: String = "wss://"
 
 let kNetworkTimeout = 30
@@ -41,6 +45,7 @@ let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
 let kTitleTextColor = UIColor.hexColor(rgbValue: 0x111111)
 let kBackgroundColor = UIColor.hexColor(rgbValue: 0xF6F7F9)
 let kThemeMarkColor = UIColor.hexColor(rgbValue: 0xF6782F)
+let kAlertBackgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1, alpha: 0.8)
 
 /// MARK: Notificaton Name
 let TNDidGeneratedPrivateKeyNotification       = "TNDidGeneratePrivateKeyNotification"

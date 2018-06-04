@@ -138,8 +138,8 @@ extension TNProfileViewController {
     @objc fileprivate func enterIntoWalletTool() {
         
         let dataArr = [
-            [["title" : "Backup Your Seed Phrase".localized, "detail" : "", "action" : "", "isCanSelected" : true],
-                         ["title" : "Restore from the mnemonic".localized, "detail" : "", "action" : "", "isCanSelected" : true]],
+            [["title" : "Backup Your Seed Phrase".localized, "detail" : "", "action" : "backupTheMnemonic", "isCanSelected" : true],
+                         ["title" : "Restore from the mnemonic".localized, "detail" : "", "action" : "restoreWalletFromMnemonic", "isCanSelected" : true]],
                         [["title" : "Sync from cloned wallet".localized, "detail" : "", "action" : "syncFromClonedWallet", "isCanSelected" : true]]
                       ] as [Any]
         let vc = TNGeneralViewController(dataSource: dataArr, titleText: TNLocalizationTool.shared.valueWithKey(key: "Wallet tools"))
@@ -156,7 +156,7 @@ extension TNProfileViewController {
         }
         let dataArr = [
             [["title" : "Language".localized, "detail" : language, "action" : "switchLanguage", "isCanSelected" : true],
-             ["title" : "Wallet password".localized, "detail" : "", "action" : "", "isCanSelected" : true]]
+             ["title" : "Wallet password".localized, "detail" : "", "action" : "setupWalletPassword", "isCanSelected" : true]]
             ] as [Any]
         let vc = TNGeneralViewController(dataSource: dataArr, titleText: "Settings".localized)
         navigationController?.pushViewController(vc, animated: true)

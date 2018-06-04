@@ -19,7 +19,7 @@ class TNGeneralViewController: TNNavigationController {
     
     let titlelabel = UILabel().then {
         $0.textColor = kTitleTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 24)
+        $0.font = kTitleFont
     }
     
     let tableView = UITableView().then {
@@ -121,6 +121,18 @@ extension TNGeneralViewController {
     @objc fileprivate func syncFromClonedWallet() {
         let vc = TNCloneWalletController(nibName: "\(TNCloneWalletController.self)", bundle: nil)
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc fileprivate func restoreWalletFromMnemonic() {
+        navigationController?.pushViewController(TNRecoveryWalletController(), animated: true)
+    }
+    
+    @objc fileprivate func backupTheMnemonic() {
+        navigationController?.pushViewController(TNProfileBackupController(), animated: true)
+    }
+    
+    @objc fileprivate func setupWalletPassword() {
+        navigationController?.pushViewController(TNModifyPasswordController(), animated: true)
     }
 }
 

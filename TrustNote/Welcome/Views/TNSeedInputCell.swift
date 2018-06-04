@@ -70,7 +70,7 @@ class TNSeedInputCell: UICollectionViewCell {
 extension TNSeedInputCell {
     
     fileprivate func configureSubView() {
-       
+        
         layer.masksToBounds = true
         layer.cornerRadius = kCornerRadius
         contentView.addSubview(textField)
@@ -78,7 +78,7 @@ extension TNSeedInputCell {
         textField.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-
+        
     }
 }
 
@@ -114,7 +114,7 @@ final class TNSeedContainerView: UIView {
     public var isBeingEdited: BehaviorRelay<Bool> = BehaviorRelay(value: false) // Whether or not it is being edited
     
     fileprivate lazy var layout: UICollectionViewFlowLayout = {
-       
+        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = Metric.lineSpacing
@@ -124,7 +124,7 @@ final class TNSeedContainerView: UIView {
     }()
     
     private let searchResultListView = UITableView().then {
-
+        
         $0.backgroundColor = UIColor.clear
         $0.layer.borderWidth = 1.0
         $0.layer.borderColor = UIColor.hexColor(rgbValue: 0xf1f1f1).cgColor
@@ -174,7 +174,7 @@ final class TNSeedContainerView: UIView {
         
         bindUI()
     }
-
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
@@ -200,7 +200,7 @@ final class TNSeedContainerView: UIView {
     }
     
     private func configureCollectionView() {
-    
+        
         collectionView = UICollectionView.init(frame: self.bounds, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor.clear
         collectionView.register(TNSeedInputCell.self, forCellWithReuseIdentifier: "TNSeedInputCellIndentifier")
@@ -219,7 +219,7 @@ final class TNSeedContainerView: UIView {
         } else {
             searchResultListView.removeFromSuperview()
         }
-       
+        
     }
     
     private func bindUI() {
@@ -233,8 +233,8 @@ final class TNSeedContainerView: UIView {
         }).disposed(by: disposeBag)
         
         // Notice to monitor the disappearance of the keyboard
-    NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide).takeUntil(self.rx.deallocated).subscribe(onNext: { [unowned self] _ in
-
+        NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide).takeUntil(self.rx.deallocated).subscribe(onNext: { [unowned self] _ in
+            
             if self.isDisplay.value {
                 
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
@@ -258,12 +258,12 @@ extension TNSeedContainerView: UICollectionViewDelegate, UICollectionViewDataSou
             textFields.removeAll()
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TNSeedInputCellIndentifier", for: indexPath) as! TNSeedInputCell
-//        guard isCanEdit else {
-//            cell.textField.isEnabled = isCanEdit
-//            cell.textField.text = mnmnemonicsArr[indexPath.item]
-//            return cell
-//        }
-        cell.textField.text = mnmnemonicsArr[indexPath.item]
+        guard isCanEdit else {
+            cell.textField.isEnabled = isCanEdit
+            cell.textField.text = mnmnemonicsArr[indexPath.item]
+            return cell
+        }
+       // cell.textField.text = mnmnemonicsArr[indexPath.item]
         cell.textField.isEnabled = isCanEdit
         cell.textField.delegate = self
         cell.textField.inputView = containerView
@@ -295,7 +295,7 @@ extension TNSeedContainerView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return resultWords.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NSStringFromClass(TNSeedSearchCell.self)) as! TNSeedSearchCell
         let resultWord = resultWords[indexPath.row]
@@ -341,7 +341,7 @@ extension TNSeedContainerView: UITextFieldDelegate {
         
         isBeingEdited.accept(true)
         if isDisplay.value && selectedIndex != textField.tag - Metric.TextField_Tag_Begin {
-             isDisplay.accept(false)
+            isDisplay.accept(false)
         }
         selectedIndex = textField.tag - Metric.TextField_Tag_Begin
         keyboardView.textInput = textField
@@ -361,7 +361,7 @@ extension TNSeedContainerView: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-       
+        
         if textField.text?.count == Metric.Input_Char_Limited {
             return false
         }

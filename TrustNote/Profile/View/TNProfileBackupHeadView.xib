@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNProfileBackupHeadView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_unfold" translatesAutoresizingMaskIntoConstraints="NO" id="Ydy-8v-xaq">
+                    <rect key="frame" x="22" y="12" width="26" height="26"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="隐藏钱包助记" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NKb-QZ-aLs">
+                    <rect key="frame" x="52" y="15" width="110.5" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <color key="textColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_up" translatesAutoresizingMaskIntoConstraints="NO" id="uAT-jd-ay5">
+                    <rect key="frame" x="320" y="12" width="26" height="26"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3OW-mv-flz">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                    <connections>
+                        <action selector="clickedBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="gMb-0n-JUZ"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="3OW-mv-flz" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="0Ni-MB-h3H"/>
+                <constraint firstItem="Ydy-8v-xaq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="22" id="3cT-aZ-H2D"/>
+                <constraint firstItem="3OW-mv-flz" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="9EH-SP-KZz"/>
+                <constraint firstItem="uAT-jd-ay5" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="9lv-7I-PRH"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="uAT-jd-ay5" secondAttribute="trailing" constant="29" id="Pgu-EQ-qS2"/>
+                <constraint firstItem="NKb-QZ-aLs" firstAttribute="centerY" secondItem="Ydy-8v-xaq" secondAttribute="centerY" id="cbo-0h-KU6"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="3OW-mv-flz" secondAttribute="trailing" id="ekC-42-z3W"/>
+                <constraint firstAttribute="bottom" secondItem="3OW-mv-flz" secondAttribute="bottom" id="nUm-ds-Qm7"/>
+                <constraint firstItem="NKb-QZ-aLs" firstAttribute="leading" secondItem="Ydy-8v-xaq" secondAttribute="trailing" constant="4" id="vg7-Eq-GBC"/>
+                <constraint firstItem="Ydy-8v-xaq" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ydR-vJ-S7f"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="descLabel" destination="NKb-QZ-aLs" id="j89-Bj-jII"/>
+                <outlet property="foldImageView" destination="Ydy-8v-xaq" id="B4R-wo-bIN"/>
+                <outlet property="upImageView" destination="uAT-jd-ay5" id="x0M-bT-p2D"/>
+            </connections>
+            <point key="canvasLocation" x="34.5" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="profile_unfold" width="26" height="26"/>
+        <image name="profile_up" width="26" height="26"/>
+    </resources>
+</document>

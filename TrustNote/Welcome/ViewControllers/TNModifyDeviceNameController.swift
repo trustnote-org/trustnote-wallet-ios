@@ -24,7 +24,7 @@ class TNModifyDeviceNameController: TNBaseViewController {
     
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 24.0)
+        $0.font = kTitleFont
         $0.text = NSLocalizedString("Welocme To TrustNote", comment: "")
     }
     
@@ -68,7 +68,7 @@ class TNModifyDeviceNameController: TNBaseViewController {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.titleLabel?.font = kButtonFont
     }
     
     override func viewDidLoad() {

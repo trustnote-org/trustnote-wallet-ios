@@ -54,3 +54,19 @@ extension UIButton {
     }
 }
 
+extension UIButton {
+    func relayoutButton() {
+        let spacing: CGFloat = 5
+        let imageSize = self.imageView!.frame.size
+        var titleSize = self.titleLabel!.frame.size
+        let textSize  = self.titleLabel!.text!.size(withAttributes: [NSAttributedStringKey.font : self.titleLabel!.font])
+        let frameSize = CGSize(width: textSize.width, height: textSize.height)
+        if titleSize.width + 0.5 < frameSize.width {
+            titleSize.width = frameSize.width
+        }
+        let totalHeight = imageSize.height + titleSize.height + spacing
+        self.imageEdgeInsets = UIEdgeInsetsMake(-(totalHeight - imageSize.height), 0.0, 0.0, -titleSize.width);
+        self.titleEdgeInsets = UIEdgeInsetsMake(0, -imageSize.width, -(totalHeight - titleSize.height), 0);
+    }
+}
+

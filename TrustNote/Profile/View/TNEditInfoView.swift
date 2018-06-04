@@ -20,14 +20,12 @@ class TNEditInfoView: UIView, UITextFieldDelegate {
     var isEditInfo: Bool? {
         didSet {
             guard isEditInfo! else {
-                inputTextField.placeholder = NSLocalizedString(
-                    "Please enter the name of the wallet", comment: "")
-                warningLabel.text = "不超过10个字符"
+                inputTextField.placeholder = "Please enter the name of the wallet".localized
+                warningLabel.text = "No more than 10 characters".localized
                 return
             }
-            inputTextField.placeholder = NSLocalizedString(
-                "Please enter device name", comment: "")
-             warningLabel.text = "不超过20个字符"
+            inputTextField.placeholder = "Please enter device name".localized
+            warningLabel.text = "DeviceName.warning".localized
             let defaultConfig = TNConfigFileManager.sharedInstance.readConfigFile()
             inputTextField.text = defaultConfig["deviceName"] as? String
         }

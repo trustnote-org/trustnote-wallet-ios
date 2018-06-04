@@ -18,7 +18,7 @@ class TNVerifySeedViewController: TNBaseViewController {
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Verifying notes", comment: "")
         $0.textColor = kTitleTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 24.0)
+        $0.font = kTitleFont
     }
     
     private let descLabel = UILabel().then {
@@ -32,7 +32,7 @@ class TNVerifySeedViewController: TNBaseViewController {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
         $0.setTitle(NSLocalizedString("Verification done", comment: ""), for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.titleLabel?.font = kButtonFont
         $0.addTarget(self, action: #selector(TNVerifySeedViewController.verifyCompleted), for: .touchUpInside)
         $0.isEnabled = false
         $0.alpha = 0.3
@@ -70,6 +70,8 @@ class TNVerifySeedViewController: TNBaseViewController {
             self.warningLabel.isHidden = true
             self.warningImageView.isHidden = true
         }).disposed(by: disposeBag)
+        
+//         seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
     }
     
     override func viewDidAppear(_ animated: Bool) {

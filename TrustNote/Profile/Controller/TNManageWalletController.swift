@@ -13,7 +13,7 @@ class TNManageWalletController: TNNavigationController {
     var dataSource: [TNWalletModel] = []
     var addressArr: [String] = []
     
-    let titlelabel = UILabel().then {
+    let titleLabel = UILabel().then {
         $0.text = "Manage wallet".localized
         $0.textColor = kTitleTextColor
         $0.font = UIFont.boldSystemFont(ofSize: 24)
@@ -120,8 +120,8 @@ extension TNManageWalletController {
 extension TNManageWalletController {
     
     fileprivate func layoutAllSubviews() {
-        view.addSubview(titlelabel)
-        titlelabel.snp.makeConstraints { (make) in
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(navigationBar.snp.bottom).offset(9)
             make.left.equalToSuperview().offset(kLeftMargin)
         }
@@ -130,12 +130,12 @@ extension TNManageWalletController {
         addBtn.snp.makeConstraints { (make) in
             make.right.equalToSuperview()
             make.width.height.equalTo(60)
-            make.centerY.equalTo(titlelabel.snp.centerY)
+            make.centerY.equalTo(titleLabel.snp.centerY)
         }
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(titlelabel.snp.bottom).offset(30)
+            make.top.equalTo(titleLabel.snp.bottom).offset(30)
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }

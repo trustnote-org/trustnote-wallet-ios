@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,13 +21,13 @@
                     <rect key="frame" x="20" y="10" width="335" height="213"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eddy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-rR-p9j">
-                            <rect key="frame" x="96" y="34" width="182" height="24"/>
+                            <rect key="frame" x="91" y="34" width="187" height="24"/>
                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="欢迎来到TrustNote世界" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DuY-43-Imf">
-                            <rect key="frame" x="96" y="63" width="150" height="17"/>
+                            <rect key="frame" x="91" y="63" width="150" height="17"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -52,15 +52,15 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BcM-rQ-nTK">
-                            <rect key="frame" x="30" y="114" width="275" height="1"/>
+                            <rect key="frame" x="25" y="114" width="285" height="1"/>
                             <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="rhm-SF-3Fh"/>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJ6-SD-3KS">
-                            <rect key="frame" x="10" y="155" width="157" height="48"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <rect key="frame" x="0.0" y="155" width="167" height="48"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="管理钱包" image="profile_wallet">
                                 <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
@@ -69,8 +69,8 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpb-Tg-6dx">
-                            <rect key="frame" x="173" y="155" width="157" height="48"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <rect key="frame" x="168" y="155" width="167" height="48"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="交易记录" image="profile_transaction">
                                 <color key="titleColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
@@ -79,7 +79,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbi-Td-Ak2">
-                            <rect key="frame" x="30" y="32" width="50" height="50"/>
+                            <rect key="frame" x="25" y="32" width="50" height="50"/>
                             <color key="backgroundColor" red="0.91764705882352937" green="0.94901960784313721" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="HqC-jR-A4f"/>
@@ -105,15 +105,15 @@
                         <constraint firstItem="I8d-Jk-oxu" firstAttribute="centerY" secondItem="DJ6-SD-3KS" secondAttribute="centerY" id="MVd-bO-Cug"/>
                         <constraint firstItem="fpb-Tg-6dx" firstAttribute="centerY" secondItem="DJ6-SD-3KS" secondAttribute="centerY" id="NpK-Iw-KhB"/>
                         <constraint firstItem="9vV-kr-d2D" firstAttribute="bottom" secondItem="e0P-rR-p9j" secondAttribute="bottom" constant="4" id="OTz-b6-fbU"/>
-                        <constraint firstItem="tbi-Td-Ak2" firstAttribute="leading" secondItem="vlA-3b-6KZ" secondAttribute="leading" constant="30" id="OjT-Pi-A7m"/>
+                        <constraint firstItem="tbi-Td-Ak2" firstAttribute="leading" secondItem="vlA-3b-6KZ" secondAttribute="leading" constant="25" id="OjT-Pi-A7m"/>
                         <constraint firstItem="e0P-rR-p9j" firstAttribute="top" secondItem="tbi-Td-Ak2" secondAttribute="top" constant="2" id="R8F-M5-UWU"/>
                         <constraint firstItem="DuY-43-Imf" firstAttribute="bottom" secondItem="tbi-Td-Ak2" secondAttribute="bottom" constant="-2" id="bVj-K7-Igz"/>
                         <constraint firstAttribute="bottom" secondItem="DJ6-SD-3KS" secondAttribute="bottom" constant="10" id="dsI-ke-iuw"/>
-                        <constraint firstItem="DJ6-SD-3KS" firstAttribute="leading" secondItem="vlA-3b-6KZ" secondAttribute="leading" constant="10" id="eEh-Vh-ZZU"/>
+                        <constraint firstItem="DJ6-SD-3KS" firstAttribute="leading" secondItem="vlA-3b-6KZ" secondAttribute="leading" id="eEh-Vh-ZZU"/>
                         <constraint firstAttribute="bottom" secondItem="I8d-Jk-oxu" secondAttribute="bottom" constant="24" id="ecF-lo-9MA"/>
                         <constraint firstItem="fpb-Tg-6dx" firstAttribute="width" secondItem="DJ6-SD-3KS" secondAttribute="width" id="f28-xS-U1T"/>
                         <constraint firstItem="BcM-rQ-nTK" firstAttribute="leading" secondItem="tbi-Td-Ak2" secondAttribute="leading" id="fHQ-CJ-r0e"/>
-                        <constraint firstItem="fpb-Tg-6dx" firstAttribute="leading" secondItem="I8d-Jk-oxu" secondAttribute="trailing" constant="5" id="fvs-Sg-w7c"/>
+                        <constraint firstItem="fpb-Tg-6dx" firstAttribute="leading" secondItem="I8d-Jk-oxu" secondAttribute="trailing" id="fvs-Sg-w7c"/>
                     </constraints>
                 </view>
             </subviews>
@@ -128,6 +128,7 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="checkBtn" destination="fpb-Tg-6dx" id="kXE-yK-h6w"/>
+                <outlet property="containerLeftMarginConstraint" destination="rl6-Ak-9Lu" id="4PC-Ch-Nek"/>
                 <outlet property="containerView" destination="vlA-3b-6KZ" id="nQB-Cg-LiJ"/>
                 <outlet property="descLabel" destination="DuY-43-Imf" id="iQQ-oi-dTD"/>
                 <outlet property="lnitialsLabel" destination="tbi-Td-Ak2" id="Mkx-5g-VLp"/>

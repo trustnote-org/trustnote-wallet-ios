@@ -23,7 +23,7 @@ class TNTabBarController: UITabBarController {
     }
     
     private func addChildViewControllers() {
-    
+        
         setChildViewController(TNWalletHomeController(), title: "Wallet".localized, imageName: "tabbar_wallet")
         setChildViewController(TNContactViewController(), title: "Message".localized, imageName: "tabbar_message")
         setChildViewController(TNProfileViewController(), title: "Profile".localized, imageName: "tabbar_profile")
@@ -38,7 +38,7 @@ class TNTabBarController: UITabBarController {
         navController.tabBarItem.title = title
         navController.tabBarItem.image = UIImage(named: imageName + "_copy")
         navController.tabBarItem.selectedImage = UIImage(named: imageName)
-       navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.hexColor(rgbValue: 0x4B5461, alpha: 0.6)], for: .normal)
+        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.hexColor(rgbValue: 0x4B5461, alpha: 0.6)], for: .normal)
         navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : kGlobalColor], for: .selected)
         navController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -1)
         addChildViewController(navController)

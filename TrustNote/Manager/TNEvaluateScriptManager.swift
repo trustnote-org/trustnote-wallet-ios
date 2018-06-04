@@ -13,7 +13,7 @@ import SwiftyJSON
 
 final class TNEvaluateScriptManager {
     
-
+    
     let webView = WKWebView()
     
     class var sharedInstance: TNEvaluateScriptManager {
@@ -32,14 +32,13 @@ final class TNEvaluateScriptManager {
     }
     
     public func evaluatingJavaScriptString(fileString: String) {
-       
+        
         webView.evaluateJavaScript(fileString) {[unowned self] (any, _) in
             
             if TNGlobalHelper.shared.isNeedGenerateSeed {
                 self.generateMnemonic()
             }
             TNGlobalHelper.shared.isComlpetion = true
-            
             guard TNGlobalHelper.shared.tempDeviceKey.isEmpty else {
                 TNEvaluateScriptManager.sharedInstance.generateTempPublicKey(tempPrivateKey: TNGlobalHelper.shared.tempDeviceKey)
                 return
@@ -62,8 +61,8 @@ extension TNEvaluateScriptManager {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
                 //let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
-               let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
-
+                let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
+                
                 TNGlobalHelper.shared.mnemonic = mnemonic1 //as! String
                 guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
                     let version = "1.0.0"
@@ -92,7 +91,7 @@ extension TNEvaluateScriptManager {
             if let xPrivKey = any {
                 let notificationName = Notification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)
                 if xPrivKey is Int && (xPrivKey as! Int) == 0 {
-                   NotificationCenter.default.post(name: notificationName, object: "0")
+                    NotificationCenter.default.post(name: notificationName, object: "0")
                 } else if xPrivKey is String {
                     
                     TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
@@ -126,12 +125,12 @@ extension TNEvaluateScriptManager {
         }
     }
     /**
-    * 生成临时私钥
-    * @method genPrivKey
-    * @for Base
-    * @param {void}
-    * @return {string} base64编码的私钥
-    */
+     * 生成临时私钥
+     * @method genPrivKey
+     * @for Base
+     * @param {void}
+     * @return {string} base64编码的私钥
+     */
     public func generateTempPrivateKey() {
         webView.evaluateJavaScript("window.Client.genPrivKey()") {[unowned self] (any, _) in
             
@@ -201,12 +200,12 @@ extension TNEvaluateScriptManager {
     }
     
     /**
-    * 获得设备消息hash
-    * @method getDeviceMessageHashToSign
-    * @for Base
-    * @param {string}  消息JSON字符串
-    * @return {string} base64过的hash
-    */
+     * 获得设备消息hash
+     * @method getDeviceMessageHashToSign
+     * @for Base
+     * @param {string}  消息JSON字符串
+     * @return {string} base64过的hash
+     */
     public func getDeviceMessageHashToSign(unit: String, completed: ((String) -> Swift.Void)?) {
         let js = String(format:"window.Client.getDeviceMessageHashToSign('%@')", arguments:[unit])
         webView.evaluateJavaScript(js) {(any, _) in
@@ -261,7 +260,7 @@ extension TNEvaluateScriptManager {
     public func getWalletPubkey(xPrivKey: String, num: Int, completed: (() -> Swift.Void)?) {
         let js = String(format:"window.Client.walletPubKey('%@', %d)", arguments:[xPrivKey, num])
         webView.evaluateJavaScript(js) {[unowned self] (any, error) in
-           
+            
             if let walletPubkey = any {
                 TNGlobalHelper.shared.currentWallet.xPubKey = walletPubkey as! String
                 self.getWalletID(walletPubKey: walletPubkey as! String, completed: completed)
@@ -331,7 +330,7 @@ extension TNEvaluateScriptManager {
     public func getWalletAddressPubkey(wallet_xPubKey: String, change: Int, num: Int, completionHandler: ((String) -> Swift.Void)?) {
         let js = String(format:"window.Client.walletAddressPubkey('%@', %d, %d)", arguments:[wallet_xPubKey, change, num])
         webView.evaluateJavaScript(js) {(any, _) in
-             completionHandler!(any as! String)
+            completionHandler!(any as! String)
         }
     }
     
@@ -343,7 +342,7 @@ extension TNEvaluateScriptManager {
      * @return {string} 随机数的base64
      */
     public func generateRandomBytes(num: Int, completionHandler: ((String) -> Swift.Void)?) {
-         let js = String(format:"window.Client.randomBytes(%d)", arguments:[num])
+        let js = String(format:"window.Client.randomBytes(%d)", arguments:[num])
         webView.evaluateJavaScript(js) {(any, _) in
             completionHandler!(any as! String)
         }
@@ -355,8 +354,8 @@ extension TNEvaluateScriptManager {
     public func getParamsSignForLoginHub(unit: String, completionHandler: ((String) -> Swift.Void)?) {
         
         getDeviceMessageHashToSign(unit: unit) {[unowned self] (b64_hash) in
-             let signHash = b64_hash
-             self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.ecdsaPrivkey, path: "null", completionHandler: completionHandler)
+            let signHash = b64_hash
+            self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.ecdsaPrivkey, path: "null", completionHandler: completionHandler)
         }
     }
     
@@ -373,7 +372,7 @@ extension TNEvaluateScriptManager {
                 TNGlobalHelper.shared.tempDeviceKey = tempDeviceKey as! String
                 let js = String(format:"window.Client.genPubKey('%@')", arguments:[TNGlobalHelper.shared.tempDeviceKey])
                 self.webView.evaluateJavaScript(js) {(any, _) in
-                   TNGlobalHelper.shared.tempPublicKey = any as! String
+                    TNGlobalHelper.shared.tempPublicKey = any as! String
                     completionHandler!()
                 }
             }

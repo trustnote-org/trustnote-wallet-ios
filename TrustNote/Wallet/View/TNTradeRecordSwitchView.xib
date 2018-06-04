@@ -34,7 +34,7 @@
                         <color key="titleColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
-                        <action selector="RreceivingTransferring:" destination="iN0-l3-epB" eventType="touchUpInside" id="QNo-Yb-ozM"/>
+                        <action selector="receivingTransferring:" destination="iN0-l3-epB" eventType="touchUpInside" id="fkP-Zi-Xm1"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hwH-p7-JTP">
@@ -69,7 +69,7 @@
         </view>
     </objects>
     <resources>
-        <image name="wallet_receivables" width="20" height="20"/>
+        <image name="wallet_receivables" width="26" height="26"/>
         <image name="wallet_transfer" width="26" height="26"/>
     </resources>
 </document>

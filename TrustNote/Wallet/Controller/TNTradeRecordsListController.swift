@@ -11,6 +11,7 @@ import ReusableKit
 import RxDataSources
 import RxCocoa
 import RxSwift
+import IQKeyboardManagerSwift
 
 class TNTradeRecordsListController: TNNavigationController {
     
@@ -56,8 +57,21 @@ class TNTradeRecordsListController: TNNavigationController {
         setBackButton()
         view.backgroundColor = kBackgroundColor
         tradeRecordHeaderview.walletModel = wallet
+        switchView.receivingTransferrinrBlock = {[unowned self] in
+            let vc = TNMyReceiveAddressController(wallet: self.wallet)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        switchView.transferAccountBlock = {[unowned self] in
+            let vc = TNSendViewController(wallet: self.wallet)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
         setupUI()
         bindView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     }
 }
 
@@ -129,7 +143,7 @@ extension TNTradeRecordsListController: UITableViewDelegate {
         tableHeaderView.backgroundColor = kBackgroundColor
         tableHeaderView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: 42)
         let titleLabel = UILabel()
-        titleLabel.text = "最近交易记录"
+        titleLabel.text = "Recent transaction records".localized
         titleLabel.textColor = UIColor.hexColor(rgbValue: 0x666666)
         titleLabel.font = UIFont.systemFont(ofSize: 14.0)
         titleLabel.sizeToFit()

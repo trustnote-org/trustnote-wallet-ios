@@ -35,7 +35,7 @@ class TNWalletBalanceViewModel: NSObject {
             let fBalance = Double(balance) / 1000000.0
             wallet.balance = String(format: "%.4f", fBalance)
             self.credentials.append(wallet.toJSON()!)
-            if num == self.wallets.count - 1 {
+            if num == self.wallets.count - 1 && !self.wallets.isEmpty {
                 TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: self.credentials)
                 completion(self.wallets)
             }

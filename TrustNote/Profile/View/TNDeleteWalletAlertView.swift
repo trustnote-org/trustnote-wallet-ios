@@ -26,15 +26,14 @@ class TNDeleteWalletAlertView: UIView, TNNibLoadable {
         layer.shadowOffset = CGSize(width: 0, height: 2.0)
         layer.shadowOpacity = 0.2
         layer.shadowRadius = 20.0
-        confirmBtn.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
-        cancelBtn.setTitle(NSLocalizedString("Cancel", comment: ""), for: .normal)
-        descLabel.text = NSLocalizedString("Delete the wallet warning", comment: "")
+        confirmBtn.setTitle("Confirm".localized, for: .normal)
+        cancelBtn.setTitle("Cancel".localized, for: .normal)
+        descLabel.text = "Delete the wallet warning".localized
         confirmBtn.setupRadiusCorner(radius: kCornerRadius)
         cancelBtn.setupRadiusCorner(radius: kCornerRadius)
         cancelBtn.layer.borderWidth = 1.0
         cancelBtn.layer.borderColor = kGlobalColor.cgColor
     }
-   
 }
 
 extension TNDeleteWalletAlertView {

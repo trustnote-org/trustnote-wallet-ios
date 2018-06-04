@@ -20,13 +20,13 @@ class TNVBackupsSeedController: TNBaseViewController {
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Backup Your Seed Phrase", comment: "")
         $0.textColor = kTitleTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 24.0)
+        $0.font = kTitleFont
     }
     
     private let detailLabel = UILabel().then {
         $0.text =  NSLocalizedString("Backup.detail", comment: "")
         $0.textColor = kThemeTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 18.0)
+        $0.font = kButtonFont
         $0.numberOfLines = 0
     }
     
@@ -45,14 +45,15 @@ class TNVBackupsSeedController: TNBaseViewController {
         $0.addTarget(self, action: #selector(TNVBackupsSeedController.backupCompleted), for: .touchUpInside)
     }
     
-    fileprivate lazy var seedView: TNBackupSeedBackView = {[weak self] in
+    fileprivate lazy var seedView: TNBackupSeedBackView = {
         let seedView = TNBackupSeedBackView.backupSeedBackView()
         return seedView
     }()
     
-    fileprivate lazy var warningView: TNBackupWarningView = {[weak self] in
+    fileprivate lazy var warningView: TNBackupWarningView = {
         let warningView = TNBackupWarningView.backupWarningView()
         warningView.setupRadiusCorner(radius: kCornerRadius)
+        warningView.tips = ["Backup.firstWarning".localized, "Backup.lastWarning".localized]
         return warningView
     }()
     

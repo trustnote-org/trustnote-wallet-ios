@@ -16,25 +16,25 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="86"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="建议手写或保存在离线设备中" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jDp-ty-S5b">
-                    <rect key="frame" x="23" y="15" width="344" height="17"/>
+                    <rect key="frame" x="23" y="10" width="344" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yb-4K-zxH">
-                    <rect key="frame" x="10" y="18" width="6.5" height="17"/>
+                    <rect key="frame" x="10" y="13" width="6.5" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fNm-RW-W0r">
-                    <rect key="frame" x="10" y="39" width="6.5" height="17"/>
+                    <rect key="frame" x="10" y="34" width="6.5" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.87843137250000003" green="0.35686274509999999" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="msC-Kl-b8u">
-                    <rect key="frame" x="23" y="36" width="344" height="33.5"/>
+                    <rect key="frame" x="23" y="31" width="344" height="33.5"/>
                     <string key="text">建议创建完成钱包后立即恢复一次，以确保助记词正确
 务必牢记</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -46,7 +46,7 @@
             <constraints>
                 <constraint firstItem="msC-Kl-b8u" firstAttribute="leading" secondItem="jDp-ty-S5b" secondAttribute="leading" id="AVE-9s-rdi"/>
                 <constraint firstItem="jDp-ty-S5b" firstAttribute="leading" secondItem="diq-zF-bO8" secondAttribute="leading" constant="23" id="JDV-Ue-Wjm"/>
-                <constraint firstItem="jDp-ty-S5b" firstAttribute="top" secondItem="diq-zF-bO8" secondAttribute="top" constant="15" id="POY-El-x04"/>
+                <constraint firstItem="jDp-ty-S5b" firstAttribute="top" secondItem="diq-zF-bO8" secondAttribute="top" constant="10" id="POY-El-x04"/>
                 <constraint firstItem="jDp-ty-S5b" firstAttribute="top" secondItem="2Yb-4K-zxH" secondAttribute="top" constant="-3" id="R94-Jb-CCp"/>
                 <constraint firstAttribute="trailing" secondItem="jDp-ty-S5b" secondAttribute="trailing" constant="8" id="WG2-bM-ocG"/>
                 <constraint firstItem="fNm-RW-W0r" firstAttribute="centerX" secondItem="2Yb-4K-zxH" secondAttribute="centerX" id="XrI-5N-uBJ"/>

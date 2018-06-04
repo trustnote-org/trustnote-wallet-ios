@@ -11,11 +11,13 @@ import UIKit
 class TNRecoveryWalletController: TNBaseViewController {
     
     let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 26) : 26
+    let delegate = UIApplication.shared.delegate as! AppDelegate
     private var seedPhrase = ""
     let viewModel = TNRestoreWalletViewModel()
     var hub: String?
     var isDeleteMnemonic: Bool?
     var syncLoadingView : TNCustomAlertView?
+    var isShowAlert = true
     
     private let backBtn = UIButton().then {
         $0.setImage(UIImage(named: "welcome_back"), for: .normal)
@@ -25,7 +27,7 @@ class TNRecoveryWalletController: TNBaseViewController {
     private let titleTextLabel = UILabel().then {
         $0.text =  NSLocalizedString("Recover wallet", comment: "")
         $0.textColor = kTitleTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 24.0)
+        $0.font = kTitleFont
     }
     
     private let descLabel = UILabel().then {
@@ -51,7 +53,7 @@ class TNRecoveryWalletController: TNBaseViewController {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
         $0.setTitle(NSLocalizedString("Use the phrase to restore the wallet", comment: ""), for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.titleLabel?.font = kButtonFont
         $0.isEnabled = false
         $0.alpha = 0.3
     }
@@ -60,7 +62,7 @@ class TNRecoveryWalletController: TNBaseViewController {
         $0.backgroundColor = UIColor.white
         $0.setTitle(NSLocalizedString("Restore the wallet and delete the phrase", comment: ""), for: .normal)
         $0.setTitleColor(kGlobalColor, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.titleLabel?.font = kButtonFont
         $0.layer.borderColor = kGlobalColor.cgColor
         $0.layer.borderWidth = 1.0
         $0.isEnabled = false
@@ -70,7 +72,7 @@ class TNRecoveryWalletController: TNBaseViewController {
     
     fileprivate lazy var loadingView: TNSyncClonedWalletsView = {
         let loadingView = TNSyncClonedWalletsView.loadViewFromNib()
-        loadingView.loadingText.text = "SyncLoading".localized
+        loadingView.loadingText.text = "RecoverLoading".localized
         return loadingView
     }()
     
@@ -78,7 +80,7 @@ class TNRecoveryWalletController: TNBaseViewController {
         let seedView = TNBackupSeedBackView.backupSeedBackView()
         seedView.seedContainerView.isCanEdit = true
         return seedView
-        }()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +113,8 @@ class TNRecoveryWalletController: TNBaseViewController {
                 self.finishGeneratePrivateKey()
                 return
             }
+            self.loadingView.stopAnimation()
+            self.syncLoadingView?.removeFromSuperview()
             self.warningImageView.isHidden = false
             self.warningLabel.isHidden = false
         }).disposed(by: disposeBag)
@@ -122,22 +126,35 @@ class TNRecoveryWalletController: TNBaseViewController {
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
         
-       seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+//        if delegate.isTabBarRootController() {
+//            let mnemonic = "together knife slab material electric broom wagon heart harvest side copper vote"
+//           seedView.seedContainerView.mnmnemonicsArr = mnemonic.components(separatedBy: " ")
+//        } else {
+//           seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+//        }
+       
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if delegate.isTabBarRootController() && isShowAlert {
+            alertAction(self, "Recover wallet tips".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
+            isShowAlert = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if navigationController?.viewControllers.count == 3 {
+        if navigationController?.viewControllers.count == 3 && !delegate.isTabBarRootController() {
             navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         }
-        super.viewDidAppear(animated)
         let firstResponder = seedView.seedContainerView.textFields.first
         firstResponder?.becomeFirstResponder()
     }
     
     override func viewDidDisappear(_ animated:Bool) {
         super.viewDidDisappear(animated)
-        if navigationController?.viewControllers.count == 3 {
+        if navigationController?.viewControllers.count == 3 && !delegate.isTabBarRootController() {
             navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         }
     }
@@ -148,11 +165,15 @@ extension TNRecoveryWalletController {
     
     @objc fileprivate func goBack() {
         view.endEditing(true)
-        for childViewController in (navigationController?.viewControllers)! {
-            if childViewController.isKind(of: TNCreateAndRestoreWalletController.self) {
-                navigationController?.popToViewController(childViewController, animated: true)
+        guard delegate.isTabBarRootController() else {
+            for childViewController in (navigationController?.viewControllers)! {
+                if childViewController.isKind(of: TNCreateAndRestoreWalletController.self) {
+                    navigationController?.popToViewController(childViewController, animated: true)
+                }
             }
+            return
         }
+        navigationController?.popViewController(animated: true)
     }
     
     fileprivate func validationInput(isDelete: Bool) {
@@ -185,6 +206,7 @@ extension TNRecoveryWalletController {
         hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: false)
         TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub!)
         TNWebSocketManager.sharedInstance.generateNewPrivkeyBlock = {
+            TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: "")
             self.createPrivateKey()
         }
     }
@@ -198,8 +220,10 @@ extension TNRecoveryWalletController {
         
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
         TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        TNGlobalHelper.shared.tempPrivKey = ""
-        TNSQLiteManager.sharedManager.deleteAllWallets()
+        if !delegate.isTabBarRootController() {
+            TNGlobalHelper.shared.tempPrivKey = ""
+        }
+        TNSQLiteManager.sharedManager.deleteAllLocalData()
         viewModel.isRecoverWallet = true
         TNGlobalHelper.shared.recoverStyle = .all
         viewModel.createNewWalletWhenRestoreWallet()
@@ -220,7 +244,7 @@ extension TNRecoveryWalletController {
         }
         TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
-        TNGlobalHelper.shared.isVerifyPasswdForMain = false
+        TNGlobalHelper.shared.isVerifyPasswdForMain = delegate.isTabBarRootController() ? true : false
         TNGlobalHelper.shared.isNeedLoadData = false
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
         

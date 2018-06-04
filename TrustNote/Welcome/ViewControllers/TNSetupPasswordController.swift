@@ -9,9 +9,11 @@
 import UIKit
 import IQKeyboardManagerSwift
 
+let textValidCount = 8
+
 class TNSetupPasswordController: TNBaseViewController {
     
-    let textValidCount = 8
+    
     var isCreateWallet: Bool?
     
     @IBOutlet weak var titleTextLabel: UILabel!
@@ -55,7 +57,7 @@ class TNSetupPasswordController: TNBaseViewController {
         frameHeightConstraint.constant = firstSize.height + lastSize.height + 40
         
         inputTextField.delegate = self
-       
+        
         confirmTextField.delegate = self
         inputTextField.addTarget(self, action: #selector(TNSetupPasswordController.textInputDidChange(_:)), for: .editingChanged)
         confirmTextField.addTarget(self, action: #selector(TNSetupPasswordController.textInputDidChange(_:)), for: .editingChanged)
@@ -82,9 +84,9 @@ extension TNSetupPasswordController {
             return
         }
         guard inputTextField.text == confirmTextField.text else {
-           conflictView.isHidden = false
+            conflictView.isHidden = false
             conflictView.shakeAnimation(scope: 5.0)
-           return
+            return
         }
         let md5Psword = inputTextField.text?.md5()
         Preferences[.encryptionPassword] = md5Psword
@@ -136,16 +138,16 @@ extension TNSetupPasswordController {
         if textField == inputTextField {
             firstDeleteBtn.isHidden = textField.text?.count == 0 ? true : false
             if (textField.text?.count)! > textValidCount - 1 {
-               securityLevelView.isHidden = false
-                if isOnlyNumber(str: textField.text!) || isAllLetter(str: textField.text!) || isAllSpecialCharacter(str: textField.text!) {
+                securityLevelView.isHidden = false
+                if String.isOnlyNumber(str: textField.text!) || String.isAllLetter(str: textField.text!) || String.isAllSpecialCharacter(str: textField.text!) {
                     securityLevelView.level = .weak
-                } else if containsNumAndLetterAndSpecialCharacter(str: textField.text!) {
+                } else if String.containsNumAndLetterAndSpecialCharacter(str: textField.text!) {
                     securityLevelView.level = .strong
                 } else {
                     securityLevelView.level = .middle
                 }
             } else {
-               securityLevelView.isHidden = true
+                securityLevelView.isHidden = true
             }
         }
         if textField == confirmTextField {
@@ -167,45 +169,6 @@ extension TNSetupPasswordController {
     }
 }
 
-/// MARK: Password Security Varify
-extension TNSetupPasswordController {
-   
-    /// Determine whether the input string is a number
-   fileprivate func isOnlyNumber(str: String) -> Bool {
-       let regex = "^[0-9]+$"
-       let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-       let isValid = predicate.evaluate(with: str)
-       return isValid
-    }
-    
-    fileprivate func isAllLetter (str: String) -> Bool {
-        let regex = "^[A-Za-z]+$"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        let isValid = predicate.evaluate(with: str)
-        return isValid
-    }
-    
-    fileprivate func isAllSpecialCharacter (str: String) -> Bool {
-        let regex = "^[^a-zA-Z0-9\u{4E00}-\u{9FA5}]+$" //
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        let isValid = predicate.evaluate(with: str)
-        return isValid
-    }
-    
-    fileprivate func isChineseCharacters (str: String) -> Bool {
-        let regex = "^[\u{4E00}-\u{9FA5}]{0,}$"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        let isValid = predicate.evaluate(with: str)
-        return isValid
-    }
-    
-    fileprivate func containsNumAndLetterAndSpecialCharacter (str: String) -> Bool {
-        let regex = "^(?![a-zA-Z0-9]+$)(?![^a-zA-Z/D]+$)(?![^0-9/D]+$).{8,}$"
-        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-        let isValid = predicate.evaluate(with: str)
-        return isValid
-    }
-}
 
 extension TNSetupPasswordController: UITextFieldDelegate {
     
@@ -223,11 +186,11 @@ extension TNSetupPasswordController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-
+        
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if isChineseCharacters(str: string) && string.count != 0 {
+        if String.isChineseCharacters(str: string) && string.count != 0 {
             return false
         }
         if string == " " {
@@ -241,3 +204,44 @@ extension TNSetupPasswordController: UITextFieldDelegate {
         return true
     }
 }
+
+/// MARK: Password Security Varify
+extension String {
+    
+    /// Determine whether the input string is a number
+    static func isOnlyNumber(str: String) -> Bool {
+        let regex = "^[0-9]+$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: str)
+        return isValid
+    }
+    
+    static func isAllLetter (str: String) -> Bool {
+        let regex = "^[A-Za-z]+$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: str)
+        return isValid
+    }
+    
+    static func isAllSpecialCharacter (str: String) -> Bool {
+        let regex = "^[^a-zA-Z0-9\u{4E00}-\u{9FA5}]+$" //
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: str)
+        return isValid
+    }
+    
+    static func isChineseCharacters (str: String) -> Bool {
+        let regex = "^[\u{4E00}-\u{9FA5}]{0,}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: str)
+        return isValid
+    }
+    
+    static func containsNumAndLetterAndSpecialCharacter (str: String) -> Bool {
+        let regex = "^(?![a-zA-Z0-9]+$)(?![^a-zA-Z/D]+$)(?![^0-9/D]+$).{8,}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: str)
+        return isValid
+    }
+}
+

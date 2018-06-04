@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: String) -> Bool {
         
-        if extensionPointIdentifier.isEqual("com.apple.keyboard-service") {
+        if extensionPointIdentifier == UIApplicationExtensionPointIdentifier.keyboard.rawValue {
             return false
         }
         return true
@@ -66,5 +66,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let nav = tabBarController.selectedViewController as! TNBaseNavigationController
         let profile = nav.topViewController as! TNProfileViewController
         profile.enterIntoSetting()
+    }
+    
+    func isTabBarRootController() -> Bool {
+        let rootVC = (UIApplication.shared.keyWindow?.rootViewController)!
+        if rootVC.isKind(of: TNTabBarController.self) {
+            return true
+        }
+        return false
     }
  }

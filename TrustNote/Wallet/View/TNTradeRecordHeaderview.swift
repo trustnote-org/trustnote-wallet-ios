@@ -11,7 +11,7 @@ import UIKit
 class TNTradeRecordHeaderview: UIView {
 
     @IBOutlet weak var walletNameLabel: UILabel!
-    
+    @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var decimalLabel: UILabel!
     @IBOutlet weak var assertLabel: UILabel!
     var walletModel: TNWalletModel? {
@@ -27,6 +27,7 @@ class TNTradeRecordHeaderview: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        unitLabel.text = "Total assets".localized + " (MN)"
     }
 }
 

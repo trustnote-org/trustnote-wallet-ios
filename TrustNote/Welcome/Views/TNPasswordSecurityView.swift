@@ -65,10 +65,10 @@ class TNPasswordSecurityView: UIView {
     override func awakeFromNib() {
         
         super.awakeFromNib()
-        descLabel.text = NSLocalizedString("Password.passwordSecurity", comment: "")
-        weakLabel.text = NSLocalizedString("Password.weakLevel", comment: "")
-        middleLabel.text = NSLocalizedString("Password.middleLevel", comment: "")
-        strongLabel.text = NSLocalizedString("Password.strongLevel", comment: "")
+        descLabel.text = "Password.passwordSecurity".localized
+        weakLabel.text = "Password.weakLevel".localized
+        middleLabel.text = "Password.middleLevel".localized
+        strongLabel.text = "Password.strongLevel".localized
     }
 
 }

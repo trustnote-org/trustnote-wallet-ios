@@ -20,7 +20,7 @@ class TNVerifyCompletionController: TNBaseViewController {
     
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
-        $0.font = UIFont.boldSystemFont(ofSize: 24.0)
+        $0.font = kTitleFont
         $0.text = NSLocalizedString("Verifying words correct", comment: "")
     }
     
@@ -35,14 +35,14 @@ class TNVerifyCompletionController: TNBaseViewController {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
         $0.setTitle(NSLocalizedString("Delete words", comment: ""), for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.titleLabel?.font = kButtonFont
     }
     
     private let skipBtn = TNButton().then {
         $0.backgroundColor = UIColor.white
         $0.setTitle(NSLocalizedString("Skip", comment: ""), for: .normal)
         $0.setTitleColor(kGlobalColor, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
+        $0.titleLabel?.font = kButtonFont
         $0.layer.borderColor = kGlobalColor.cgColor
         $0.layer.borderWidth = 1.0
     }

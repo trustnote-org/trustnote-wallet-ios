@@ -31,8 +31,15 @@ class TNWalletAuthCodeController: TNBaseViewController {
         containerView.layer.borderColor = UIColor.hexColor(rgbValue: 0xF2F2F2).cgColor
         containerView.layer.borderWidth = kCornerRadius
         let qrInput = TNWalletAuthCode().generateWalletAuthCode(wallet: wallet!)
+        let imgSize = self.codeImageView.size
+        DispatchQueue.global().async {
+            let qrImage = UIImage.createHDQRImage(input: qrInput, imgSize: imgSize)
+            DispatchQueue.main.async(execute: {
+                self.codeImageView.image = qrImage
+            })
+        }
         authCodelabel.text = qrInput
-        codeImageView.image = UIImage.createHDQRImage(input: qrInput, imgSize: codeImageView.size)
+        
     }
 }
 

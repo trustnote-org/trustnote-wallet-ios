@@ -67,6 +67,7 @@
             <connections>
                 <outlet property="assertLabel" destination="ctU-Fd-Dbp" id="1jf-3P-35z"/>
                 <outlet property="decimalLabel" destination="yAe-YZ-Sys" id="VTH-P7-gwx"/>
+                <outlet property="unitLabel" destination="Le7-ch-GEt" id="2AN-gd-Ksj"/>
                 <outlet property="walletNameLabel" destination="Hd9-yB-WGX" id="dLU-VI-Yrj"/>
             </connections>
             <point key="canvasLocation" x="20" y="-178"/>

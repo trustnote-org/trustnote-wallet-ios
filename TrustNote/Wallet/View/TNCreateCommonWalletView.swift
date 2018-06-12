@@ -20,6 +20,9 @@ class TNCreateCommonWalletView: UIView {
     
     var ceateCommonWalletCompleted: CreateCommonWalletCompleted?
     
+    var passwordAlertView: TNPasswordAlertView?
+    var verifyPasswordView: TNCustomAlertView?
+    
     fileprivate var isDisplayWarning: BehaviorRelay<Bool> =  BehaviorRelay(value: false)
     
     @IBOutlet weak var inputTextField: UITextField!
@@ -40,6 +43,16 @@ class TNCreateCommonWalletView: UIView {
         inputObserver.drive(createButton.validState).disposed(by: disposeBag)
         inputObserver.drive(clearButton.rx_HiddenState).disposed(by: disposeBag)
         isDisplayWarning.asDriver().drive(lineView.rx_HighlightState).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillShow)
+            .subscribe(onNext: { [unowned self] _ in
+                self.verifyPasswordView?.y -= 40
+            }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillHide)
+            .subscribe(onNext: { [unowned self] (notify) in
+                self.verifyPasswordView?.y = 0
+            }).disposed(by: disposeBag)
     }
 }
 
@@ -52,13 +65,11 @@ extension TNCreateCommonWalletView {
             isDisplayWarning.accept(true)
             return
         }
-        createNewWallet()
-        inputTextField.text = nil
+        verifyWalletPassword()
         createButton.isEnabled = false
         createButton.alpha = 0.3
     }
     @IBAction func clearInputText(_ sender: Any) {
-        inputTextField.text = nil
         createButton.isEnabled = false
         createButton.alpha = 0.3
         warningView.isHidden = true
@@ -75,10 +86,38 @@ extension TNCreateCommonWalletView {
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 self.walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     self.walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                    TNGlobalHelper.shared.password = nil
+                    self.inputTextField.text = nil
                     self.ceateCommonWalletCompleted?()
                 })
             }
         }
+    }
+    
+    fileprivate func verifyWalletPassword() {
+        passwordAlertView = TNPasswordAlertView.loadViewFromNib()
+        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .pop)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(TNCreateCommonWalletView.handleTapGesture))
+        verifyPasswordView?.addGestureRecognizer(tap)
+        passwordAlertView!.verifyCorrectBlock = {[unowned self] in
+            self.createNewWallet()
+            self.verifyPasswordView?.removeFromSuperview()
+        }
+        passwordAlertView!.didClickedCancelBlock = {[unowned self] in
+            self.verifyPasswordView?.removeFromSuperview()
+        }
+    }
+    
+    @objc fileprivate func handleTapGesture() {
+        passwordAlertView!.passwordTextField.resignFirstResponder()
+    }
+    
+    fileprivate func createPopView(_ alert: UIView, height: CGFloat, animatedType: TNAlertAnimatedStyle) -> TNCustomAlertView {
+        let popX = CGFloat(kLeftMargin)
+        let popH: CGFloat = height
+        let popY = (kScreenH - popH) / 2
+        let popW = kScreenW - popX * 2
+        return TNCustomAlertView(alert: alert, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: animatedType)
     }
 }
 

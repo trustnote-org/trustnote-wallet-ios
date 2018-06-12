@@ -117,6 +117,21 @@
 "Send" = "Send";
 "Receive" = "Receive";
 "Recent transaction records" = "Recent transaction records";
+"My receiving address" = "My receiving address";
+"Fixed amount" = "Fixed amount";
+"Copy the receiving address" = "Copy the receiving address";
+"Clear the amount" = "Clear the amount";
+"Send TTT" = "Send TTT";
+"Remaining balance" = "Remaining balance";
+"Receiver's wallet address" = "Receiver's wallet address";
+"Amount" = "Amount";
+"Send all" = "Send all";
+"Send.instruction" = "This is a watch-only wallet which requires an offline wallet with the mnemonic to sign the transactions.";
+"Send.checkout" = "See How offline signing work?";
+"Send.invalidAddress" = "Invalid address, please check and try it again";
+"Insufficient remaining balance" = "Insufficient remaining balance";
+"Address" = "Address";
+"NoContactAddress" = "Select \"+\" in bottom right of the screen to add frequently used address";
 
 /******* createwallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -147,7 +162,7 @@
 "Sync Cloned Wallets" = "Sync Cloned Wallets";
 "Press the button to sync" = "Press the button to sync";
 "Sync Wallets" = "Sync Wallets";
-"SyncClonedWallets.warning" = "Caution:We don't recommend cloning your wallet because your wallet is safe as long as your mnemonic is well protected. However,if you experience data inconsistency issue between the original wallet and its clone,you can fix it by using the\"Sync Cloned Wallets\"feature on both wallets.";
+"SyncClonedWallets.warning" = "We don't recommend cloning your wallet because your wallet is safe as long as your mnemonic is well protected. However,if you experience data inconsistency issue between the original wallet and its clone,you can fix it by using the\"Sync Cloned Wallets\"feature on both wallets.";
 "SyncLoading" = "同步中，切勿退出软件…";
 "RecoverLoading" = "恢复中，切勿退出软件…";
 "Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";

@@ -17,6 +17,7 @@ class TNProfileSetupPasswordView: UIView {
     
     weak var delegate: TNProfileSetupPasswordViewDelegate?
     
+    @IBOutlet weak var passwordRuleImgView: UIImageView!
     @IBOutlet weak var originTextField: UITextField!
     @IBOutlet weak var originLine: UIView!
     @IBOutlet weak var newTextField: UITextField!
@@ -29,6 +30,11 @@ class TNProfileSetupPasswordView: UIView {
     @IBOutlet weak var newPasswordView: UIView!
     @IBOutlet weak var newPasswdClearBtn: UIButton!
     @IBOutlet weak var confirmPasswdClearBtn: UIButton!
+    
+    @IBOutlet weak var ruleLabelLeftMargin: NSLayoutConstraint!
+    @IBOutlet weak var confirmLineHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var newLineHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var originLineHeightConstraint: NSLayoutConstraint!
     
     lazy var passwordSecurityView: TNPasswordSecurityView = {
         let passwordSecurityView = TNPasswordSecurityView.passwordSecurityView()
@@ -71,11 +77,22 @@ extension TNProfileSetupPasswordView: TNNibLoadable {
 extension TNProfileSetupPasswordView {
     
     @IBAction func clearNewPasswordText(_ sender: Any) {
-        
+        newTextField.text = nil
+        newPasswdClearBtn.isHidden = true
+        passwordSecurityView.isHidden = true
+        delegate?.inputDidChanged(false)
+        passwordRuleImgView.isHidden = true
+        passwdRuleLabel.textColor = UIColor.hexColor(rgbValue: 0xBBBBBB)
+        ruleLabelLeftMargin.constant = 0
     }
     
     @IBAction func clearConfirmText(_ sender: Any) {
-        
+        confirmTextField.text = nil
+        confirmPasswdClearBtn.isHidden = true
+        delegate?.inputDidChanged(false)
+        if !errorView.isHidden {
+            errorView.isHidden = true
+        }
     }
     
     @objc func textInputDidChange(_ textField: UITextField) {
@@ -96,6 +113,10 @@ extension TNProfileSetupPasswordView {
                 } else {
                     passwordSecurityView.level = .middle
                 }
+            } else {
+                passwordSecurityView.isHidden = true
+                passwdRuleLabel.textColor = UIColor.hexColor(rgbValue: 0xBBBBBB)
+                ruleLabelLeftMargin.constant = 0
             }
         }
         if textField == confirmTextField {
@@ -105,6 +126,53 @@ extension TNProfileSetupPasswordView {
 }
 
 extension TNProfileSetupPasswordView: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == originTextField {
+            originLine.backgroundColor = kGlobalColor
+            originLineHeightConstraint.constant = 2.0
+        }
+        if textField == newTextField {
+            newLine.backgroundColor = kGlobalColor
+            newLineHeightConstraint.constant = 2.0
+            if !passwordRuleImgView.isHidden {
+                passwordRuleImgView.isHidden = true
+                passwdRuleLabel.textColor = UIColor.hexColor(rgbValue: 0xBBBBBB)
+                ruleLabelLeftMargin.constant = 0
+            }
+            if (textField.text?.count)! > 0 {
+                newPasswdClearBtn.isHidden = false
+            }
+        }
+        if textField == confirmTextField {
+            confirmLine.backgroundColor = kGlobalColor
+            confirmLineHeightConstraint.constant = 2.0
+            if !errorView.isHidden {
+                errorView.isHidden = true
+            }
+            if (textField.text?.count)! > 0 {
+                confirmPasswdClearBtn.isHidden = false
+            }
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == originTextField {
+            originLine.backgroundColor = kLineViewColor
+            originLineHeightConstraint.constant = 1.0
+        }
+        if textField == newTextField {
+            newLine.backgroundColor = kLineViewColor
+            newLineHeightConstraint.constant = 1.0
+            newPasswdClearBtn.isHidden = true
+        }
+        if textField == confirmTextField {
+            confirmLine.backgroundColor = kLineViewColor
+            confirmLineHeightConstraint.constant = 1.0
+            confirmPasswdClearBtn.isHidden = true
+        }
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true

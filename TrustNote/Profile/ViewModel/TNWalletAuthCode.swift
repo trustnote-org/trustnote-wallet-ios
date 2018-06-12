@@ -19,7 +19,7 @@ struct TNWalletAuthCode {
         content["v"] = anyIndex()
         let data : NSData! = try? JSONSerialization.data(withJSONObject: content, options: []) as NSData!
         let JSONString = NSString(data:data as Data,encoding: String.Encoding.utf8.rawValue)! as String
-        return "TTT:" + JSONString
+        return TNScanPrefix + JSONString
     }
     
     func anyIndex() -> UInt32 {

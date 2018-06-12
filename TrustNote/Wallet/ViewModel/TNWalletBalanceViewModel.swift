@@ -14,8 +14,7 @@ class TNWalletBalanceViewModel: NSObject {
     var credentials: [[String:Any]] = []
     
     func queryAllWallets(completion: @escaping ([TNWalletModel]) ->Void) {
-        let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-        let credentials  = profile["credentials"] as! [[String:Any]]
+        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
         for dict in credentials {
             let walletModel = TNWalletModel.deserialize(from: dict)
             wallets.append(walletModel!)
@@ -32,7 +31,7 @@ class TNWalletBalanceViewModel: NSObject {
             for balanceModel in results as! [TNWalletBalance] {
                 balance += Int(balanceModel.amount)!
             }
-            let fBalance = Double(balance) / 1000000.0
+            let fBalance = Double(balance) / kBaseOrder
             wallet.balance = String(format: "%.4f", fBalance)
             self.credentials.append(wallet.toJSON()!)
             if num == self.wallets.count - 1 && !self.wallets.isEmpty {
@@ -48,7 +47,7 @@ class TNWalletBalanceViewModel: NSObject {
             for balanceModel in results as! [TNWalletBalance] {
                 balance += Int(balanceModel.amount)!
             }
-            let fBalance = Double(balance) / 1000000.0
+            let fBalance = Double(balance) / kBaseOrder
             wallet.balance = String(format: "%.4f", fBalance)
             completion(wallet)
         }

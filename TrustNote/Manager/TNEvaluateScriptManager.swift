@@ -60,19 +60,19 @@ extension TNEvaluateScriptManager {
     public func generateMnemonic() {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
-                //let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
-                let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
+               // let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
+               // let  mnemonic1 = /*"theme wall plunge fluid circle organ gloom expire coach patient neck clip"*/"together knife slab material electric broom wagon heart harvest side copper vote"
                 
-                TNGlobalHelper.shared.mnemonic = mnemonic1 //as! String
+                TNGlobalHelper.shared.mnemonic = mnemonic as! String
                 guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
-                    let version = "1.0.0"
+                    let version = TNVersion
                     let timeInterval: TimeInterval = Date().timeIntervalSince1970
                     let creatOn = Int(timeInterval)
-                    let profileDict: NSDictionary = ["version" : version, "creatOn" : creatOn, "xPrivKey" : "", "tempDeviceKey" : "", "prevTempDeviceKey" : "", "mnemonic" : mnemonic1, "my_device_address" : "",  "credentials" : []]
+                    let profileDict: NSDictionary = ["version" : version, "creatOn" : creatOn, "xPrivKey" : "", "tempDeviceKey" : "", "prevTempDeviceKey" : "", "mnemonic" : mnemonic, "my_device_address" : "",  "credentials" : []]
                     TNConfigFileManager.sharedInstance.saveDataToProfile(profileDict)
                     return
                 }
-                TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: mnemonic1)
+                TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: mnemonic)
                 let hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: true)
                 TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub)
             }
@@ -138,7 +138,7 @@ extension TNEvaluateScriptManager {
                 TNGlobalHelper.shared.tempDeviceKey = tempDeviceKey as! String
                 self.generateTempPublicKey(tempPrivateKey: tempDeviceKey as! String)
                 guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
-                    let version = "1.0.0"
+                    let version = TNVersion
                     let timeInterval: TimeInterval = Date().timeIntervalSince1970
                     let creatOn = Int(timeInterval)
                     let profileDict: NSDictionary = ["version" : version, "creatOn" : creatOn, "xPrivKey" : "", "tempDeviceKey" : tempDeviceKey, "prevTempDeviceKey" : "", "mnemonic" : "", "my_device_address" : "",  "credentials" : []]
@@ -347,7 +347,103 @@ extension TNEvaluateScriptManager {
             completionHandler!(any as! String)
         }
     }
+    
+    /**
+     * 验证地址有效性
+     * @method isValidAddress
+     * @for Base
+     * @param {string}  地址字符串
+     * @return {bool}   验签结果
+     */
+    public func verifyAddressEffectiveness(address: String, completionHandler: ((Bool) -> Swift.Void)?) {
+        let js = String(format:"window.Client.isValidAddress('%@')", arguments:[address])
+        webView.evaluateJavaScript(js) {(any, _) in
+            completionHandler!(any as! Bool)
+        }
+    }
+    
+    /**
+     * 获得消息头字节数
+     * @method getHeadersSize
+     * @for Base
+     * @param {string}  单元JSON字符串
+     * @return {int}    字节数
+     */
+    public func getHeadersSize(units: String, completionHandler: ((Int64) -> Swift.Void)?) {
+        let js = String(format:"window.Client.getHeadersSize('%@')", arguments:[units])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let headerSize = any {
+                completionHandler!(headerSize as! Int64)
+            }
+        }
+    }
+    
+    /**
+     * 获得payload字节数
+     * @method getTotalPayloadSize
+     * @for Base
+     * @param {string}  单元JSON字符串
+     * @return {int}    字节数
+     */
+    public func getTotalPayloadSize(unit: String, completionHandler: ((Int64) -> Swift.Void)?) {
+        let js = String(format:"window.Client.getTotalPayloadSize('%@')", arguments:[unit])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let payloadSize = any {
+                completionHandler!(payloadSize as! Int64)
+            }
+        }
+    }
+    /**
+     * 获得交易单元签名hash
+     * @method getUnitHashToSign
+     * @for Base
+     * @param {string}  单元JSON字符串
+     * @return {string} base64过的hash
+     */
+    public func getUnitHashToSign(unit: String, completionHandler: ((String) -> Swift.Void)?) {
+        let js = String(format:"window.Client.getUnitHashToSign('%@')", arguments:[unit])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let unitHash = any {
+                completionHandler!(unitHash as! String)
+            }
+        }
+    }
+    
+    /**
+     * 获得完整交易单元hash
+     * @method getUnitHashToSign
+     * @for Base
+     * @param {string}  单元JSON字符串
+     * @return {string} base64过的hash
+     */
+    public func getUnitHash(unit: String, completionHandler: ((String) -> Swift.Void)?) {
+        let js = String(format:"window.Client.getUnitHash('%@')", arguments:[unit])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let unitHash = any {
+                completionHandler!(unitHash as! String)
+            }
+        }
+    }
+    
+    /**
+     * 签名
+     * @method sign
+     * @for Base
+     * @param {string}  base64编码过的hash
+     * @param {string}  根私钥
+     * @param {string}  派生路径
+     * @return {string} 签名结果
+     */
+    public func transferSign(b64_hash: String, xPrivKey: String, path: String, completionHandler: ((String) -> Swift.Void)?) {
+        let js = String(format:"window.Client.sign('%@', '%@', \"%@\")", arguments:[b64_hash, xPrivKey, path])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let sign = any {
+                completionHandler!(sign as! String)
+            }
+        }
+    }
 }
+    
 
 extension TNEvaluateScriptManager {
     

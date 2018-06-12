@@ -29,7 +29,6 @@ class TNKeyboardButton: UIButton {
     {
 
         didSet {
-            
             switch keyStyle {
             case .charStyle:
                 self.titleLabel?.font = UIFont(name: "HelveticaNeue", size: 25.0)

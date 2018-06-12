@@ -124,6 +124,17 @@
 "Fixed amount" = "设置固定金额";
 "Copy the receiving address" = "复制收款地址";
 "Clear the amount" = "清除金额";
+"Send TTT" = "TTT转账";
+"Remaining balance" = "可用余额";
+"Receiver's wallet address" = "接收方钱包地址";
+"Amount" = "转账金额";
+"Send all" = "全部转出";
+"Send.instruction" = "当前为观察钱包，需要存有助记词的冷钱包配合签名。";
+"Send.checkout" = "查看如何进行离线签名？";
+"Send.invalidAddress" = "地址有误，请检查后重试";
+"Insufficient remaining balance" = "可用余额不足";
+"Address" = "地址";
+"NoContactAddress" = "请点击右下方的“+”添加常用地址";
 
 /******* create wallet string************/
 "Create a TTT wallet" = "创建TTT钱包";

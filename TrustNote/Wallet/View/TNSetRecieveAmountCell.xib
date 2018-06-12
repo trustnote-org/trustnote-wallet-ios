@@ -64,7 +64,7 @@
                         <fontDescription key="fontDescription" type="system" pointSize="34"/>
                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                     </textField>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-P6-mk9">
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gee-P6-mk9">
                         <rect key="frame" x="269" y="121" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="Gee-P6-mk9" secondAttribute="height" multiplier="1:1" id="GKd-Lc-md9"/>
@@ -111,6 +111,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="confirmBtn" destination="HlC-zb-Elt" id="HGD-pB-3H4"/>
+                <outlet property="deleteBtn" destination="Gee-P6-mk9" id="NiG-46-Ddd"/>
                 <outlet property="descLabel" destination="Cxf-OZ-l5a" id="Tbw-2h-FWl"/>
                 <outlet property="inputTextField" destination="bP6-RK-iE2" id="hu4-Lm-6AT"/>
                 <outlet property="titleLabel" destination="BDc-2t-pTx" id="Rhg-wx-RMz"/>

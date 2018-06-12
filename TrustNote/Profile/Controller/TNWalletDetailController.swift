@@ -104,10 +104,8 @@ extension TNWalletDetailController: UITableViewDelegate, UITableViewDataSource {
             cell.detailLabel.text = walletModel.walletName
         }
         if indexPath.row == 1 {
-            let par = NSMutableParagraphStyle()
-            par.alignment = .justified
-            let attributedString = NSAttributedString(string: walletModel.walletId, attributes: [NSAttributedStringKey.paragraphStyle: par])
-            cell.detailLabel.attributedText = attributedString
+            cell.detailLabel.textAlignment = .justified
+            cell.detailLabel.text = walletModel!.walletId
         }
         cell.cellIndex = indexPath.row
         cell.lineView.isHidden = indexPath.row == tableView.numberOfRows(inSection: 0) - 1 ? true : false
@@ -141,9 +139,7 @@ extension TNWalletDetailController {
     }
     
     @objc fileprivate func checkoutAuthCode() {
-        let vc = TNWalletAuthCodeController(nibName: "\(TNWalletAuthCodeController.self)", bundle: nil)
-        vc.wallet = walletModel
-        navigationController?.pushViewController(vc, animated: true)
+        verifyWalletPassword(action: "checkoutAuthCodeVerifyCompleted")
     }
     
     @objc fileprivate func deleteCurrentWallet() {
@@ -156,30 +152,42 @@ extension TNWalletDetailController {
             
             deleteWarningView.removeFromSuperview()
             guard Double(self.walletModel.balance)! > 0 && self.walletModel!.isLocal else {
-                self.verifyWalletPassword()
+                self.verifyWalletPassword(action: "deleteWalletVerifyCompleted")
                 return
             }
             self.alertAction(self, "Unable to delete hints".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
         }
     }
-    fileprivate func verifyWalletPassword() {
+    
+    @objc fileprivate func checkoutAuthCodeVerifyCompleted() {
+        let vc = TNWalletAuthCodeController(nibName: "\(TNWalletAuthCodeController.self)", bundle: nil)
+        vc.wallet = walletModel
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc fileprivate func deleteWalletVerifyCompleted() {
+        var credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
+        for (index, dict) in credentials.enumerated() {
+            if dict["walletId"] as? String == self.walletModel.walletId {
+                credentials.remove(at: index)
+                break
+            }
+        }
+        TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: credentials)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishDeleteWalletNotification), object: nil)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    fileprivate func verifyWalletPassword(action: String) {
         passwordAlertView = TNPasswordAlertView.loadViewFromNib()
         verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .pop)
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNWalletDetailController.handleTapGesture))
         verifyPasswordView?.addGestureRecognizer(tap)
         passwordAlertView!.verifyCorrectBlock = {[unowned self] in
             self.verifyPasswordView?.removeFromSuperview()
-            let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-            var credentials  = profile["credentials"] as! [[String:Any]]
-            for (index, dict) in credentials.enumerated() {
-                if dict["walletId"] as? String == self.walletModel.walletId {
-                    credentials.remove(at: index)
-                    break
-                }
-            }
-            TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: credentials)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishDeleteWalletNotification), object: nil)
-            self.navigationController?.popViewController(animated: true)
+            TNGlobalHelper.shared.password = nil
+            let control: UIControl = UIControl()
+            control.sendAction(Selector(action), to: self, for: nil)
         }
        passwordAlertView!.didClickedCancelBlock = {[unowned self] in
             self.verifyPasswordView?.removeFromSuperview()

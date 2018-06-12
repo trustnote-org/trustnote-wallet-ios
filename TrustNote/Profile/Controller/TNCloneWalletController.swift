@@ -41,6 +41,7 @@ class TNCloneWalletController: TNBaseViewController {
         syncBtn.layer.borderWidth = 1.0
         containerView.setupRadiusCorner(radius: kCornerRadius)
         contentLabel.text = "SyncClonedWallets.warning".localized
+        contentLabel.textAlignment = .justified
         let fontSize = CGSize(width: kScreenW - 87, height: CGFloat(MAXFLOAT))
         let textSize = contentLabel.textSize(text: "SyncClonedWallets.warning".localized, font: contentLabel.font, maxSize: fontSize)
         containerViewheightConstraint.constant = textSize.height + 20

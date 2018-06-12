@@ -70,8 +70,7 @@ extension TNEditInfoController {
                 TNConfigFileManager.sharedInstance.updateConfigFile(key: "deviceName", value: editInfoView.inputTextField.text!)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TNEditInfoCompletionNotification), object: editInfoView.inputTextField.text!)
             } else {
-                let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-                var credentials  = profile["credentials"] as! [[String:Any]]
+                var credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
                 for (index, dict) in credentials.enumerated() {
                     if dict["walletId"] as? String == wallet?.walletId {
                         var newDict = dict

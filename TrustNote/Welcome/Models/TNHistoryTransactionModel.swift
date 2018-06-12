@@ -45,7 +45,7 @@ struct TNUnitModel: HandyJSON {
 struct TNAuthorModel: HandyJSON {
     var address = ""
     var authentifiers: [String : Any]?
-    var definition = ""
+    var definition: [Any] = []
 }
 
 struct TNMessageModel: HandyJSON {
@@ -89,4 +89,5 @@ struct TNProofchainBallModel: HandyJSON {
     var ball = ""
     var parent_balls: [String]?
     var skiplist_balls: [String]?
+    var is_nonserial: Bool?
 }

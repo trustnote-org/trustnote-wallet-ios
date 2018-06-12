@@ -71,8 +71,11 @@ extension TNModifyPasswordController {
     
     @objc fileprivate func setupCompleted() {
         passwordView.passwordSecurityView.isHidden = true
-        guard (passwordView.newTextField.text?.length)! > textValidCount - 1 else {
+        guard (passwordView.newTextField.text?.length)! >= textValidCount else {
             passwordView.passwdRuleLabel.isHidden = false
+            passwordView.passwordRuleImgView.isHidden = false
+            passwordView.passwdRuleLabel.textColor = kWarningHintColor
+            passwordView.ruleLabelLeftMargin.constant = 20
             return
         }
         guard passwordView.newTextField.text == passwordView.confirmTextField.text else {

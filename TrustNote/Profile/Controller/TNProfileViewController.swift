@@ -11,10 +11,11 @@ import UIKit
 class TNProfileViewController: TNBaseViewController {
     
     let dataSource = [[["title" : "T口令", "imgName" : "command", "action" : ""]],
-                     [["title" : "Wallet tools".localized, "imgName" : "tool", "action" : "enterIntoWalletTool"],
-                     ["title" : "Settings".localized, "imgName" : "setting", "action" : "enterIntoSetting"]],
-                     [["title" : "About trustNote".localized, "imgName" : "about", "action" : "aboutTrustNote"]]
-                    ] as [Any]
+                      [["title" : "Wallet tools".localized, "imgName" : "tool", "action" : "enterIntoWalletTool"],
+                       ["title" : "Manage wallet".localized, "imgName" : "manage", "action" : "didClickedManageWalletButton"],
+                       ["title" : "Settings".localized, "imgName" : "setting", "action" : "enterIntoSetting"]],
+                      [["title" : "About trustNote".localized, "imgName" : "about", "action" : "aboutTrustNote"]]
+        ] as [Any]
     fileprivate lazy var profileHeaderView: TNProfileHeaderView = {
         let profileHeaderView = TNProfileHeaderView.profileHeaderView()
         return profileHeaderView
@@ -47,7 +48,13 @@ class TNProfileViewController: TNBaseViewController {
         profileHeaderView.delegate = self
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNEditInfoCompletionNotification)).subscribe(onNext: { [unowned self] value in
             let deviceName = value.object as! String
-            self.profileHeaderView.nameLabel.text = deviceName
+            if deviceName.length <= 10 {
+                self.profileHeaderView.nameLabel.text = deviceName
+            } else {
+                let frontStr = deviceName.substring(toIndex: 5)
+                let backStr = deviceName.substring(fromIndex: deviceName.length - 5)
+                self.profileHeaderView.nameLabel.text = frontStr + "..." + backStr
+            }
             self.profileHeaderView.lnitialsLabel.text = deviceName.substring(toIndex: 1)
         }).disposed(by: disposeBag)
     }
@@ -110,7 +117,7 @@ extension TNProfileViewController: TNProfileHeaderViewDelegate {
         navigationController?.pushViewController(TNEditInfoController(isEditInfo: true), animated: true)
     }
     
-    func didClickedManageWalletButton() {
+    @objc func didClickedManageWalletButton() {
         navigationController?.pushViewController(TNManageWalletController(), animated: true)
     }
     
@@ -139,13 +146,13 @@ extension TNProfileViewController {
         
         let dataArr = [
             [["title" : "Backup Your Seed Phrase".localized, "detail" : "", "action" : "backupTheMnemonic", "isCanSelected" : true],
-                         ["title" : "Restore from the mnemonic".localized, "detail" : "", "action" : "restoreWalletFromMnemonic", "isCanSelected" : true]],
-                        [["title" : "Sync from cloned wallet".localized, "detail" : "", "action" : "syncFromClonedWallet", "isCanSelected" : true]]
-                      ] as [Any]
+             ["title" : "Restore from the mnemonic".localized, "detail" : "", "action" : "restoreWalletFromMnemonic", "isCanSelected" : true]],
+            [["title" : "Sync from cloned wallet".localized, "detail" : "", "action" : "syncFromClonedWallet", "isCanSelected" : true]]
+            ] as [Any]
         let vc = TNGeneralViewController(dataSource: dataArr, titleText: TNLocalizationTool.shared.valueWithKey(key: "Wallet tools"))
         navigationController?.pushViewController(vc, animated: true)
     }
-   
+    
     @objc  func enterIntoSetting() {
         
         var language = ""
@@ -196,7 +203,7 @@ extension TNProfileViewController {
         profileHeaderView.snp.makeConstraints { (make) in
             make.top.equalTo(titleLabel.snp.bottom).offset(30)
             make.left.right.equalToSuperview()
-            make.height.equalTo(203)
+            make.height.equalTo(134)
         }
         
         view.addSubview(tableView)

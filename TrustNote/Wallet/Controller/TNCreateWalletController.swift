@@ -247,8 +247,8 @@ extension TNCreateWalletController {
     }
     
     fileprivate func covertJSonStingToDictionary(_ inputStr: String) -> [String : Any] {
-        let result = inputStr.replacingOccurrences(of:"TTT:", with: "")
-        let jsonData:Data = result.data(using: .utf8)!
+        let result = inputStr.replacingOccurrences(of: TNScanPrefix, with: "")
+        let jsonData: Data = result.data(using: .utf8)!
         let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! [String : Any]
         return dict!
     }

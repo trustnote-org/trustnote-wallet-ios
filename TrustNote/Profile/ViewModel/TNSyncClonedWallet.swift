@@ -57,8 +57,7 @@ extension TNSyncClonedWallet {
     
     func syncClonedWallets() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-        let credentials  = profile["credentials"] as! [[String:Any]]
+        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
         for dict in credentials {
             let walletModel = TNWalletModel.deserialize(from: dict)
             wallets.append(walletModel!)

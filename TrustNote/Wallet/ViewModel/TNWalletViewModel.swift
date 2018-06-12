@@ -91,8 +91,7 @@ extension TNWalletViewModel {
     
     public func saveNewWalletToProfile(_ wallet: TNWalletModel) {
         let jsonModel = wallet.toJSON()
-        let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-        var credentials  = profile["credentials"] as! [[String:Any]]
+        var credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
         credentials.append(jsonModel!)
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: credentials)
     }
@@ -121,7 +120,7 @@ extension TNWalletViewModel {
             comletionHandle!(self.curWalletAddress!)
         }
     }
-    /// Save wallet address to core data
+    /// Save wallet address to database
     public func insertWalletAddressToDatabase(walletAddressModel: TNWalletAddressModel) {
         
         let querySQL = String(format:"SELECT Count(*) FROM my_addresses WHERE address = '%@'", arguments:[walletAddressModel.walletAddress])

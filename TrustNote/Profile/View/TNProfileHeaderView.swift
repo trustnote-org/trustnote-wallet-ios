@@ -30,7 +30,10 @@ class TNProfileHeaderView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         containerView.layer.cornerRadius = kCornerRadius
-        containerView.layer.masksToBounds = true
+        containerView.layer.shadowColor = kGlobalColor.cgColor
+        containerView.layer.shadowOffset = CGSize(width: 0, height: 8)
+        containerView.layer.shadowOpacity = 0.2
+        containerView.layer.shadowRadius = 10
         containerLeftMarginConstraint.constant = IS_iphone5 ? 10 : 20
         if IS_iphone5 {
             descLabel.font = UIFont.systemFont(ofSize: 13)
@@ -51,7 +54,13 @@ class TNProfileHeaderView: UIView {
         lnitialsLabel.layer.masksToBounds = true
         let defaultConfig = TNConfigFileManager.sharedInstance.readConfigFile()
         let deviceName = defaultConfig["deviceName"] as? String
-        nameLabel.text = deviceName
+        if deviceName!.length <= 10 {
+            nameLabel.text = deviceName
+        } else {
+            let frontStr = deviceName!.substring(toIndex: 5)
+            let backStr = deviceName!.substring(fromIndex: deviceName!.length - 5)
+            nameLabel.text = frontStr + "..." + backStr
+        }
         lnitialsLabel.text = deviceName?.substring(toIndex: 1)
     }
    

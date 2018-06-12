@@ -14,6 +14,7 @@ class TNSetRecieveAmountCell: UITableViewCell, RegisterCellFromNib {
     @IBOutlet weak var descLabel: UILabel!
     @IBOutlet weak var inputTextField: UITextField!
     @IBOutlet weak var confirmBtn: UIButton!
+    @IBOutlet weak var deleteBtn: UIButton!
     
     var setRecieveAmountBlock: ((Double) -> Void)?
     
@@ -35,10 +36,11 @@ extension TNSetRecieveAmountCell {
         inputTextField.text = nil
         confirmBtn.isEnabled = false
         confirmBtn.alpha = 0.3
+        deleteBtn.isHidden = true
     }
     
     @IBAction func confirm(_ sender: Any) {
-       
+        
         let amount = Double(inputTextField.text!)
         setRecieveAmountBlock?(amount!)
         inputTextField.text = nil
@@ -48,9 +50,11 @@ extension TNSetRecieveAmountCell {
         if (textField.text?.length)! > 0 {
             confirmBtn.isEnabled = true
             confirmBtn.alpha = 1.0
+            deleteBtn.isHidden = false
         } else {
             confirmBtn.isEnabled = false
             confirmBtn.alpha = 0.3
+            deleteBtn.isHidden = true
         }
     }
 }
@@ -59,7 +63,18 @@ extension TNSetRecieveAmountCell: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard (textField.text?.isEmpty)! else {
-            if textField.text == "0" && string == "0" {
+            if textField.text!.contains(".") {
+                if string == "." {
+                    return false
+                }
+                let deRange = textField.text!.range(of: ".")
+                let backStr = textField.text!.suffix(from: deRange!.upperBound)
+                if backStr.count == 4 && string != "" {
+                    return false
+                }
+                return true
+            }
+            if textField.text == "0" && (string != "." &&  string != "") {
                 return false
             }
             return true

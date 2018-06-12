@@ -14,11 +14,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNProfileHeaderView" customModule="TrustNote" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="233"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="134"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vlA-3b-6KZ">
-                    <rect key="frame" x="20" y="10" width="335" height="213"/>
+                    <rect key="frame" x="20" y="10" width="335" height="114"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Eddy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0P-rR-p9j">
                             <rect key="frame" x="91" y="34" width="187" height="24"/>
@@ -43,23 +43,23 @@
                                 <action selector="editInfo:" destination="iN0-l3-epB" eventType="touchUpInside" id="OPc-rS-sGF"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I8d-Jk-oxu">
-                            <rect key="frame" x="167" y="169" width="1" height="20"/>
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I8d-Jk-oxu">
+                            <rect key="frame" x="167" y="70" width="1" height="20"/>
                             <color key="backgroundColor" red="0.91372549020000005" green="0.93725490199999995" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="Xac-D9-a5z"/>
                                 <constraint firstAttribute="width" constant="1" id="rJY-eQ-HNr"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BcM-rQ-nTK">
+                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BcM-rQ-nTK">
                             <rect key="frame" x="25" y="114" width="285" height="1"/>
                             <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="rhm-SF-3Fh"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJ6-SD-3KS">
-                            <rect key="frame" x="0.0" y="155" width="167" height="48"/>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DJ6-SD-3KS">
+                            <rect key="frame" x="0.0" y="56" width="167" height="48"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="管理钱包" image="profile_wallet">
                                 <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -68,8 +68,8 @@
                                 <action selector="manageWallet:" destination="iN0-l3-epB" eventType="touchUpInside" id="Cm0-HR-6vg"/>
                             </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpb-Tg-6dx">
-                            <rect key="frame" x="168" y="155" width="167" height="48"/>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpb-Tg-6dx">
+                            <rect key="frame" x="168" y="56" width="167" height="48"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="交易记录" image="profile_transaction">
                                 <color key="titleColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>

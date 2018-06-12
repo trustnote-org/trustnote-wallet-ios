@@ -49,7 +49,6 @@
 		2802BBDD20B92ECD0067F995 /* pop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2802BBDE20B92ECD0067F995 /* pop.framework */; };
 		2802BBE020B949B40067F995 /* TNDeleteWalletAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2802BBDF20B949B40067F995 /* TNDeleteWalletAlertView.swift */; };
 		2802BBE620B94A1F0067F995 /* TNDeleteWalletAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2802BBE520B94A1F0067F995 /* TNDeleteWalletAlertView.xib */; };
-		2802BBE820B96A7F0067F995 /* core.js in Resources */ = {isa = PBXBuildFile; fileRef = 2802BBE720B96A7E0067F995 /* core.js */; };
 		2802BBEA20BA5E030067F995 /* TNMyPairingCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2802BBE920BA5E030067F995 /* TNMyPairingCodeView.swift */; };
 		2802BBEC20BA5E720067F995 /* TNMyPairingCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2802BBEB20BA5E720067F995 /* TNMyPairingCodeView.xib */; };
 		28030F91208443E7001F1708 /* TNEvaluateScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28030F90208443E7001F1708 /* TNEvaluateScriptManager.swift */; };
@@ -57,6 +56,13 @@
 		280317E220A06F61008729A4 /* TNSetupPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280317E020A06F61008729A4 /* TNSetupPasswordController.swift */; };
 		280317E320A06F61008729A4 /* TNSetupPasswordController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 280317E120A06F61008729A4 /* TNSetupPasswordController.xib */; };
 		28057C54208623B50078B118 /* BIP39Words.plist in Resources */ = {isa = PBXBuildFile; fileRef = 28057C53208623B50078B118 /* BIP39Words.plist */; };
+		2806B15220C62E3C007CF9BD /* core.js in Resources */ = {isa = PBXBuildFile; fileRef = 2806B15120C62E3C007CF9BD /* core.js */; };
+		2806B15420C79514007CF9BD /* TNSyncOperationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806B15320C79514007CF9BD /* TNSyncOperationManager.swift */; };
+		2806B15920C79E17007CF9BD /* TNWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806B15620C79E17007CF9BD /* TNWebSocketManager.swift */; };
+		2806B15A20C79E17007CF9BD /* TNHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806B15720C79E17007CF9BD /* TNHubViewModel.swift */; };
+		2806B15B20C79E17007CF9BD /* TNWebSocketManager+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806B15820C79E17007CF9BD /* TNWebSocketManager+API.swift */; };
+		2806B16020C84291007CF9BD /* TNTransferViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806B15F20C84291007CF9BD /* TNTransferViewModel.swift */; };
+		2806B16220C980A4007CF9BD /* TNTransferUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806B16120C980A4007CF9BD /* TNTransferUnit.swift */; };
 		2814ACFE20AEE4BD001B0D9C /* TNScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814ACFD20AEE4BD001B0D9C /* TNScanViewController.swift */; };
 		281AF28A2063A958009FDB6A /* TrustNoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281AF2892063A958009FDB6A /* TrustNoteTests.swift */; };
 		281AF2952063A958009FDB6A /* TrustNoteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281AF2942063A958009FDB6A /* TrustNoteUITests.swift */; };
@@ -100,7 +106,6 @@
 		285B5C9220B532F1007F3CF2 /* TNTradeDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 285B5C9020B532F1007F3CF2 /* TNTradeDetailCell.xib */; };
 		2863651C20C44E7000B27344 /* TNVerticalAlignLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2863651B20C44E7000B27344 /* TNVerticalAlignLabel.m */; };
 		2863651E20C4E2CC00B27344 /* TNSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2863651D20C4E2CC00B27344 /* TNSendViewController.swift */; };
-		2863652120C4E8A900B27344 /* TNWalletSendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2863651F20C4E8A900B27344 /* TNWalletSendCell.swift */; };
 		2863652220C4E8A900B27344 /* TNWalletSendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2863652020C4E8A900B27344 /* TNWalletSendCell.xib */; };
 		2865883E20C04C330067DA30 /* TNDidDeleteMnemonicView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2865883D20C04C330067DA30 /* TNDidDeleteMnemonicView.xib */; };
 		2865884220C0E8340067DA30 /* TNProfileBackupContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2865884120C0E8340067DA30 /* TNProfileBackupContentView.swift */; };
@@ -112,9 +117,7 @@
 		2865884E20C3C9860067DA30 /* TNMyReceiveAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2865884C20C3C9860067DA30 /* TNMyReceiveAddressCell.xib */; };
 		2865885120C3D3F90067DA30 /* TNSetRecieveAmountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2865884F20C3D3F90067DA30 /* TNSetRecieveAmountCell.swift */; };
 		2865885220C3D3F90067DA30 /* TNSetRecieveAmountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2865885020C3D3F90067DA30 /* TNSetRecieveAmountCell.xib */; };
-		286DAFDF207F31140074D3E2 /* TNWebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286DAFDE207F31140074D3E2 /* TNWebSocketManager.swift */; };
 		286DAFE1207F37FC0074D3E2 /* TNDebugLogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286DAFE0207F37FC0074D3E2 /* TNDebugLogManager.swift */; };
-		286DB0362081C67B0074D3E2 /* TNWebSocketManager+API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286DB0352081C67B0074D3E2 /* TNWebSocketManager+API.swift */; };
 		286DB03920820BD40074D3E2 /* TNBaseInfoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286DB03820820BD40074D3E2 /* TNBaseInfoModel.swift */; };
 		286DB03B2082442D0074D3E2 /* TNConfigFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286DB03A2082442D0074D3E2 /* TNConfigFileManager.swift */; };
 		2870CC5120AB419600776F5E /* TNVerifyPasswordBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870CC5020AB419600776F5E /* TNVerifyPasswordBottomView.swift */; };
@@ -129,7 +132,6 @@
 		2870CC6920AC8B8C00776F5E /* TNNetworkStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2870CC6720AC8B8C00776F5E /* TNNetworkStatusCell.xib */; };
 		2870CC6C20AC8C8900776F5E /* TNTotalAssertCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870CC6A20AC8C8900776F5E /* TNTotalAssertCell.swift */; };
 		2870CC6D20AC8C8900776F5E /* TNTotalAssertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2870CC6B20AC8C8900776F5E /* TNTotalAssertCell.xib */; };
-		28AEC7972085C18B0052C63D /* TNHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28AEC7962085C18B0052C63D /* TNHubViewModel.swift */; };
 		28B1016B20AD7CF4000B0B52 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28B1016C20AD7CF4000B0B52 /* RxSwift.framework */; };
 		28B1016E20ADB158000B0B52 /* TNCreateWalletController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1016D20ADB158000B0B52 /* TNCreateWalletController.swift */; };
 		28B1017020ADE42B000B0B52 /* TNCreateWalletSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B1016F20ADE42B000B0B52 /* TNCreateWalletSwitchView.swift */; };
@@ -170,6 +172,7 @@
 		28DB60C6206E3BCA007246FF /* TNBackupSeedBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB60C5206E3BCA007246FF /* TNBackupSeedBackView.swift */; };
 		28DB60C8206E3CE2007246FF /* TNBackupSeedBackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28DB60C7206E3CE2007246FF /* TNBackupSeedBackView.xib */; };
 		28DB60CA206E4F04007246FF /* TNSeedInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DB60C9206E4F04007246FF /* TNSeedInputCell.swift */; };
+		28DC625520C5450300E2F23A /* TNWalletSendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DC625420C5450300E2F23A /* TNWalletSendCell.swift */; };
 		28EF390E20A9C4300009AF69 /* String+Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EF390D20A9C4300009AF69 /* String+Encryption.swift */; };
 		28EF391920A9ECFF0009AF69 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF391820A9ECFF0009AF69 /* GTMBase64.m */; };
 		28EF397320AB0D980009AF69 /* AES128CBC_Unit.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF397220AB0D980009AF69 /* AES128CBC_Unit.m */; };
@@ -188,6 +191,16 @@
 		28F8BD2D20BDAABB000467A0 /* TNSyncClonedWalletsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28F8BD2C20BDAABB000467A0 /* TNSyncClonedWalletsView.xib */; };
 		28F8BD2F20BE3AA7000467A0 /* TNSyncClonedWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F8BD2E20BE3AA7000467A0 /* TNSyncClonedWallet.swift */; };
 		28FE3B512065282C00C3FBDA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28FE3B532065282C00C3FBDA /* Localizable.strings */; };
+		28FEE48D20CF85C6006182D8 /* TNContactAddressController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE48C20CF85C6006182D8 /* TNContactAddressController.swift */; };
+		28FEE48F20CF86C8006182D8 /* TNNoContactAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE48E20CF86C8006182D8 /* TNNoContactAddressView.swift */; };
+		28FEE49120CF86E6006182D8 /* TNNoContactAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28FEE49020CF86E6006182D8 /* TNNoContactAddressView.xib */; };
+		28FEE49320CF8935006182D8 /* TNContactAddressHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE49220CF8935006182D8 /* TNContactAddressHeadView.swift */; };
+		28FEE49520CF8954006182D8 /* TNContactAddressHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28FEE49420CF8954006182D8 /* TNContactAddressHeadView.xib */; };
+		28FEE49820CF90BC006182D8 /* TNContactAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE49620CF90BC006182D8 /* TNContactAddressCell.swift */; };
+		28FEE49920CF90BC006182D8 /* TNContactAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28FEE49720CF90BC006182D8 /* TNContactAddressCell.xib */; };
+		28FEE49B20CFA4D7006182D8 /* TNEditAddressController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE49A20CFA4D7006182D8 /* TNEditAddressController.swift */; };
+		28FEE49D20CFA52E006182D8 /* TNEditAddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FEE49C20CFA52E006182D8 /* TNEditAddressView.swift */; };
+		28FEE49F20CFA54C006182D8 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28FEE49E20CFA54C006182D8 /* View.xib */; };
 		28FF1B3C20960435005E51BF /* TNTimerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FF1B3B20960435005E51BF /* TNTimerHelper.swift */; };
 		28FFCB5920749DFE00CAA183 /* TNViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFCB5820749DFE00CAA183 /* TNViewModelType.swift */; };
 		28FFCB6C207B638600CAA183 /* TNKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28FFCB6B207B638600CAA183 /* TNKeyboardView.swift */; };
@@ -255,7 +268,6 @@
 		2802BBDE20B92ECD0067F995 /* pop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = pop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2802BBDF20B949B40067F995 /* TNDeleteWalletAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNDeleteWalletAlertView.swift; sourceTree = "<group>"; };
 		2802BBE520B94A1F0067F995 /* TNDeleteWalletAlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNDeleteWalletAlertView.xib; sourceTree = "<group>"; };
-		2802BBE720B96A7E0067F995 /* core.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = core.js; sourceTree = "<group>"; };
 		2802BBE920BA5E030067F995 /* TNMyPairingCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNMyPairingCodeView.swift; sourceTree = "<group>"; };
 		2802BBEB20BA5E720067F995 /* TNMyPairingCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNMyPairingCodeView.xib; sourceTree = "<group>"; };
 		28030F90208443E7001F1708 /* TNEvaluateScriptManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNEvaluateScriptManager.swift; sourceTree = "<group>"; };
@@ -263,6 +275,13 @@
 		280317E020A06F61008729A4 /* TNSetupPasswordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNSetupPasswordController.swift; sourceTree = "<group>"; };
 		280317E120A06F61008729A4 /* TNSetupPasswordController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNSetupPasswordController.xib; sourceTree = "<group>"; };
 		28057C53208623B50078B118 /* BIP39Words.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BIP39Words.plist; sourceTree = "<group>"; };
+		2806B15120C62E3C007CF9BD /* core.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = core.js; sourceTree = "<group>"; };
+		2806B15320C79514007CF9BD /* TNSyncOperationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNSyncOperationManager.swift; sourceTree = "<group>"; };
+		2806B15620C79E17007CF9BD /* TNWebSocketManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNWebSocketManager.swift; sourceTree = "<group>"; };
+		2806B15720C79E17007CF9BD /* TNHubViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNHubViewModel.swift; sourceTree = "<group>"; };
+		2806B15820C79E17007CF9BD /* TNWebSocketManager+API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TNWebSocketManager+API.swift"; sourceTree = "<group>"; };
+		2806B15F20C84291007CF9BD /* TNTransferViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNTransferViewModel.swift; sourceTree = "<group>"; };
+		2806B16120C980A4007CF9BD /* TNTransferUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNTransferUnit.swift; sourceTree = "<group>"; };
 		2814ACFD20AEE4BD001B0D9C /* TNScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNScanViewController.swift; sourceTree = "<group>"; };
 		281AF2712063A958009FDB6A /* TrustNote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrustNote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		281AF2852063A958009FDB6A /* TrustNoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrustNoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -313,7 +332,6 @@
 		2863651A20C44E6F00B27344 /* TNVerticalAlignLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TNVerticalAlignLabel.h; sourceTree = "<group>"; };
 		2863651B20C44E7000B27344 /* TNVerticalAlignLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TNVerticalAlignLabel.m; sourceTree = "<group>"; };
 		2863651D20C4E2CC00B27344 /* TNSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNSendViewController.swift; sourceTree = "<group>"; };
-		2863651F20C4E8A900B27344 /* TNWalletSendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNWalletSendCell.swift; sourceTree = "<group>"; };
 		2863652020C4E8A900B27344 /* TNWalletSendCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNWalletSendCell.xib; sourceTree = "<group>"; };
 		2865883D20C04C330067DA30 /* TNDidDeleteMnemonicView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNDidDeleteMnemonicView.xib; sourceTree = "<group>"; };
 		2865884120C0E8340067DA30 /* TNProfileBackupContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNProfileBackupContentView.swift; sourceTree = "<group>"; };
@@ -325,9 +343,7 @@
 		2865884C20C3C9860067DA30 /* TNMyReceiveAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNMyReceiveAddressCell.xib; sourceTree = "<group>"; };
 		2865884F20C3D3F90067DA30 /* TNSetRecieveAmountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNSetRecieveAmountCell.swift; sourceTree = "<group>"; };
 		2865885020C3D3F90067DA30 /* TNSetRecieveAmountCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNSetRecieveAmountCell.xib; sourceTree = "<group>"; };
-		286DAFDE207F31140074D3E2 /* TNWebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNWebSocketManager.swift; sourceTree = "<group>"; };
 		286DAFE0207F37FC0074D3E2 /* TNDebugLogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNDebugLogManager.swift; sourceTree = "<group>"; };
-		286DB0352081C67B0074D3E2 /* TNWebSocketManager+API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TNWebSocketManager+API.swift"; sourceTree = "<group>"; };
 		286DB03820820BD40074D3E2 /* TNBaseInfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNBaseInfoModel.swift; sourceTree = "<group>"; };
 		286DB03A2082442D0074D3E2 /* TNConfigFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNConfigFileManager.swift; sourceTree = "<group>"; };
 		2870CC5020AB419600776F5E /* TNVerifyPasswordBottomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNVerifyPasswordBottomView.swift; sourceTree = "<group>"; };
@@ -343,7 +359,6 @@
 		2870CC6720AC8B8C00776F5E /* TNNetworkStatusCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNNetworkStatusCell.xib; sourceTree = "<group>"; };
 		2870CC6A20AC8C8900776F5E /* TNTotalAssertCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNTotalAssertCell.swift; sourceTree = "<group>"; };
 		2870CC6B20AC8C8900776F5E /* TNTotalAssertCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNTotalAssertCell.xib; sourceTree = "<group>"; };
-		28AEC7962085C18B0052C63D /* TNHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNHubViewModel.swift; sourceTree = "<group>"; };
 		28B1016C20AD7CF4000B0B52 /* RxSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28B1016D20ADB158000B0B52 /* TNCreateWalletController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNCreateWalletController.swift; sourceTree = "<group>"; };
 		28B1016F20ADE42B000B0B52 /* TNCreateWalletSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNCreateWalletSwitchView.swift; sourceTree = "<group>"; };
@@ -384,6 +399,7 @@
 		28DB60C5206E3BCA007246FF /* TNBackupSeedBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNBackupSeedBackView.swift; sourceTree = "<group>"; };
 		28DB60C7206E3CE2007246FF /* TNBackupSeedBackView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNBackupSeedBackView.xib; sourceTree = "<group>"; };
 		28DB60C9206E4F04007246FF /* TNSeedInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNSeedInputCell.swift; sourceTree = "<group>"; };
+		28DC625420C5450300E2F23A /* TNWalletSendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNWalletSendCell.swift; sourceTree = "<group>"; };
 		28EF390D20A9C4300009AF69 /* String+Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encryption.swift"; sourceTree = "<group>"; };
 		28EF391620A9ECFF0009AF69 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
 		28EF391720A9ECFF0009AF69 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
@@ -406,6 +422,16 @@
 		28F8BD2E20BE3AA7000467A0 /* TNSyncClonedWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNSyncClonedWallet.swift; sourceTree = "<group>"; };
 		28FE3B522065282C00C3FBDA /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		28FE3B542065282E00C3FBDA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		28FEE48C20CF85C6006182D8 /* TNContactAddressController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNContactAddressController.swift; sourceTree = "<group>"; };
+		28FEE48E20CF86C8006182D8 /* TNNoContactAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNNoContactAddressView.swift; sourceTree = "<group>"; };
+		28FEE49020CF86E6006182D8 /* TNNoContactAddressView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNNoContactAddressView.xib; sourceTree = "<group>"; };
+		28FEE49220CF8935006182D8 /* TNContactAddressHeadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNContactAddressHeadView.swift; sourceTree = "<group>"; };
+		28FEE49420CF8954006182D8 /* TNContactAddressHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNContactAddressHeadView.xib; sourceTree = "<group>"; };
+		28FEE49620CF90BC006182D8 /* TNContactAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNContactAddressCell.swift; sourceTree = "<group>"; };
+		28FEE49720CF90BC006182D8 /* TNContactAddressCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TNContactAddressCell.xib; sourceTree = "<group>"; };
+		28FEE49A20CFA4D7006182D8 /* TNEditAddressController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNEditAddressController.swift; sourceTree = "<group>"; };
+		28FEE49C20CFA52E006182D8 /* TNEditAddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNEditAddressView.swift; sourceTree = "<group>"; };
+		28FEE49E20CFA54C006182D8 /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		28FF1B3B20960435005E51BF /* TNTimerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNTimerHelper.swift; sourceTree = "<group>"; };
 		28FFCB5820749DFE00CAA183 /* TNViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TNViewModelType.swift; sourceTree = "<group>"; };
 		28FFCB6B207B638600CAA183 /* TNKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TNKeyboardView.swift; sourceTree = "<group>"; };
@@ -599,6 +625,7 @@
 				2870CC6220AC503E00776F5E /* TNWalletBalanceViewModel.swift */,
 				285B5C8520B2BFAE007F3CF2 /* TNSynchroData.swift */,
 				285B5C8720B40CD3007F3CF2 /* TNRecoverObserveWallet.swift */,
+				2806B15F20C84291007CF9BD /* TNTransferViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -613,6 +640,8 @@
 				285B5C8920B51389007F3CF2 /* TNTransactiondDetailController.swift */,
 				2865884920C3C7650067DA30 /* TNMyReceiveAddressController.swift */,
 				2863651D20C4E2CC00B27344 /* TNSendViewController.swift */,
+				28FEE48C20CF85C6006182D8 /* TNContactAddressController.swift */,
+				28FEE49A20CFA4D7006182D8 /* TNEditAddressController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -622,6 +651,7 @@
 			children = (
 				2800DCBD209AFE3300F7AC9F /* TNWalletModel.swift */,
 				2800DCBF209B10C400F7AC9F /* TNTxUnits.swift */,
+				2806B16120C980A4007CF9BD /* TNTransferUnit.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -661,10 +691,28 @@
 				2865884C20C3C9860067DA30 /* TNMyReceiveAddressCell.xib */,
 				2865884F20C3D3F90067DA30 /* TNSetRecieveAmountCell.swift */,
 				2865885020C3D3F90067DA30 /* TNSetRecieveAmountCell.xib */,
-				2863651F20C4E8A900B27344 /* TNWalletSendCell.swift */,
+				28DC625420C5450300E2F23A /* TNWalletSendCell.swift */,
 				2863652020C4E8A900B27344 /* TNWalletSendCell.xib */,
+				28FEE48E20CF86C8006182D8 /* TNNoContactAddressView.swift */,
+				28FEE49020CF86E6006182D8 /* TNNoContactAddressView.xib */,
+				28FEE49220CF8935006182D8 /* TNContactAddressHeadView.swift */,
+				28FEE49420CF8954006182D8 /* TNContactAddressHeadView.xib */,
+				28FEE49620CF90BC006182D8 /* TNContactAddressCell.swift */,
+				28FEE49720CF90BC006182D8 /* TNContactAddressCell.xib */,
+				28FEE49C20CFA52E006182D8 /* TNEditAddressView.swift */,
+				28FEE49E20CFA54C006182D8 /* View.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		2806B15520C79D7A007CF9BD /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				2806B15720C79E17007CF9BD /* TNHubViewModel.swift */,
+				2806B15620C79E17007CF9BD /* TNWebSocketManager.swift */,
+				2806B15820C79E17007CF9BD /* TNWebSocketManager+API.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		281AF2682063A958009FDB6A = {
@@ -702,6 +750,7 @@
 				28DB60A1206B326F007246FF /* Manager */,
 				281AF2A42063AAAC009FDB6A /* Others */,
 				28FFCB5720749DB200CAA183 /* Protocol */,
+				2806B15520C79D7A007CF9BD /* Networking */,
 				28FFCB69207B633000CAA183 /* vendor */,
 				281AF2B62064953D009FDB6A /* Info.plist */,
 			);
@@ -731,11 +780,11 @@
 			children = (
 				281AF2A62063AAAC009FDB6A /* AppDelegate.swift */,
 				281AF2A52063AAAC009FDB6A /* Assets.xcassets */,
-				2802BBE720B96A7E0067F995 /* core.js */,
 				28FE3B532065282C00C3FBDA /* Localizable.strings */,
 				28057C53208623B50078B118 /* BIP39Words.plist */,
 				28DB60BD206CBA16007246FF /* LaunchScreen.storyboard */,
 				281F9DD9208CF4A70033E54F /* TrustNote-Bridging-Header.h */,
+				2806B15120C62E3C007CF9BD /* core.js */,
 			);
 			path = Others;
 			sourceTree = "<group>";
@@ -800,7 +849,6 @@
 				281AF2C92064CA5E009FDB6A /* UIKit+Extension.swift */,
 				281AF2CB2064F4A6009FDB6A /* UIColor+Extention.swift */,
 				28DB5E19206A34F9007246FF /* UIWindow+Extension.swift */,
-				286DB0352081C67B0074D3E2 /* TNWebSocketManager+API.swift */,
 				2801CAA7208B5032002957FC /* NSDate+Extension.swift */,
 				28B344EF20A2E0980050FC2A /* UIViewController+Alert.swift */,
 				28B344FB20A7E48E0050FC2A /* UIView+Animation.swift */,
@@ -841,7 +889,6 @@
 			isa = PBXGroup;
 			children = (
 				28DB60A4206B32D0007246FF /* TNPreferenceManager.swift */,
-				286DAFDE207F31140074D3E2 /* TNWebSocketManager.swift */,
 				286DAFE0207F37FC0074D3E2 /* TNDebugLogManager.swift */,
 				286DB03A2082442D0074D3E2 /* TNConfigFileManager.swift */,
 				28030F90208443E7001F1708 /* TNEvaluateScriptManager.swift */,
@@ -849,6 +896,7 @@
 				283436122091732D000C5B66 /* TNSQLiteManager.swift */,
 				28FF1B3B20960435005E51BF /* TNTimerHelper.swift */,
 				28F8BCE520BC2664000467A0 /* TNLocalizationTool.swift */,
+				2806B15320C79514007CF9BD /* TNSyncOperationManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -921,7 +969,6 @@
 		28FFCB5C20749F3800CAA183 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				28AEC7962085C18B0052C63D /* TNHubViewModel.swift */,
 				2801CAAB208C2699002957FC /* TNThreadViewModel.swift */,
 				2801E80B2090540500DCAEB5 /* TNHistoryRecordsViewModel.swift */,
 			);
@@ -1101,12 +1148,13 @@
 				285B5C8E20B51614007F3CF2 /* TNTradeDetailHeaderView.xib in Resources */,
 				28B344F820A433830050FC2A /* TNPasswordAlertView.xib in Resources */,
 				2865883E20C04C330067DA30 /* TNDidDeleteMnemonicView.xib in Resources */,
-				2802BBE820B96A7F0067F995 /* core.js in Resources */,
 				28F8BD2920BD90E9000467A0 /* TNCloneWalletController.xib in Resources */,
 				285B5C3420B028FF007F3CF2 /* TNObserveWaletAlertView.xib in Resources */,
 				28CA517B20BE79C100A51C49 /* TNWalletAuthCodeController.xib in Resources */,
 				28B344EE20A2BA9C0050FC2A /* TNBackupWarningView.xib in Resources */,
 				281AF2B72064953D009FDB6A /* Info.plist in Resources */,
+				28FEE49F20CFA54C006182D8 /* View.xib in Resources */,
+				28FEE49120CF86E6006182D8 /* TNNoContactAddressView.xib in Resources */,
 				2829BC2B20A1552A000B0490 /* TNPasswordSecurityView.xib in Resources */,
 				285B5C8020B184BD007F3CF2 /* TNTradeRecordSwitchView.xib in Resources */,
 				2802BBD420B800580067F995 /* TNWalletDetailCell.xib in Resources */,
@@ -1120,7 +1168,9 @@
 				2802BBEC20BA5E720067F995 /* TNMyPairingCodeView.xib in Resources */,
 				2870CC5520AC018900776F5E /* TNWalletCell.xib in Resources */,
 				2802BBD020B7FB2E0067F995 /* TNWalletDetailHeaderView.xib in Resources */,
+				2806B15220C62E3C007CF9BD /* core.js in Resources */,
 				2870CC5D20AC124600776F5E /* TNWalletTopBar.xib in Resources */,
+				28FEE49920CF90BC006182D8 /* TNContactAddressCell.xib in Resources */,
 				285B5C7620B09624007F3CF2 /* TNAuthDoneAlertView.xib in Resources */,
 				2870CC6920AC8B8C00776F5E /* TNNetworkStatusCell.xib in Resources */,
 				2800E20620B6D7F300FFFE49 /* TNEditInfoView.xib in Resources */,
@@ -1128,6 +1178,7 @@
 				28F8BD2D20BDAABB000467A0 /* TNSyncClonedWalletsView.xib in Resources */,
 				2800E20A20B720E800FFFE49 /* TNContactViewController.xib in Resources */,
 				28DB60B8206C9209007246FF /* TNCreateWalletTopView.xib in Resources */,
+				28FEE49520CF8954006182D8 /* TNContactAddressHeadView.xib in Resources */,
 				285B5C9220B532F1007F3CF2 /* TNTradeDetailCell.xib in Resources */,
 				2863652220C4E8A900B27344 /* TNWalletSendCell.xib in Resources */,
 				2802BBE620B94A1F0067F995 /* TNDeleteWalletAlertView.xib in Resources */,
@@ -1297,14 +1348,15 @@
 				2801E80C2090540500DCAEB5 /* TNHistoryRecordsViewModel.swift in Sources */,
 				2800E20220B6D6CE00FFFE49 /* TNEditInfoController.swift in Sources */,
 				28EF391920A9ECFF0009AF69 /* GTMBase64.m in Sources */,
+				28FEE49320CF8935006182D8 /* TNContactAddressHeadView.swift in Sources */,
 				281AF2BC206497AD009FDB6A /* TNProtocolViewController.swift in Sources */,
 				28DB60A5206B32D0007246FF /* TNPreferenceManager.swift in Sources */,
 				28B344F620A4333C0050FC2A /* TNPasswordAlertView.swift in Sources */,
 				28DB60CA206E4F04007246FF /* TNSeedInputCell.swift in Sources */,
 				2863651C20C44E7000B27344 /* TNVerticalAlignLabel.m in Sources */,
-				286DAFDF207F31140074D3E2 /* TNWebSocketManager.swift in Sources */,
 				28DB60AC206B5B3D007246FF /* TNNavigationController.swift in Sources */,
 				2870CC6820AC8B8C00776F5E /* TNNetworkStatusCell.swift in Sources */,
+				2806B16220C980A4007CF9BD /* TNTransferUnit.swift in Sources */,
 				2865884D20C3C9860067DA30 /* TNMyReceiveAddressCell.swift in Sources */,
 				285B5C3020B028C6007F3CF2 /* TNObserveWaletAlertView.swift in Sources */,
 				2865885120C3D3F90067DA30 /* TNSetRecieveAmountCell.swift in Sources */,
@@ -1316,6 +1368,7 @@
 				285B5C7820B17DD8007F3CF2 /* TNTradeRecordsListController.swift in Sources */,
 				285B5C8A20B51389007F3CF2 /* TNTransactiondDetailController.swift in Sources */,
 				2802BBE020B949B40067F995 /* TNDeleteWalletAlertView.swift in Sources */,
+				28FEE49D20CFA52E006182D8 /* TNEditAddressView.swift in Sources */,
 				2800E1FA20B66CD300FFFE49 /* TNProfileHeaderView.swift in Sources */,
 				281AF2A92063AAAC009FDB6A /* AppDelegate.swift in Sources */,
 				2801CAAC208C2699002957FC /* TNThreadViewModel.swift in Sources */,
@@ -1326,15 +1379,16 @@
 				2870CC5120AB419600776F5E /* TNVerifyPasswordBottomView.swift in Sources */,
 				280317DD20A037C0008729A4 /* TNButton.swift in Sources */,
 				2800DCB8209AEDFA00F7AC9F /* TNWalletViewModel.swift in Sources */,
+				28FEE48D20CF85C6006182D8 /* TNContactAddressController.swift in Sources */,
 				28B1016E20ADB158000B0B52 /* TNCreateWalletController.swift in Sources */,
 				28030F91208443E7001F1708 /* TNEvaluateScriptManager.swift in Sources */,
 				2870CC6C20AC8C8900776F5E /* TNTotalAssertCell.swift in Sources */,
+				28FEE49820CF90BC006182D8 /* TNContactAddressCell.swift in Sources */,
 				28CA518320BFFACD00A51C49 /* TNProfileBackupHeadView.swift in Sources */,
 				285B5C3820B04D2E007F3CF2 /* UIImage+Extension.swift in Sources */,
 				285B5C7A20B180C8007F3CF2 /* TNTradeRecordHeaderview.swift in Sources */,
 				28B344EA20A2A8950050FC2A /* TNVBackupsSeedController.swift in Sources */,
 				28F8BD2B20BDAAA2000467A0 /* TNSyncClonedWalletsView.swift in Sources */,
-				28AEC7972085C18B0052C63D /* TNHubViewModel.swift in Sources */,
 				285B5C8420B18C4C007F3CF2 /* TNTradeRecordCell.swift in Sources */,
 				2829BC2920A15506000B0490 /* TNPasswordSecurityView.swift in Sources */,
 				2802BBDC20B84C3A0067F995 /* TNWalletAuthCode.swift in Sources */,
@@ -1346,19 +1400,22 @@
 				281AF2C42064AF41009FDB6A /* TNProtocolViewCell.swift in Sources */,
 				2800DCB7209AEDFA00F7AC9F /* TNRestoreWalletViewModel.swift in Sources */,
 				285B5C8C20B515F8007F3CF2 /* TNTradeDetailHeaderView.swift in Sources */,
-				286DB0362081C67B0074D3E2 /* TNWebSocketManager+API.swift in Sources */,
 				2802BBCE20B7FB0E0067F995 /* TNWalletDetailHeaderView.swift in Sources */,
 				28B1017620AE65FE000B0B52 /* TNCreateCommonWalletView.swift in Sources */,
 				28B1017820AEBAEC000B0B52 /* TNCreateObserveWalletView.swift in Sources */,
 				285B5C8820B40CD3007F3CF2 /* TNRecoverObserveWallet.swift in Sources */,
+				2806B15A20C79E17007CF9BD /* TNHubViewModel.swift in Sources */,
+				28FEE49B20CFA4D7006182D8 /* TNEditAddressController.swift in Sources */,
 				281AF2CA2064CA5E009FDB6A /* UIKit+Extension.swift in Sources */,
 				2800E20420B6D7E100FFFE49 /* TNEditInfoView.swift in Sources */,
+				28FEE48F20CF86C8006182D8 /* TNNoContactAddressView.swift in Sources */,
 				2801E806208F0F2600DCAEB5 /* TNHistoryTransactionModel.swift in Sources */,
+				2806B15B20C79E17007CF9BD /* TNWebSocketManager+API.swift in Sources */,
 				28B344EC20A2BA8E0050FC2A /* TNBackupWarningView.swift in Sources */,
 				2870CC6120AC1A0200776F5E /* TNWalletHomeController.swift in Sources */,
 				2800E1F820B668AF00FFFE49 /* TNProfileViewController.swift in Sources */,
 				2800DCA3209ADEBF00F7AC9F /* TNTabBarController.swift in Sources */,
-				2863652120C4E8A900B27344 /* TNWalletSendCell.swift in Sources */,
+				28DC625520C5450300E2F23A /* TNWalletSendCell.swift in Sources */,
 				281AF2BF2064A861009FDB6A /* TNProtocolHeaderView.swift in Sources */,
 				28DB5E0C206A1C27007246FF /* TNConstant.swift in Sources */,
 				2800DCC0209B10C400F7AC9F /* TNTxUnits.swift in Sources */,
@@ -1369,16 +1426,19 @@
 				2865884620C1350F0067DA30 /* TNProfileSetupPasswordView.swift in Sources */,
 				28DB60C6206E3BCA007246FF /* TNBackupSeedBackView.swift in Sources */,
 				28B344F020A2E0980050FC2A /* UIViewController+Alert.swift in Sources */,
+				2806B16020C84291007CF9BD /* TNTransferViewModel.swift in Sources */,
 				28DB60BC206CB765007246FF /* TNCreateAndRestoreWalletController.swift in Sources */,
 				2870CC6320AC503E00776F5E /* TNWalletBalanceViewModel.swift in Sources */,
 				28F8BCD920BBC151000467A0 /* TNProfileGeneralCell.swift in Sources */,
 				28F8BCDD20BBC621000467A0 /* TNGeneralViewController.swift in Sources */,
 				2870CC5720AC01A100776F5E /* TNWalletCell.swift in Sources */,
+				2806B15420C79514007CF9BD /* TNSyncOperationManager.swift in Sources */,
 				28DB60AA206B5B0F007246FF /* TNBaseViewController.swift in Sources */,
 				28B1017020ADE42B000B0B52 /* TNCreateWalletSwitchView.swift in Sources */,
 				283436132091732D000C5B66 /* TNSQLiteManager.swift in Sources */,
 				2865884A20C3C7650067DA30 /* TNMyReceiveAddressController.swift in Sources */,
 				2802BBCC20B7FA7B0067F995 /* TNWalletDetailController.swift in Sources */,
+				2806B15920C79E17007CF9BD /* TNWebSocketManager.swift in Sources */,
 				28DB60BA206C921D007246FF /* TNCreateWalletTopView.swift in Sources */,
 				2801CAA8208B5032002957FC /* NSDate+Extension.swift in Sources */,
 				285B5C7E20B1849F007F3CF2 /* TNTradeRecordSwitchView.swift in Sources */,

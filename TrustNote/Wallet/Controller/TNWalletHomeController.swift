@@ -230,8 +230,7 @@ extension TNWalletHomeController {
     
     fileprivate func refreshAction() {
         dataSource.removeAll()
-        let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-        let credentials  = profile["credentials"] as! [[String:Any]]
+        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
         for dict in credentials {
             let walletModel = TNWalletModel.deserialize(from: dict)
             dataSource.append(walletModel!)
@@ -241,8 +240,7 @@ extension TNWalletHomeController {
     
     fileprivate func getWalletList() {
         totalAssert = 0.0
-        let profile = TNConfigFileManager.sharedInstance.readProfileFile()
-        let credentials  = profile["credentials"] as! [[String:Any]]
+       let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
         for dict in credentials {
             let walletModel = TNWalletModel.deserialize(from: dict)
             totalAssert += ((walletModel?.balance)! as NSString).doubleValue
@@ -264,11 +262,17 @@ extension TNWalletHomeController {
     
     fileprivate func loadData() {
     
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
-            self.syncData()
+        if TNWebSocketManager.sharedInstance.socket.isConnected {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
+                self.syncData()
+            }
+        } else {
+            TNWebSocketManager.sharedInstance.socketDidConnectedBlock = {[unowned self] in
+                self.syncData()
+                TNWebSocketManager.sharedInstance.socketDidConnectedBlock = nil
+            }
         }
     }
-    
 }
 
 extension TNWalletHomeController {

@@ -116,7 +116,7 @@ extension TNTransactiondDetailController {
                 if detailModel.action?.rawValue == "RECEIVED" {
                     content = detailModel.my_address!
                 } else {
-                    content =  String(format: "%.6f",  Double(detailModel.fee) / 1000000.0) + " MN"
+                    content =  String(format: "%.6f",  Double(detailModel.fee) / kBaseOrder) + " MN"
                 }
             case TNTradeDetailRow.date.rawValue:
                 let formatterDate = NSDate.getFormatterTime(timeStamp: String(detailModel.time), formatter: "yyyy/MM/dd HH:mm  ")

@@ -19,6 +19,8 @@ class TNTradeRecordsListController: TNNavigationController {
     
     let viewModel = TNTradeRecordViewModel()
     
+    var dataSource: [TNTransactionRecord] = []
+    
     init(wallet: TNWalletModel) {
         super.init()
         self.wallet = wallet
@@ -27,12 +29,6 @@ class TNTradeRecordsListController: TNNavigationController {
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    struct Reusable {
-        static let transactionRecordCell = ReusableCell<TNTradeRecordCell>(nibName: "TNTradeRecordCell")
-    }
-    
-    var dataSource: RxTableViewSectionedReloadDataSource<TNRecordSection>!
     
     fileprivate lazy var tradeRecordHeaderview: TNTradeRecordHeaderview = {
         let tradeRecordHeaderview = TNTradeRecordHeaderview.tradeRecordHeaderview()
@@ -46,7 +42,7 @@ class TNTradeRecordsListController: TNNavigationController {
     
     let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
-        $0.register(Reusable.transactionRecordCell)
+        $0.tn_registerCell(cell: TNTradeRecordCell.self)
         $0.showsVerticalScrollIndicator = false
         $0.tableFooterView = UIView()
         $0.separatorStyle = .none
@@ -66,7 +62,13 @@ class TNTradeRecordsListController: TNNavigationController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
         setupUI()
-        bindView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        updateData()
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNTransferSendSuccessNotify)).subscribe(onNext: {[unowned self] value in
+            self.updateData()
+        }).disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -76,30 +78,6 @@ class TNTradeRecordsListController: TNNavigationController {
 }
 
 extension TNTradeRecordsListController {
-    
-    fileprivate func bindView() {
-        dataSource = RxTableViewSectionedReloadDataSource<TNRecordSection>(configureCell: { (ds, tv, ip, item) -> TNTradeRecordCell in
-            let cell = tv.dequeue(Reusable.transactionRecordCell, for: ip)
-            cell.model = item
-            return cell
-        })
-        
-        // setup delegate
-        tableView.rx.setDelegate(self).disposed(by: self.disposeBag)
-        
-        tableView.rx.itemSelected.map { indexPath in
-            return (indexPath,self.dataSource[indexPath])
-            }
-            .subscribe(onNext: { indexPath, model in
-                let detailController = TNTransactiondDetailController(detailModel: model)
-                self.navigationController?.pushViewController(detailController, animated: true)
-            })
-            .disposed(by: self.disposeBag)
-        
-        viewModel.getTransactionRecords(wallet.walletId)
-            .bind(to: tableView.rx.items(dataSource: dataSource))
-            .disposed(by: self.disposeBag)
-    }
     
     fileprivate func setupUI() {
         view.addSubview(tradeRecordHeaderview)
@@ -123,9 +101,27 @@ extension TNTradeRecordsListController {
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }
     }
+    
+    fileprivate func updateData() {
+       
+        viewModel.queryTransactionRecordList(walletId: wallet.walletId) {[unowned self] (records) in
+            self.dataSource = records
+            self.tableView.reloadData()
+        }
+    }
 }
 
-extension TNTradeRecordsListController: UITableViewDelegate {
+extension TNTradeRecordsListController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataSource.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: TNTradeRecordCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
+        cell.model = dataSource[indexPath.row]
+        return cell
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70.0
@@ -136,6 +132,8 @@ extension TNTradeRecordsListController: UITableViewDelegate {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let vc = TNTransactiondDetailController(detailModel: dataSource[indexPath.row])
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -152,4 +150,5 @@ extension TNTradeRecordsListController: UITableViewDelegate {
         tableHeaderView.addSubview(titleLabel)
         return tableHeaderView
     }
+    
 }

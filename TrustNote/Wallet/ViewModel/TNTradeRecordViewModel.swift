@@ -12,27 +12,11 @@ import RxCocoa
 
 class TNTradeRecordViewModel: NSObject {
     
-    var transactionRecords: [TNTransactionRecord]?
-    
 }
 
 extension TNTradeRecordViewModel {
     
-    func getTransactionRecords(_ walletId: String) -> Observable<[TNRecordSection]> {
-        return Observable.create { [weak self] (observer) -> Disposable in
-            self?.queryTransactionRecordList(walletId: walletId, completionHandle: { (transactionRecords) in
-                self?.transactionRecords = transactionRecords
-                observer.onNext([TNRecordSection(items: transactionRecords)])
-                   observer.onCompleted()
-            })
-            return Disposables.create {}
-        }
-    }
-}
-
-extension TNTradeRecordViewModel {
-    
-    fileprivate func queryTransactionRecordList(walletId: String, completionHandle: (([TNTransactionRecord]) -> Swift.Void)?) {
+    func queryTransactionRecordList(walletId: String, completionHandle: (([TNTransactionRecord]) -> Swift.Void)?) {
         queryTxUnits(walletId: walletId, completionHandle: completionHandle)
     }
     

@@ -8,6 +8,8 @@
 
 import UIKit
 
+let TNVersion = "1.0"
+
 let kScreenH = UIScreen.main.bounds.height   // screen height
 
 let kScreenW = UIScreen.main.bounds.width    // screen width
@@ -34,8 +36,11 @@ let kButtonFont = UIFont.systemFont(ofSize: 18.0)
 
 let TNWebSocketURLScheme: String = "wss://"
 
+let TNScanPrefix = "TTT:"
+
 let kNetworkTimeout = 30
 let kTempPubkeyInterval = 3600
+let kBaseOrder = 1000000.0
 
 /// MARK:- Color
 let Navigation_Bar_Color = UIColor.white
@@ -45,6 +50,8 @@ let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
 let kTitleTextColor = UIColor.hexColor(rgbValue: 0x111111)
 let kBackgroundColor = UIColor.hexColor(rgbValue: 0xF6F7F9)
 let kThemeMarkColor = UIColor.hexColor(rgbValue: 0xF6782F)
+let kLineViewColor = UIColor.hexColor(rgbValue: 0xCBD5E3)
+let kWarningHintColor = UIColor.hexColor(rgbValue: 0xEF2B2B)
 let kAlertBackgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1, alpha: 0.8)
 
 /// MARK: Notificaton Name
@@ -59,6 +66,7 @@ let TNEditInfoCompletionNotification           = "TNEditInfoCompletionNotificati
 let TNModifyWalletNameNotification             = "TNModifyWalletNameNotification"
 let TNDidFinishDeleteWalletNotification        = "TNDidFinishDeleteWalletNotification"
 let TNDidFinishSyncClonedWalletNotify          = "TNDidFinishSyncClonedWalletNotify"
+let TNTransferSendSuccessNotify                = "TNTransferSendSuccessNotify"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

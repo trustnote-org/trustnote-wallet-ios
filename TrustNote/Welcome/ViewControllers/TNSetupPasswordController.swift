@@ -216,29 +216,36 @@ extension String {
         return isValid
     }
     
-    static func isAllLetter (str: String) -> Bool {
+    static func isAllLetter(str: String) -> Bool {
         let regex = "^[A-Za-z]+$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: str)
         return isValid
     }
     
-    static func isAllSpecialCharacter (str: String) -> Bool {
-        let regex = "^[^a-zA-Z0-9\u{4E00}-\u{9FA5}]+$" //
+    static func isAllSpecialCharacter(str: String) -> Bool {
+        let regex = "^[^a-zA-Z0-9\u{4E00}-\u{9FA5}]+$" 
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: str)
         return isValid
     }
     
-    static func isChineseCharacters (str: String) -> Bool {
+    static func isChineseCharacters(str: String) -> Bool {
         let regex = "^[\u{4E00}-\u{9FA5}]{0,}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: str)
         return isValid
     }
     
-    static func containsNumAndLetterAndSpecialCharacter (str: String) -> Bool {
+    static func containsNumAndLetterAndSpecialCharacter(str: String) -> Bool {
         let regex = "^(?![a-zA-Z0-9]+$)(?![^a-zA-Z/D]+$)(?![^0-9/D]+$).{8,}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: str)
+        return isValid
+    }
+    
+    static func isLetterOrNumber(str: String) -> Bool {
+        let regex = "^[A-Za-z0-9]+$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: str)
         return isValid

@@ -126,12 +126,12 @@ class TNRecoveryWalletController: TNBaseViewController {
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
         
-//        if delegate.isTabBarRootController() {
-//            let mnemonic = "together knife slab material electric broom wagon heart harvest side copper vote"
-//           seedView.seedContainerView.mnmnemonicsArr = mnemonic.components(separatedBy: " ")
-//        } else {
-//           seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
-//        }
+        if delegate.isTabBarRootController() {
+            let mnemonic = "together knife slab material electric broom wagon heart harvest side copper vote"
+           seedView.seedContainerView.mnmnemonicsArr = mnemonic.components(separatedBy: " ")
+        } else {
+           seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+        }
        
     }
     

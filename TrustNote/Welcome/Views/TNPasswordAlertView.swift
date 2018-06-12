@@ -86,13 +86,13 @@ extension TNPasswordAlertView {
             return
         }
         TNGlobalHelper.shared.password = passwordTextField.text
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         if !TNGlobalHelper.shared.encryptePrivKey.isEmpty {
             TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: TNGlobalHelper.shared.xPrivKey, completed: {
                 TNHubViewModel.loginHub()
             })
             TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
         } else {
-            let delegate = UIApplication.shared.delegate as! AppDelegate
             if delegate.isTabBarRootController() && !TNGlobalHelper.shared.tempPrivKey.isEmpty {
                 let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passwordTextField.text)
                 TNGlobalHelper.shared.encryptePrivKey = encPrivKey!

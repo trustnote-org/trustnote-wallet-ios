@@ -38,9 +38,9 @@ class TNMyReceiveAddressCell: UITableViewCell, RegisterCellFromNib {
                 self.addressLabel.text = results.first
                 self.recievedAddress = results.first!
                 let imgSize = self.codeImageView.size
-                var inputMsg = results.first!
+                var inputMsg = TNScanPrefix + results.first!
                 if self.amount > 0{
-                    inputMsg.append("?" + String(self.amount))
+                    inputMsg.append("?amount=" + String(self.amount))
                 }
                 DispatchQueue.global().async {
                     let qrImage = UIImage.createHDQRImage(input: inputMsg, imgSize: imgSize)
@@ -62,6 +62,7 @@ class TNMyReceiveAddressCell: UITableViewCell, RegisterCellFromNib {
         titleLabel.text = "My receiving address".localized
         setAmountBtn.setTitle("Fixed amount".localized, for: .normal)
         copyBtn.setTitle("Copy the receiving address".localized, for: .normal)
+        clearBtn.setTitle("Clear the amount".localized + "(MN)", for: .normal)
         amountLabel.verticalAlignment = VerticalAlignmentBottom
         copyBtnLeftConstraint.constant = IS_iphone5 ? 20 : 30
     }

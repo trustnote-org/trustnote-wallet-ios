@@ -23,6 +23,8 @@ struct TNWalletAddressModel {
     var walletAddressPubkey: String = ""
     var is_change: Bool = false    // Is it a change in the address? default NO
     var creation_date: String?
+    var definition: String = ""
+    var address_index: Int = 0
 }
 
 class TNWalletModel: HandyJSON {

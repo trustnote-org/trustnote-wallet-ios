@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TNTradeRecordCell: UITableViewCell {
+class TNTradeRecordCell: UITableViewCell, RegisterCellFromNib {
 
     @IBOutlet weak var amountLabel: UILabel!
     @IBOutlet weak var decimalLabel: UILabel!
@@ -52,7 +52,7 @@ class TNTradeRecordCell: UITableViewCell {
                 let frontPart = showAddress.substring(toIndex: 5)
                 let backPart = showAddress.substring(fromIndex: showAddress.length - 3)
                 addressLabel.text = frontPart + "..." + backPart
-                let realAmount = Double((model?.amount)!) / 1000000.0
+                let realAmount = Double((model?.amount)!) / kBaseOrder
                 let assert = String(format: "%.4f", realAmount)
                 let sign = transactionType == .received ? "+" : "-"
                 amountLabel.text = sign + assert.substring(toIndex: assert.length - TNGlobalHelper.shared.unitDecimals)

@@ -78,7 +78,7 @@ extension TNMyReceiveAddressController: UITableViewDelegate, UITableViewDataSour
             setupCell.inputTextField.becomeFirstResponder()
             setupCell.setRecieveAmountBlock = {[unowned self] (amount) in
                 self.cellStyle = .setupCompleted
-                self.amount = Int64(amount * 1000000)
+                self.amount = Int64(amount * kBaseOrder)
                 self.tableView.reloadData()
             }
             return setupCell
@@ -91,7 +91,7 @@ extension TNMyReceiveAddressController: UITableViewDelegate, UITableViewDataSour
             cell.setAmountBtn.isHidden = true
             cell.amountLabel.isHidden = false
             
-            let amountStr = String(format: "%.4f", Double(amount!) / 1000000.0)
+            let amountStr = String(format: "%.4f", Double(amount!) / kBaseOrder)
             let length = amountStr.length
             cell.amountLabel.text = amountStr.substring(toIndex: length - TNGlobalHelper.shared.unitDecimals) + "."
             let attrStr = NSMutableAttributedString(string: amountStr)

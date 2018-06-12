@@ -145,6 +145,12 @@ class TNSQLiteManager: NSObject {
             "FOREIGN KEY (definition_chash) REFERENCES definitions(definition_chash)" +
         " );"
         
+        let definitions = "CREATE TABLE IF NOT EXISTS definitions ( " +
+            "definition_chash CHAR(32) NOT NULL PRIMARY KEY," +
+            "definition TEXT NOT NULL," +
+            "has_references TINYINT NOT NULL " +
+        ");"
+        
         dbQueue.inDatabase { (db) -> Void in
             
             if db.executeUpdate(input, withArgumentsIn: []) {
@@ -159,6 +165,7 @@ class TNSQLiteManager: NSObject {
             db.executeUpdate(message, withArgumentsIn: [])
             db.executeUpdate(unit, withArgumentsIn: [])
             db.executeUpdate(author, withArgumentsIn: [])
+            db.executeUpdate(definitions, withArgumentsIn: [])
         }
     }
     
@@ -181,7 +188,7 @@ extension TNSQLiteManager {
         }
     }
     
-    public func updateData(sql: String, values: [Any]) {
+    public func updateData(sql: String, values: [Any]?) {
         
         dbQueue.inDatabase { (database) in
             do {
@@ -248,7 +255,7 @@ extension TNSQLiteManager {
             "AND my_addresses.wallet = ? " +
             "AND outputs.is_spent=0 " +
             "GROUP BY outputs.address, outputs.asset " +
-            "ORDER BY my_addresses.address_index ASC"
+        "ORDER BY my_addresses.address_index ASC"
         dbQueue.inDatabase { (database) in
             do {
                 let set = try database.executeQuery(sql, values: [walletId])
@@ -335,6 +342,139 @@ extension TNSQLiteManager {
             do {
                 
                 let results = try database.executeQuery(sql, values: nil)
+                if results.next() {
+                    count = Int(results.int(forColumnIndex: 0))
+                }
+                results.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        completionHandle!(count)
+    }
+    
+    public func queryUnusedChangeAddress(walletId: String, completionHandle: (([String]) -> Swift.Void)?) {
+        var queryResults: [String] = []
+        let sql = "SELECT my_addresses.* FROM my_addresses " +
+            "LEFT JOIN outputs ON outputs.address = my_addresses.address " +
+            "WHERE outputs.address IS NULL " +
+            "AND my_addresses.wallet = ? " +
+            "AND is_change = 1 " +
+        "LIMIT 1"
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: [walletId])
+                while set.next() {
+                    let changeAddress = set.string(forColumn: "address")
+                    queryResults.append(changeAddress!)
+                }
+                completionHandle!(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func  queryFundedAddresses(walletId: String, estimateAmount: String, completionHandle: (([TNFundedAddress]) -> Swift.Void)?) {
+        var queryResults: [TNFundedAddress] = []
+        let sql = "SELECT address, SUM(amount) AS total " +
+            "FROM outputs JOIN my_addresses USING(address) " +
+            "CROSS JOIN units USING(unit) " +
+            "WHERE wallet = ? " +
+            "AND is_stable = 1 " +
+            "AND sequence = 'good' " +
+            "AND is_spent = 0 " +
+            "AND asset IS NULL " +
+        "GROUP BY address ORDER BY (SUM(amount) > ?) DESC, ABS(SUM(amount) - ?) ASC;"
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: [walletId, Int64(estimateAmount)!, Int64(estimateAmount)!])
+                while set.next() {
+                    var fundedAddress = TNFundedAddress()
+                    fundedAddress.address = set.string(forColumn: "address")!
+                    fundedAddress.total = set.longLongInt(forColumn: "total")
+                    queryResults.append(fundedAddress)
+                }
+                completionHandle!(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func queryUtxoByAddress(addressList: [String], lastBallMCI: Int, completionHandle: (([TNOutputObject]) -> Swift.Void)?) {
+        var queryResults: [TNOutputObject] = []
+        let listArr = addressList.map {
+            return String(format: "'%@'", arguments: [$0])
+        }
+        let list = listArr.joined(separator: ",")
+        let sql = "SELECT unit, message_index, output_index, amount, address, blinding, is_spent " +
+            "FROM outputs " +
+            "CROSS JOIN units USING(unit) " +
+            "WHERE address IN(" + list + ") " +
+            "AND asset IS NULL " +
+            "AND is_spent=0 " +
+            "AND is_stable=1 " +
+            "AND sequence='good' " +
+            "AND main_chain_index<= ? " +
+            "ORDER BY amount DESC"
+        
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: [lastBallMCI])
+                while set.next() {
+                    var output = TNOutputObject()
+                    output.unit = set.string(forColumn: "unit")!
+                    output.messageIndex = Int(set.int(forColumn: "message_index"))
+                    output.outputIndex = Int(set.int(forColumn: "output_index"))
+                    output.address = set.string(forColumn: "address")!
+                    output.amount = set.longLongInt(forColumn: "amount")
+                    queryResults.append(output)
+                }
+                completionHandle!(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func queryTransferAddress(addressList: [String], completionHandle: (([TNWalletAddressModel]) -> Swift.Void)?) {
+        var queryResults: [TNWalletAddressModel] = []
+        let listArr = addressList.map {
+            return String(format: "'%@'", arguments: [$0])
+        }
+        let list = listArr.joined(separator: ",")
+        let sql = "SELECT * FROM my_addresses WHERE address IN (" + list + ")"
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: nil)
+                while set.next() {
+                    var model = TNWalletAddressModel()
+                    model.walletAddress = set.string(forColumn: "address")!
+                    model.definition = set.string(forColumn: "definition")!
+                    model.is_change = set.bool(forColumn: "is_change")
+                    model.walletId = set.string(forColumn: "wallet")!
+                    model.address_index = Int(set.int(forColumn: "address_index"))
+                    queryResults.append(model)
+                }
+                completionHandle!(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    public func queryUnusedAuthorCount(address: String, completionHandle: ((Int) -> Swift.Void)?) {
+        var count = 0
+        let sql = "SELECT Count(*) FROM definitions WHERE definition_chash = ?"
+        dbQueue.inDatabase { (database) in
+            do {
+                
+                let results = try database.executeQuery(sql, values: [address])
                 if results.next() {
                     count = Int(results.int(forColumnIndex: 0))
                 }

@@ -163,5 +163,38 @@ extension UIView {
             view.backgroundColor = hightlight ? kGlobalColor : UIColor.hexColor(rgbValue: 0xdddddd)
             }.asObserver()
     }
+    
+    func setupLineView(_ isHightlight: Bool) {
+        self.height = isHightlight ? 2.0 : 1.0
+        self.backgroundColor = isHightlight ? kGlobalColor : kLineViewColor
+    }
 }
 
+extension UITextView {
+    
+    func contentSizeToFit() {
+        
+        if(self.text.length > 0) {
+            var contentSize = self.contentSize
+            var offset: UIEdgeInsets = UIEdgeInsets.zero
+            var newSize = contentSize
+            if contentSize.height <= self.frame.size.height {
+                let offsetY = (self.frame.size.height - contentSize.height) / 2
+                offset = UIEdgeInsetsMake(offsetY, 0, 0, 0)
+            } else {
+                newSize = self.frame.size;
+                offset = UIEdgeInsets.zero
+                var fontSize = 18
+                while (contentSize.height > self.frame.size.height)
+                {
+                    fontSize -= 1
+                    self.font = UIFont(name: "PingFangSC-Regular", size: CGFloat(fontSize))
+                    contentSize = self.contentSize
+                }
+                newSize = contentSize
+            }
+            self.contentSize = newSize
+            self.contentInset = offset
+        }
+    }
+}

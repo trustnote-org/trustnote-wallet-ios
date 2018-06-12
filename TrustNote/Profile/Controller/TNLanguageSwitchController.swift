@@ -63,7 +63,7 @@ extension TNLanguageSwitchController: UITableViewDelegate, UITableViewDataSource
             cell.titleLabel.text = "English"
             cell.lineView.isHidden = false
         } else {
-            cell.titleLabel.text = "中文"
+            cell.titleLabel.text = "简体中文"
             cell.lineView.isHidden = true
         }
         cell.selectedImageView.isHidden = selectedItem == indexPath.row ? false : true

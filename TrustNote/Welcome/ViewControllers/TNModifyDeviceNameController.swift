@@ -37,7 +37,6 @@ class TNModifyDeviceNameController: TNBaseViewController {
     
     private let deviceTextField = UITextField().then {
         $0.textColor = kThemeTextColor
-        $0.font = UIFont.systemFont(ofSize: 18.0)
         $0.font = UIFont(name: "PingFangSC-Medium", size: 18)
         $0.keyboardType = .asciiCapable
         $0.text = UIDevice.current.name
@@ -175,7 +174,7 @@ extension TNModifyDeviceNameController: UITextFieldDelegate {
         if !warningBtn.isHidden {
             warningBtn.isHidden = true
             lineView.height = 1.0
-            lineView.backgroundColor = UIColor.hexColor(rgbValue: 0xCBD5E3)
+            lineView.backgroundColor = kLineViewColor
         }
     }
 }

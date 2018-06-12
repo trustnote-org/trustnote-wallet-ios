@@ -18,7 +18,7 @@ class TNTradeDetailHeaderView: UIView {
     
     var detailModel: TNTransactionRecord? {
         didSet {
-            let assert = String(format: "%.4f",  Double((detailModel?.amount!)!) / 1000000.0)
+            let assert = String(format: "%.4f",  Double((detailModel?.amount!)!) / kBaseOrder)
             let assertStr = assert.substring(toIndex: assert.length - TNGlobalHelper.shared.unitDecimals)
             if detailModel?.action?.rawValue == "RECEIVED" {
                 assertLabel.text = "+" + assertStr
@@ -42,7 +42,7 @@ class TNTradeDetailHeaderView: UIView {
     }
 }
 
-extension TNTradeDetailHeaderView : TNNibLoadable {
+extension TNTradeDetailHeaderView: TNNibLoadable {
     
     class func tradeDetailHeaderView() -> TNTradeDetailHeaderView {
         

@@ -8,6 +8,7 @@
 
 import Foundation
 import RxDataSources
+import HandyJSON
 
 enum TNTransactionAction: String {
     case invalid = "INVALID"
@@ -54,20 +55,45 @@ struct TNTxoutputs {
     var is_external: Bool = false
 }
 
-struct TNRecordSection {
-    var items: [Item]
+struct TNParentsUnit: HandyJSON {
+    var parent_units: [String]?
+    var last_stable_mc_ball: String = ""
+    var last_stable_mc_ball_unit: String = ""
+    var last_stable_mc_ball_mci: Int = 0
+    var witness_list_unit: String = ""
 }
 
-extension TNRecordSection: SectionModelType {
-    
-    typealias Item = TNTransactionRecord
-    
-    init(original: TNRecordSection, items: [Item]) {
-        self = original
-        self.items = items
-    }
-    
-    init(items: [Item]?) {
-        self.items = items ?? [Item]()
-    }
+struct TNPaymentInfo {
+    var walletId: String = ""
+    var walletPubkey: String = ""
+    var receiverAddress: String = ""
+    var amount: String = ""
+    var lastBallMCI: Int = 0
 }
+
+struct TNFundedAddress {
+    var address: String = ""
+    var total: Int64 = 0
+}
+
+struct TNOutputObject {
+    var unit: String = ""
+    var messageIndex: Int = 0
+    var outputIndex: Int = 0
+    var amount: Int64 = 0
+    var address: String = ""
+}
+
+//extension TNRecordSection: SectionModelType {
+//
+//    typealias Item = TNTransactionRecord
+//
+//    init(original: TNRecordSection, items: [Item]) {
+//        self = original
+//        self.items = items
+//    }
+//
+//    init(items: [Item]?) {
+//        self.items = items ?? [Item]()
+//    }
+//}

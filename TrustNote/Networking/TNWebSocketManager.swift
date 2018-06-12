@@ -13,17 +13,21 @@ import HandyJSON
 
 class TNWebSocketManager {
     
-
+    
     struct HubConnectedStatus {
         var isLogin: Bool?
     }
+    
     struct ResponseTag {
         var tempPubkeyTag: String = ""
         var getHistoryTag: String = ""
         var getWitnessTag: String = ""
+        var getParentsTag: String = ""
+        var getTransferTag: String = ""
     }
+    
     fileprivate var heartBeat: Timer!
-    fileprivate var socket: WebSocket!
+    public var socket: WebSocket!
     fileprivate var disConnectCount = 0
     
     fileprivate let rootHubs: [String] = ["shawtest.trustnote.org", "raytest.trustnote.org"]
@@ -35,13 +39,17 @@ class TNWebSocketManager {
     public var responseTag = ResponseTag()
     public var tempPubkeyTimeConsume = 0
     
-    public var HandleJustsayingBlock: ((Any) ->Void)? = nil
-    public var GetHistoryCompletionBlock: ((Any) ->Void)? = nil
-    public var SendTempPubkeyCompletionBlock: ((Any) ->Void)? = nil
-    public var GetWitnessCompletionBlock: ((Any) ->Void)? = nil
-    public var HandleRequestBlock: ((Any) ->Void)? = nil
+    public var HandleJustsayingBlock: ((Any) -> Void)?
+    public var GetHistoryCompletionBlock: ((Any) -> Void)?
+    public var SendTempPubkeyCompletionBlock: ((Any) -> Void)?
+    public var GetWitnessCompletionBlock: ((Any) -> Void)?
+    public var HandleRequestBlock: ((Any) -> Void)?
+    public var GetParentsCompletionBlock: (([String: Any]) -> Void)?
+    public var GettransferCompletionBlock: ((String) -> Void)?
     
     public var generateNewPrivkeyBlock: (() -> Void)?
+    
+    public var socketDidConnectedBlock: (() -> Void)?
     
     class var sharedInstance: TNWebSocketManager {
         
@@ -54,19 +62,19 @@ class TNWebSocketManager {
 
 /// MARK: connect and didConnect
 extension TNWebSocketManager {
-
+    
     func webSocketOpen(hubAddress: String) {
-        
+    
         guard hubAddress.count != 0 else {
             return
         }
-        socket = WebSocket(url: NSURL(string: TNWebSocketURLScheme + hubAddress)! as URL)
+        socket = WebSocket(url: NSURL(string: TNWebSocketURLScheme + "raytest.trustnote.org")! as URL)
         if !socket.isConnected {
             socket.delegate = self
             socket.connect()
         }
     }
-
+    
     func webSocketClose() {
         if socket.isConnected {
             socket.disconnect()
@@ -86,46 +94,48 @@ extension TNWebSocketManager {
     }
     
     private func initHeartBeat() {
-    
+        
         heartBeat = Timer.scheduledTimer(timeInterval: 20, target: self, selector:#selector(self.sendHeartBeatRequest), userInfo: nil, repeats: true)
     }
-
+    
 }
 
 extension TNWebSocketManager: WebSocketDelegate {
-
+    
     func websocketDidConnect(socket: WebSocketClient) {
-
+        
         initHeartBeat()
         isConnected = true
+        socketDidConnectedBlock?()
         TNHubViewModel.getMyWitnessesList()
         if let generateNewPrivkeyBlock = generateNewPrivkeyBlock {
             generateNewPrivkeyBlock()
         }
         TNDebugLogManager.debugLog(item: "Websocket Connected")
     }
-
+    
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
         
         isConnected = false
         disConnectCount += 1
-        if (disConnectCount == 4) {
-            let hub = TNHubViewModel().hubAddress
-            for tempHub in rootHubs {
-                if tempHub == hub {continue}
-                webSocketOpen(hubAddress: tempHub)
-                break
-            }
-        } else {
-           socket.connect()
-        }
+        socket.connect()
+        //        if (disConnectCount == 4) {
+        //            let hub = TNHubViewModel().hubAddress
+        //            for tempHub in rootHubs {
+        //                if tempHub == hub {continue}
+        //                webSocketOpen(hubAddress: tempHub)
+        //                break
+        //            }
+        //        } else {
+        //           socket.connect()
+        //        }
         TNDebugLogManager.debugLog(item: "websocket is disconnected: \(String(describing: error?.localizedDescription))")
     }
-
+    
     func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
         TNDebugLogManager.debugLog(item: "got some data: \(data.count)")
     }
-
+    
     func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         
         TNDebugLogManager.debugLog(item: "receive---->\(text)")
@@ -133,23 +143,23 @@ extension TNWebSocketManager: WebSocketDelegate {
         let receiveMessageStyle = jsonData.first as! String
         let handleData = jsonData.last as! [String : Any]
         switch receiveMessageStyle {
-            case "justsaying":
-                handleJustsayingMessage(handleData)
-            case "request":
-                handleRequestMessage(handleData)
-            case "response":
-                handleResponseMessage(handleData)
-            default:
-                break
+        case "justsaying":
+            handleJustsayingMessage(handleData)
+        case "request":
+            handleRequestMessage(handleData)
+        case "response":
+            handleResponseMessage(handleData)
+        default:
+            break
         }
     }
 }
 
 /// Mark: send data packet
 extension TNWebSocketManager {
-
+    
     @objc private func sendHeartBeatRequest() {
-
+        
         var requestDict: [String : Any] = [:]
         if let tag = tag {
             requestDict["command"] = "heartbeat"
@@ -159,9 +169,9 @@ extension TNWebSocketManager {
             TNWebSocketManager.sharedInstance.socket.write(string: "\(json)")
         }
     }
-
-    func sendData(_ params: String) {
     
+    func sendData(_ params: String) {
+        
         TNWebSocketManager.sharedInstance.socket.write(string: params)
         TNDebugLogManager.debugLog(item:  "send---->\(params)")
     }
@@ -180,9 +190,9 @@ extension TNWebSocketManager {
 
 /// MARK: Hanhle message style
 extension TNWebSocketManager {
-
+    
     fileprivate func handleJustsayingMessage(_ handleData: [String : Any]) {
-
+        
         let subject = handleData["subject"] as! String
         switch subject {
         case "version":
@@ -195,7 +205,7 @@ extension TNWebSocketManager {
         case "hub/push_project_number":
             hubStatus.isLogin = true
             if !TNGlobalHelper.shared.tempPublicKey.isEmpty {
-               TNHubViewModel.sendTempPubkeyToHub()
+                TNHubViewModel.sendTempPubkeyToHub()
             }
         default:
             break
@@ -203,7 +213,7 @@ extension TNWebSocketManager {
     }
     
     fileprivate func handleResponseMessage(_ handleData: [String : Any]) {
-    
+        
         if handleData.keys.contains("tag") {
             let tag = handleData["tag"] as! String
             if let response = handleData["response"] {
@@ -214,6 +224,14 @@ extension TNWebSocketManager {
                     GetHistoryCompletionBlock!(response)
                 case responseTag.getWitnessTag:
                     GetWitnessCompletionBlock!(response)
+                case responseTag.getParentsTag:
+                    GetParentsCompletionBlock!(response as! [String : Any])
+                case responseTag.getTransferTag:
+                    if response is String {
+                        if response as! String == "accepted" {
+                            GettransferCompletionBlock!(response as! String)
+                        }
+                    }
                 default:
                     break
                 }
@@ -226,8 +244,8 @@ extension TNWebSocketManager {
         let command = handleData["command"] as! String
         switch command {
         case "subscribe":
-           let subscribeModel = TNSubscribeModel.deserialize(from: handleData)
-           tag = subscribeModel?.tag
+            let subscribeModel = TNSubscribeModel.deserialize(from: handleData)
+            tag = subscribeModel?.tag
         default:
             break
         }

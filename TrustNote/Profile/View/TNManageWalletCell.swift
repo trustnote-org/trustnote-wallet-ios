@@ -50,6 +50,7 @@ class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
         containerView.layer.shadowRadius = 10.0
         markLabel.layer.borderColor = kThemeMarkColor.cgColor
         markLabel.layer.borderWidth = 1.0
+        markLabel.setupRadiusCorner(radius: kCornerRadius)
     }
     
     @IBAction func selectAction(_ sender: UIButton) {

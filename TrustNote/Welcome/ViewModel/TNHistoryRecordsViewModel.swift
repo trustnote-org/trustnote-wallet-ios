@@ -13,6 +13,8 @@ final class TNHistoryRecordsViewModel: JSONStringFromDictionaryProtocol {
     public var historyTransactionModel = TNHistoryTransactionModel()
     
     public var isNeedNotice = false
+    
+    public var amount = ""
 }
 
 extension TNHistoryRecordsViewModel {
@@ -29,7 +31,7 @@ extension TNHistoryRecordsViewModel {
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishUpdateDatabaseNotification), object: nil)
             if isNeedNotice {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TNTransferSendSuccessNotify), object: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TNTransferSendSuccessNotify), object: amount)
             }
         }
         if let proofBalls = historyTransactionModel.proofchain_balls {

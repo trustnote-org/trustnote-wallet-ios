@@ -12,13 +12,15 @@ class TNContactAddressHeadView: UIView {
 
     @IBOutlet weak var titleLabel: UILabel!
     
+    var addContactAddressBlock: (() -> Void)?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.text = "Address".localized
     }
     
     @IBAction func addAddress(_ sender: Any) {
-        
+        addContactAddressBlock?()
     }
     
 }

@@ -17,9 +17,9 @@ protocol TNWalletSendCellProtocol: NSObjectProtocol {
     func selectTrancsationAddress()
 }
 
+ let validAddressCount = 32
+
 class TNWalletSendCell: UITableViewCell, RegisterCellFromNib {
-    
-    let validAddressCount = 32
     
     @IBOutlet weak var instructionLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -55,7 +55,7 @@ class TNWalletSendCell: UITableViewCell, RegisterCellFromNib {
         addressTextField.addTarget(self, action: #selector(self.textDidChanged(_:)), for: .editingChanged)
         amountTextField.addTarget(self, action: #selector(self.textDidChanged(_:)), for: .editingChanged)
         titleLabel.text = "Send TTT".localized
-        descLabel.text = "Remaining balance".localized
+        descLabel.text = "Remaining balance".localized + " (MN)"
         addressTextField.placeholder = "Receiver's wallet address".localized
         amountTextField.placeholder = "Amount".localized
         allSendBtn.setTitle("Send all".localized, for: .normal)

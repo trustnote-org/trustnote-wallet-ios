@@ -69,30 +69,37 @@ extension TNSendViewController {
         let scan = TNScanViewController()
         scan.isPush = false
         scan.scanningCompletionBlock = {[unowned self] prefixResult in
-            guard prefixResult.contains(TNScanPrefix) else {
-                return
-            }
-            let result = prefixResult.replacingOccurrences(of: TNScanPrefix, with: "")
-            if result.contains("?") {
-                let components = result.components(separatedBy: "?")
-                self.sendCell?.addressTextField.text = components.first
-                let amountStr = components.last
-                guard (amountStr?.contains("amount="))! else {
-                    return
-                }
-                let amount = amountStr!.replacingOccurrences(of: "amount=", with: "")
-                if String.isOnlyNumber(str: amount) {
-                    self.sendCell?.amountTextField.text = String(format: "%.4f", Double(amount)! / kBaseOrder)
-                    if self.sendCell!.amountTextField.isFirstResponder {
-                        self.sendCell!.clearBtn.isHidden = false
-                    }
-                }
-            } else {
-                self.sendCell?.addressTextField.text = result
-            }
-            
+           self.handleScanningResult(prefixResult: prefixResult)
         }
         navigationController?.present(scan, animated: true, completion: nil)
+    }
+    
+    fileprivate func handleScanningResult(prefixResult: String) {
+        guard prefixResult.contains(TNScanPrefix) else {
+            return
+        }
+        let result = prefixResult.replacingOccurrences(of: TNScanPrefix, with: "")
+        if result.contains("?") {
+            let components = result.components(separatedBy: "?")
+            sendCell?.addressTextField.text = components.first
+            let amountStr = components.last
+            guard (amountStr?.contains("amount="))! else {
+                return
+            }
+            let amount = amountStr!.replacingOccurrences(of: "amount=", with: "")
+            if String.isOnlyNumber(str: amount) {
+                sendCell?.amountTextField.text = String(format: "%.4f", Double(amount)! / kBaseOrder)
+                if sendCell!.amountTextField.isFirstResponder {
+                    sendCell!.clearBtn.isHidden = false
+                }
+            }
+        } else {
+            sendCell?.addressTextField.text = result
+        }
+        if !(sendCell?.addressTextField.text?.isEmpty)! && !(sendCell?.amountTextField.text?.isEmpty)! {
+            sendCell?.confirmBtn.isEnabled = true
+            sendCell?.confirmBtn.alpha = 1.0
+        }
     }
     
     @objc fileprivate func handleTapGesture() {
@@ -122,6 +129,10 @@ extension TNSendViewController {
         paymentInfo.walletId = wallet.walletId
         paymentInfo.walletPubkey = wallet.xPubKey
         let sendViewModel = TNTransferViewModel(paymentInfo: paymentInfo)
+        sendViewModel.sendFailureBlock = {[unowned self] in
+            self.hud?.removeFromSuperview()
+            MBProgress_TNExtension.showViewAfterSecond(title: "发送失败")
+        }
         sendViewModel.getReadyToSend()
     }
     
@@ -172,6 +183,10 @@ extension TNSendViewController: TNWalletSendCellProtocol {
         
         let vc = TNContactAddressController {[unowned self] (seletedAddress) in
             self.sendCell?.addressTextField.text = seletedAddress
+            if !(self.sendCell?.amountTextField.text?.isEmpty)! {
+                self.sendCell?.confirmBtn.isEnabled = true
+                self.sendCell?.confirmBtn.alpha = 1.0
+            }
         }
         navigationController?.pushViewController(vc, animated: true)
     }

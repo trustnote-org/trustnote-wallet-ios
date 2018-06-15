@@ -11,6 +11,8 @@ import SwiftyJSON
 
 class TNTransferViewModel: NSObject, JSONStringFromDictionaryProtocol {
     
+    var sendFailureBlock: (() -> Void)?
+    
     let unitMsgTypePayment = "payment"
     let unitPayloadLoationInline = "inline"
     let PLACEHOLDER_AMOUNT: Int64 =  0
@@ -67,6 +69,12 @@ extension TNTransferViewModel {
         units.timestamp = Int64(timeInterval)
         
         genPayloadInputs()
+        guard !(payload.inputs?.isEmpty)! else {
+            DispatchQueue.main.async {
+                self.sendFailureBlock?()
+            }
+            return
+        }
         genAuthors()
         
         genCommission()
@@ -253,16 +261,22 @@ extension TNTransferViewModel {
     }
     
     private func postNewUnitToHub() {
+        guard !(payload.inputs?.isEmpty)! else {return}
         let response = TNSyncOperationManager.shared.postTransferUnit(objectJoint: unitObject)
         if response == "accepted" {
             DispatchQueue.main.async {
                 let viewModel = TNHistoryRecordsViewModel()
                 viewModel.isNeedNotice = true
+                viewModel.amount = self.sendPaymentInfo.amount
                 let unitModel = TNUnitModel.deserialize(from: self.unitObject)
                 var joinsModel = TNWetnessJoinsModel()
                 joinsModel.unit = unitModel
                 viewModel.historyTransactionModel.joints = [joinsModel]
                 viewModel.processingTheAcquiredData()
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.sendFailureBlock?()
             }
         }
     }

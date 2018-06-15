@@ -186,11 +186,11 @@ extension TNWalletHomeController: TNPopCtrlCellClickDelegate {
         switch tag {
         case TNPopItem.scan.rawValue :
             break
-        case TNPopItem.contacts.rawValue :
-            break
-        case TNPopItem.wallet.rawValue:
+        case TNPopItem.addContacts.rawValue :
+            navigationController?.pushViewController(TNAddContactsController(), animated: true)
+        case TNPopItem.createWallet.rawValue:
             navigationController?.pushViewController(TNCreateWalletController(), animated: true)
-        case TNPopItem.code.rawValue:
+        case TNPopItem.MatchingCode.rawValue:
             let myPairingCodeView = TNMyPairingCodeView.loadViewFromNib()
             myPairingCodeView.generateQRcode {
                 let popX = CGFloat(kLeftMargin)
@@ -240,7 +240,7 @@ extension TNWalletHomeController {
     
     fileprivate func getWalletList() {
         totalAssert = 0.0
-       let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
+        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
         for dict in credentials {
             let walletModel = TNWalletModel.deserialize(from: dict)
             totalAssert += ((walletModel?.balance)! as NSString).doubleValue
@@ -250,18 +250,18 @@ extension TNWalletHomeController {
     
     fileprivate func barBtnItemClick() {
         
-        let popW: CGFloat = 154.0
-        let popH: CGFloat = 44.0
-        let popX = kScreenW - popW - 12.0
+        let popW: CGFloat = TNLocalizationTool.shared.currentLanguage == "en" ? 174 : 154
+        let popH: CGFloat = popRowHeight
+        let popX = kScreenW - popW - popRightMargin
         let popY: CGFloat = topBar.frame.maxY + 8.0
         let imageNameArr = ["wallet_sao", "wallet_contact", "wallet_group", "wallet_code"]
-        let titleArr = ["扫一扫", "添加联系人","创建钱包", "我的配对码"]
+        let titleArr = ["Scan QR Code".localized, "Add Contact".localized,"Create Wallet".localized, "My Matching Code".localized]
         let popView = TNPopView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), imageNameArr: imageNameArr, titleArr: titleArr)
         popView.delegate = self
     }
     
     fileprivate func loadData() {
-    
+        
         if TNWebSocketManager.sharedInstance.socket.isConnected {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
                 self.syncData()

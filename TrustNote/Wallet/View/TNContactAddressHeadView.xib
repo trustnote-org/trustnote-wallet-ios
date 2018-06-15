@@ -14,19 +14,20 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNContactAddressHeadView" customModule="TrustNote" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地址" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RaL-kf-wte">
-                    <rect key="frame" x="26" y="0.0" width="49" height="44"/>
+                    <rect key="frame" x="26" y="9" width="49" height="29"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                     <color key="textColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NG6-1s-5G7">
-                    <rect key="frame" x="323" y="0.0" width="44" height="44"/>
+                    <rect key="frame" x="323" y="1.5" width="44" height="44"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="NG6-1s-5G7" secondAttribute="height" multiplier="1:1" id="BT9-rX-B53"/>
+                        <constraint firstAttribute="width" constant="44" id="XUh-f9-HYN"/>
                     </constraints>
                     <state key="normal" image="profile_add_wallet"/>
                     <connections>
@@ -36,11 +37,9 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="RaL-kf-wte" secondAttribute="bottom" id="FaK-Xo-Bq4"/>
-                <constraint firstItem="RaL-kf-wte" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="WIk-9v-HMe"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="NG6-1s-5G7" secondAttribute="bottom" id="c3s-Zm-Qfd"/>
+                <constraint firstItem="NG6-1s-5G7" firstAttribute="centerY" secondItem="RaL-kf-wte" secondAttribute="centerY" id="0hK-A3-wer"/>
+                <constraint firstItem="RaL-kf-wte" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="9" id="VHu-fv-59q"/>
                 <constraint firstAttribute="trailing" secondItem="NG6-1s-5G7" secondAttribute="trailing" constant="8" id="cUT-k9-7Is"/>
-                <constraint firstItem="NG6-1s-5G7" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="rbv-fd-4Fg"/>
                 <constraint firstItem="RaL-kf-wte" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="26" id="xIS-sw-w2K"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

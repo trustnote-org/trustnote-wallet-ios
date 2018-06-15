@@ -80,6 +80,7 @@ extension TNConfigFileManager {
     
     func configGlobalFile() {
         
+        TNDebugLogManager.debugLog(item: NSHomeDirectory())
         guard !isExistPlistFile(fileName: "config") else {
             return
         }

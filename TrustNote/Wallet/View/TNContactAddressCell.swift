@@ -13,6 +13,13 @@ class TNContactAddressCell: UITableViewCell, RegisterCellFromNib {
     @IBOutlet weak var titleTextLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     
+    var content: [String: String]? {
+        didSet {
+            titleTextLabel.text = content!["remarks"]
+            detailLabel.text =  content!["address"]
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         if IS_iphone5 {

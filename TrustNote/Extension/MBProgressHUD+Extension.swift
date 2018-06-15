@@ -21,7 +21,7 @@ extension MBProgress_TNExtension {
         hud.label.text = title
         hud.label.textColor = UIColor.white
         hud.bezelView.style = .blur
-        hud.bezelView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        hud.bezelView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         hud.activityIndicatorColor = UIColor.white
         return hud
     }
@@ -33,7 +33,7 @@ extension MBProgress_TNExtension {
         hud.label.text = title
         hud.label.textColor = UIColor.white
         hud.bezelView.style = .blur
-        hud.bezelView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        hud.bezelView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         return hud
     }
    
@@ -51,5 +51,14 @@ extension MBProgress_TNExtension {
         hud.bezelView.alpha = 0.8
         hud.hide(animated: true, afterDelay: 1.0)
     }
-
+    
+    class func showViewAfterSecond(title : String) {
+        let view = UIApplication.shared.delegate?.window as? UIView
+        let hud = MBProgressHUD.showAdded(to: view!, animated: true)
+        hud.mode = .text
+        hud.label.font = UIFont.systemFont(ofSize: 14.0)
+        hud.label.text = title
+        hud.bezelView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
+        hud.hide(animated: true, afterDelay: 1.0)
+    }
 }

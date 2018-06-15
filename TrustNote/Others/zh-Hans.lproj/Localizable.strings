@@ -112,6 +112,10 @@
 "Profile" = "我的";
 
 /******* wallet string************/
+"Scan QR Code" = "扫一扫";
+"Add Contact" = "添加联系人";
+"Create Wallet" = "创建钱包";
+"My Matching Code" = "我的配对码";
 "Total assets" = "总资产";
 "Network connections are unavailable" = "网络连接不可用";
 "Observation" = "观察";
@@ -135,6 +139,11 @@
 "Insufficient remaining balance" = "可用余额不足";
 "Address" = "地址";
 "NoContactAddress" = "请点击右下方的“+”添加常用地址";
+"Wallet address" = "钱包地址";
+"Remarks" = "备注";
+"Add address" = "添加地址";
+"Edit address" = "编辑地址";
+"Save" = "保存";
 
 /******* create wallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -189,6 +198,18 @@
 "Delete the wallet warning" = "即将删除此钱包，若您想生成该钱包，则需要您使用助记词恢复钱包！";
 "Unable to delete hints" = "该钱包内有资产，无法删除钱包";
 "No more than 10 characters" = "不超过10个字符";
+
+/******* message wallet string************/
+"Add Contacts" = "添加联系人";
+"Device Code" = "配对码";
+"Add" = "添加";
+"Incorrect code" = "配对码有误，请检查后重试";
+"you can’t add your self ad friend" = "调皮，不能添加自己为好友";
+"Scan or enter the device code" = "扫码或输入配对码";
+"NoContactsDesc" = "请点击右上角的“+”添加联系人";
+"Set Alias" = "设置备注名";
+"Delete Contact" = "删除联系人";
+"Clear Chat History" = "清空聊天记录";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

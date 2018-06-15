@@ -190,13 +190,14 @@ extension TNSQLiteManager {
     
     public func updateData(sql: String, values: [Any]?) {
         
-        dbQueue.inDatabase { (database) in
-            do {
-                try database.executeUpdate(sql, values: values)
-            } catch {
-                print("failed: \(error.localizedDescription)")
-            }
+        guard database.open() else {return}
+        do {
+            try database.executeUpdate(sql, values: values)
+            
+        } catch {
+            print("failed: \(error.localizedDescription)")
         }
+        database.close()
     }
     
     public func updateDataByExecutingStatements(sql: String) {

@@ -9,11 +9,18 @@
 import UIKit
 
 enum TNPopItem: Int {
-    case scan     = 1000
-    case contacts = 1001
-    case wallet   = 1002
-    case code     = 1003
+    case scan           = 1000
+    case addContacts    = 1001
+    case createWallet   = 1002
+    case MatchingCode   = 1003
+    case setRemarks     = 1004
+    case deleteContact  = 1005
+    case clearMessage   = 1006
 }
+
+let popRowHeight: CGFloat = 44.0
+let popRightMargin: CGFloat = 12.0
+let popTopMargin: CGFloat = 22.0
 
 protocol TNPopCtrlCellClickDelegate: NSObjectProtocol {
     func popCtrlCellClick(tag: Int)
@@ -35,11 +42,8 @@ class TNPopView: UIView {
         let containerView = UIView(frame: CGRect(x: popCtrl_x, y: frame.origin.y, width: popCtrl_w, height: CGFloat(imageNameArr.count) * popCtrl_h))
         containerView.backgroundColor = UIColor.white
         self.addSubview(containerView)
+        containerView.setupShadow(Offset: CGSize.zero, opacity: 0.2, radius: 12)
         containerView.layer.cornerRadius = kCornerRadius
-        containerView.layer.shadowColor = kGlobalColor.cgColor
-        containerView.layer.shadowOffset = CGSize.zero
-        containerView.layer.shadowOpacity = 0.2
-        containerView.layer.shadowRadius = 12.0
         
         for index in 0..<imageNameArr.count {
             let popCtrl_y = CGFloat(index) * popCtrl_h

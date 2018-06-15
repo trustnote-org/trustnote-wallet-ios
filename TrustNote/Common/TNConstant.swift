@@ -26,6 +26,10 @@ let scale = IS_iphone5 ? 0.7 : 1.0
 
 let kLeftMargin = 26.0
 
+let kButtonheight = 48.0
+
+let kTitleTopMargin = 9.0
+
 let kNavBarHeight: CGFloat = IS_iPhoneX ? 84.0 : 64.0
 
 let kCornerRadius: CGFloat = 2.0

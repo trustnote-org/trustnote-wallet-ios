@@ -44,10 +44,7 @@ class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
         super.awakeFromNib()
         self.selectionStyle = .none
         containerView.layer.cornerRadius = kCornerRadius
-        containerView.layer.shadowColor = UIColor.hexColor(rgbValue: 0xD4E0F1).cgColor
-        containerView.layer.shadowOffset = CGSize(width: 0, height: 8.0)
-        containerView.layer.shadowOpacity = 0.2
-        containerView.layer.shadowRadius = 10.0
+        containerView.setupShadow(Offset: CGSize(width: 0, height: 8.0), opacity: 0.2, radius: 10)
         markLabel.layer.borderColor = kThemeMarkColor.cgColor
         markLabel.layer.borderWidth = 1.0
         markLabel.setupRadiusCorner(radius: kCornerRadius)

@@ -16,6 +16,7 @@ class TNProfileViewController: TNBaseViewController {
                        ["title" : "Settings".localized, "imgName" : "setting", "action" : "enterIntoSetting"]],
                       [["title" : "About trustNote".localized, "imgName" : "about", "action" : "aboutTrustNote"]]
         ] as [Any]
+    
     fileprivate lazy var profileHeaderView: TNProfileHeaderView = {
         let profileHeaderView = TNProfileHeaderView.profileHeaderView()
         return profileHeaderView

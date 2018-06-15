@@ -52,6 +52,7 @@ extension TNMyPairingCodeView {
 extension TNMyPairingCodeView {
     
     public func generateQRcode(completionHandle: @escaping () -> Swift.Void) {
+        
         TNEvaluateScriptManager.sharedInstance.generateRandomBytes(num: 9) {[unowned self] (randomBytes) in
             let config = TNConfigFileManager.sharedInstance.readConfigFile()
             let hub = config["hub"] as! String

@@ -244,6 +244,7 @@ extension TNEvaluateScriptManager {
      */
     public func getBase64Hash(_ unit: String, completionHandler: ((String) -> Swift.Void)?) {
         let js = String(format:"window.Client.getBase64Hash('%@')", arguments:[unit])
+        print("-----\(unit)-----")
         webView.evaluateJavaScript(js) {(any, _) in
             completionHandler!(any as! String)
         }

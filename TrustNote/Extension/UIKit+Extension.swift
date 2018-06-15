@@ -11,10 +11,22 @@ import RxSwift
 import RxCocoa
 
 protocol ViewRadiusCornerProtocol {
+    
     func setupRadiusCorner(radius: CGFloat)
+    
+    func setupShadow(Offset: CGSize, opacity: Float, radius: CGFloat)
+    
 }
 
 extension UIView: ViewRadiusCornerProtocol {
+    
+    func setupShadow(Offset: CGSize, opacity: Float, radius: CGFloat) {
+        layer.shadowColor = kGlobalColor.cgColor
+        layer.shadowOffset = Offset
+        layer.shadowOpacity = opacity
+        layer.shadowRadius = radius
+    }
+    
     
     func setupRadiusCorner(radius: CGFloat) {
         self.layer.cornerRadius = radius

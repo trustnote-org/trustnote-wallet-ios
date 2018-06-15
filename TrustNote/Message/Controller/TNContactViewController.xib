@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -28,6 +28,10 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zxm-G1-XLM">
+                    <rect key="frame" x="0.0" y="94" width="375" height="573"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8rX-oP-SDN">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
                     <subviews>
@@ -62,7 +66,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="DhF-t6-qge" secondAttribute="trailing" id="5Lo-NC-0i1"/>
                         <constraint firstAttribute="height" constant="94" id="VHw-ep-97O"/>
@@ -70,10 +74,6 @@
                         <constraint firstItem="DhF-t6-qge" firstAttribute="leading" secondItem="8rX-oP-SDN" secondAttribute="leading" id="pfA-7U-eD2"/>
                     </constraints>
                 </view>
-                <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zxm-G1-XLM">
-                    <rect key="frame" x="0.0" y="94" width="375" height="573"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0YJ-DR-73b">
                     <rect key="frame" x="0.0" y="94" width="375" height="573"/>
                     <subviews>
@@ -89,18 +89,19 @@
                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请点击右上角的“+”添加联系人" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSt-mX-4bp">
-                            <rect key="frame" x="91.5" y="324" width="192.5" height="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="请点击右上角的“+”添加联系人" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSt-mX-4bp">
+                            <rect key="frame" x="26" y="324" width="323.5" height="17"/>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="dRh-VR-waG" firstAttribute="leading" secondItem="0YJ-DR-73b" secondAttribute="leading" constant="78" id="0TY-tb-gkj"/>
                         <constraint firstItem="5cK-rf-1i3" firstAttribute="centerX" secondItem="0YJ-DR-73b" secondAttribute="centerX" id="0Wu-oE-2mc"/>
                         <constraint firstItem="QSt-mX-4bp" firstAttribute="top" secondItem="5cK-rf-1i3" secondAttribute="bottom" constant="12" id="74l-nB-qJ7"/>
+                        <constraint firstItem="QSt-mX-4bp" firstAttribute="leading" secondItem="0YJ-DR-73b" secondAttribute="leading" constant="26" id="DSq-Kz-rAe"/>
                         <constraint firstItem="QSt-mX-4bp" firstAttribute="centerX" secondItem="5cK-rf-1i3" secondAttribute="centerX" id="fvR-G9-mYw"/>
                         <constraint firstItem="dRh-VR-waG" firstAttribute="centerX" secondItem="0YJ-DR-73b" secondAttribute="centerX" id="iyP-MR-gMa"/>
                         <constraint firstItem="dRh-VR-waG" firstAttribute="top" secondItem="0YJ-DR-73b" secondAttribute="top" constant="46" id="unz-d9-E9F"/>
@@ -118,8 +119,8 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="zxm-G1-XLM" secondAttribute="trailing" id="OUa-7O-IFA"/>
                 <constraint firstItem="8rX-oP-SDN" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="R9R-3n-oRG"/>
                 <constraint firstItem="zxm-G1-XLM" firstAttribute="top" secondItem="8rX-oP-SDN" secondAttribute="bottom" id="W24-0x-2Vz"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="0YJ-DR-73b" secondAttribute="bottom" id="Yt8-a5-Mco"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="zxm-G1-XLM" secondAttribute="bottom" id="igy-ga-3bl"/>
+                <constraint firstAttribute="bottom" secondItem="0YJ-DR-73b" secondAttribute="bottom" id="qgo-92-UYD"/>
                 <constraint firstItem="8rX-oP-SDN" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="sXG-WP-uLk"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

@@ -109,6 +109,10 @@
 "Profile" = "Me";
 
 /******* wallet string************/
+"Scan QR Code" = "Scan QR Code";
+"Add Contact" = "Add Contact";
+"Create Wallet" = "Create Wallet";
+"My Matching Code" = "Matching Code";
 "Total assets" = "Total Assets";
 "Network connections are unavailable" = "网络连接不可用";
 "Observation" = "观察";
@@ -132,6 +136,11 @@
 "Insufficient remaining balance" = "Insufficient remaining balance";
 "Address" = "Address";
 "NoContactAddress" = "Select \"+\" in bottom right of the screen to add frequently used address";
+"Wallet address" = "Wallet address";
+"Remarks" = "Remarks";
+"Add address" = "添加地址";
+"Edit address" = "编辑地址";
+"Save" = "Save";
 
 /******* createwallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -186,6 +195,17 @@
 "Unable to delete hints" = "The wallet can’t be deleted beause it contains assets";
 "No more than 10 characters" = "No more than 10 characters";
 
+/******* message wallet string************/
+"Add Contacts" = "Add Contacts";
+"Device Code" = "Device Code";
+"Add" = "Add";
+"Incorrect code" = "Incorrect code, please check and try it again";
+"you can’t add your self ad friend" = "you can’t add your self ad friend";
+"Scan or enter the device code" = "Scan or enter the device code";
+"NoContactsDesc" = "Select \"+\" in top right of the screen to add new contact";
+"Set Alias" = "Set Alias";
+"Delete Contact" = "Delete Contact";
+"Clear Chat History" = "Clear Chat History";
 
 "Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
 "Confirm your mnemonic words" = "Confirm your mnemonic words";

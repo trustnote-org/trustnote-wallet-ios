@@ -52,7 +52,6 @@ class TNTradeRecordsListController: TNNavigationController {
         super.viewDidLoad()
         setBackButton()
         view.backgroundColor = kBackgroundColor
-        tradeRecordHeaderview.walletModel = wallet
         switchView.receivingTransferrinrBlock = {[unowned self] in
             let vc = TNMyReceiveAddressController(wallet: self.wallet)
             self.navigationController?.pushViewController(vc, animated: true)
@@ -67,6 +66,9 @@ class TNTradeRecordsListController: TNNavigationController {
         updateData()
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNTransferSendSuccessNotify)).subscribe(onNext: {[unowned self] value in
+            let balance = Double(self.wallet.balance)!
+            let sendAmount = Double(value.object as! String)! / kBaseOrder
+            self.wallet.balance = String(format: "%.4f", balance - sendAmount)
             self.updateData()
         }).disposed(by: disposeBag)
     }
@@ -105,6 +107,7 @@ extension TNTradeRecordsListController {
     fileprivate func updateData() {
        
         viewModel.queryTransactionRecordList(walletId: wallet.walletId) {[unowned self] (records) in
+            self.tradeRecordHeaderview.walletModel = self.wallet
             self.dataSource = records
             self.tableView.reloadData()
         }

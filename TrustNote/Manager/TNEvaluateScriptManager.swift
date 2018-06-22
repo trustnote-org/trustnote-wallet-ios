@@ -61,7 +61,7 @@ extension TNEvaluateScriptManager {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
                // let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
-               // let  mnemonic1 = /*"theme wall plunge fluid circle organ gloom expire coach patient neck clip"*/"together knife slab material electric broom wagon heart harvest side copper vote"
+             let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
                 
                 TNGlobalHelper.shared.mnemonic = mnemonic as! String
                 guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
@@ -85,26 +85,11 @@ extension TNEvaluateScriptManager {
      * @param {string}  助记词
      * @return {string} 私钥
      */
-    public func generateRootPrivateKeyByMnemonic(mnemonic: String) {
+    public func generateRootPrivateKeyByMnemonic(mnemonic: String, completed: ((Any) -> Swift.Void)?) {
         let js = String(format:"window.Client.xPrivKey('%@')", arguments:[mnemonic])
-        webView.evaluateJavaScript(js) {[unowned self] (any, _) in
+        webView.evaluateJavaScript(js) { (any, _) in
             if let xPrivKey = any {
-                let notificationName = Notification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)
-                if xPrivKey is Int && (xPrivKey as! Int) == 0 {
-                    NotificationCenter.default.post(name: notificationName, object: "0")
-                } else if xPrivKey is String {
-                    
-                    TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
-                    if let passsword = TNGlobalHelper.shared.password {
-                        let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passsword)
-                        TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
-                        TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
-                    }
-                    self.getEcdsaPrivkey(xPrivKey: xPrivKey as! String, completed: {
-                        TNHubViewModel.loginHub()
-                    })
-                    NotificationCenter.default.post(name: notificationName, object: "success")
-                }
+                completed!(xPrivKey)
             }
         }
     }
@@ -244,7 +229,6 @@ extension TNEvaluateScriptManager {
      */
     public func getBase64Hash(_ unit: String, completionHandler: ((String) -> Swift.Void)?) {
         let js = String(format:"window.Client.getBase64Hash('%@')", arguments:[unit])
-        print("-----\(unit)-----")
         webView.evaluateJavaScript(js) {(any, _) in
             completionHandler!(any as! String)
         }
@@ -443,12 +427,37 @@ extension TNEvaluateScriptManager {
             }
         }
     }
+    
+    /**
+     * 根据公钥生成设备地址
+     * @method getDeviceAddress
+     * @for Base
+     * @param {string}  m/1 公钥
+     * @return {string} 设备地址
+     */
+    public func getContactDeviceAddress(pubkey: String, completionHandler: ((String) -> Swift.Void)?) {
+        let js = String(format:"window.Client.getDeviceAddress('%@')", arguments:[pubkey])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let deviceAddress = any {
+                completionHandler!(deviceAddress as! String)
+            }
+        }
+    }
+    
+    public func getEncryptedPackage(json: String, pubkey: String, completionHandler: ((String) -> Swift.Void)?) {
+        let js = String(format:"window.Client.createEncryptedPackage('%@', '%@')", arguments:[json, pubkey])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let encryptedPackage = any {
+                completionHandler!(encryptedPackage as! String)
+            }
+        }
+    }
 }
     
 
 extension TNEvaluateScriptManager {
     
-    public func getParamsSignForLoginHub(unit: String, completionHandler: ((String) -> Swift.Void)?) {
+    public func getParamsSign(unit: String, completionHandler: ((String) -> Swift.Void)?) {
         
         getDeviceMessageHashToSign(unit: unit) {[unowned self] (b64_hash) in
             let signHash = b64_hash
@@ -456,12 +465,6 @@ extension TNEvaluateScriptManager {
         }
     }
     
-    public func getParamsSignForSendingTempPubkey(unit: String, completionHandler: ((String) -> Swift.Void)?) {
-        getDeviceMessageHashToSign(unit: unit) {[unowned self] (b64_hash) in
-            let signHash = b64_hash
-            self.getHubParamSign(b64_hash: signHash, xPrivKey: TNGlobalHelper.shared.ecdsaPrivkey, path: "null", completionHandler: completionHandler)
-        }
-    }
     
     public func updateTempPrivKeyAndTempPubKey(completionHandler: (() -> Void)?) {
         webView.evaluateJavaScript("window.Client.genPrivKey()") {[unowned self] (any, _) in

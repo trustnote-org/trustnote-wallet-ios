@@ -258,12 +258,12 @@ extension TNSeedContainerView: UICollectionViewDelegate, UICollectionViewDataSou
             textFields.removeAll()
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TNSeedInputCellIndentifier", for: indexPath) as! TNSeedInputCell
-        guard isCanEdit else {
-            cell.textField.isEnabled = isCanEdit
-            cell.textField.text = mnmnemonicsArr[indexPath.item]
-            return cell
-        }
-       // cell.textField.text = mnmnemonicsArr[indexPath.item]
+//        guard isCanEdit else {
+//            cell.textField.isEnabled = isCanEdit
+//            cell.textField.text = mnmnemonicsArr[indexPath.item]
+//            return cell
+//        }
+        cell.textField.text = mnmnemonicsArr[indexPath.item]
         cell.textField.isEnabled = isCanEdit
         cell.textField.delegate = self
         cell.textField.inputView = containerView

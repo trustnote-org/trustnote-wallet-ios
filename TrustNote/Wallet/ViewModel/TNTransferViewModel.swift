@@ -205,7 +205,7 @@ extension TNTransferViewModel {
                 bip44Path = genBip44Path(addressModel: addressmodels.first!)
             }
             let hashToSign = TNSyncOperationManager.shared.getUnitSignHashSync(unit: filterDefinitionAndRecipients(units: units))
-            let sign = TNSyncOperationManager.shared.getTransferSign(b64_hash: hashToSign, xPrivKey: TNGlobalHelper.shared.xPrivKey, path: bip44Path)
+            let sign = TNSyncOperationManager.shared.getTransferSign(b64_hash: hashToSign, xPrivKey: TNGlobalHelper.shared.getPrivkey(), path: bip44Path)
             var newAuthor = author
             newAuthor.authentifiers = ["r": sign]
             newAuthors.append(newAuthor)

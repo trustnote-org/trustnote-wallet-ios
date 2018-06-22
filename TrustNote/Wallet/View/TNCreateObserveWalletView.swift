@@ -37,8 +37,8 @@ class TNCreateObserveWalletView: UIView {
         firstTipLabel.attributedText = firstTipLabel.getAttributeStringWithString(NSLocalizedString("CreateObserveWallet.firstTip", comment: ""), lineSpace: 5.0)
         lastTipLabel.attributedText = lastTipLabel.getAttributeStringWithString(NSLocalizedString("CreateObserveWallet.lastTip", comment: ""), lineSpace: 5.0)
         let fontSize = CGSize(width: kScreenW - 83, height: CGFloat(MAXFLOAT))
-        let firstSize = firstTipLabel.textSize(text: NSLocalizedString("Password.firstWarning", comment: ""), font: firstTipLabel.font, maxSize: fontSize)
-        let lastSize = lastTipLabel.textSize(text: NSLocalizedString("Password.secondWarning", comment: ""), font: firstTipLabel.font, maxSize: fontSize)
+        let firstSize = UILabel.textSize(text: NSLocalizedString("Password.firstWarning", comment: ""), font: firstTipLabel.font, maxSize: fontSize)
+        let lastSize = UILabel.textSize(text: NSLocalizedString("Password.secondWarning", comment: ""), font: firstTipLabel.font, maxSize: fontSize)
         tipViewHeightConstraint.constant = firstSize.height + lastSize.height + 60
         
         importButton.layer.cornerRadius = kCornerRadius

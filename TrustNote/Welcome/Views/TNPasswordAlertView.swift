@@ -10,6 +10,13 @@ import UIKit
 import RxCocoa
 import RxSwift
 
+protocol TNPasswordAlertViewDelegate: NSObjectProtocol  {
+    
+    func passwordVerifyCorrect(_ password: String)
+    
+    func didClickedCancelButton()
+}
+
 class TNPasswordAlertView: UIView, TNNibLoadable {
     
     typealias ClickedButtonBlock = () -> Void
@@ -18,14 +25,16 @@ class TNPasswordAlertView: UIView, TNNibLoadable {
     
     var verifyCorrectBlock: ClickedButtonBlock?
     var didClickedCancelBlock: ClickedButtonBlock?
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var errorView: UIView!
-    
     @IBOutlet weak var errorTipLabel: UILabel!
+    
+    weak var delegate: TNPasswordAlertViewDelegate?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupProperties()
@@ -40,9 +49,8 @@ class TNPasswordAlertView: UIView, TNNibLoadable {
             },
                            completion:{(finished:Bool) -> Void in}
             )
-            if let didClickedCancelBlock = self.didClickedCancelBlock {
-                didClickedCancelBlock()
-            }
+            self.delegate?.didClickedCancelButton()
+            self.didClickedCancelBlock?()
             
         }).disposed(by: disposeBag)
         
@@ -83,22 +91,9 @@ extension TNPasswordAlertView {
             return
         }
         TNGlobalHelper.shared.password = passwordTextField.text
-        let delegate = UIApplication.shared.delegate as! AppDelegate
-        if !TNGlobalHelper.shared.encryptePrivKey.isEmpty {
-            TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: TNGlobalHelper.shared.xPrivKey, completed: {
-                TNHubViewModel.loginHub()
-            })
-            TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        } else {
-            if delegate.isTabBarRootController() && !TNGlobalHelper.shared.tempPrivKey.isEmpty {
-                let encPrivKey = AES128CBC_Unit.aes128Encrypt(TNGlobalHelper.shared.tempPrivKey, key: passwordTextField.text)
-                TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
-                TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
-                TNGlobalHelper.shared.tempPrivKey = ""
-            }
-        }
+        self.delegate?.passwordVerifyCorrect(passwordTextField.text!)
+        verifyCorrectBlock?()
         passwordTextField.resignFirstResponder()
-        verifyCorrectBlock!()
     }
     
 }

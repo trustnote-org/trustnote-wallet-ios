@@ -37,6 +37,28 @@ extension TNSyncOperationManager {
         _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return response
     }
+    
+    func getOherTempPubkeyFromHub(pubkey: String) -> String {
+        var response = ""
+        let sema = DispatchSemaphore(value: 0)
+        TNHubViewModel.getOtherTempPubkey(pubkey: pubkey) { (result) in
+            response = result
+            sema.signal()
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+        return response
+    }
+    
+    func sendDeviceMessageSignature(objDeviceMessage: [String: Any]) -> String {
+        var response = ""
+        let sema = DispatchSemaphore(value: 0)
+        TNHubViewModel.sendDeviceMessage(objDeviceMessage: objDeviceMessage) { (result) in
+            response = result
+            sema.signal()
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+        return response
+    }
 }
 
 
@@ -49,8 +71,8 @@ extension TNSyncOperationManager {
         TNSQLiteManager.sharedManager.queryUnusedChangeAddress(walletId: walletId) {(results) in
             if !results.isEmpty {
                 unusedAddress = results.first!
-                sema.signal()
             }
+            sema.signal()
         }
         _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return unusedAddress
@@ -125,10 +147,12 @@ extension TNSyncOperationManager {
         TNSQLiteManager.sharedManager.database.close()
         let sema = DispatchSemaphore(value: 0)
         let viewModel = TNWalletViewModel()
-        viewModel.generateWalletAddress(wallet_xPubKey: pubkey, change: true, num: count) { (addressModel) in
-            newAddress = addressModel.walletAddress
-            viewModel.insertWalletAddressToDatabase(walletAddressModel: addressModel)
-            sema.signal()
+        DispatchQueue.main.async {
+            viewModel.generateWalletAddress(wallet_xPubKey: pubkey, change: true, num: count) { (addressModel) in
+                newAddress = addressModel.walletAddress
+                viewModel.insertWalletAddressToDatabase(walletAddressModel: addressModel)
+                sema.signal()
+            }
         }
         let _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return newAddress
@@ -226,5 +250,57 @@ extension TNSyncOperationManager {
         }
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         return base64
+    }
+    
+    func getDeviceAddress(_ pubkey: String) -> String {
+        var deviceAddress = ""
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            TNEvaluateScriptManager.sharedInstance.getContactDeviceAddress(pubkey: pubkey) { (result) in
+                deviceAddress = result
+                sema.signal()
+            }
+        }
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
+        return deviceAddress
+    }
+    
+    func getMySecret() -> String {
+        var mySecret = ""
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            TNEvaluateScriptManager.sharedInstance.generateRandomBytes(num: 9) { (randomBytes) in
+                mySecret = randomBytes
+                sema.signal()
+            }
+        }
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
+        return mySecret
+    }
+    
+    func createEncryptedPackage(json: String, pubkey: String) -> String {
+        var package = ""
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            TNEvaluateScriptManager.sharedInstance.getEncryptedPackage(json: json, pubkey: pubkey, completionHandler: { (result) in
+                package = result
+                sema.signal()
+            })
+        }
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
+        return package
+    }
+    
+    func getDeviceMessageHashToSign(unit: String) -> String {
+        var sign = ""
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            TNEvaluateScriptManager.sharedInstance.getParamsSign(unit: unit, completionHandler: { (result) in
+                sign = result
+                sema.signal()
+            })
+        }
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
+        return sign
     }
 }

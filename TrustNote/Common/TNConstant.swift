@@ -30,6 +30,8 @@ let kButtonheight = 48.0
 
 let kTitleTopMargin = 9.0
 
+let kVerifyPasswordAlertHeight: CGFloat = 320
+
 let kNavBarHeight: CGFloat = IS_iPhoneX ? 84.0 : 64.0
 
 let kCornerRadius: CGFloat = 2.0
@@ -47,19 +49,18 @@ let kTempPubkeyInterval = 3600
 let kBaseOrder = 1000000.0
 
 /// MARK:- Color
-let Navigation_Bar_Color = UIColor.white
-let kThemeWhiteColor = UIColor.hexColor(rgbValue: 0xFFFFFF)
-let kGlobalColor = UIColor.hexColor(rgbValue: 0x0052CC)
-let kThemeTextColor = UIColor.hexColor(rgbValue: 0x333333)
-let kTitleTextColor = UIColor.hexColor(rgbValue: 0x111111)
-let kBackgroundColor = UIColor.hexColor(rgbValue: 0xF6F7F9)
-let kThemeMarkColor = UIColor.hexColor(rgbValue: 0xF6782F)
-let kLineViewColor = UIColor.hexColor(rgbValue: 0xCBD5E3)
-let kWarningHintColor = UIColor.hexColor(rgbValue: 0xEF2B2B)
+let Navigation_Bar_Color  = UIColor.white
+let kThemeWhiteColor      = UIColor.hexColor(rgbValue: 0xFFFFFF)
+let kGlobalColor          = UIColor.hexColor(rgbValue: 0x0052CC)
+let kThemeTextColor       = UIColor.hexColor(rgbValue: 0x333333)
+let kTitleTextColor       = UIColor.hexColor(rgbValue: 0x111111)
+let kBackgroundColor      = UIColor.hexColor(rgbValue: 0xF6F7F9)
+let kThemeMarkColor       = UIColor.hexColor(rgbValue: 0xF6782F)
+let kLineViewColor        = UIColor.hexColor(rgbValue: 0xCBD5E3)
+let kWarningHintColor     = UIColor.hexColor(rgbValue: 0xEF2B2B)
 let kAlertBackgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1, alpha: 0.8)
 
 /// MARK: Notificaton Name
-let TNDidGeneratedPrivateKeyNotification       = "TNDidGeneratePrivateKeyNotification"
 let TNDidFinishedGetHistoryTransaction         = "TNDidFinishGetHistoryTransaction"
 let TNDidReceiveRestoreWalletResponse          = "TNDidReceiveRestoreWalletResponse"
 let TNDidFinishRecoverWalletNotification       = "TNDidFinishRecoverWalletNotification"

@@ -47,7 +47,18 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
         creatWalletBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             
             if TNGlobalHelper.shared.encryptePrivKey.isEmpty {
-                TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic)
+                TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic) { (any) in
+                    let xPrivkey = any as! String
+                    TNGlobalHelper.shared.tempPrivKey = xPrivkey
+                    if let passsword = TNGlobalHelper.shared.password {
+                        let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivkey, key: passsword)
+                        TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+                        TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+                    }
+                    TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: xPrivkey) {
+                        TNHubViewModel.loginHub()
+                    }
+                }
             }
             self.isEnterSetupPassword(vc: TNVBackupsSeedController())
             

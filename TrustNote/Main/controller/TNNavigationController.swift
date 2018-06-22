@@ -123,7 +123,7 @@ extension TNNavigationBar {
     private func layoutNavBarRightItem(_ navButton: UIButton) {
         
         navButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
+            make.right.equalToSuperview().offset(-8)
             make.bottom.equalToSuperview()
             make.width.equalTo(Nav_Bar_Button_Width)
             make.height.equalTo(Nav_Bar_Button_Height)

@@ -144,7 +144,7 @@ extension TNCreateWalletController: TNCreateWalletSwitchViewDelegate {
                 self.observeWalletView.identCodeLabel.text = result
                 self.observeWalletView.identCodeLabel.sizeToFit()
                 self.observeWalletView.identCodeLabel.textColor = kThemeTextColor
-                let codeSize = self.observeWalletView.identCodeLabel.textSize(text: result, font: self.observeWalletView.identCodeLabel.font, maxSize: CGSize(width: kScreenW - CGFloat(2 * kLeftMargin), height: CGFloat(MAXFLOAT)))
+                let codeSize = UILabel.textSize(text: result, font: self.observeWalletView.identCodeLabel.font, maxSize: CGSize(width: kScreenW - CGFloat(2 * kLeftMargin), height: CGFloat(MAXFLOAT)))
                 self.observeWalletView.lineViewTopMarginConstraint.constant = codeSize.height + 30
                 let isValid = self.verifyFirstCode(result)
                 self.isImportValid.accept(isValid)
@@ -179,7 +179,7 @@ extension TNCreateWalletController: TNCreateWalletSwitchViewDelegate {
                 self.authCompletedAlert.placeHolderLabel.text = result
                 self.authCompletedAlert.placeHolderLabel.sizeToFit()
                 self.authCompletedAlert.placeHolderLabel.textColor = kThemeTextColor
-                let codeSize = self.authCompletedAlert.placeHolderLabel.textSize(text: result, font: self.authCompletedAlert.placeHolderLabel.font, maxSize: CGSize(width: kScreenW - CGFloat(2 * (kLeftMargin + 30)), height: CGFloat(MAXFLOAT)))
+                let codeSize = UILabel.textSize(text: result, font: self.authCompletedAlert.placeHolderLabel.font, maxSize: CGSize(width: kScreenW - CGFloat(2 * (kLeftMargin + 30)), height: CGFloat(MAXFLOAT)))
                 self.authCompletedAlert.lineTopMarginConstraint.constant = codeSize.height + 30
                 // TODO
                 let isValid = self.verifySecondCode(result)

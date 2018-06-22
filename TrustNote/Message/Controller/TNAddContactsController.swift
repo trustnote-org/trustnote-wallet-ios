@@ -9,7 +9,7 @@
 import UIKit
 
 class TNAddContactsController: TNNavigationController {
-
+    
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
@@ -30,7 +30,7 @@ class TNAddContactsController: TNNavigationController {
         let addContactsView = TNAddContactsView.addContactsView()
         addContactsView.delegate = self
         return addContactsView
-    }()
+        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,13 +43,56 @@ extension TNAddContactsController {
     
     @objc fileprivate func addContacts() {
         
+        let code = addContactsView.inputTextView.text!
+        guard verifyDeviceCode(str: code) else {
+            addContactsView.warningView.isHidden = false
+            addContactsView.warningLabel.text = "Incorrect code".localized
+            return
+        }
+        
+        let pubkey =  code.components(separatedBy: "@").first
+        guard pubkey != TNGlobalHelper.shared.ecdsaPubkey else {
+            self.addContactsView.warningView.isHidden = false
+            self.addContactsView.warningLabel.text = "you can’t add your self ad friend".localized
+            return
+        }
+        self.sendRequest(paireCode: code)
+    }
+    
+    func sendRequest(paireCode: String) {
+        let addHelper = TNChatHelper()
+        addHelper.paireCode = paireCode
+        addHelper.addContactOperation()
+    }
+    
+    func verifyDeviceCode(str: String) -> Bool {
+//        let regex = "/^([\\w\\/+]{44})@([\\w.:\\/-]+)#([\\w\\/+-]+)$/"
+//        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+//        let isValid = predicate.evaluate(with: str)
+        if str.contains("@") && str.contains("#") {
+            let frontStr = str.components(separatedBy: "@").first
+            if frontStr?.length == 44 {
+                 return true
+            }
+        }
+        return false
     }
 }
 
 extension TNAddContactsController: TNAddContactsViewDelegate {
     
     func didClickedScanButton() {
-        
+        let scan = TNScanViewController()
+        scan.isPush = false
+        scan.scanningCompletionBlock = {[unowned self] result in
+            if result.contains(TNScanPrefix) {
+                self.addContactsView.inputTextView.text = result.replacingOccurrences(of: TNScanPrefix, with: "")
+            } else {
+                self.addContactsView.inputTextView.text = result
+            }
+            self.textDidChanged()
+        }
+        navigationController?.present(scan, animated: true, completion: nil)
     }
     
     func didClickedClearButton() {
@@ -58,7 +101,7 @@ extension TNAddContactsController: TNAddContactsViewDelegate {
     }
     
     func textDidChanged() {
-        if addContactsView.codeTextView.text.isEmpty {
+        if (addContactsView.inputTextView.text?.isEmpty)! {
             addBtn.isEnabled = false
             addBtn.alpha = 0.3
         } else {

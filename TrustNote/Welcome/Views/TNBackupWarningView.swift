@@ -20,8 +20,8 @@ class TNBackupWarningView: UIView {
             firstWarningLabel.attributedText = firstWarningLabel.getAttributeStringWithString(tips!.first!, lineSpace: 3.0)
             lastWarningLabel.attributedText = lastWarningLabel.getAttributeStringWithString(tips!.last!, lineSpace: 3.0)
             let fontSize = CGSize(width: kScreenW - 83, height: CGFloat(MAXFLOAT))
-            let firstSize = firstWarningLabel.textSize(text: tips!.first!, font: firstWarningLabel.font, maxSize: fontSize)
-            let lastSize = lastWarningLabel.textSize(text: tips!.last!, font: firstWarningLabel.font, maxSize: fontSize)
+            let firstSize = UILabel.textSize(text: tips!.first!, font: firstWarningLabel.font, maxSize: fontSize)
+            let lastSize =  UILabel.textSize(text: tips!.last!, font: firstWarningLabel.font, maxSize: fontSize)
             dynamicHeight = firstSize.height + lastSize.height + 30
         }
     }

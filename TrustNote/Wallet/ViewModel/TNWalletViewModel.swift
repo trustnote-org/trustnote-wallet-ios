@@ -30,7 +30,7 @@ extension TNWalletViewModel {
     }
     
     public func generateNewWallet(_ accountIndex: Int,  comletionHandle: (() -> Swift.Void)?) {
-        TNEvaluateScriptManager.sharedInstance.getWalletPubkey(xPrivKey: TNGlobalHelper.shared.xPrivKey, num: accountIndex) {
+        TNEvaluateScriptManager.sharedInstance.getWalletPubkey(xPrivKey: TNGlobalHelper.shared.getPrivkey(), num: accountIndex) {
             TNGlobalHelper.shared.currentWallet.account = accountIndex
             TNGlobalHelper.shared.currentWallet.publicKeyRing = [["xPubKey":TNGlobalHelper.shared.currentWallet.xPubKey]]
             TNGlobalHelper.shared.currentWallet.creation_date = NSDate.getCurrentFormatterTime()

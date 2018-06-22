@@ -19,23 +19,29 @@ protocol TNAddContactsViewDelegate: NSObjectProtocol {
 
 class TNAddContactsView: UIView {
 
+    
     weak var delegate: TNAddContactsViewDelegate?
     
+    private var maxNumberOfLines: Int = 3
+    
+    private var textH: CGFloat = 0
+    
+    private var maxTextH: CGFloat = 0
+    
+    @IBOutlet weak var inputTextView: UITextField!
     @IBOutlet weak var titleTextLabel: UILabel!
-    @IBOutlet weak var placeHolderLabel: UILabel!
-    @IBOutlet weak var codeTextView: UITextView!
     @IBOutlet weak var clearButton: UIButton!
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var warningView: UIView!
     @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var lineHeightConstraint: NSLayoutConstraint!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         titleTextLabel.text = "Device Code".localized
-        placeHolderLabel.textColor = UIColor.hexColor(rgbValue: 0x999999)
-        placeHolderLabel.text = "Scan or enter the device code".localized
-        codeTextView.delegate = self
+        inputTextView.placeholder = "Scan or enter the device code".localized
+        inputTextView.delegate = self
+        inputTextView.addTarget(self, action: #selector(TNAddContactsView.textViewDidChange(_:)), for: .editingChanged)
     }
 }
 
@@ -46,9 +52,14 @@ extension TNAddContactsView {
     }
     
     @IBAction func clear(_ sender: UIButton) {
-        codeTextView.text = ""
+        inputTextView.text = nil
         sender.isHidden = true
         delegate?.didClickedClearButton()
+    }
+    
+    @objc func textViewDidChange(_ textView: UITextField) {
+        clearButton.isHidden = (textView.text?.isEmpty)! ? true : false
+        delegate?.textDidChanged()
     }
 }
 
@@ -59,29 +70,21 @@ extension TNAddContactsView: TNNibLoadable {
     }
 }
 
-extension TNAddContactsView: UITextViewDelegate {
+extension TNAddContactsView: UITextFieldDelegate {
     
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        placeHolderLabel.isHidden = true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         lineHeightConstraint.constant = 2.0
         lineView.backgroundColor = kGlobalColor
-        clearButton.isHidden = codeTextView.text.isEmpty ? true : false
+        clearButton.isHidden = (inputTextView.text?.isEmpty)! ? true : false
+        if !warningView.isHidden {
+            warningView.isHidden = true
+        }
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            placeHolderLabel.isHidden = false
-        }
+    func textFieldDidEndEditing(_ textField: UITextField) {
         clearButton.isHidden = true
         lineHeightConstraint.constant = 1.0
         lineView.backgroundColor = kLineViewColor
-    }
-    
-    func textViewDidChange(_ textView: UITextView) {
-        if !textView.text.isEmpty {
-            clearButton.isHidden = false
-        }
-        delegate?.textDidChanged()
     }
     
 }

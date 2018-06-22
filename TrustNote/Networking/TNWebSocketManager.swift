@@ -19,11 +19,13 @@ class TNWebSocketManager {
     }
     
     struct ResponseTag {
-        var tempPubkeyTag: String = ""
-        var getHistoryTag: String = ""
-        var getWitnessTag: String = ""
-        var getParentsTag: String = ""
+        var tempPubkeyTag: String  = ""
+        var getHistoryTag: String  = ""
+        var getWitnessTag: String  = ""
+        var getParentsTag: String  = ""
         var getTransferTag: String = ""
+        var otherTempkeyTag: String = ""
+        var deviceMessageTag: String = ""
     }
     
     fileprivate var heartBeat: Timer!
@@ -46,6 +48,7 @@ class TNWebSocketManager {
     public var HandleRequestBlock: ((Any) -> Void)?
     public var GetParentsCompletionBlock: (([String: Any]) -> Void)?
     public var GettransferCompletionBlock: ((String) -> Void)?
+    public var GetOtherTempPubkeyBlock: ((String) -> Void)?
     
     public var generateNewPrivkeyBlock: (() -> Void)?
     
@@ -64,11 +67,11 @@ class TNWebSocketManager {
 extension TNWebSocketManager {
     
     func webSocketOpen(hubAddress: String) {
-    
-        guard hubAddress.count != 0 else {
+        
+        guard !hubAddress.isEmpty else {
             return
         }
-        socket = WebSocket(url: NSURL(string: TNWebSocketURLScheme + "raytest.trustnote.org")! as URL)
+        socket = WebSocket(url: NSURL(string: TNWebSocketURLScheme + hubAddress)! as URL)
         if !socket.isConnected {
             socket.delegate = self
             socket.connect()
@@ -232,6 +235,9 @@ extension TNWebSocketManager {
                             GettransferCompletionBlock!(response as! String)
                         }
                     }
+                case responseTag.otherTempkeyTag:
+                    let dict = response as! [String : Any]
+                    GetOtherTempPubkeyBlock!(dict["temp_pubkey"] as! String)
                 default:
                     break
                 }

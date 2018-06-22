@@ -52,8 +52,8 @@ class TNSetupPasswordController: TNBaseViewController {
         firstWarningLabel.attributedText = firstWarningLabel.getAttributeStringWithString(NSLocalizedString("Password.firstWarning", comment: ""), lineSpace: 5.0)
         lastWarningLabel.attributedText = lastWarningLabel.getAttributeStringWithString(NSLocalizedString("Password.secondWarning", comment: ""), lineSpace: 5.0)
         let fontSize = CGSize(width: kScreenW - 83, height: CGFloat(MAXFLOAT))
-        let firstSize = firstWarningLabel.textSize(text: NSLocalizedString("Password.firstWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
-        let lastSize = lastWarningLabel.textSize(text: NSLocalizedString("Password.secondWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
+        let firstSize = UILabel.textSize(text: NSLocalizedString("Password.firstWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
+        let lastSize = UILabel.textSize(text: NSLocalizedString("Password.secondWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
         frameHeightConstraint.constant = firstSize.height + lastSize.height + 40
         
         inputTextField.delegate = self

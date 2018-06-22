@@ -53,13 +53,11 @@ extension TNMyPairingCodeView {
     
     public func generateQRcode(completionHandle: @escaping () -> Swift.Void) {
         
-        TNEvaluateScriptManager.sharedInstance.generateRandomBytes(num: 9) {[unowned self] (randomBytes) in
-            let config = TNConfigFileManager.sharedInstance.readConfigFile()
-            let hub = config["hub"] as! String
-            let inputMsg = TNGlobalHelper.shared.ecdsaPubkey + "@" + hub + "#" + randomBytes
-            self.pairingCode = inputMsg
+        TNChatHelper.getMyDeviceCode { (deviceCode) in
+            self.pairingCode = deviceCode
+            let inputMsg = TNScanPrefix + deviceCode
             self.codeImageView.image = UIImage.createHDQRImage(input: inputMsg, imgSize: self.codeImageView.size)
-            self.pubkeyLabel.text = inputMsg
+            self.pubkeyLabel.text = deviceCode
             completionHandle()
         }
     }

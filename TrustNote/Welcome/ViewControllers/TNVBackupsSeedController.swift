@@ -65,11 +65,12 @@ class TNVBackupsSeedController: TNBaseViewController {
         layoutAllSubviews()
         seedView.seedContainerView.isCanEdit = false
         seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+        let privkey = TNGlobalHelper.shared.getPrivkey()
         if TNGlobalHelper.shared.my_device_address.isEmpty {
-            generateMyDeviceAddress()
+            generateMyDeviceAddress(privkey)
         }
         if TNGlobalHelper.shared.xPubkey.isEmpty {
-            generateRootPubkey()
+            generateRootPubkey(privkey)
         }
     }
     
@@ -179,11 +180,11 @@ extension TNVBackupsSeedController {
 
 extension TNVBackupsSeedController {
     
-    fileprivate func generateRootPubkey() {
-        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
+    fileprivate func generateRootPubkey(_ xPrivKey: String) {
+        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: xPrivKey)
     }
     
-    fileprivate func generateMyDeviceAddress() {
-        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
+    fileprivate func generateMyDeviceAddress(_ xPrivKey: String) {
+        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: xPrivKey)
     }
 }

@@ -82,4 +82,12 @@ struct TNHubViewModel {
     static func transfer(objectJoint: [String: Any], completion: @escaping (String) -> Void) {
         TNWebSocketManager.getTransferResponse(objectJoint: objectJoint, completion: completion)
     }
+    
+    static func getOtherTempPubkey(pubkey: String, completion: @escaping (String) -> Void) {
+        TNWebSocketManager.getOtherTempPubkey(pubkey: pubkey, completion: completion)
+    }
+    
+    static func sendDeviceMessage(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
+        TNWebSocketManager.sendDeviceMessageSign(objDeviceMessage: objDeviceMessage, completion: completion)
+    }
 }

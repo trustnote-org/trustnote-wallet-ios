@@ -80,7 +80,7 @@ class TNRecoveryWalletController: TNBaseViewController {
         let seedView = TNBackupSeedBackView.backupSeedBackView()
         seedView.seedContainerView.isCanEdit = true
         return seedView
-    }()
+        }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,18 +107,6 @@ class TNRecoveryWalletController: TNBaseViewController {
             self.validationInput(isDelete: true)
         }).disposed(by: disposeBag)
         
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidGeneratedPrivateKeyNotification)).subscribe(onNext: {[unowned self] value in
-            let result: String = value.object as! String
-            guard  result == "0" else {
-                self.finishGeneratePrivateKey()
-                return
-            }
-            self.loadingView.stopAnimation()
-            self.syncLoadingView?.removeFromSuperview()
-            self.warningImageView.isHidden = false
-            self.warningLabel.isHidden = false
-        }).disposed(by: disposeBag)
-        
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishRecoverWalletNotification), object: nil).subscribe(onNext: {[unowned self] _ in
             guard TNGlobalHelper.shared.recoverStyle == .all && self.viewModel.isRecoverWallet else {
                 return
@@ -128,11 +116,11 @@ class TNRecoveryWalletController: TNBaseViewController {
         
         if delegate.isTabBarRootController() {
             let mnemonic = "together knife slab material electric broom wagon heart harvest side copper vote"
-           seedView.seedContainerView.mnmnemonicsArr = mnemonic.components(separatedBy: " ")
+            seedView.seedContainerView.mnmnemonicsArr = mnemonic.components(separatedBy: " ")
         } else {
-           seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+            seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
         }
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -213,16 +201,33 @@ extension TNRecoveryWalletController {
     
     fileprivate func createPrivateKey() {
         
-        TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: seedPhrase)
+        TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: seedPhrase) {[unowned self] (xPrivKey) in
+            if xPrivKey is Int && (xPrivKey as! Int) == 0 {
+                self.loadingView.stopAnimation()
+                self.syncLoadingView?.removeFromSuperview()
+                self.warningImageView.isHidden = false
+                self.warningLabel.isHidden = false
+            } else if xPrivKey is String {
+
+                TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
+                if let passsword = TNGlobalHelper.shared.password {
+                    let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivKey as! String, key: passsword)
+                    TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+                    TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+                }
+                TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: xPrivKey as! String) {
+                    TNHubViewModel.loginHub()
+                }
+                self.finishGeneratePrivateKey()
+            }
+        }
     }
     
     fileprivate func finishGeneratePrivateKey() {
         
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
-        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        if !delegate.isTabBarRootController() {
-            TNGlobalHelper.shared.tempPrivKey = ""
-        }
+        TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.tempPrivKey)
+       
         TNSQLiteManager.sharedManager.deleteAllLocalData()
         viewModel.isRecoverWallet = true
         TNGlobalHelper.shared.recoverStyle = .all
@@ -235,8 +240,10 @@ extension TNRecoveryWalletController {
         viewModel.isRecoverWallet = false
         TNGlobalHelper.shared.recoverStyle = .none
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "hub", value: hub!)
-        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.xPrivKey)
-        
+        TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: TNGlobalHelper.shared.tempPrivKey)
+        if !delegate.isTabBarRootController() {
+            TNGlobalHelper.shared.tempPrivKey = ""
+        }
         if isDeleteMnemonic! {
             TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
         } else {

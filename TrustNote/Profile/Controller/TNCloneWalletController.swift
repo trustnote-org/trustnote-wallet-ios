@@ -43,7 +43,7 @@ class TNCloneWalletController: TNBaseViewController {
         contentLabel.text = "SyncClonedWallets.warning".localized
         contentLabel.textAlignment = .justified
         let fontSize = CGSize(width: kScreenW - 87, height: CGFloat(MAXFLOAT))
-        let textSize = contentLabel.textSize(text: "SyncClonedWallets.warning".localized, font: contentLabel.font, maxSize: fontSize)
+        let textSize = UILabel.textSize(text: "SyncClonedWallets.warning".localized, font: contentLabel.font, maxSize: fontSize)
         containerViewheightConstraint.constant = textSize.height + 20
         topMarginConstraint.constant = kStatusbarH
         if IS_iphone5 {

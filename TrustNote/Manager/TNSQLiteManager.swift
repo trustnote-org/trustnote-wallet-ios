@@ -151,6 +151,24 @@ class TNSQLiteManager: NSObject {
             "has_references TINYINT NOT NULL " +
         ");"
         
+        let correspondent_devices = "CREATE TABLE IF NOT EXISTS correspondent_devices( " +
+            "device_address CHAR(33) NOT NULL PRIMARY KEY, " +
+            "name VARCHAR(100) NOT NULL, " +
+            "pubkey CHAR(44) NOT NULL, " +
+            "hub VARCHAR(100) NOT NULL, " +
+            "is_confirmed TINYINT NOT NULL DEFAULT 0, " +
+            "is_indirect TINYINT NOT NULL DEFAULT 0, " +
+            "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP " +
+            ");"
+        
+        let outbox = "CREATE TABLE IF NOT EXISTS outbox( " +
+            "message_hash CHAR(44) NOT NULL PRIMARY KEY, " +
+            "`to` CHAR(33) NOT NULL, " +
+            "message TEXT NOT NULL, " +
+            "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+            "last_error TEXT NULL " +
+            ");"
+        
         dbQueue.inDatabase { (db) -> Void in
             
             if db.executeUpdate(input, withArgumentsIn: []) {
@@ -166,6 +184,8 @@ class TNSQLiteManager: NSObject {
             db.executeUpdate(unit, withArgumentsIn: [])
             db.executeUpdate(author, withArgumentsIn: [])
             db.executeUpdate(definitions, withArgumentsIn: [])
+            db.executeUpdate(correspondent_devices, withArgumentsIn: [])
+            db.executeUpdate(outbox, withArgumentsIn: [])
         }
     }
     

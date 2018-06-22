@@ -25,20 +25,6 @@ final class TNGlobalHelper {
     var isNeedGenerateSeed: Bool = false
     var encryptePrivKey = ""
     var tempPrivKey = ""
-    var xPrivKey: String {
-        set{}
-        get {
-            if let psw_key = password {
-                let decryptPrivKey: String = AES128CBC_Unit.aes128Decrypt(encryptePrivKey, key: psw_key)
-                if decryptPrivKey.contains("\0") {
-                    let result = decryptPrivKey.replacingOccurrences(of: "\0", with: "")
-                    return result
-                }
-                return decryptPrivKey
-            }
-            return tempPrivKey
-        }
-    }          // root privatekey
     var xPubkey: String = ""             // root publickey
     var tempDeviceKey: String = ""       // temp privateKey
     var tempPublicKey:String  = ""       // temp publicKey
@@ -111,6 +97,20 @@ final class TNGlobalHelper {
                 })
             }
         }
+    }
+    
+    func getPrivkey() -> String {
+        if let psw_key = password {
+            guard !encryptePrivKey.isEmpty else {
+                return tempPrivKey
+            }
+            let decryptPrivKey: String = AES128CBC_Unit.aes128Decrypt(encryptePrivKey, key: psw_key)
+            if decryptPrivKey.contains("\0") {
+                let result = decryptPrivKey.replacingOccurrences(of: "\0", with: "")
+                return result
+            }
+        }
+        return tempPrivKey
     }
 }
 

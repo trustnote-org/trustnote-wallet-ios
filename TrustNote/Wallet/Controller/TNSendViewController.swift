@@ -108,18 +108,10 @@ extension TNSendViewController {
     
     fileprivate func verifyWalletPassword() {
         passwordAlertView = TNPasswordAlertView.loadViewFromNib()
-        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .pop)
+        passwordAlertView?.delegate = self
+        verifyPasswordView = createPopView(passwordAlertView!, height: kVerifyPasswordAlertHeight, animatedType: .pop)
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNSendViewController.handleTapGesture))
         verifyPasswordView?.addGestureRecognizer(tap)
-        passwordAlertView!.verifyCorrectBlock = {[unowned self] in
-            self.startToSend()
-            self.verifyPasswordView?.removeFromSuperview()
-            let view = UIApplication.shared.delegate?.window as? UIView
-            self.hud = MBProgress_TNExtension.showHUDAddedToView(view: view!, title: "加载中...", animated: true)
-        }
-        passwordAlertView!.didClickedCancelBlock = {[unowned self] in
-            self.verifyPasswordView?.removeFromSuperview()
-        }
     }
     
     fileprivate func startToSend() {
@@ -189,6 +181,20 @@ extension TNSendViewController: TNWalletSendCellProtocol {
             }
         }
         navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension TNSendViewController: TNPasswordAlertViewDelegate {
+    
+    func passwordVerifyCorrect(_ password: String) {
+        startToSend()
+        verifyPasswordView?.removeFromSuperview()
+        let view = UIApplication.shared.delegate?.window as? UIView
+        hud = MBProgress_TNExtension.showHUDAddedToView(view: view!, title: "加载中...", animated: true)
+    }
+    
+    func didClickedCancelButton() {
+        verifyPasswordView?.removeFromSuperview()
     }
 }
 

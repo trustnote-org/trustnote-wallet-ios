@@ -129,8 +129,7 @@ extension TNTransactiondDetailController {
             default:
                 break
             }
-            let label = UILabel()
-            let textSize = label.textSize(text: content, font: UIFont.systemFont(ofSize: 12), maxSize: CGSize(width: kScreenW - 107, height: CGFloat(MAXFLOAT)))
+            let textSize = UILabel.textSize(text: content, font: UIFont.systemFont(ofSize: 12), maxSize: CGSize(width: kScreenW - 107, height: CGFloat(MAXFLOAT)))
             contentArr.append(content)
             rowHeightArr.append(textSize.height)
         }

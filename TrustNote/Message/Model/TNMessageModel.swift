@@ -8,9 +8,10 @@
 
 import Foundation
 
-enum TNMessageType {
-    case paire
-    case text
+enum TNMessageType: String {
+    case pairing = "pairing"
+    case text    = "text"
+    case remove  = "removed_paired_device"
 }
 
 enum TNMessageSenderType {
@@ -29,4 +30,12 @@ struct TNChatMessageModel {
     var messeageType: TNMessageType  = .text
     // 消息发送者
     var senderType: TNMessageSenderType = .oneself
+}
+
+struct TNCorrespondentDevice {
+    var deviceAddress = ""
+    var name = ""
+    var pubkey = ""
+    var hub = ""
+    var is_confirmed = false
 }

@@ -88,6 +88,10 @@ struct TNHubViewModel {
     }
     
     static func sendDeviceMessage(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
-        TNWebSocketManager.sendDeviceMessageSign(objDeviceMessage: objDeviceMessage, completion: completion)
+        TNWebSocketManager.sendDeliver(objDeviceMessage: objDeviceMessage, completion: completion)
+    }
+    
+    static func deleteHubCache(messageHash: String) {
+        TNWebSocketManager.sendDeleteRequest(messageHash: messageHash)
     }
 }

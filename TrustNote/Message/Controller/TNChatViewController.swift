@@ -18,6 +18,10 @@ class TNChatViewController: TNNavigationController {
     
     var bottomInputView: TNChatInputView?
     
+    var deviceAddress: String!
+    
+    var correspondentDevice: TNCorrespondentDevice!
+    
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
@@ -37,13 +41,21 @@ class TNChatViewController: TNNavigationController {
         $0.tableFooterView = UIView()
     }
     
+    init(device: String) {
+        super.init()
+        self.deviceAddress = device
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackButton()
         _ = navigationBar.setRightButtonImage(imageName: "message_menu", target: self, action: #selector(self.popChatMenu))
         setupUI()
         setupContainerView()
-        addMesages()
         tableView.delegate = self
         tableView.dataSource = self
         if #available(iOS 11.0, *) {
@@ -51,43 +63,23 @@ class TNChatViewController: TNNavigationController {
         } else {
             automaticallyAdjustsScrollViewInsets = false
         }
+        getMessageList()
+        NotificationCenter.default.addObserver(self, selector: #selector(self.recieveNewMessage), name: NSNotification.Name(rawValue: TNDidRecievedMessageNotification), object: nil)
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        var  navigationArray = navigationController?.viewControllers
+        if navigationArray?.count == 3 {
+            for (index, vc) in navigationArray!.enumerated() {
+                if vc.isKind(of: TNAddContactsController.self) {
+                    navigationArray?.remove(at: index)
+                }
+            }
+            navigationController?.viewControllers = navigationArray!
+        }
          //autoRollToLastRow()
-    }
-    
-    func addMesages() {
-        var messageModel = TNChatMessageModel()
-        messageModel.isShowTime = true
-        messageModel.messageText = "你已添加了李雷，现在可以开始聊天"
-        messageModel.messageTime = "昨天 14:35"
-        messageModel.messeageType = .paire
-        messageModel.senderType = .oneself
-        messages.append(messageModel)
-        
-        messageModel.isShowTime = true
-        messageModel.messageText = "中央军委主席习近平日前签署命令，追授海军某舰载航空兵部队一级飞行员张超“逐梦海天的强军先锋”荣誉称号"
-        messageModel.messageTime = "18:35"
-        messageModel.messeageType = .text
-        messageModel.senderType = .contact
-        messages.append(messageModel)
-        
-        
-        messageModel.isShowTime = false
-        messageModel.messageText = "张超在驾驶歼-15进行陆基模拟着舰训练时，飞机突发电传故障，不幸壮烈牺牲。中央军委号召，全军和武警部队广大官兵要以张超同志为榜样，高举中国特色社会主义伟大旗帜，坚持以邓小平理论"
-        messageModel.messageTime = "18:35"
-        messageModel.messeageType = .text
-        messageModel.senderType = .oneself
-        messages.append(messageModel)
-        
-        messageModel.isShowTime = true
-        messageModel.messageText = "这两个标题不一样么这两个标题不一样么？"
-        messageModel.messageTime = "19:30"
-        messageModel.messeageType = .text
-        messageModel.senderType = .contact
-        messages.append(messageModel)
     }
 }
 
@@ -112,6 +104,19 @@ extension TNChatViewController {
     fileprivate func autoRollToLastRow() {
         
         tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .top, animated: false)
+    }
+    
+    fileprivate func getMessageList() {
+        
+        TNSQLiteManager.sharedManager.queryContact(deviceAddress: deviceAddress) {[unowned self] (correspondent) in
+            self.correspondentDevice = correspondent
+            self.textLabel.text = correspondent.name
+        }
+        
+        TNSQLiteManager.sharedManager.queryChatMessages(deviceAddress: deviceAddress) {[unowned self] (messageModels) in
+            self.messages =  messageModels
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -156,6 +161,24 @@ extension TNChatViewController: TNChatInputVieDelegate {
             self.titleView.layer.shadowOpacity = 0
         }
     }
+    
+    func sendMessage(text: String) {
+        
+        var messageModel = TNChatMessageModel()
+        messageModel.messageText = text
+        messageModel.messageTime = NSDate.getCurrentFormatterTime()
+        messageModel.messeageType = .text
+        messageModel.senderType = .oneself
+        messages.append(messageModel)
+        
+        updateTableView()
+        
+        DispatchQueue.global().async {
+            TNChatManager.sendTextMessage(pubkey: self.correspondentDevice.pubkey, hub: self.correspondentDevice.hub, text: text)
+        }
+        let createDate = NSDate.getCurrentFormatterTime()
+        TNSQLiteManager.sharedManager.updateChatMessagesTable(address: deviceAddress, message: text, date: createDate, isIncoming: 0, type: TNMessageType.text.rawValue)
+    }
 }
 
 extension TNChatViewController {
@@ -170,9 +193,38 @@ extension TNChatViewController {
         let popView = TNPopView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), imageNameArr: imageNameArr, titleArr: titleArr)
         popView.delegate = self
     }
+    
+    @objc fileprivate func recieveNewMessage(notify: Notification) {
+        let object = notify.object as! [String: Any]
+        let decryptedObj = object["decryptedObj"] as! [String: Any]
+        guard decryptedObj["subject"] as! String == TNMessageType.text.rawValue else {
+            return 
+        }
+        guard decryptedObj["from"] as? String == deviceAddress else {
+            return
+        }
+        var messageModel = TNChatMessageModel()
+        messageModel.messageText = decryptedObj["body"] as! String
+        messageModel.messageTime = object["createDate"] as? String
+        messageModel.messeageType = .text
+        messageModel.senderType = .contact
+        messages.append(messageModel)
+        DispatchQueue.main.async {
+            self.updateTableView()
+        }
+        
+    }
 }
 
+/// MARK: Custom methods
 extension TNChatViewController {
+    
+    fileprivate func updateTableView() {
+        tableView.beginUpdates()
+        let indexPath = IndexPath(row: messages.count - 1, section: 0)
+        tableView.insertRows(at: [indexPath], with: .none)
+        tableView.endUpdates()
+    }
     
     fileprivate func setupUI() {
         view.insertSubview(titleView, belowSubview: navigationBar)

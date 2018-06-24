@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class TNHistoryRecordsViewModel: JSONStringFromDictionaryProtocol {
+final class TNHistoryRecordsViewModel: TNJSONSerializationProtocol {
     
     public var historyTransactionModel = TNHistoryTransactionModel()
     

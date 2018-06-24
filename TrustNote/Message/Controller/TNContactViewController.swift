@@ -63,7 +63,7 @@ extension TNContactViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        navigationController?.pushViewController(TNChatViewController(), animated: true)
+        navigationController?.pushViewController(TNChatViewController(device: ""), animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

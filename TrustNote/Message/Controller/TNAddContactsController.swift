@@ -60,9 +60,25 @@ extension TNAddContactsController {
     }
     
     func sendRequest(paireCode: String) {
-        let addHelper = TNChatHelper()
+        
+        let hub = MBProgress_TNExtension.showHUDAddedToView(view: view, title: "", animated: true)
+        let addHelper = TNPairingHelper()
         addHelper.paireCode = paireCode
-        addHelper.addContactOperation()
+        
+        addHelper.didBecomeFriendBlock = {
+            DispatchQueue.main.async {
+                MBProgress_TNExtension.showViewAfterSecond(title: "对方已经在你的联系人列表中")
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        
+        addHelper.addContactOperation {[unowned self] (deviceAddress) in
+            DispatchQueue.main.async {
+                let vc = TNChatViewController(device: deviceAddress)
+                self.navigationController?.pushViewController(vc, animated: true)
+                hub.removeFromSuperview()
+            }
+        }
     }
     
     func verifyDeviceCode(str: String) -> Bool {

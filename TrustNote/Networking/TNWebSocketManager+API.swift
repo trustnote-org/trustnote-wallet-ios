@@ -18,11 +18,12 @@ enum RequestCommand: String {
     case postJoint
     case otherTempPubkey
     case deviceMessageSign
+    case deleteHubCache
 }
 
-protocol JSONStringFromDictionaryProtocol {}
+protocol TNJSONSerializationProtocol {}
 
-extension JSONStringFromDictionaryProtocol {
+extension TNJSONSerializationProtocol {
     
     static func getJSONStringFrom(jsonObject: Any) -> String {
         if (!JSONSerialization.isValidJSONObject(jsonObject)) {
@@ -33,9 +34,16 @@ extension JSONStringFromDictionaryProtocol {
         let JSONString = NSString(data:data as Data,encoding: String.Encoding.utf8.rawValue)
         return JSONString! as String
     }
+    
+    static func getDictionaryFromJsonString(json: String) -> [String: Any] {
+    
+        let jsonData: Data = json.data(using: .utf8)!
+        let jsonObject = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! [String: Any]
+        return jsonObject!
+    }
 }
 
-extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
+extension TNWebSocketManager: TNJSONSerializationProtocol {
     /**
      *  Method send version to hub
      *  @param
@@ -83,7 +91,7 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
      */
     static func sendTemporaryPublicKeyToHub(_ temp_pubkey: String, pubkey: String, completion: @escaping (Any) -> Void) {
         
-        TNWebSocketManager.sharedInstance.SendTempPubkeyCompletionBlock = completion
+        TNWebSocketManager.sharedInstance.SendTempPubkeyBlock = completion
         let unit: NSDictionary = ["temp_pubkey":temp_pubkey, "pubkey":pubkey]
         let unitString = TNWebSocketManager.getJSONStringFrom(jsonObject: unit)
         
@@ -165,8 +173,17 @@ extension TNWebSocketManager: JSONStringFromDictionaryProtocol {
      *  @param objDeviceMessage
      *  @param
      */
-    static func sendDeviceMessageSign(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
+    static func sendDeliver(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
+        TNWebSocketManager.sharedInstance.SendDeviceMessageBlock = completion
         TNWebSocketManager.sendRequest(api: "hub/deliver", params: ["": objDeviceMessage], command: .deviceMessageSign)
+    }
+    
+    static func sendDeleteRequest(messageHash: String) {
+        let sendBody: [String : Any] = ["subject":"hub/delete", "body":messageHash]
+        
+        let request: [Any] = ["justsaying", sendBody]
+        TNWebSocketManager.sharedInstance.sendData("\(JSON(request))")
+       // TNWebSocketManager.sendRequest(api: "hub/delete", params: ["": messageHash], command: .deleteHubCache)
     }
 }
 
@@ -199,6 +216,8 @@ extension TNWebSocketManager {
                 TNWebSocketManager.sharedInstance.responseTag.otherTempkeyTag = objectHash
             case .deviceMessageSign:
                 TNWebSocketManager.sharedInstance.responseTag.deviceMessageTag = objectHash
+            case .deleteHubCache:
+                TNWebSocketManager.sharedInstance.responseTag.deleteHubCacheTag = objectHash
             }
             var requestBody: [String : Any] = ["command": api, "tag": objectHash]
             if !params.isEmpty {

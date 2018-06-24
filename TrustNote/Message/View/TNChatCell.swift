@@ -51,7 +51,7 @@ class TNChatCell: UITableViewCell {
             addChatTime(messageModel: messageModel)
         }
         
-        if messageModel.messeageType == .paire {
+        if messageModel.messeageType == .pairing {
             addContactSuccessMessageType(messageModel: messageModel)
         } else {
             addChatBubble(messageModel: messageModel, topPadding: topPadding)
@@ -140,10 +140,10 @@ extension TNChatCell {
         if messageModel.isShowTime {
             topPadding += 32
         }
-        let maxWidth = messageModel.messeageType == .paire ? (kScreenW - CGFloat(2 * kLeftMargin)) : (kScreenW - BubbleLongPadding - BubbleShortPadding - 2 * horizontalMargin)
+        let maxWidth = messageModel.messeageType == .pairing ? (kScreenW - CGFloat(2 * kLeftMargin)) : (kScreenW - BubbleLongPadding - BubbleShortPadding - 2 * horizontalMargin)
         let textSize = UILabel.textSize(text: messageModel.messageText, font: UIFont.systemFont(ofSize: 16), maxSize: CGSize(width: maxWidth, height: CGFloat(MAXFLOAT)))
         
-        if messageModel.messeageType == .paire {
+        if messageModel.messeageType == .pairing {
             return CGFloat(topPadding) + textSize.height + CGFloat(kTitleTopMargin)
         }
         return CGFloat(topPadding) + textSize.height + CGFloat(kTitleTopMargin) + 2 * verticalMargin

@@ -53,7 +53,7 @@ extension TNMyPairingCodeView {
     
     public func generateQRcode(completionHandle: @escaping () -> Swift.Void) {
         
-        TNChatHelper.getMyDeviceCode { (deviceCode) in
+        TNPairingHelper.getMyDeviceCode { (deviceCode) in
             self.pairingCode = deviceCode
             let inputMsg = TNScanPrefix + deviceCode
             self.codeImageView.image = UIImage.createHDQRImage(input: inputMsg, imgSize: self.codeImageView.size)

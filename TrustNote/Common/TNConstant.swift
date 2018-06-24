@@ -72,6 +72,7 @@ let TNModifyWalletNameNotification             = "TNModifyWalletNameNotification
 let TNDidFinishDeleteWalletNotification        = "TNDidFinishDeleteWalletNotification"
 let TNDidFinishSyncClonedWalletNotify          = "TNDidFinishSyncClonedWalletNotify"
 let TNTransferSendSuccessNotify                = "TNTransferSendSuccessNotify"
+let TNDidRecievedMessageNotification           = "TNDidRecievedMessageNotification"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

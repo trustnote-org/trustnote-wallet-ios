@@ -11,8 +11,12 @@ import RxSwift
 import RxCocoa
 
 protocol TNChatInputVieDelegate: NSObjectProtocol {
+    
     func chatKeyboardWillShow(keyBoardHeight: CGFloat, duration: TimeInterval)
+    
     func chatKeyboardWillHide(duration: TimeInterval)
+    
+    func sendMessage(text: String)
 }
 
 class TNChatInputView: UIView {
@@ -78,6 +82,7 @@ extension TNChatInputView {
         inputTextView.enablesReturnKeyAutomatically = true
         inputTextView.setupRadiusCorner(radius: 2 * kCornerRadius)
         inputTextView.returnKeyType = .send
+        inputTextView.delegate = self
     }
     
     fileprivate func registerForKeyboardNotifications() {
@@ -120,6 +125,18 @@ extension TNChatInputView {
         let durationValue = notify.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.floatValue
         delegate?.chatKeyboardWillHide(duration: TimeInterval(duration))
+    }
+}
+
+extension TNChatInputView: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            delegate?.sendMessage(text: textView.text)
+            textView.text = nil
+            return false
+        }
+        return true
     }
 }
 

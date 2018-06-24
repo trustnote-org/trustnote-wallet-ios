@@ -13,27 +13,27 @@ import HandyJSON
 
 class TNWebSocketManager {
     
+    typealias HandleRequestMessageBlock = (Any) -> Void
     
     struct HubConnectedStatus {
         var isLogin: Bool?
     }
     
     struct ResponseTag {
-        var tempPubkeyTag: String  = ""
-        var getHistoryTag: String  = ""
-        var getWitnessTag: String  = ""
-        var getParentsTag: String  = ""
-        var getTransferTag: String = ""
-        var otherTempkeyTag: String = ""
-        var deviceMessageTag: String = ""
+        var tempPubkeyTag: String    = ""
+        var getHistoryTag: String    = ""
+        var getWitnessTag: String    = ""
+        var getParentsTag: String    = ""
+        var getTransferTag: String   = ""
+        var otherTempkeyTag: String   = ""
+        var deviceMessageTag: String  = ""
+        var deleteHubCacheTag: String = ""
     }
     
     fileprivate var heartBeat: Timer!
-    public var socket: WebSocket!
-    fileprivate var disConnectCount = 0
-    
     fileprivate let rootHubs: [String] = ["shawtest.trustnote.org", "raytest.trustnote.org"]
     
+    public var socket: WebSocket!
     public var challenge: String?
     public var tag: String?
     public var isConnected: Bool = false
@@ -41,17 +41,18 @@ class TNWebSocketManager {
     public var responseTag = ResponseTag()
     public var tempPubkeyTimeConsume = 0
     
-    public var HandleJustsayingBlock: ((Any) -> Void)?
-    public var GetHistoryCompletionBlock: ((Any) -> Void)?
-    public var SendTempPubkeyCompletionBlock: ((Any) -> Void)?
-    public var GetWitnessCompletionBlock: ((Any) -> Void)?
-    public var HandleRequestBlock: ((Any) -> Void)?
-    public var GetParentsCompletionBlock: (([String: Any]) -> Void)?
+    
+    public var GetHistoryCompletionBlock:  HandleRequestMessageBlock?
+    public var SendTempPubkeyBlock:        HandleRequestMessageBlock?
+    public var GetWitnessCompletionBlock:  HandleRequestMessageBlock?
+    public var GetParentsCompletionBlock:  (([String: Any]) -> Void)?
     public var GettransferCompletionBlock: ((String) -> Void)?
-    public var GetOtherTempPubkeyBlock: ((String) -> Void)?
+    public var GetOtherTempPubkeyBlock:    ((String) -> Void)?
+    public var SendDeviceMessageBlock:     ((String) -> Void)?
+    
+    public var HandleHubMessageBlock:  (([String: Any]) -> Void)?
     
     public var generateNewPrivkeyBlock: (() -> Void)?
-    
     public var socketDidConnectedBlock: (() -> Void)?
     
     class var sharedInstance: TNWebSocketManager {
@@ -100,7 +101,6 @@ extension TNWebSocketManager {
         
         heartBeat = Timer.scheduledTimer(timeInterval: 20, target: self, selector:#selector(self.sendHeartBeatRequest), userInfo: nil, repeats: true)
     }
-    
 }
 
 extension TNWebSocketManager: WebSocketDelegate {
@@ -120,18 +120,7 @@ extension TNWebSocketManager: WebSocketDelegate {
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
         
         isConnected = false
-        disConnectCount += 1
         socket.connect()
-        //        if (disConnectCount == 4) {
-        //            let hub = TNHubViewModel().hubAddress
-        //            for tempHub in rootHubs {
-        //                if tempHub == hub {continue}
-        //                webSocketOpen(hubAddress: tempHub)
-        //                break
-        //            }
-        //        } else {
-        //           socket.connect()
-        //        }
         TNDebugLogManager.debugLog(item: "websocket is disconnected: \(String(describing: error?.localizedDescription))")
     }
     
@@ -179,10 +168,9 @@ extension TNWebSocketManager {
         TNDebugLogManager.debugLog(item:  "send---->\(params)")
     }
     
-    fileprivate func getDictionaryFromJSONString(jsonString: String) -> [Any] {
-        
+    func getDictionaryFromJSONString(jsonString: String) -> [Any] {
+
         let jsonData: Data = jsonString.data(using: .utf8)!
-        
         let dataArr = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! Array<Any>
         if dataArr != nil {
             return dataArr!
@@ -210,6 +198,8 @@ extension TNWebSocketManager {
             if !TNGlobalHelper.shared.tempPublicKey.isEmpty {
                 TNHubViewModel.sendTempPubkeyToHub()
             }
+        case "hub/message":
+            HandleHubMessageBlock!(handleData["body"] as! [String : Any])
         default:
             break
         }
@@ -222,7 +212,7 @@ extension TNWebSocketManager {
             if let response = handleData["response"] {
                 switch tag {
                 case responseTag.tempPubkeyTag:
-                    SendTempPubkeyCompletionBlock!(response)
+                    SendTempPubkeyBlock!(response)
                 case responseTag.getHistoryTag:
                     GetHistoryCompletionBlock!(response)
                 case responseTag.getWitnessTag:
@@ -231,13 +221,15 @@ extension TNWebSocketManager {
                     GetParentsCompletionBlock!(response as! [String : Any])
                 case responseTag.getTransferTag:
                     if response is String {
-                        if response as! String == "accepted" {
-                            GettransferCompletionBlock!(response as! String)
-                        }
+                        GettransferCompletionBlock!(response as! String)
                     }
                 case responseTag.otherTempkeyTag:
                     let dict = response as! [String : Any]
                     GetOtherTempPubkeyBlock!(dict["temp_pubkey"] as! String)
+                case responseTag.deviceMessageTag:
+                    if response is String {
+                        SendDeviceMessageBlock!(response as! String)
+                    }
                 default:
                     break
                 }

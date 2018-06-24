@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-class TNTransferViewModel: NSObject, JSONStringFromDictionaryProtocol {
+class TNTransferViewModel: NSObject, TNJSONSerializationProtocol {
     
     var sendFailureBlock: (() -> Void)?
     

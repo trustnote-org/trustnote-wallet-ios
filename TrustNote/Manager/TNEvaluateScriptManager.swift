@@ -444,11 +444,38 @@ extension TNEvaluateScriptManager {
         }
     }
     
+    /**
+     * 加密消息
+     * @method createEncryptedPackage
+     * @for Base
+     * @param {string}  待加密json字符串
+     * @param {string}  公钥
+     * @return {string} 密文
+     */
     public func getEncryptedPackage(json: String, pubkey: String, completionHandler: ((String) -> Swift.Void)?) {
         let js = String(format:"window.Client.createEncryptedPackage('%@', '%@')", arguments:[json, pubkey])
         webView.evaluateJavaScript(js) {(any, _) in
             if let encryptedPackage = any {
                 completionHandler!(encryptedPackage as! String)
+            }
+        }
+    }
+    
+    /**
+     * 解密消息
+     * @method decryptPackage
+     * @for Base
+     * @param {string}  待解密字符串
+     * @param {string}  临时私钥
+     * @param {string}  上一个临时私钥
+     * @param {string}  m/1私钥
+     * @return {string} 明文字符串
+     */
+    public func decryptPackage(json: String, privkey: String, prePrivKey: String, m1PrivKey: String, completionHandler: ((String) -> Swift.Void)?) {
+        let js = String(format:"window.Client.decryptPackage('%@', '%@', '%@', '%@')", arguments:[json, privkey, prePrivKey, m1PrivKey])
+        webView.evaluateJavaScript(js) {(any, _) in
+            if let decryptPackage = any {
+                completionHandler!(decryptPackage as! String)
             }
         }
     }

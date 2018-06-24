@@ -169,6 +169,16 @@ class TNSQLiteManager: NSObject {
             "last_error TEXT NULL " +
             ");"
         
+        let chat_messages = "CREATE TABLE IF NOT EXISTS chat_messages( " +
+            "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "correspondent_address CHAR(33) NOT NULL, " +
+            "message LONGTEXT NOT NULL, " +
+            "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
+            "is_incoming INTEGER(1) NOT NULL, " +
+            "type CHAR(15) NOT NULL DEFAULT 'text', " +
+            "FOREIGN KEY (correspondent_address) REFERENCES correspondent_devices(device_address) ON DELETE CASCADE " +
+            ");"
+        
         dbQueue.inDatabase { (db) -> Void in
             
             if db.executeUpdate(input, withArgumentsIn: []) {
@@ -186,6 +196,7 @@ class TNSQLiteManager: NSObject {
             db.executeUpdate(definitions, withArgumentsIn: [])
             db.executeUpdate(correspondent_devices, withArgumentsIn: [])
             db.executeUpdate(outbox, withArgumentsIn: [])
+            db.executeUpdate(chat_messages, withArgumentsIn: [])
         }
     }
     
@@ -230,6 +241,11 @@ extension TNSQLiteManager {
                 TNDebugLogManager.debugLog(item: "failed")
             }
         }
+    }
+    
+    public func updateChatMessagesTable(address: String, message: String, date: String, isIncoming: Int, type: String) {
+        let sql = "INSERT INTO chat_messages (correspondent_address, message, creation_date, is_incoming, type) VALUES(?,?,?,?,?)"
+        updateData(sql: sql, values: [address, message, date, isIncoming, type])
     }
     
     public func queryDataFromWitnesses(sql: String, completionHandle: (([Any]) -> Swift.Void)?) {
@@ -506,4 +522,51 @@ extension TNSQLiteManager {
         }
         completionHandle!(count)
     }
+    
+    public func queryContact(deviceAddress: String, completionHandle: (TNCorrespondentDevice) -> Swift.Void) {
+        var correspondent = TNCorrespondentDevice()
+        let sql = "SELECT * FROM correspondent_devices WHERE device_address = ?"
+        dbQueue.inDatabase { (database) in
+            do {
+                
+                let set = try database.executeQuery(sql, values: [deviceAddress])
+                while set.next() {
+                    correspondent.deviceAddress = set.string(forColumn: "device_address")!
+                    correspondent.hub = set.string(forColumn: "hub")!
+                    correspondent.is_confirmed = set.bool(forColumn: "is_confirmed")
+                    correspondent.name = set.string(forColumn: "name")!
+                    correspondent.pubkey = set.string(forColumn: "pubkey")!
+                }
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        completionHandle(correspondent)
+    }
+    
+     public func queryChatMessages(deviceAddress: String, completionHandle: ([TNChatMessageModel]) -> Swift.Void) {
+        var messages: [TNChatMessageModel] = []
+        let sql = "SELECT * FROM chat_messages WHERE correspondent_address = ?"
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: [deviceAddress])
+                while set.next() {
+                    var messageModel = TNChatMessageModel()
+                    messageModel.messageTime = set.string(forColumn: "creation_date")!
+                    messageModel.messageText = set.string(forColumn: "message")!
+                    let is_incoming = set.bool(forColumn: "is_incoming")
+                    messageModel.senderType = is_incoming ? .contact : .oneself
+                    let type = set.string(forColumn: "type")!
+                    messageModel.messeageType = type == "text" ? .text : .pairing
+                    messages.append(messageModel)
+                }
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        completionHandle(messages)
+    }
+ 
 }

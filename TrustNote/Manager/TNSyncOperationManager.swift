@@ -8,9 +8,11 @@
 
 import Foundation
 
-class TNSyncOperationManager: JSONStringFromDictionaryProtocol {
+class TNSyncOperationManager: TNJSONSerializationProtocol {
     
     static let shared = TNSyncOperationManager()
+    var contactHub = ""
+    var myHub = ""
 }
 
 /// MARK: Networking
@@ -41,9 +43,16 @@ extension TNSyncOperationManager {
     func getOherTempPubkeyFromHub(pubkey: String) -> String {
         var response = ""
         let sema = DispatchSemaphore(value: 0)
-        TNHubViewModel.getOtherTempPubkey(pubkey: pubkey) { (result) in
-            response = result
-            sema.signal()
+        if myHub == contactHub {
+            TNHubViewModel.getOtherTempPubkey(pubkey: pubkey) { (result) in
+                response = result
+                sema.signal()
+            }
+        } else {
+            TNMessageWebSocket.getOtherTempPubkey(pubkey: pubkey) { (result) in
+                response = result
+                sema.signal()
+            }
         }
         _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return response
@@ -52,7 +61,28 @@ extension TNSyncOperationManager {
     func sendDeviceMessageSignature(objDeviceMessage: [String: Any]) -> String {
         var response = ""
         let sema = DispatchSemaphore(value: 0)
-        TNHubViewModel.sendDeviceMessage(objDeviceMessage: objDeviceMessage) { (result) in
+        if myHub == contactHub {
+            TNHubViewModel.sendDeviceMessage(objDeviceMessage: objDeviceMessage) { (result) in
+                response = result
+                sema.signal()
+            }
+        } else {
+            TNMessageWebSocket.sendDeliver(objDeviceMessage: objDeviceMessage) { (result) in
+                response = result
+                sema.signal()
+            }
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+        return response
+    }
+    
+    func openSocket() -> String {
+        guard myHub != contactHub else {
+            return "connected"
+        }
+        var response = ""
+        let sema = DispatchSemaphore(value: 0)
+        TNMessageWebSocket.shared.webSocketOpen(hub: contactHub) { (result) in
             response = result
             sema.signal()
         }
@@ -122,6 +152,17 @@ extension TNSyncOperationManager {
         }
          _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return isUsed
+    }
+    
+    func queryCount(sql: String) -> Int {
+        var count = 0
+        let sema = DispatchSemaphore(value: 0)
+        TNSQLiteManager.sharedManager.queryCount(sql: sql) { (result) in
+            count = result
+            sema.signal()
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+        return count
     }
 }
 
@@ -302,5 +343,18 @@ extension TNSyncOperationManager {
         }
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         return sign
+    }
+    
+    func getDecryptedPackage(json: String, privkey: String, prePrivKey: String, m1PrivKey: String) -> String {
+        var package = ""
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            TNEvaluateScriptManager.sharedInstance.decryptPackage(json: json, privkey: privkey, prePrivKey: prePrivKey, m1PrivKey: m1PrivKey, completionHandler: { (result) in
+                package = result
+                sema.signal()
+            })
+        }
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
+        return package
     }
 }

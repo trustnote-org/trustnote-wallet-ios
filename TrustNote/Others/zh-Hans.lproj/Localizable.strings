@@ -210,6 +210,7 @@
 "Set Alias" = "设置备注名";
 "Delete Contact" = "删除联系人";
 "Clear Chat History" = "清空聊天记录";
+"add contact success" = "你已添加对方为好友，现在可以开始聊天";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

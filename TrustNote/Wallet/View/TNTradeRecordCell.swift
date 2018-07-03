@@ -20,11 +20,8 @@ class TNTradeRecordCell: UITableViewCell, RegisterCellFromNib {
         didSet {
             if let model = model {
                 transactionType = model.action
-                let formatterTime = NSDate.getFormatterTime(timeStamp: String(model.time), formatter: "yyyy-MM-dd HH:mm:ss")
-                let timeArr = formatterTime.components(separatedBy: " ")
-                let frontPart = timeArr.first?.substring(fromIndex: 5)
-                let backPart = timeArr.last?.substring(toIndex: 5)
-                dateLabel.text = frontPart! + "  " + backPart!
+                let formatterTime = NSDate.getFormatterTime(timeStamp: String(model.time), formatter: "MM-dd HH:mm")
+                dateLabel.text = formatterTime
             }
         }
     }
@@ -33,22 +30,28 @@ class TNTradeRecordCell: UITableViewCell, RegisterCellFromNib {
         didSet {
             if let transactionType = transactionType {
                 var showAddress = ""
+                var imgName = ""
                 switch transactionType {
                 case .invalid:
-                    break
+                    amountLabel.textColor = kTitleTextColor
+                    decimalLabel.textColor = kTitleTextColor
+                    imgName = "send_invalid"
                 case .move:
-                    showAddress = (model?.addressTo!)!
-                    amountLabel.textColor = UIColor.hexColor(rgbValue: 0xE33B1B)
-                    decimalLabel.textColor = UIColor.hexColor(rgbValue: 0xE33B1B)
+                    showAddress = model!.addressTo!
+                    amountLabel.textColor = kTitleTextColor
+                    decimalLabel.textColor = kTitleTextColor
                 case .received:
-                    showAddress = (model?.arrPayerAddresses.first)!
+                    showAddress = model!.arrPayerAddresses.first!
                     amountLabel.textColor = kGlobalColor
                     decimalLabel.textColor = kGlobalColor
+                    imgName = model!.confirmations ? "recieve_confirmed" : "recieve_unconfirmed"
                 case .sent:
-                    showAddress = (model?.addressTo!)!
-                    amountLabel.textColor = UIColor.hexColor(rgbValue: 0xE33B1B)
-                    decimalLabel.textColor = UIColor.hexColor(rgbValue: 0xE33B1B)
+                    showAddress = model!.addressTo!
+                    amountLabel.textColor = kTitleTextColor
+                    decimalLabel.textColor = kTitleTextColor
+                    imgName = model!.confirmations ? "send_confirmed" : "send_unconfirmed"
                 }
+                iconView.image = UIImage(named: imgName)
                 let frontPart = showAddress.substring(toIndex: 5)
                 let backPart = showAddress.substring(fromIndex: showAddress.length - 3)
                 addressLabel.text = frontPart + "..." + backPart

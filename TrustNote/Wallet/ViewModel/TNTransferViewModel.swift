@@ -12,7 +12,8 @@ import SwiftyJSON
 class TNTransferViewModel: NSObject, TNJSONSerializationProtocol {
     
     var sendFailureBlock: (() -> Void)?
-    
+    var sendSuccessBlock: (() -> Void)?
+    var totalAsset: Int64 =  0
     let unitMsgTypePayment = "payment"
     let unitPayloadLoationInline = "inline"
     let PLACEHOLDER_AMOUNT: Int64 =  0
@@ -64,7 +65,7 @@ extension TNTransferViewModel {
         units.headers_commission = PLACEHOLDER_AMOUNT
         units.payload_commission = PLACEHOLDER_AMOUNT
         units.version = TNVersion
-
+        
         let timeInterval: TimeInterval = Date().timeIntervalSince1970
         units.timestamp = Int64(timeInterval)
         
@@ -78,6 +79,13 @@ extension TNTransferViewModel {
         genAuthors()
         
         genCommission()
+        
+        guard receiverOutput.amount + units.headers_commission + units.payload_commission <= totalAsset else {
+            DispatchQueue.main.async {
+                self.sendFailureBlock?()
+            }
+            return
+        }
         genChange()
         
         genPayloadHash()
@@ -107,7 +115,7 @@ extension TNTransferViewModel {
     }
     
     private func genPayloadInputs() {
-       
+        
         let fundedAddress = TNSyncOperationManager.shared.queryFundAddressByAmount(walletId: sendPaymentInfo.walletId, estimateAmount: sendPaymentInfo.amount)
         let filterFundedAddres = filterMostFundedAddresses(rows: fundedAddress, estimatedAmount: Int64(sendPaymentInfo.amount)!)
         var addressList: [String] = []
@@ -173,7 +181,7 @@ extension TNTransferViewModel {
     }
     
     private func genChange() {
-    
+        
         var totalInput: Int64 = 0
         for input in inputs {
             totalInput += Int64(input.amount)!
@@ -187,8 +195,8 @@ extension TNTransferViewModel {
     }
     
     private func genCommission() {
-       units.headers_commission = TNSyncOperationManager.shared.getHeadersSizeSync(unit: units.toJSONString()!)
-       units.payload_commission = TNSyncOperationManager.shared.getTotalPayloadSync(unit: units.toJSONString()!)
+        units.headers_commission = TNSyncOperationManager.shared.getHeadersSizeSync(unit: units.toJSONString()!)
+        units.payload_commission = TNSyncOperationManager.shared.getTotalPayloadSync(unit: units.toJSONString()!)
     }
     
     private func genPayloadHash() {
@@ -263,19 +271,16 @@ extension TNTransferViewModel {
     private func postNewUnitToHub() {
         guard !(payload.inputs?.isEmpty)! else {return}
         let response = TNSyncOperationManager.shared.postTransferUnit(objectJoint: unitObject)
-        if response == "accepted" {
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if response == "accepted" {
                 let viewModel = TNHistoryRecordsViewModel()
-                viewModel.isNeedNotice = true
-                viewModel.amount = self.sendPaymentInfo.amount
                 let unitModel = TNUnitModel.deserialize(from: self.unitObject)
                 var joinsModel = TNWetnessJoinsModel()
                 joinsModel.unit = unitModel
                 viewModel.historyTransactionModel.joints = [joinsModel]
                 viewModel.processingTheAcquiredData()
-            }
-        } else {
-            DispatchQueue.main.async {
+                self.sendSuccessBlock?()
+            } else {
                 self.sendFailureBlock?()
             }
         }

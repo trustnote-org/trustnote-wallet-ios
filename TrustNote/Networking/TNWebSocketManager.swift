@@ -35,7 +35,7 @@ class TNWebSocketManager {
     
     public var socket: WebSocket!
     public var challenge: String?
-    public var tag: String?
+    public var heatBeatTag: String?
     public var isConnected: Bool = false
     public var hubStatus: HubConnectedStatus = HubConnectedStatus(isLogin: false)
     public var responseTag = ResponseTag()
@@ -50,7 +50,9 @@ class TNWebSocketManager {
     public var GetOtherTempPubkeyBlock:    ((String) -> Void)?
     public var SendDeviceMessageBlock:     ((String) -> Void)?
     
-    public var HandleHubMessageBlock:  (([String: Any]) -> Void)?
+    public var HandleHubMessageBlock:      (([String: Any]) -> Void)?
+    public var recieveTransferUnitBlock:   (([String: Any]) -> Void)?
+    public var recieveTransferUpdateBlock: (() -> Void)?
     
     public var generateNewPrivkeyBlock: (() -> Void)?
     public var socketDidConnectedBlock: (() -> Void)?
@@ -153,7 +155,7 @@ extension TNWebSocketManager {
     @objc private func sendHeartBeatRequest() {
         
         var requestDict: [String : Any] = [:]
-        if let tag = tag {
+        if let tag = heatBeatTag {
             requestDict["command"] = "heartbeat"
             requestDict["tag"] = tag
             let request: [Any] = ["request", requestDict]
@@ -179,7 +181,7 @@ extension TNWebSocketManager {
     }
 }
 
-/// MARK: Hanhle message style
+/// MARK: Handle message style
 extension TNWebSocketManager {
     
     fileprivate func handleJustsayingMessage(_ handleData: [String : Any]) {
@@ -199,7 +201,11 @@ extension TNWebSocketManager {
                 TNHubViewModel.sendTempPubkeyToHub()
             }
         case "hub/message":
-            HandleHubMessageBlock!(handleData["body"] as! [String : Any])
+            HandleHubMessageBlock?(handleData["body"] as! [String : Any])
+        case "joint":
+            recieveTransferUnitBlock?(handleData["body"] as! [String : Any])
+        case "light/have_updates":
+            recieveTransferUpdateBlock?()
         default:
             break
         }
@@ -243,7 +249,7 @@ extension TNWebSocketManager {
         switch command {
         case "subscribe":
             let subscribeModel = TNSubscribeModel.deserialize(from: handleData)
-            tag = subscribeModel?.tag
+            heatBeatTag = subscribeModel?.tag
         default:
             break
         }

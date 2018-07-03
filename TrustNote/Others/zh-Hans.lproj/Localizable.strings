@@ -144,6 +144,9 @@
 "Add address" = "添加地址";
 "Edit address" = "编辑地址";
 "Save" = "保存";
+"Confirmed" = "已确认";
+"Unconfirmed" = "未确认";
+"Invalid" = "无效的";
 
 /******* create wallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -211,6 +214,7 @@
 "Delete Contact" = "删除联系人";
 "Clear Chat History" = "清空聊天记录";
 "add contact success" = "你已添加对方为好友，现在可以开始聊天";
+"Set Alias" = "设置备注名";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TNSelectWalletHeaderView" customModule="TrustNote" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="select_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="v3c-0g-WtP">
+                    <rect key="frame" x="25" y="16.5" width="21" height="21"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="选择付款钱包" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fpn-7z-C0T">
+                    <rect key="frame" x="53" y="17" width="98" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFA-hZ-8vf">
+                    <rect key="frame" x="322" y="0.0" width="48" height="54"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="48" id="7M0-m3-jxn"/>
+                    </constraints>
+                    <state key="normal" image="wallet_frame_dismiss"/>
+                    <connections>
+                        <action selector="closeAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="dcD-dc-SLD"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.96470588235294119" green="0.96862745098039216" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Fpn-7z-C0T" firstAttribute="leading" secondItem="v3c-0g-WtP" secondAttribute="trailing" constant="7" id="4kS-bH-oup"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EFA-hZ-8vf" secondAttribute="trailing" constant="5" id="Ihn-Id-IaW"/>
+                <constraint firstItem="EFA-hZ-8vf" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="Qta-vz-KFW"/>
+                <constraint firstItem="v3c-0g-WtP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="Sa4-Sc-cci"/>
+                <constraint firstItem="v3c-0g-WtP" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="XIZ-BD-eft"/>
+                <constraint firstItem="Fpn-7z-C0T" firstAttribute="centerY" secondItem="v3c-0g-WtP" secondAttribute="centerY" id="bDd-PN-vVM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="EFA-hZ-8vf" secondAttribute="bottom" id="u5u-V4-g9B"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="titleLabel" destination="Fpn-7z-C0T" id="7Uf-SL-fzm"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="54"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="select_wallet" width="21" height="21"/>
+        <image name="wallet_frame_dismiss" width="14" height="14"/>
+    </resources>
+</document>

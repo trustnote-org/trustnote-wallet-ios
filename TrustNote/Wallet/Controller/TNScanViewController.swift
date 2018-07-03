@@ -207,7 +207,7 @@ extension TNScanViewController {
     
     @objc fileprivate func goBack() {
         if isPush {
-           navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         } else {
             dismiss(animated: true, completion: nil)
         }
@@ -271,18 +271,33 @@ extension TNScanViewController: AVCaptureMetadataOutputObjectsDelegate {
                     if isPush {
                         navigationController?.popViewController(animated: true)
                     } else {
-                       dismiss(animated: true, completion: nil)
+                        dismiss(animated: true, completion: nil)
                     }
                 }
-            } else {
+            } else if resultStr.hasPrefix(TNScanPrefix) {
+                let validStr = resultStr.replacingOccurrences(of: TNScanPrefix, with: "")
                 if let scanningCompletionBlock = scanningCompletionBlock {
                     if isPush {
-                        scanningCompletionBlock(resultStr)
-                        navigationController?.popViewController(animated: true)
+                        if validStr.verifyRecieverAddressAndAmount() || validStr.verifyRecieverAddress() {
+                            scanningCompletionBlock(validStr)
+                            navigationController?.popViewController(animated: true)
+                        } else {
+                            goToAddContact(validStr: validStr)
+                        }
                     } else {
-                        dismiss(animated: true, completion: {
-                            scanningCompletionBlock(resultStr)
-                        })
+                        dismiss(animated: true) {
+                            scanningCompletionBlock(validStr)
+                        }
+                    }
+                } else {
+                    if isPush {
+                        if validStr.verifyRecieverAddressAndAmount() {
+                            goToSendControllerWithAmount(validStr: validStr)
+                        } else if validStr.verifyRecieverAddress() {
+                            goToSendController(validStr: validStr)
+                        } else if validStr.verifyDeviceCode() {
+                             goToAddContact(validStr: validStr)
+                        }
                     }
                 }
             }
@@ -300,5 +315,32 @@ extension TNScanViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         if brightnessValue < Float(0.0) {
             
         }
+    }
+}
+
+extension TNScanViewController {
+    
+    func goToSendController(validStr: String) {
+        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
+        let walletModel = TNWalletModel.deserialize(from: credentials.first)
+        let vc = TNSendViewController(wallet: walletModel!)
+        vc.recAddress = validStr
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func goToSendControllerWithAmount(validStr: String) {
+        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
+        let walletModel = TNWalletModel.deserialize(from: credentials.first)
+        let vc = TNSendViewController(wallet: walletModel!)
+        let strArr = validStr.components(separatedBy: "?amount=")
+        vc.transferAmount = strArr.last
+        vc.recAddress = strArr.first
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func goToAddContact(validStr: String) {
+        let vc = TNAddContactsController()
+        vc.pairingCode = validStr
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

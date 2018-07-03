@@ -74,6 +74,10 @@ struct TNHubViewModel {
         TNWebSocketManager.getTransactionHistoryRecords(witnesses: TNGlobalHelper.shared.witnesses, addresses: addresses, requested_joints: nil, known_stable_units: nil)
     }
     
+    static func getMyHistoryTransaction (addresses: [String], completion: @escaping ([String: Any]) -> Void) {
+        TNWebSocketManager.getHistoryTransaction(witnesses: TNGlobalHelper.shared.witnesses, addresses: addresses, requested_joints: nil, known_stable_units: nil, completion: completion)
+    }
+    
     static func getParentsRequest(completion: @escaping ([String: Any]) -> Void) {
 
         TNWebSocketManager.getParentsUnit(witnesses: TNGlobalHelper.shared.witnesses, completion: completion)

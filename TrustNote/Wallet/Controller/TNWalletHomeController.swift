@@ -25,8 +25,9 @@ class TNWalletHomeController: TNBaseViewController {
     let reachability = Reachability()!
     var isReachable: Bool = true
     var totalAssert = 0.0
-    
+    var selectWalletListView: TNCustomAlertView?
     var syncOperation: TNSynchroHistoryData?
+    var scanningResult: String?
     
     private let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
@@ -73,29 +74,7 @@ class TNWalletHomeController: TNBaseViewController {
             self.barBtnItemClick()
         }
         
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishUpdateDatabaseNotification)).subscribe(onNext: {[unowned self] value in
-            let viewModel = TNWalletBalanceViewModel()
-            viewModel.queryAllWallets(completion: { (walletModels) in
-                self.dataSource = walletModels
-                self.tableView.reloadData()
-            })
-        }).disposed(by: disposeBag)
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
-            self.refreshAction()
-        }).disposed(by: disposeBag)
-        
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishSyncClonedWalletNotify)).subscribe(onNext: {[unowned self] value in
-            self.refreshAction()
-        }).disposed(by: disposeBag)
-        
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateObserveWalletNotification)).subscribe(onNext: {[unowned self] value in
-            self.dataSource.removeAll()
-            self.getWalletList()
-        }).disposed(by: disposeBag)
-        
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishDeleteWalletNotification)).subscribe(onNext: { [unowned self] value in
-            self.refreshAction()
-        }).disposed(by: disposeBag)
+        registerNotification()
         
         if TNGlobalHelper.shared.isNeedLoadData {
             syncOperation = TNSynchroHistoryData()
@@ -180,28 +159,44 @@ extension TNWalletHomeController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+extension TNWalletHomeController: TNSelectWalletViewDelegate {
+    func dismiss() {
+        selectWalletListView?.removeFromSuperview()
+    }
+    
+    func didSelectedWallet(wallet: TNWalletModel) {
+        let vc = TNSendViewController(wallet: wallet)
+        if scanningResult!.contains("?amount=") {
+            let strArr = scanningResult!.components(separatedBy: "?amount=")
+            vc.transferAmount = strArr.last
+            vc.recAddress = strArr.first
+        } else {
+            vc.recAddress = scanningResult
+        }
+        navigationController?.pushViewController(vc, animated: true)
+        selectWalletListView?.removeFromSuperview()
+    }
+}
+
 extension TNWalletHomeController: TNPopCtrlCellClickDelegate {
     
     func popCtrlCellClick(tag: Int) {
         switch tag {
         case TNPopItem.scan.rawValue :
-            break
+            let scanning = TNScanViewController()
+            if dataSource.count > 1 {
+                scanning.scanningCompletionBlock = {[unowned self] (result) in
+                    self.scanningResult = result
+                    self.showSelectList()
+                }
+            }
+            navigationController?.pushViewController(scanning, animated: true)
         case TNPopItem.addContacts.rawValue :
             navigationController?.pushViewController(TNAddContactsController(), animated: true)
         case TNPopItem.createWallet.rawValue:
             navigationController?.pushViewController(TNCreateWalletController(), animated: true)
         case TNPopItem.MatchingCode.rawValue:
-            let myPairingCodeView = TNMyPairingCodeView.loadViewFromNib()
-            myPairingCodeView.generateQRcode {
-                let popX = CGFloat(kLeftMargin)
-                let popH: CGFloat  = IS_iphone5 ? 512 : 492
-                let popY = (kScreenH - popH) / 2
-                let popW = kScreenW - popX * 2
-                let alertView = TNCustomAlertView(alert: myPairingCodeView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .transform)
-                myPairingCodeView.dimissBlock = {
-                    alertView.removeFromSuperview()
-                }
-            }
+            showPairingCode()
         default:
             break
         }
@@ -230,21 +225,24 @@ extension TNWalletHomeController {
     
     fileprivate func refreshAction() {
         dataSource.removeAll()
-        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
-        for dict in credentials {
-            let walletModel = TNWalletModel.deserialize(from: dict)
-            dataSource.append(walletModel!)
-        }
+        getWalletList()
         tableView.reloadData()
     }
     
     fileprivate func getWalletList() {
-        totalAssert = 0.0
-        let credentials  = TNConfigFileManager.sharedInstance.readWalletCredentials()
+        
+        let credentials = TNConfigFileManager.sharedInstance.readWalletCredentials()
         for dict in credentials {
             let walletModel = TNWalletModel.deserialize(from: dict)
-            totalAssert += ((walletModel?.balance)! as NSString).doubleValue
             dataSource.append(walletModel!)
+        }
+        getTotalAsset(wallets: dataSource)
+    }
+    
+    fileprivate func getTotalAsset(wallets: Array<TNWalletModel>) {
+        totalAssert = 0.0
+        for walletModel in wallets {
+            totalAssert += (walletModel.balance as NSString).doubleValue
         }
     }
     
@@ -258,6 +256,31 @@ extension TNWalletHomeController {
         let titleArr = ["Scan QR Code".localized, "Add Contact".localized,"Create Wallet".localized, "My Matching Code".localized]
         let popView = TNPopView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), imageNameArr: imageNameArr, titleArr: titleArr)
         popView.delegate = self
+    }
+    
+    fileprivate func showPairingCode() {
+        let myPairingCodeView = TNMyPairingCodeView.loadViewFromNib()
+        myPairingCodeView.generateQRcode {
+            let popX = CGFloat(kLeftMargin)
+            let popH: CGFloat  = IS_iphone5 ? 512 : 492
+            let popY = (kScreenH - popH) / 2
+            let popW = kScreenW - popX * 2
+            let alertView = TNCustomAlertView(alert: myPairingCodeView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .transform)
+            myPairingCodeView.dimissBlock = {
+                alertView.removeFromSuperview()
+            }
+        }
+    }
+    
+    fileprivate func showSelectList() {
+        let popX = CGFloat(kLeftMargin)
+        let popH: CGFloat = CGFloat(dataSource.count) * selectWalletRowHeight + selectWalletHeaderHeight > kScreenH - 180 ? (kScreenH - 180) : (CGFloat(dataSource.count) * selectWalletRowHeight + selectWalletHeaderHeight)
+        let popY = (kScreenH - popH) / 2
+        let popW = kScreenW - popX * 2
+        
+        let alertView = TNSelectWalletView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), wallets: dataSource)
+        alertView.delegate = self
+        selectWalletListView = TNCustomAlertView(alert: alertView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .none)
     }
     
     fileprivate func loadData() {
@@ -277,14 +300,43 @@ extension TNWalletHomeController {
 
 extension TNWalletHomeController {
     
-    fileprivate func syncData() {
+    public func syncData() {
         if let syncOperation = syncOperation {
             syncOperation.syncHistoryData(wallets: dataSource)
         } else {
             syncOperation = TNSynchroHistoryData()
             syncOperation?.syncHistoryData(wallets: dataSource)
         }
-        
     }
 }
 
+extension TNWalletHomeController {
+    
+    fileprivate func registerNotification() {
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishUpdateDatabaseNotification)).subscribe(onNext: {[unowned self] value in
+            let viewModel = TNWalletBalanceViewModel()
+            viewModel.queryAllWallets(completion: { (walletModels) in
+                self.dataSource = walletModels
+                self.getTotalAsset(wallets: self.dataSource)
+                self.tableView.reloadData()
+            })
+        }).disposed(by: disposeBag)
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.refreshAction()
+        }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishSyncClonedWalletNotify)).subscribe(onNext: {[unowned self] value in
+            self.refreshAction()
+        }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateObserveWalletNotification)).subscribe(onNext: {[unowned self] value in
+            self.dataSource.removeAll()
+            self.getWalletList()
+        }).disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishDeleteWalletNotification)).subscribe(onNext: { [unowned self] value in
+            self.refreshAction()
+        }).disposed(by: disposeBag)
+        
+    }
+}

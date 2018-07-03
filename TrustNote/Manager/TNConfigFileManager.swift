@@ -130,7 +130,7 @@ extension TNConfigFileManager {
         return readPlistFile(fileName: "profile")
     }
     
-    func readWalletCredentials() -> [[String:Any]] {
+    func readWalletCredentials() -> [[String: Any]] {
         let profile = readProfileFile()
         let credentials = profile["credentials"]
         return credentials as! [[String : Any]]

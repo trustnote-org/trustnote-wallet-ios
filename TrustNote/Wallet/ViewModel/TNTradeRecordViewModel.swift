@@ -43,12 +43,7 @@ extension TNTradeRecordViewModel {
     }
     
     private func handleTxUnits(txUnits: [TNTxUnits], walleId: String, completionHandle: (([TNTransactionRecord]) -> Swift.Void)?) {
-        print("----------------------------------------------------")
-        for tx in txUnits {
-            print(tx)
-            print("-----------------")
-        }
-        print("-----------------------------------------------------")
+       
         var assocMovements: [String : TNTxUnits] = [:]
         for txUnit in txUnits {
             var assocUnits = assocMovements.keys.contains(txUnit.unit) ? assocMovements[txUnit.unit] : txUnit
@@ -127,12 +122,6 @@ extension TNTradeRecordViewModel {
                 }
             }
         }
-        print("----------------------------------------------------")
-        for test in arrTransactions {
-             print(test)
-            print("-----------------")
-        }
-        print("-----------------------------------------------------")
         let arrTransactionsSorted = arrTransactions.sorted {
             $0.time > $1.time
         }

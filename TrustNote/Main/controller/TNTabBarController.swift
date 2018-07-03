@@ -20,6 +20,17 @@ class TNTabBarController: UITabBarController {
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        let nav = viewControllers![1] as! TNBaseNavigationController
+        let vc = nav.viewControllers.first as! TNContactViewController
+        var newMessageCount = 0
+        for correspondent in vc.dataSource {
+            newMessageCount += correspondent.unreadCount
+        }
+        if newMessageCount == 0 {
+            tabBar.hideBadgeOnItemIndex(1)
+        } else {
+            tabBar.showBadgeOnItemIndex(1)
+        }
     }
     
     private func addChildViewControllers() {
@@ -42,5 +53,37 @@ class TNTabBarController: UITabBarController {
         navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : kGlobalColor], for: .selected)
         navController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -1)
         addChildViewController(navController)
+    }
+}
+
+extension UITabBar {
+    
+    func showBadgeOnItemIndex(_ index : Int) {
+        
+        removeBadgeOnItemIndex(index)
+        
+        let badgeView = UIView()
+        badgeView.tag = 888 + index
+        badgeView.layer.cornerRadius = 3
+        badgeView.backgroundColor = UIColor.hexColor(rgbValue: 0xFF4D46)
+        let tabFrame = self.frame
+        let x = ceilf(Float(tabFrame.size.width / 2 + 5))
+        let y = ceilf(0.15 * Float(tabFrame.size.height))
+        
+        badgeView.frame = CGRect(x: CGFloat(x), y: CGFloat(y), width: 6, height: 6)
+        addSubview(badgeView)
+    }
+    
+    func hideBadgeOnItemIndex(_ index : Int){
+        removeBadgeOnItemIndex(index)
+    }
+    
+    func removeBadgeOnItemIndex(_ index : Int){
+        
+        for itemView in self.subviews {
+            if(itemView.tag == 888 + index){
+                itemView.removeFromSuperview()
+            }
+        }
     }
 }

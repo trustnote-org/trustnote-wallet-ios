@@ -65,4 +65,33 @@ extension String {
     }
     
 }
-
+/// MARK: Regex
+extension String {
+    
+    func verifyDeviceCode() -> Bool {
+        let regex = "^([\\w/+]{44})@([\\w.:/-]+)#([\\w/+-]+)$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: self)
+        return isValid
+    }
+    
+    func verifyRecieverAddress() -> Bool {
+        let regex = "^[A-Z0-9]{32}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: self)
+        return isValid
+    }
+    
+    func verifyRecieverAddressAndAmount() -> Bool {
+        if contains("?") {
+            let strArr = components(separatedBy: "?")
+            guard strArr.count == 2 else {return false}
+            let address = strArr.first
+            let amount = strArr.last
+            if address!.verifyRecieverAddress() && amount!.contains("amount=") {
+                return true
+            }
+        }
+        return false
+    }
+}

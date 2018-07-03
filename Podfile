@@ -17,5 +17,6 @@ target 'TrustNote' do
   pod 'ReachabilitySwift'
   pod 'pop'
   pod 'MBProgressHUD'
+  pod 'SwiftDate'
 
 end

@@ -11,10 +11,6 @@ import Foundation
 final class TNHistoryRecordsViewModel: TNJSONSerializationProtocol {
     
     public var historyTransactionModel = TNHistoryTransactionModel()
-    
-    public var isNeedNotice = false
-    
-    public var amount = ""
 }
 
 extension TNHistoryRecordsViewModel {
@@ -27,16 +23,14 @@ extension TNHistoryRecordsViewModel {
                 let objUnit: TNUnitModel = unit.unit!
                 saveDataToUnitsTable(unit: objUnit)
             }
-            fixIsSpentFlag(joints: joints)
             
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishUpdateDatabaseNotification), object: nil)
-            if isNeedNotice {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TNTransferSendSuccessNotify), object: amount)
-            }
+            fixIsSpentFlag(joints: joints)
         }
         if let proofBalls = historyTransactionModel.proofchain_balls {
             fixIsStableFlag(balls: proofBalls)
         }
+        
+         NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishUpdateDatabaseNotification), object: nil)
     }
     
     func saveDataToUnitsTable(unit: TNUnitModel) {
@@ -95,20 +89,21 @@ extension TNHistoryRecordsViewModel {
     
     func saveDataToInputsTable(playload: TNPayloadModel, messageIndex: Int, objUnit: TNUnitModel) {
         
-        for (index,input) in playload.inputs!.enumerated() {
+        for (index, input) in playload.inputs!.enumerated() {
             let type = input.type.isEmpty ? "transfer" : input.type
             let src_unit = input.unit
             let src_message_index = input.message_index
             let src_output_index = input.output_index
-            let address = objUnit.authors?.count == 1 ? objUnit.authors?.first?.address : input.address
+            let author: TNAuthorModel = objUnit.authors![0]
+            let address = author.address
             
             if let asset = playload.asset {
                 let sql = "INSERT INTO inputs (unit, message_index, input_index, type, src_unit, src_message_index, src_output_index, denomination, amount, serial_number, asset, is_unique, address) VALUES(?,?,?,?,?,?,?,1,?,?,?,1,?)"
-                let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, asset, address!] as [Any]
+                let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, asset, address] as [Any]
                 TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
             } else {
                 let sql = "INSERT INTO inputs (unit, message_index, input_index, type, src_unit, src_message_index, src_output_index, denomination, amount, serial_number, is_unique, address) VALUES(?,?,?,?,?,?,?,1,?,?,1,?)"
-                let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, address!] as [Any]
+                let params = [objUnit.unit, messageIndex, index, type, src_unit, src_message_index, src_output_index, input.amount, input.serial_number, address] as [Any]
                 TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
             }
         }
@@ -154,16 +149,9 @@ extension TNHistoryRecordsViewModel {
             "AND outputs.message_index=inputs.src_message_index " +
             "AND outputs.output_index=inputs.src_output_index " +
             "WHERE is_spent=0 and outputs.asset IS NULL and inputs.asset IS NULL"
-        TNSQLiteManager.sharedManager.queryDataFromOutputs(sql: sql) { (outputs) in
-            for row  in outputs as! [[Any]] {
-                guard TNSQLiteManager.sharedManager.database.open() else {return}
-                do {
-                    try TNSQLiteManager.sharedManager.database.executeUpdate("UPDATE outputs SET is_spent=1 WHERE unit=? AND message_index=? AND output_index=?", values: [row[0], row[1], row[2]])
-                } catch {
-                    print("failed: \(error.localizedDescription)")
-                }
-                TNSQLiteManager.sharedManager.database.close()
-            }
+        let outputs = TNSQLiteManager.sharedManager.queryDataFromOutputs(sql: sql)
+        for row  in outputs as! [[Any]] {
+            TNSQLiteManager.sharedManager.updateData(sql: "UPDATE outputs SET is_spent=1 WHERE unit=? AND message_index=? AND output_index=?", values: [row[0], row[1], row[2]])
         }
     }
     

@@ -23,7 +23,7 @@ class TNChatManager: TNJSONSerializationProtocol {
     
     required init() {}
     
-    static func reciveHubMessage() {
+    static func recieveHubMessage() {
         TNWebSocketManager.sharedInstance.HandleHubMessageBlock = { (body) in
             DispatchQueue.global().async {
                 TNChatManager.handleHubMessage(messageBody: body)
@@ -55,7 +55,7 @@ class TNChatManager: TNJSONSerializationProtocol {
     }
     
     static func sendRemovedMessage(pubkey: String, hub: String) {
-        let jsonBody = getMessageContent(type: .text, messageBody: ["body": "removed"])
+        let jsonBody = getMessageContent(type: .remove, messageBody: ["body": "removed"])
         sendMessage(jsonBody: jsonBody, pubkey: pubkey, hub: hub)
     }
     
@@ -139,9 +139,9 @@ class TNChatManager: TNJSONSerializationProtocol {
         case TNMessageType.pairing.rawValue:
             handlePairingMessage(decryptedObj: decryptedObj, ePubkey: ePubkey, messageHash: messageHash)
         case TNMessageType.remove.rawValue:
-            handleDeleteContactMessage(decryptedObj: decryptedObj)
+            handleDeleteContactMessage(decryptedObj: decryptedObj, messageHash: messageHash)
         case TNMessageType.text.rawValue:
-            handleRecieveTextMessage(decryptedObj: decryptedObj)
+            handleRecieveTextMessage(decryptedObj: decryptedObj, messageHash: messageHash)
         default:
             break
         }
@@ -159,24 +159,40 @@ extension TNChatManager {
         let createDate = NSDate.getCurrentFormatterTime()
         let count = TNSyncOperationManager.shared.queryCount(sql: sql)
         if count == 0 {
-            let sql = "INSERT INTO correspondent_devices (device_address, name, pubkey, hub, creation_date,is_confirmed) VALUES(?,?,?,?,?,1)"
+            let sql = "INSERT INTO correspondent_devices (device_address, name, pubkey, hub, creation_date,is_confirmed, unread) VALUES(?,?,?,?,?,1,1)"
             TNSQLiteManager.sharedManager.updateData(sql: sql, values: [from, deviceName!, ePubkey, deviceHub, createDate])
+             TNSQLiteManager.sharedManager.updateChatMessagesTable(address: from, message: "add contact success".localized, date: createDate, isIncoming: 1, type: TNMessageType.pairing.rawValue)
+            var correspondent: TNCorrespondentDevice = TNCorrespondentDevice()
+            correspondent.name = deviceName!
+            correspondent.deviceAddress = from
+            correspondent.unreadCount = 1
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TNAddContactCompletedNotification), object: correspondent)
             sendPairingMessage(isActive: false, secret: body["pairing_secret"]!, pubkey: ePubkey, hub: deviceHub)
+            
         } else {
             let sql = "UPDATE correspondent_devices SET is_confirmed=1, name=? WHERE device_address=? AND is_confirmed=0"
             TNSQLiteManager.sharedManager.updateData(sql: sql, values: [deviceName!, from])
+    
+             NotificationCenter.default.post(name: Notification.Name(rawValue: TNAddContactConfirmedNotification), object: ["from": from, "deviceName": deviceName!])
         }
         TNHubViewModel.deleteHubCache(messageHash: messageHash)
     }
     
-    static fileprivate func handleDeleteContactMessage(decryptedObj: [String: Any]) {
-        
+    static fileprivate func handleDeleteContactMessage(decryptedObj: [String: Any], messageHash: String) {
+        let device = decryptedObj["from"] as! String
+        let deviceSql = "DELETE FROM correspondent_devices WHERE device_address=?"
+        TNSQLiteManager.sharedManager.updateData(sql: deviceSql, values: [device])
+        let messageSql = "DELETE FROM chat_messages WHERE correspondent_address=?"
+        TNSQLiteManager.sharedManager.updateData(sql: messageSql, values: [device])
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidRecievedRemovedNotification), object: device)
+        TNHubViewModel.deleteHubCache(messageHash: messageHash)
     }
     
-    static fileprivate func handleRecieveTextMessage(decryptedObj: [String: Any]) {
+    static fileprivate func handleRecieveTextMessage(decryptedObj: [String: Any], messageHash: String) {
         let createDate = NSDate.getCurrentFormatterTime()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidRecievedMessageNotification), object: ["decryptedObj": decryptedObj, "createDate": createDate])
         TNSQLiteManager.sharedManager.updateChatMessagesTable(address: decryptedObj["from"] as! String, message: decryptedObj["body"] as! String, date: createDate, isIncoming: 1, type: TNMessageType.text.rawValue)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidRecievedMessageNotification), object: ["messageObj": decryptedObj, "createDate": createDate])
+        TNHubViewModel.deleteHubCache(messageHash: messageHash)
     }
 }
 

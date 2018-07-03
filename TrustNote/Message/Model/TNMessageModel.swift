@@ -21,9 +21,11 @@ enum TNMessageSenderType {
 
 struct TNChatMessageModel {
     // 是否显示时间
-    var isShowTime = true
+    var isShowTime = false
     // 消息时间
     var messageTime: String?
+    // 显示时间
+    var showTime: String = ""
     // 文本消息内容
     var messageText = ""
     // 消息类型
@@ -38,4 +40,5 @@ struct TNCorrespondentDevice {
     var pubkey = ""
     var hub = ""
     var is_confirmed = false
+    var unreadCount = 0
 }

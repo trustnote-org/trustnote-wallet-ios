@@ -10,6 +10,8 @@ import UIKit
 
 class TNAddContactsController: TNNavigationController {
     
+    var pairingCode: String?
+    
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
@@ -30,12 +32,30 @@ class TNAddContactsController: TNNavigationController {
         let addContactsView = TNAddContactsView.addContactsView()
         addContactsView.delegate = self
         return addContactsView
-        }()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackButton()
         seupUI()
+        if let pairingCode = pairingCode {
+            addContactsView.inputTextView.text = pairingCode
+            addBtn.isEnabled = true
+            addBtn.alpha = 1.0
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        var  navigationArray = navigationController?.viewControllers
+        if navigationArray?.count == 3 {
+            for (index, vc) in navigationArray!.enumerated() {
+                if vc.isKind(of: TNScanViewController.self) {
+                    navigationArray?.remove(at: index)
+                }
+            }
+            navigationController?.viewControllers = navigationArray!
+        }
     }
 }
 
@@ -82,16 +102,7 @@ extension TNAddContactsController {
     }
     
     func verifyDeviceCode(str: String) -> Bool {
-//        let regex = "/^([\\w\\/+]{44})@([\\w.:\\/-]+)#([\\w\\/+-]+)$/"
-//        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
-//        let isValid = predicate.evaluate(with: str)
-        if str.contains("@") && str.contains("#") {
-            let frontStr = str.components(separatedBy: "@").first
-            if frontStr?.length == 44 {
-                 return true
-            }
-        }
-        return false
+       return str.verifyDeviceCode()
     }
 }
 
@@ -101,11 +112,7 @@ extension TNAddContactsController: TNAddContactsViewDelegate {
         let scan = TNScanViewController()
         scan.isPush = false
         scan.scanningCompletionBlock = {[unowned self] result in
-            if result.contains(TNScanPrefix) {
-                self.addContactsView.inputTextView.text = result.replacingOccurrences(of: TNScanPrefix, with: "")
-            } else {
-                self.addContactsView.inputTextView.text = result
-            }
+            self.addContactsView.inputTextView.text = result
             self.textDidChanged()
         }
         navigationController?.present(scan, animated: true, completion: nil)

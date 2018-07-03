@@ -40,7 +40,7 @@ struct TNTransactionRecord {
     var amount: Int64?
     var my_address: String?
     var addressTo: String?
-    var confirmations: Bool = true
+    var confirmations: Bool = false
     var unit: String = ""
     var fee: Int32 = 0
     var time: Int64 = 0

@@ -61,7 +61,7 @@ extension TNEvaluateScriptManager {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
                // let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
-             let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
+             //let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
                 
                 TNGlobalHelper.shared.mnemonic = mnemonic as! String
                 guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {

@@ -158,8 +158,9 @@ class TNSQLiteManager: NSObject {
             "hub VARCHAR(100) NOT NULL, " +
             "is_confirmed TINYINT NOT NULL DEFAULT 0, " +
             "is_indirect TINYINT NOT NULL DEFAULT 0, " +
+            "unread INT NOT NULL DEFAULT 0," +
             "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP " +
-            ");"
+        ");"
         
         let outbox = "CREATE TABLE IF NOT EXISTS outbox( " +
             "message_hash CHAR(44) NOT NULL PRIMARY KEY, " +
@@ -167,7 +168,7 @@ class TNSQLiteManager: NSObject {
             "message TEXT NOT NULL, " +
             "creation_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
             "last_error TEXT NULL " +
-            ");"
+        ");"
         
         let chat_messages = "CREATE TABLE IF NOT EXISTS chat_messages( " +
             "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -177,7 +178,7 @@ class TNSQLiteManager: NSObject {
             "is_incoming INTEGER(1) NOT NULL, " +
             "type CHAR(15) NOT NULL DEFAULT 'text', " +
             "FOREIGN KEY (correspondent_address) REFERENCES correspondent_devices(device_address) ON DELETE CASCADE " +
-            ");"
+        ");"
         
         dbQueue.inDatabase { (db) -> Void in
             
@@ -205,7 +206,7 @@ class TNSQLiteManager: NSObject {
 extension TNSQLiteManager {
     
     public func deleteAllLocalData() {
-        let tables = ["my_addresses", "wallets", "extended_pubkeys", "wallet_signing_paths", "inputs", "outputs", "messages", "units", "unit_authors"]
+        let tables = ["my_addresses", "wallets", "extended_pubkeys", "wallet_signing_paths", "inputs", "outputs", "messages", "units", "unit_authors", "definitions", "correspondent_devices", "outbox", "chat_messages"]
         dbQueue.inDatabase { (database) in
             do {
                 for tableName in tables {
@@ -265,25 +266,28 @@ extension TNSQLiteManager {
         }
     }
     
-    public func queryDataFromOutputs(sql: String, completionHandle: (([Any]) -> Swift.Void)?) {
+    public func queryDataFromOutputs(sql: String) -> [Any] {
         var queryResults: [Any] = []
-        dbQueue.inDatabase { (database) in
-            do {
-                let set = try database.executeQuery(sql, values: nil)
-                while set.next() {
-                    let unit = set.string(forColumn: "unit")
-                    let message_index = set.string(forColumn: "message_index")
-                    let output_index = set.string(forColumn: "output_index")
-                    let rows: [Any] = [unit!, message_index!, output_index!]
-                    queryResults.append(rows)
-                }
-                completionHandle!(queryResults)
-                set.close()
-            } catch {
-                print("failed: \(error.localizedDescription)")
-            }
+        guard database.open() else {
+            return []
         }
+        do {
+            let set = try database.executeQuery(sql, values: nil)
+            while set.next() {
+                let unit = set.string(forColumn: "unit")
+                let message_index = set.string(forColumn: "message_index")
+                let output_index = set.string(forColumn: "output_index")
+                let rows: [Any] = [unit!, message_index!, output_index!]
+                queryResults.append(rows)
+            }
+            set.close()
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        database.close()
+        return queryResults
     }
+    
     public func queryAmountFromOutputs(walletId: String, completionHandle: (([Any]) -> Swift.Void)?) {
         var queryResults: [Any] = []
         let sql = "SELECT outputs.address, COALESCE(outputs.asset, 'base') as asset, sum(outputs.amount) as amount\n" +
@@ -293,20 +297,21 @@ extension TNSQLiteManager {
             "AND outputs.is_spent=0 " +
             "GROUP BY outputs.address, outputs.asset " +
         "ORDER BY my_addresses.address_index ASC"
-        dbQueue.inDatabase { (database) in
-            do {
-                let set = try database.executeQuery(sql, values: [walletId])
-                while set.next() {
-                    var balanceModel = TNWalletBalance()
-                    balanceModel.address = set.string(forColumn: "address")!
-                    balanceModel.amount = set.string(forColumn: "amount")!
-                    queryResults.append(balanceModel)
-                }
-                completionHandle!(queryResults)
-                set.close()
-            } catch {
-                print("failed: \(error.localizedDescription)")
+        guard database.open() else {
+            return
+        }
+        do {
+            let set = try database.executeQuery(sql, values: [walletId])
+            while set.next() {
+                var balanceModel = TNWalletBalance()
+                balanceModel.address = set.string(forColumn: "address")!
+                balanceModel.amount = set.string(forColumn: "amount")!
+                queryResults.append(balanceModel)
             }
+            completionHandle!(queryResults)
+            set.close()
+        } catch {
+            print("failed: \(error.localizedDescription)")
         }
     }
     
@@ -339,6 +344,7 @@ extension TNSQLiteManager {
         }
     }
     
+    /// TODO UPDATE
     public func queryWalletAddress(sql: String, walletId: String, isChange: Int, completionHandle: (([String]) -> Swift.Void)?) {
         var queryResults: [String] = []
         dbQueue.inDatabase { (database) in
@@ -354,6 +360,28 @@ extension TNSQLiteManager {
                 print("failed: \(error.localizedDescription)")
             }
         }
+    }
+    
+    public func queryWalletAllAddresses(walletId: String) -> Array<TNWalletAddressModel> {
+        var queryResults: [TNWalletAddressModel] = []
+        let sql = "SELECT address FROM my_addresses WHERE wallet=?"
+        guard database.open() else {
+            return []
+        }
+        do {
+            let set = try database.executeQuery(sql, values: [walletId])
+            while set.next() {
+                var addressModel = TNWalletAddressModel()
+                addressModel.walletAddress = set.string(forColumn: "address")!
+                addressModel.is_change = set.bool(forColumn: "is_change")
+                queryResults.append(addressModel)
+            }
+            set.close()
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        database.close()
+        return queryResults
     }
     
     public func queryFirstWalletAddress(sql: String, walletId: String, completionHandle: (([String]) -> Swift.Void)?) {
@@ -456,7 +484,7 @@ extension TNSQLiteManager {
             "AND is_stable=1 " +
             "AND sequence='good' " +
             "AND main_chain_index<= ? " +
-            "ORDER BY amount DESC"
+        "ORDER BY amount DESC"
         
         dbQueue.inDatabase { (database) in
             do {
@@ -528,7 +556,6 @@ extension TNSQLiteManager {
         let sql = "SELECT * FROM correspondent_devices WHERE device_address = ?"
         dbQueue.inDatabase { (database) in
             do {
-                
                 let set = try database.executeQuery(sql, values: [deviceAddress])
                 while set.next() {
                     correspondent.deviceAddress = set.string(forColumn: "device_address")!
@@ -545,7 +572,30 @@ extension TNSQLiteManager {
         completionHandle(correspondent)
     }
     
-     public func queryChatMessages(deviceAddress: String, completionHandle: ([TNChatMessageModel]) -> Swift.Void) {
+    public func queryAllCorrespondents(completionHandle: ([TNCorrespondentDevice]) -> Swift.Void) {
+        var correspondents: [TNCorrespondentDevice] = []
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery("SELECT * FROM correspondent_devices", values: nil)
+                while set.next() {
+                    var correspondent = TNCorrespondentDevice()
+                    correspondent.deviceAddress = set.string(forColumn: "device_address")!
+                    correspondent.hub = set.string(forColumn: "hub")!
+                    correspondent.is_confirmed = set.bool(forColumn: "is_confirmed")
+                    correspondent.name = set.string(forColumn: "name")!
+                    correspondent.pubkey = set.string(forColumn: "pubkey")!
+                    correspondent.unreadCount = Int(set.int(forColumn: "unread"))
+                    correspondents.append(correspondent)
+                }
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        completionHandle(correspondents)
+    }
+    
+    public func queryChatMessages(deviceAddress: String, completionHandle: ([TNChatMessageModel]) -> Swift.Void) {
         var messages: [TNChatMessageModel] = []
         let sql = "SELECT * FROM chat_messages WHERE correspondent_address = ?"
         dbQueue.inDatabase { (database) in
@@ -568,5 +618,24 @@ extension TNSQLiteManager {
         }
         completionHandle(messages)
     }
- 
+    
+    public func queryLastMessage(deviceAddress: String, completionHandle: (TNChatMessageModel) -> Swift.Void) {
+        var messageModel = TNChatMessageModel()
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery("SELECT * FROM chat_messages WHERE correspondent_address = ? ORDER BY id DESC LIMIT 1", values: [deviceAddress])
+                while set.next() {
+                    messageModel.messageText = set.string(forColumn: "message")!
+                    messageModel.messageTime = set.string(forColumn: "creation_date")!
+                    let is_incoming = set.bool(forColumn: "is_incoming")
+                    messageModel.senderType = is_incoming ? .contact : .oneself
+                }
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        completionHandle(messageModel)
+    }
+    
 }

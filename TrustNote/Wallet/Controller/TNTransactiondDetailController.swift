@@ -87,6 +87,29 @@ extension TNTransactiondDetailController: UITableViewDataSource, UITableViewDele
         cell.contentLabel.textAlignment = rowHeightArr[indexPath.row] > 15.0 ? .left : .right
         cell.lineView.isHidden = indexPath.row == tableView.numberOfRows(inSection: 0) - 1 ? true : false
         cell.contentLabel.textColor = indexPath.row == TNTradeDetailRow.unit.rawValue ? kGlobalColor : kTitleTextColor
+        cell.statusView.isHidden = indexPath.row == TNTradeDetailRow.status.rawValue ? false : true
+        if indexPath.row == TNTradeDetailRow.status.rawValue {
+            var title = detailModel.confirmations ? "Confirmed".localized : "Unconfirmed".localized
+            let titleColor = detailModel.confirmations ? kGlobalColor : UIColor.hexColor(rgbValue: 0xEE7A23)
+            cell.statusView.setTitleColor(titleColor, for: .normal)
+            var imageName = ""
+            if let action = detailModel.action {
+                switch action {
+                case .invalid:
+                    title = "Invalid".localized
+                    imageName = "send_invalid"
+                    cell.statusView.setTitleColor(UIColor.hexColor(rgbValue: 0xE33B1B), for: .normal)
+                case .sent:
+                    imageName = detailModel.confirmations ? "send_confirmed" : "send_unconfirmed"
+                case .received:
+                    imageName = detailModel.confirmations ? "recieve_confirmed" : "recieve_unconfirmed"
+                case .move:
+                    break
+                }
+            }
+            cell.statusView.setImage(UIImage(named: imageName), for: .normal)
+            cell.statusView.setTitle(title, for: .normal)
+        }
         return cell
     }
     

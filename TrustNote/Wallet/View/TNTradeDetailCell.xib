@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,12 +41,24 @@
                             <constraint firstAttribute="height" constant="0.5" id="vrP-AI-vxp"/>
                         </constraints>
                     </view>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j5e-Up-5Rg">
+                        <rect key="frame" x="224" y="12" width="70" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="70" id="2XA-FJ-Rpy"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <state key="normal" title="已确认" image="recieve_confirmed">
+                            <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="9qg-ew-oKB" secondAttribute="trailing" id="2ud-wZ-6Nm"/>
                     <constraint firstAttribute="trailing" secondItem="epJ-c1-d7q" secondAttribute="trailing" constant="24" id="36a-mn-5ic"/>
+                    <constraint firstAttribute="trailing" secondItem="j5e-Up-5Rg" secondAttribute="trailing" constant="26" id="6r3-oI-sZN"/>
                     <constraint firstItem="9IU-Eh-dUT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="26" id="9Hy-eK-sYC"/>
                     <constraint firstItem="epJ-c1-d7q" firstAttribute="leading" secondItem="9IU-Eh-dUT" secondAttribute="trailing" constant="18" id="AVd-SA-TEN"/>
+                    <constraint firstItem="j5e-Up-5Rg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Uh4-x5-abK"/>
                     <constraint firstItem="9IU-Eh-dUT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Zfc-aJ-Pz6"/>
                     <constraint firstItem="9qg-ew-oKB" firstAttribute="leading" secondItem="9IU-Eh-dUT" secondAttribute="leading" id="aOQ-qO-dZK"/>
                     <constraint firstItem="9qg-ew-oKB" firstAttribute="top" secondItem="9IU-Eh-dUT" secondAttribute="bottom" constant="8" id="d4z-yP-Dyf"/>
@@ -58,8 +70,12 @@
             <connections>
                 <outlet property="contentLabel" destination="epJ-c1-d7q" id="bdB-UU-yLj"/>
                 <outlet property="lineView" destination="9qg-ew-oKB" id="naM-w4-19N"/>
+                <outlet property="statusView" destination="j5e-Up-5Rg" id="IBJ-PA-bj5"/>
                 <outlet property="titleTextLabel" destination="9IU-Eh-dUT" id="2v9-oB-UJB"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="recieve_confirmed" width="20" height="20"/>
+    </resources>
 </document>

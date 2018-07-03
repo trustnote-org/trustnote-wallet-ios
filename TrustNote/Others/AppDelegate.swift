@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = false
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
         
-        TNChatManager.reciveHubMessage()
+        TNPushHelper.shared.setHandleHubPush()
         // Configure global file and save
         TNConfigFileManager.sharedInstance.configGlobalFile()
         // Read profile

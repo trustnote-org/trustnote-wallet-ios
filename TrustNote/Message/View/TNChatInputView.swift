@@ -39,7 +39,9 @@ class TNChatInputView: UIView {
     
     private var maxNumberOfLines: Int = 4
     
-    private var textInputRect = CGRect.zero
+    public var textInputRect = CGRect.zero
+
+    private var inputBottomPadding: CGFloat = 0
     
     private var containerViewHeight: CGFloat = 0
     
@@ -56,6 +58,10 @@ class TNChatInputView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -94,6 +100,7 @@ extension TNChatInputView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
     }
+    
 }
 
 extension TNChatInputView {
@@ -107,7 +114,7 @@ extension TNChatInputView {
         textH = height
         if !inputTextView.isScrollEnabled {
             textInputRect.size.height = height + 2 * topMargin
-            textInputRect.origin.y = containerViewHeight - textInputRect.size.height
+            textInputRect.origin.y = containerViewHeight - textInputRect.size.height - inputBottomPadding
             frame = textInputRect
             layoutIfNeeded()
         }
@@ -119,12 +126,15 @@ extension TNChatInputView {
         let durationValue = notify.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.floatValue
         delegate?.chatKeyboardWillShow(keyBoardHeight: endFrame.size.height, duration: TimeInterval(duration))
+        inputBottomPadding = endFrame.size.height
     }
     
     @objc fileprivate func keyboardWillHide(_ notify: Notification) {
+        
         let durationValue = notify.userInfo![UIKeyboardAnimationDurationUserInfoKey] as! NSNumber
         let duration = durationValue.floatValue
         delegate?.chatKeyboardWillHide(duration: TimeInterval(duration))
+        inputBottomPadding = 0
     }
 }
 

@@ -48,6 +48,21 @@ class TNTradeRecordsListController: TNNavigationController {
         $0.separatorStyle = .none
     }
     
+    let emptyRecordsImgView = UIImageView().then {
+        $0.image = UIImage(named: "no_records")
+    }
+    
+    let emptyRecordsLabel = UILabel().then {
+        $0.textColor = UIColor.hexColor(rgbValue: 0x8EA0B8)
+        $0.font = UIFont.systemFont(ofSize: 14)
+        $0.text = "暂无记录哦~"
+    }
+    
+    let containerView = UIView().then {
+        $0.isHidden = false
+        $0.backgroundColor = UIColor.clear
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setBackButton()
@@ -60,16 +75,17 @@ class TNTradeRecordsListController: TNNavigationController {
             let vc = TNSendViewController(wallet: self.wallet)
             self.navigationController?.pushViewController(vc, animated: true)
         }
+        tradeRecordHeaderview.walletNameLabel.text = wallet.walletName
         setupUI()
         tableView.delegate = self
         tableView.dataSource = self
         updateData()
         
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNTransferSendSuccessNotify)).subscribe(onNext: {[unowned self] value in
-            let balance = Double(self.wallet.balance)!
-            let sendAmount = Double(value.object as! String)! / kBaseOrder
-            self.wallet.balance = String(format: "%.4f", balance - sendAmount)
-            self.updateData()
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishUpdateDatabaseNotification)).subscribe(onNext: {[unowned self] value in
+            TNWalletBalanceViewModel().calculatBalance(self.wallet) { (walletModel) in
+                self.wallet = walletModel
+                self.updateData()
+            }
         }).disposed(by: disposeBag)
     }
     
@@ -77,42 +93,24 @@ class TNTradeRecordsListController: TNNavigationController {
         super.viewWillAppear(animated)
         IQKeyboardManager.shared.shouldResignOnTouchOutside = true
     }
-}
-
-extension TNTradeRecordsListController {
-    
-    fileprivate func setupUI() {
-        view.addSubview(tradeRecordHeaderview)
-        tradeRecordHeaderview.snp.makeConstraints { (make) in
-            make.top.equalTo(navigationBar.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(180)
-        }
-        
-        view.addSubview(switchView)
-        switchView.snp.makeConstraints { (make) in
-            make.top.equalTo(tradeRecordHeaderview.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(70)
-        }
-        
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(switchView.snp.bottom)
-            make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
-        }
-    }
     
     fileprivate func updateData() {
-       
+        
         viewModel.queryTransactionRecordList(walletId: wallet.walletId) {[unowned self] (records) in
             self.tradeRecordHeaderview.walletModel = self.wallet
             self.dataSource = records
+            for (index, record) in self.dataSource.enumerated() {
+                if record.action == .move {
+                    self.dataSource.remove(at: index)
+                }
+            }
+            self.containerView.isHidden = self.dataSource.isEmpty ? false : true
             self.tableView.reloadData()
         }
     }
 }
+
+
 
 extension TNTradeRecordsListController: UITableViewDelegate, UITableViewDataSource {
     
@@ -154,4 +152,51 @@ extension TNTradeRecordsListController: UITableViewDelegate, UITableViewDataSour
         return tableHeaderView
     }
     
+}
+
+extension TNTradeRecordsListController {
+    
+    fileprivate func setupUI() {
+        view.addSubview(tradeRecordHeaderview)
+        tradeRecordHeaderview.snp.makeConstraints { (make) in
+            make.top.equalTo(navigationBar.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(180)
+        }
+        
+        view.addSubview(switchView)
+        switchView.snp.makeConstraints { (make) in
+            make.top.equalTo(tradeRecordHeaderview.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.height.equalTo(70)
+        }
+        
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalTo(switchView.snp.bottom)
+            make.left.right.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
+        }
+        
+        view.addSubview(containerView)
+        containerView.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.centerX.equalTo(tableView.snp.centerX)
+            make.centerY.equalTo(tableView.snp.centerY)
+            make.height.equalTo(116)
+        }
+        
+        containerView.addSubview(emptyRecordsImgView)
+        emptyRecordsImgView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+        
+        containerView.addSubview(emptyRecordsLabel)
+        emptyRecordsLabel.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
+    }
+
 }

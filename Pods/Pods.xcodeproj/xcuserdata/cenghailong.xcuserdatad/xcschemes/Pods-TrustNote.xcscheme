@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "60946241C129EFF7E62D67DF2E0BCCEC"
+               BlueprintIdentifier = "197B2001A7EFAEA78CBB0E20830DAF3B"
                BuildableName = "Pods_TrustNote.framework"
                BlueprintName = "Pods-TrustNote"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -26,7 +26,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
@@ -37,7 +36,6 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      language = ""
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
@@ -47,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "60946241C129EFF7E62D67DF2E0BCCEC"
+            BlueprintIdentifier = "197B2001A7EFAEA78CBB0E20830DAF3B"
             BuildableName = "Pods_TrustNote.framework"
             BlueprintName = "Pods-TrustNote"
             ReferencedContainer = "container:Pods.xcodeproj">

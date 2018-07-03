@@ -18,6 +18,7 @@ enum TNTradeDetailRow: Int {
 
 class TNTradeDetailCell: UITableViewCell, RegisterCellFromNib {
     
+    @IBOutlet weak var statusView: UIButton!
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var titleTextLabel: UILabel!
@@ -30,6 +31,7 @@ class TNTradeDetailCell: UITableViewCell, RegisterCellFromNib {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        statusView.imageEdgeInsets = UIEdgeInsetsMake(0, -3, 0, 0)
+        statusView.titleEdgeInsets = UIEdgeInsetsMake(0, 3, 0, 0)
     }
-    
 }

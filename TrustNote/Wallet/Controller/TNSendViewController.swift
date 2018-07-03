@@ -55,11 +55,19 @@ class TNSendViewController: TNNavigationController {
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }
-        
-        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNTransferSendSuccessNotify)).subscribe(onNext: {[unowned self] value in
-            self.hud?.removeFromSuperview()
-            self.navigationController?.popViewController(animated: true)
-        }).disposed(by: disposeBag)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        var  navigationArray = navigationController?.viewControllers
+        if navigationArray?.count == 3 {
+            for (index, vc) in navigationArray!.enumerated() {
+                if vc.isKind(of: TNScanViewController.self) {
+                    navigationArray?.remove(at: index)
+                }
+            }
+            navigationController?.viewControllers = navigationArray!
+        }
     }
 }
 
@@ -68,17 +76,14 @@ extension TNSendViewController {
     @objc fileprivate func scanAction() {
         let scan = TNScanViewController()
         scan.isPush = false
-        scan.scanningCompletionBlock = {[unowned self] prefixResult in
-           self.handleScanningResult(prefixResult: prefixResult)
+        scan.scanningCompletionBlock = {[unowned self] result in
+           self.handleScanningResult(result: result)
         }
         navigationController?.present(scan, animated: true, completion: nil)
     }
     
-    fileprivate func handleScanningResult(prefixResult: String) {
-        guard prefixResult.contains(TNScanPrefix) else {
-            return
-        }
-        let result = prefixResult.replacingOccurrences(of: TNScanPrefix, with: "")
+    fileprivate func handleScanningResult(result: String) {
+       
         if result.contains("?") {
             let components = result.components(separatedBy: "?")
             sendCell?.addressTextField.text = components.first
@@ -121,10 +126,16 @@ extension TNSendViewController {
         paymentInfo.walletId = wallet.walletId
         paymentInfo.walletPubkey = wallet.xPubKey
         let sendViewModel = TNTransferViewModel(paymentInfo: paymentInfo)
+        sendViewModel.totalAsset = Int64(Double(wallet.balance)! * kBaseOrder)
         sendViewModel.sendFailureBlock = {[unowned self] in
             self.hud?.removeFromSuperview()
             MBProgress_TNExtension.showViewAfterSecond(title: "发送失败")
         }
+        sendViewModel.sendSuccessBlock = {[unowned self] in
+            self.hud?.removeFromSuperview()
+            self.navigationController?.popViewController(animated: true)
+        }
+        
         sendViewModel.getReadyToSend()
     }
     
@@ -153,6 +164,14 @@ extension TNSendViewController: UITableViewDataSource, UITableViewDelegate {
         cell.checkoutBtn.isHidden = wallet.isLocal ? true : false
         cell.instructionLabel.isHidden = wallet.isLocal ? true : false
         cell.confirmBtnBottomMarginConstraint.constant = wallet.isLocal ? CGFloat(kLeftMargin) : 90
+        if let recAddress = recAddress {
+           cell.addressTextField.text = recAddress
+        }
+        if let amount = transferAmount {
+            cell.amountTextField.text = String(format: "%.4f", Double(amount)! / kBaseOrder)
+            cell.confirmBtn.isEnabled = true
+            cell.confirmBtn.alpha = 1.0
+        }
         sendCell = cell
         sendCell?.delegate = self
         return cell
@@ -189,8 +208,7 @@ extension TNSendViewController: TNPasswordAlertViewDelegate {
     func passwordVerifyCorrect(_ password: String) {
         startToSend()
         verifyPasswordView?.removeFromSuperview()
-        let view = UIApplication.shared.delegate?.window as? UIView
-        hud = MBProgress_TNExtension.showHUDAddedToView(view: view!, title: "加载中...", animated: true)
+        hud = MBProgress_TNExtension.showHUDAddedToView(view: self.view, title: "", animated: true)
     }
     
     func didClickedCancelButton() {

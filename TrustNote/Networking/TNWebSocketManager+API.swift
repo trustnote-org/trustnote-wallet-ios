@@ -36,7 +36,7 @@ extension TNJSONSerializationProtocol {
     }
     
     static func getDictionaryFromJsonString(json: String) -> [String: Any] {
-    
+        
         let jsonData: Data = json.data(using: .utf8)!
         let jsonObject = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! [String: Any]
         return jsonObject!
@@ -136,6 +136,26 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
         TNWebSocketManager.sendRequest(api: "light/get_history", params: params, command: .getHistory)
     }
     
+    static func getHistoryTransaction(witnesses: [String], addresses: [String], requested_joints: [String]?, last_stable_mci: Int = 0, known_stable_units: [String]?, completion: @escaping ([String: Any]) -> Void) {
+        TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
+            let jsonObj = anyObject as? [String : Any]
+            completion(jsonObj!)
+            let model = TNHistoryTransactionModel.deserialize(from:  jsonObj)
+            let historyRecordsViewModel = TNHistoryRecordsViewModel()
+            historyRecordsViewModel.historyTransactionModel = model!
+            historyRecordsViewModel.processingTheAcquiredData()
+        }
+        var params: [String: Any] = ["witnesses":witnesses, "addresses":addresses, "last_stable_mci":last_stable_mci]
+        if let joints = requested_joints {
+            params["requested_joints"] = joints
+        }
+        if let units = known_stable_units {
+            params["known_stable_units"] = units
+        }
+        TNWebSocketManager.sendRequest(api: "light/get_history", params: params, command: .getHistory)
+    }
+    
+    
     /**
      *  Method get parents
      *  @param witnesses
@@ -183,7 +203,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
         
         let request: [Any] = ["justsaying", sendBody]
         TNWebSocketManager.sharedInstance.sendData("\(JSON(request))")
-       // TNWebSocketManager.sendRequest(api: "hub/delete", params: ["": messageHash], command: .deleteHubCache)
+        // TNWebSocketManager.sendRequest(api: "hub/delete", params: ["": messageHash], command: .deleteHubCache)
     }
 }
 

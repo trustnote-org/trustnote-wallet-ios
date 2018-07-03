@@ -13,6 +13,7 @@ class TNSyncOperationManager: TNJSONSerializationProtocol {
     static let shared = TNSyncOperationManager()
     var contactHub = ""
     var myHub = ""
+    
 }
 
 /// MARK: Networking
@@ -146,11 +147,11 @@ extension TNSyncOperationManager {
         let sema = DispatchSemaphore(value: 0)
         TNSQLiteManager.sharedManager.queryUnusedAuthorCount(address: address) { (result) in
             if result > 0 {
-               isUsed = true
+                isUsed = true
             }
             sema.signal()
         }
-         _ = sema.wait(timeout:  DispatchTime.distantFuture)
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return isUsed
     }
     
@@ -186,11 +187,13 @@ extension TNSyncOperationManager {
             print("failed: \(error.localizedDescription)")
         }
         TNSQLiteManager.sharedManager.database.close()
-        let sema = DispatchSemaphore(value: 0)
         let viewModel = TNWalletViewModel()
+        let sema = DispatchSemaphore(value: 0)
         DispatchQueue.main.async {
-            viewModel.generateWalletAddress(wallet_xPubKey: pubkey, change: true, num: count) { (addressModel) in
-                newAddress = addressModel.walletAddress
+            viewModel.generateWalletAddress(wallet_xPubKey: pubkey, change: true, num: count) { (result) in
+                newAddress = result.walletAddress
+                var addressModel = result
+                addressModel.walletId = walletId
                 viewModel.insertWalletAddressToDatabase(walletAddressModel: addressModel)
                 sema.signal()
             }
@@ -282,7 +285,6 @@ extension TNSyncOperationManager {
         var base64 = ""
         let sema = DispatchSemaphore(value: 0)
         let unit = TNWebSocketManager.getJSONStringFrom(jsonObject: request as NSDictionary)
-        
         DispatchQueue.main.async {
             TNEvaluateScriptManager.sharedInstance.getBase64Hash(unit) { (result) in
                 base64 = result
@@ -318,6 +320,7 @@ extension TNSyncOperationManager {
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         return mySecret
     }
+    
     
     func createEncryptedPackage(json: String, pubkey: String) -> String {
         var package = ""

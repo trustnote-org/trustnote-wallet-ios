@@ -34,7 +34,15 @@ class TNPairingHelper {
     func addContactOperation(completion: @escaping (String) -> Void) {
         
         DispatchQueue.global().async {
+            
             self.generateDeviceAddress()
+            
+            let sql = String(format:"SELECT Count(*) FROM correspondent_devices WHERE device_address = '%@'", arguments:[self.deviceAddress])
+            let count = TNSyncOperationManager.shared.queryCount(sql: sql)
+            guard count == 0 else {
+                self.didBecomeFriendBlock!()
+                return
+            }
             self.saveMessageToDatabase()
             completion(self.deviceAddress)
             TNChatManager.sendPairingMessage(isActive: true, secret: self.secret!, pubkey: self.pubkey, hub: self.hub!)
@@ -42,8 +50,17 @@ class TNPairingHelper {
     }
     
     fileprivate func saveMessageToDatabase() {
+        
         let createDate = NSDate.getCurrentFormatterTime()
+      
+        let insertSql = "INSERT INTO correspondent_devices (device_address, name, pubkey, hub, creation_date) VALUES(?,?,?,?,?)"
+        TNSQLiteManager.sharedManager.updateData(sql: insertSql, values: [deviceAddress, "new", pubkey, hub!, createDate])
+        
         TNSQLiteManager.sharedManager.updateChatMessagesTable(address: deviceAddress, message: "add contact success".localized, date: createDate, isIncoming: 0, type: TNMessageType.pairing.rawValue)
+        var correspondent: TNCorrespondentDevice = TNCorrespondentDevice()
+        correspondent.name = "new"
+        correspondent.deviceAddress = deviceAddress
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TNAddContactCompletedNotification), object: correspondent)
     }
     
     fileprivate  func generateDeviceAddress() {
@@ -53,14 +70,6 @@ class TNPairingHelper {
         hub = backStr?.components(separatedBy: "#").first
         secret = backStr?.components(separatedBy: "#").last
         deviceAddress = TNSyncOperationManager.shared.getDeviceAddress(pubkey)
-        let sql = String(format:"SELECT Count(*) FROM correspondent_devices WHERE device_address = '%@'", arguments:[deviceAddress])
-        let count = TNSyncOperationManager.shared.queryCount(sql: sql)
-        guard count == 0 else {
-            self.didBecomeFriendBlock!()
-            return
-        }
-        let createDate = NSDate.getCurrentFormatterTime()
-        let insertSql = "INSERT INTO correspondent_devices (device_address, name, pubkey, hub, creation_date) VALUES(?,?,?,?,?)"
-        TNSQLiteManager.sharedManager.updateData(sql: insertSql, values: [deviceAddress, "new", components.first!, hub!, createDate])
     }
+    
 }

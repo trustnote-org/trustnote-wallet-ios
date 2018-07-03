@@ -26,6 +26,7 @@ class TNMyPairingCodeView: UIView, TNNibLoadable {
         descLabel.text = "PairngCode.desc".localized
         copyBtn.setTitle("Copy paire code".localized, for: .normal)
         setupRadiusCorner(radius: kCornerRadius * 2)
+        layer.masksToBounds = true
         copyBtn.setupRadiusCorner(radius: kCornerRadius)
         containerView.layer.borderColor = UIColor.hexColor(rgbValue: 0xF2F2F2).cgColor
         containerView.layer.borderWidth = kCornerRadius

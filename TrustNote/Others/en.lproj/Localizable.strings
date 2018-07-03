@@ -141,6 +141,9 @@
 "Add address" = "添加地址";
 "Edit address" = "编辑地址";
 "Save" = "Save";
+"Confirmed" = "Confirmed";
+"Unconfirmed" = "Unconfirmed";
+"Invalid" = "Invalid";
 
 /******* createwallet string************/
 "Create a TTT wallet" = "创建TTT钱包";
@@ -207,6 +210,7 @@
 "Delete Contact" = "Delete Contact";
 "Clear Chat History" = "Clear Chat History";
 "add contact success" = "你已添加对方为好友，现在可以开始聊天";
+"Set Alias" = "Set Alias";
 
 "Backup.instruction" = "Those 12 mnemonic words are for recovering you wallet, write down correctly on paper and keep in a safe place.";
 "Confirm your mnemonic words" = "Confirm your mnemonic words";

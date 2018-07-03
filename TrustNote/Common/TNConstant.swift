@@ -44,6 +44,8 @@ let TNWebSocketURLScheme: String = "wss://"
 
 let TNScanPrefix = "TTT:"
 
+let addressShowCount = 8
+
 let kNetworkTimeout = 30
 let kTempPubkeyInterval = 3600
 let kBaseOrder = 1000000.0
@@ -71,8 +73,14 @@ let TNEditInfoCompletionNotification           = "TNEditInfoCompletionNotificati
 let TNModifyWalletNameNotification             = "TNModifyWalletNameNotification"
 let TNDidFinishDeleteWalletNotification        = "TNDidFinishDeleteWalletNotification"
 let TNDidFinishSyncClonedWalletNotify          = "TNDidFinishSyncClonedWalletNotify"
-let TNTransferSendSuccessNotify                = "TNTransferSendSuccessNotify"
+let TNDidRecievedNewUnitNotification           = "TNDidRecievedNewUnitNotification"
 let TNDidRecievedMessageNotification           = "TNDidRecievedMessageNotification"
+let TNAddContactCompletedNotification          = "TNAddContactCompletedNotification"
+let TNAddContactConfirmedNotification          = "TNAddContactConfirmedNotification"
+let TNSendMessageToOtherNotification           = "TNSendMessageToOtherNotification"
+let TNDidRecievedRemovedNotification           = "TNDidRecievedRemovedNotification"
+let TNDidSetAliasSuccessNotification           = "TNDidSetAliasSuccessNotification"
+let TNDidRemovedAllChatRecordsNotify           = "TNDidRemovedAllChatRecordsNotify"
 
 /// Genesis Unit
 let GENESIS_UNIT = "rg1RzwKwnfRHjBojGol3gZaC5w7kR++rOR6O61JRsrQ="

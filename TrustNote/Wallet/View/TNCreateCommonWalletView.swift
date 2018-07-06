@@ -23,26 +23,25 @@ class TNCreateCommonWalletView: UIView {
     var passwordAlertView: TNPasswordAlertView?
     var verifyPasswordView: TNCustomAlertView?
     
-    fileprivate var isDisplayWarning: BehaviorRelay<Bool> =  BehaviorRelay(value: false)
-    
     @IBOutlet weak var inputTextField: UITextField!
     @IBOutlet weak var createButton: UIButton!
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var clearButton: UIButton!
     @IBOutlet weak var warningView: UIView!
     @IBOutlet weak var warningLabel: UILabel!
+    @IBOutlet weak var lineHeightConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         inputTextField.delegate = self
-        clearButton.setTitle(NSLocalizedString("Create Wallet", comment: ""), for: .normal)
-        warningLabel.text = NSLocalizedString("No more than 20 characters", comment: "")
+        inputTextField.placeholder = "Enter the name of your new TrustNote wallet".localized
+        createButton.setTitle("Create the wallet".localized, for: .normal)
+        warningLabel.text = "No more than 10 characters".localized
         createButton.layer.cornerRadius = kCornerRadius
         createButton.layer.masksToBounds = true
         let inputObserver = inputTextField.rx.text.orEmpty.asDriver().debounce(0.1).map {$0.count > 0}
         inputObserver.drive(createButton.validState).disposed(by: disposeBag)
-        inputObserver.drive(clearButton.rx_HiddenState).disposed(by: disposeBag)
-        isDisplayWarning.asDriver().drive(lineView.rx_HighlightState).disposed(by: disposeBag)
+        inputTextField.addTarget(self, action: #selector(self.textDidChanged), for: .editingChanged)
         
         NotificationCenter.default.rx.notification(Notification.Name.UIKeyboardWillShow)
             .subscribe(onNext: { [unowned self] _ in
@@ -60,9 +59,8 @@ extension TNCreateCommonWalletView {
     
     @IBAction func createNewWallet(_ sender: Any) {
         
-        guard (inputTextField.text?.count)! < maxInputCount + 1 else {
+        guard (inputTextField.text?.count)! <= maxInputCount else {
             warningView.isHidden = false
-            isDisplayWarning.accept(true)
             return
         }
         verifyWalletPassword()
@@ -72,8 +70,8 @@ extension TNCreateCommonWalletView {
     @IBAction func clearInputText(_ sender: Any) {
         createButton.isEnabled = false
         createButton.alpha = 0.3
-        warningView.isHidden = true
         clearButton.isHidden = true
+        inputTextField.text = nil
     }
     
     func createNewWallet() {
@@ -86,6 +84,7 @@ extension TNCreateCommonWalletView {
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 self.walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     self.walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                    TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
                     TNGlobalHelper.shared.password = nil
                     self.inputTextField.text = nil
                     self.ceateCommonWalletCompleted?()
@@ -96,7 +95,7 @@ extension TNCreateCommonWalletView {
     
     fileprivate func verifyWalletPassword() {
         passwordAlertView = TNPasswordAlertView.loadViewFromNib()
-        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .pop)
+        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .none)
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNCreateCommonWalletView.handleTapGesture))
         verifyPasswordView?.addGestureRecognizer(tap)
         passwordAlertView!.verifyCorrectBlock = {[unowned self] in
@@ -105,6 +104,8 @@ extension TNCreateCommonWalletView {
         }
         passwordAlertView!.didClickedCancelBlock = {[unowned self] in
             self.verifyPasswordView?.removeFromSuperview()
+            self.createButton.isEnabled = true
+            self.createButton.alpha = 1.0
         }
     }
     
@@ -119,6 +120,10 @@ extension TNCreateCommonWalletView {
         let popW = kScreenW - popX * 2
         return TNCustomAlertView(alert: alert, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: animatedType)
     }
+    
+    @objc func textDidChanged(textField: UITextField) {
+        clearButton.isHidden = (textField.text?.isEmpty)! ? true : false
+    }
 }
 
 extension TNCreateCommonWalletView: TNNibLoadable {
@@ -132,10 +137,18 @@ extension TNCreateCommonWalletView: TNNibLoadable {
 extension TNCreateCommonWalletView: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
+        clearButton.isHidden = (inputTextField.text?.isEmpty)! ? true : false
+        lineHeightConstraint.constant = 2.0
+        lineView.backgroundColor = kGlobalColor
         if !warningView.isHidden {
             warningView.isHidden = true
-            isDisplayWarning.accept(false)
         }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        clearButton.isHidden = true
+        lineHeightConstraint.constant = 1.0
+        lineView.backgroundColor = kLineViewColor
     }
 }
 

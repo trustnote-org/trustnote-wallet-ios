@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -58,12 +58,12 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5xj-jG-T25">
-                    <rect key="frame" x="130" y="0.0" width="68" height="45"/>
+                    <rect key="frame" x="130" y="0.0" width="120" height="45"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zWo-ll-oZm">
-                            <rect key="frame" x="0.0" y="0.0" width="68" height="42"/>
+                            <rect key="frame" x="0.0" y="0.0" width="120" height="42"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <state key="normal" title="观察钱包">
+                            <state key="normal" title="Watch-Only wallet">
                                 <color key="titleColor" red="0.29411764709999999" green="0.3294117647" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
@@ -71,7 +71,7 @@
                             </connections>
                         </button>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zdW-LE-6I2">
-                            <rect key="frame" x="0.0" y="42" width="68" height="3"/>
+                            <rect key="frame" x="0.0" y="42" width="120" height="3"/>
                             <color key="backgroundColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="3" id="0pK-3j-AJx"/>
@@ -85,7 +85,7 @@
                         <constraint firstItem="zdW-LE-6I2" firstAttribute="leading" secondItem="5xj-jG-T25" secondAttribute="leading" id="LE1-j6-lXD"/>
                         <constraint firstItem="zWo-ll-oZm" firstAttribute="top" secondItem="5xj-jG-T25" secondAttribute="top" id="cuB-p3-1Xe"/>
                         <constraint firstAttribute="trailing" secondItem="zdW-LE-6I2" secondAttribute="trailing" id="d6e-UP-aU1"/>
-                        <constraint firstAttribute="width" constant="68" id="pLO-ET-ywQ"/>
+                        <constraint firstAttribute="width" constant="120" id="pLO-ET-ywQ"/>
                         <constraint firstAttribute="trailing" secondItem="zWo-ll-oZm" secondAttribute="trailing" id="sQO-a7-SsY"/>
                         <constraint firstItem="zWo-ll-oZm" firstAttribute="leading" secondItem="5xj-jG-T25" secondAttribute="leading" id="zC4-J0-57E"/>
                     </constraints>
@@ -109,9 +109,11 @@
                 <outlet property="commonBtn" destination="5UP-b8-W1l" id="YBK-dR-qAO"/>
                 <outlet property="leftLine" destination="RL9-r9-rRR" id="tTP-FT-MwO"/>
                 <outlet property="leftView" destination="yKc-cj-5PA" id="Lur-KO-2H9"/>
+                <outlet property="leftViewWidthConstranit" destination="g83-FH-9YW" id="JYX-B6-LH8"/>
                 <outlet property="observBtn" destination="zWo-ll-oZm" id="h7B-a3-Bz4"/>
                 <outlet property="rightLine" destination="zdW-LE-6I2" id="cGs-Ti-Ay2"/>
                 <outlet property="rightView" destination="5xj-jG-T25" id="txO-kq-lNa"/>
+                <outlet property="rightViewWidthConstranit" destination="pLO-ET-ywQ" id="cav-5e-Fog"/>
             </connections>
             <point key="canvasLocation" x="-7.5" y="-48"/>
         </view>

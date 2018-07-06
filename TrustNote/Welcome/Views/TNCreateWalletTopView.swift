@@ -16,7 +16,7 @@ class TNCreateWalletTopView: UIView {
         super.awakeFromNib()
         sloganLable.font = UIFont(name: "PingFangSC-Medium", size: 22)
         sloganLable.textColor = kGlobalColor
-        sloganLable.text = NSLocalizedString("Create.slogan", comment: "")
+        sloganLable.text = "Create.slogan".localized
     }
 
 }

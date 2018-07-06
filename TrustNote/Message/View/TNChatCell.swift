@@ -114,12 +114,15 @@ extension TNChatCell {
         let bubbleX = messageModel.senderType == .contact ? BubbleShortPadding : (kScreenW - bubbleW - BubbleShortPadding)
         bubbleImgView.frame = CGRect(x: bubbleX, y: topPadding, width: bubbleW, height: bubbleH)
         
-        let leftCapHeight = 22
+        let padding: CGFloat = 22
+        let insets = UIEdgeInsetsMake(padding, padding, padding, padding)
         if messageModel.senderType == .contact {
-            bubbleImgView.image = UIImage(named: "buddle_other")?.stretchableImage(withLeftCapWidth: leftCapHeight, topCapHeight: leftCapHeight)
+           // bubbleImgView.image = UIImage(named: "buddle_other")?.stretchableImage(withLeftCapWidth: leftCapHeight, topCapHeight: leftCapHeight)
+            bubbleImgView.image = UIImage(named: "buddle_other")?.resizableImage(withCapInsets: insets, resizingMode: .tile)
             textMeaasgeLabel.textColor = kThemeTextColor
         } else {
-            bubbleImgView.image = UIImage(named: "bubble_me")?.stretchableImage(withLeftCapWidth: leftCapHeight, topCapHeight: leftCapHeight)
+            //bubbleImgView.image = UIImage(named: "bubble_me")?.stretchableImage(withLeftCapWidth: leftCapHeight, topCapHeight: leftCapHeight)
+            bubbleImgView.image = UIImage(named: "bubble_me")?.resizableImage(withCapInsets: insets, resizingMode: .tile)
             textMeaasgeLabel.textColor = UIColor.white
         }
         

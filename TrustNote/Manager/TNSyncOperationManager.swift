@@ -170,6 +170,19 @@ extension TNSyncOperationManager {
 /// MARK: JS api
 extension TNSyncOperationManager {
     
+    func getNewMnemonic() -> String {
+        var mnemonic = ""
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+            TNEvaluateScriptManager.sharedInstance.generateMnemonic { (result) in
+                mnemonic = result
+                sema.signal()
+            }
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+        return mnemonic
+    }
+    
     func newChangeAddress(walletId: String, pubkey: String) -> String {
         var newAddress = ""
         var count = 0

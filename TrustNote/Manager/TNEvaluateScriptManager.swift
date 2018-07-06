@@ -35,10 +35,6 @@ final class TNEvaluateScriptManager {
         
         webView.evaluateJavaScript(fileString) {[unowned self] (any, _) in
             
-            if TNGlobalHelper.shared.isNeedGenerateSeed {
-                self.generateMnemonic()
-            }
-            TNGlobalHelper.shared.isComlpetion = true
             guard TNGlobalHelper.shared.tempDeviceKey.isEmpty else {
                 TNEvaluateScriptManager.sharedInstance.generateTempPublicKey(tempPrivateKey: TNGlobalHelper.shared.tempDeviceKey)
                 return
@@ -57,13 +53,10 @@ extension TNEvaluateScriptManager {
      * @param {void}
      * @return {string} 12 mnemonics
      */
-    public func generateMnemonic() {
+    public func generateMnemonic(completed: ((String) -> Swift.Void)?) {
         webView.evaluateJavaScript("window.Client.mnemonic()") {(any, error) in
             if let mnemonic = any {
-               // let  mnemonic1 = "stone home state island dry human capable amount luxury robot protect arch"
-             //let  mnemonic1 = "theme wall plunge fluid circle organ gloom expire coach patient neck clip"/*"together knife slab material electric broom wagon heart harvest side copper vote"*/
                 
-                TNGlobalHelper.shared.mnemonic = mnemonic as! String
                 guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
                     let version = TNVersion
                     let timeInterval: TimeInterval = Date().timeIntervalSince1970
@@ -75,6 +68,7 @@ extension TNEvaluateScriptManager {
                 TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: mnemonic)
                 let hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: true)
                 TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub)
+                completed?(mnemonic as! String)
             }
         }
     }

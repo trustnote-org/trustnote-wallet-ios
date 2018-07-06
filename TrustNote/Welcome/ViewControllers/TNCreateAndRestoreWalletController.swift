@@ -18,14 +18,14 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
    
     private let creatWalletBtn = TNButton().then {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
-        $0.setTitle(NSLocalizedString("Create Wallet", comment: ""), for: .normal)
+        $0.setTitle("Create wallet".localized, for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
     }
     
     private let restoreWalletBtn = TNButton().then {
         $0.backgroundColor = UIColor.white
-        $0.setTitle(NSLocalizedString("Restore Wallet", comment: ""), for: .normal)
+        $0.setTitle("Restore wallet".localized, for: .normal)
         $0.setTitleColor(kGlobalColor, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
         $0.layer.borderColor = kGlobalColor.cgColor
@@ -40,9 +40,6 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        if TNGlobalHelper.shared.mnemonic.isEmpty {
-            TNEvaluateScriptManager.sharedInstance.generateMnemonic()
-        }
         /// handle events
         creatWalletBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             

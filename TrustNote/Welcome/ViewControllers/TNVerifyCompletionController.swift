@@ -21,26 +21,26 @@ class TNVerifyCompletionController: TNBaseViewController {
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
-        $0.text = NSLocalizedString("Verifying words correct", comment: "")
+        $0.text = "Verifying words correct".localized
     }
     
     private let instructionLabel = UILabel().then {
         $0.textColor = kThemeTextColor
-        $0.font = UIFont.systemFont(ofSize: 14.0)
+        $0.font = UIFont(name: "PingFangSC-Light", size: 14)
         $0.numberOfLines = 0
-        $0.text = NSLocalizedString("VerifyingCompletion.instruction", comment: "")
+        $0.text = "VerifyingCompletion.instruction".localized
     }
     
     private let deleteBtn = TNButton().then {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
-        $0.setTitle(NSLocalizedString("Delete words", comment: ""), for: .normal)
+        $0.setTitle("Delete words".localized, for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.titleLabel?.font = kButtonFont
     }
     
     private let skipBtn = TNButton().then {
         $0.backgroundColor = UIColor.white
-        $0.setTitle(NSLocalizedString("Skip", comment: ""), for: .normal)
+        $0.setTitle("Keep it for now".localized, for: .normal)
         $0.setTitleColor(kGlobalColor, for: .normal)
         $0.titleLabel?.font = kButtonFont
         $0.layer.borderColor = kGlobalColor.cgColor
@@ -119,7 +119,7 @@ extension TNVerifyCompletionController {
 extension TNVerifyCompletionController {
     
     fileprivate func deleteSeedPhrase() {
-        alertAction(self, NSLocalizedString("Make sure delete words", comment: ""), message: nil, sureActionText: NSLocalizedString("Confirm", comment: ""), cancelActionText: NSLocalizedString("Cancel", comment: ""), isChange: true) {
+        alertAction(self, "Make sure delete words".localized, message: nil, sureActionText: "Confirm".localized, cancelActionText: "Cancel".localized, isChange: true) {
             TNGlobalHelper.shared.isVerifyPasswdForMain = false
             TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)

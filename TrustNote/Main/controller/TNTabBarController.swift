@@ -49,9 +49,10 @@ class TNTabBarController: UITabBarController {
         navController.tabBarItem.title = title
         navController.tabBarItem.image = UIImage(named: imageName + "_copy")
         navController.tabBarItem.selectedImage = UIImage(named: imageName)
-        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.hexColor(rgbValue: 0x4B5461, alpha: 0.6)], for: .normal)
-        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : kGlobalColor], for: .selected)
-        navController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -1)
+        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.hexColor(rgbValue: 0x4B5461, alpha: 0.6), NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)], for: .normal)
+        navController.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor : kGlobalColor, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 12)], for: .selected)
+        navController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, -2)
+        navController.tabBarItem.imageInsets = UIEdgeInsetsMake(-2, 0, 0, 0)
         addChildViewController(navController)
     }
 }

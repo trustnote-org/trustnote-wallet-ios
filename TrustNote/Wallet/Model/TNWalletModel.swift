@@ -33,7 +33,7 @@ class TNWalletModel: HandyJSON {
     var network: String = "livenet"
     var xPubKey: String = ""
     var publicKeyRing: [Any]?
-    var walletName: String = "TTT Wallet"
+    var walletName: String = "TTT01"
     var derivationStrategy: String = "BIP44"
     var account: Int = 0
     var mnemonicHasPassphrase: Bool = false

@@ -10,7 +10,7 @@ import UIKit
 
 class TNProfileViewController: TNBaseViewController {
     
-    let dataSource = [[["title" : "T口令", "imgName" : "command", "action" : ""]],
+    let dataSource = [/*[["title" : "T口令", "imgName" : "command", "action" : ""]],*/
                       [["title" : "Wallet tools".localized, "imgName" : "tool", "action" : "enterIntoWalletTool"],
                        ["title" : "Manage wallet".localized, "imgName" : "manage", "action" : "didClickedManageWalletButton"],
                        ["title" : "Settings".localized, "imgName" : "setting", "action" : "enterIntoSetting"]],
@@ -174,8 +174,10 @@ extension TNProfileViewController {
         
         let infoDict = Bundle.main.infoDictionary
         let gitSHA = "#" + (infoDict!["GitCommitSHA"] as! String)
+        let currentVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+        let version = "V" + currentVersion + " light"
         let dataArr = [
-            [["title" : "Version".localized, "detail" : "V2.0.0 light", "action" : "", "isCanSelected" : false],
+            [["title" : "Version".localized, "detail" : version, "action" : "", "isCanSelected" : false],
              ["title" : "Hash value".localized, "detail" : gitSHA, "action" : "", "isCanSelected" : false],
              ["title" : "Terms of Use".localized, "detail" : "", "action" : "", "isCanSelected" : true]]
             ] as [Any]

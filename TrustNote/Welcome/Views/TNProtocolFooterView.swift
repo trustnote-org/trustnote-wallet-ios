@@ -32,11 +32,6 @@ class TNProtocolFooterView: UIView {
             
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .deviceName)
             TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 2)
-            if TNGlobalHelper.shared.isComlpetion {
-                TNEvaluateScriptManager.sharedInstance.generateMnemonic()
-            } else {
-                TNGlobalHelper.shared.isNeedGenerateSeed = true
-            }
             
         }).disposed(by: self.disposeBag)
     }

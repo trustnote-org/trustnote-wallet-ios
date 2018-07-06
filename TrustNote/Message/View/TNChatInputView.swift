@@ -144,6 +144,7 @@ extension TNChatInputView: UITextViewDelegate {
         if text == "\n" {
             delegate?.sendMessage(text: textView.text)
             textView.text = nil
+            textDidChange()
             return false
         }
         return true

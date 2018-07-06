@@ -42,9 +42,9 @@
                         </constraints>
                     </view>
                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j5e-Up-5Rg">
-                        <rect key="frame" x="224" y="12" width="70" height="20"/>
+                        <rect key="frame" x="204" y="9" width="90" height="26"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="70" id="2XA-FJ-Rpy"/>
+                            <constraint firstAttribute="width" constant="90" id="2XA-FJ-Rpy"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title="已确认" image="recieve_confirmed">
@@ -76,6 +76,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="recieve_confirmed" width="20" height="20"/>
+        <image name="recieve_confirmed" width="26" height="26"/>
     </resources>
 </document>

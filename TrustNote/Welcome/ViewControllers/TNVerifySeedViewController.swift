@@ -16,21 +16,21 @@ class TNVerifySeedViewController: TNBaseViewController {
     }
     
     private let titleTextLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Verifying notes", comment: "")
+        $0.text =  "Verifying notes".localized
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
     }
     
     private let descLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Verifying.description", comment: "")
+        $0.text =  "Verifying.description".localized
         $0.textColor = kThemeTextColor
-        $0.font = UIFont.systemFont(ofSize: 14.0)
+        $0.font = UIFont(name: "PingFangSC-Light", size: 14)
         $0.numberOfLines = 0
     }
     
     private let doneButton = TNButton().then {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
-        $0.setTitle(NSLocalizedString("Verification done", comment: ""), for: .normal)
+        $0.setTitle("Verification done".localized, for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.titleLabel?.font = kButtonFont
         $0.addTarget(self, action: #selector(TNVerifySeedViewController.verifyCompleted), for: .touchUpInside)
@@ -44,7 +44,7 @@ class TNVerifySeedViewController: TNBaseViewController {
     }
     
     private let warningLabel = UILabel().then {
-        $0.text = NSLocalizedString("Verification error", comment: "")
+        $0.text = "Verification error".localized
         $0.textColor = UIColor.hexColor(rgbValue: 0xEF2B2B)
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.numberOfLines = 2
@@ -178,6 +178,7 @@ extension TNVerifySeedViewController {
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                    TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
                 })
             }
         }

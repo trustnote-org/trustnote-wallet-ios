@@ -21,8 +21,6 @@ final class TNGlobalHelper {
     var recoverStyle: TNWalletRecoverStyle = .none
     var isNeedLoadData = true
     var password: String? = nil
-    var isComlpetion: Bool = false
-    var isNeedGenerateSeed: Bool = false
     var encryptePrivKey = ""
     var tempPrivKey = ""
     var xPubkey: String = ""             // root publickey
@@ -94,6 +92,7 @@ final class TNGlobalHelper {
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                    TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
                 })
             }
         }

@@ -25,15 +25,15 @@ class TNRecoveryWalletController: TNBaseViewController {
     }
     
     private let titleTextLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Recover wallet", comment: "")
+        $0.text =  "Recover wallet".localized
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
     }
     
     private let descLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Wallet mnemonic", comment: "")
+        $0.text =  "Wallet mnemonic".localized
         $0.textColor = UIColor.hexColor(rgbValue: 0x666666)
-        $0.font = UIFont.systemFont(ofSize: 14.0)
+        $0.font = UIFont(name: "PingFangSC-Light", size: 14)
     }
     
     private let warningImageView = UIImageView().then {
@@ -42,8 +42,8 @@ class TNRecoveryWalletController: TNBaseViewController {
     }
     
     private let warningLabel = UILabel().then {
-        $0.text = NSLocalizedString("Verification error", comment: "")
-        $0.textColor = UIColor.hexColor(rgbValue: 0xEF2B2B)
+        $0.text = "Verification error".localized
+        $0.textColor = kWarningHintColor
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.numberOfLines = 2
         $0.isHidden = true
@@ -51,18 +51,18 @@ class TNRecoveryWalletController: TNBaseViewController {
     
     private let recoverBtn = TNButton().then {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
-        $0.setTitle(NSLocalizedString("Use the phrase to restore the wallet", comment: ""), for: .normal)
+        $0.setTitle("Use the phrase to restore the wallet".localized, for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
-        $0.titleLabel?.font = kButtonFont
+        $0.titleLabel?.font = TNLocalizationTool.shared.currentLanguage == "en" ? UIFont.systemFont(ofSize: 16) : kButtonFont
         $0.isEnabled = false
         $0.alpha = 0.3
     }
     
     private let deleteBtn = TNButton().then {
         $0.backgroundColor = UIColor.white
-        $0.setTitle(NSLocalizedString("Restore the wallet and delete the phrase", comment: ""), for: .normal)
+        $0.setTitle("Restore the wallet and delete the phrase".localized, for: .normal)
         $0.setTitleColor(kGlobalColor, for: .normal)
-        $0.titleLabel?.font = kButtonFont
+        $0.titleLabel?.font = TNLocalizationTool.shared.currentLanguage == "en" ? UIFont.systemFont(ofSize: 16) : kButtonFont
         $0.layer.borderColor = kGlobalColor.cgColor
         $0.layer.borderWidth = 1.0
         $0.isEnabled = false
@@ -114,17 +114,19 @@ class TNRecoveryWalletController: TNBaseViewController {
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
         
-//        if delegate.isTabBarRootController() {
-//            let mnemonic = "together knife slab material electric broom wagon heart harvest side copper vote"
-//            seedView.seedContainerView.mnmnemonicsArr = mnemonic.components(separatedBy: " ")
-//        } else {
-//            seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
-//        }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        var  navigationArray = navigationController?.viewControllers
+        if navigationArray?.count == 3 && !delegate.isTabBarRootController() {
+            for (index, vc) in navigationArray!.enumerated() {
+                if vc.isKind(of: TNSetupPasswordController.self) {
+                    navigationArray?.remove(at: index)
+                }
+            }
+            navigationController?.viewControllers = navigationArray!
+        }
         if delegate.isTabBarRootController() && isShowAlert {
             alertAction(self, "Recover wallet tips".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
             isShowAlert = false
@@ -133,18 +135,8 @@ class TNRecoveryWalletController: TNBaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if navigationController?.viewControllers.count == 3 && !delegate.isTabBarRootController() {
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        }
         let firstResponder = seedView.seedContainerView.textFields.first
         firstResponder?.becomeFirstResponder()
-    }
-    
-    override func viewDidDisappear(_ animated:Bool) {
-        super.viewDidDisappear(animated)
-        if navigationController?.viewControllers.count == 3 && !delegate.isTabBarRootController() {
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        }
     }
 }
 

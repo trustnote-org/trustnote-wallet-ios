@@ -142,9 +142,7 @@ extension TNTransactiondDetailController {
                     content =  String(format: "%.6f",  Double(detailModel.fee) / kBaseOrder) + " MN"
                 }
             case TNTradeDetailRow.date.rawValue:
-                let formatterDate = NSDate.getFormatterTime(timeStamp: String(detailModel.time), formatter: "yyyy/MM/dd HH:mm  ")
-                let compareDate = NSDate.compareDateTime(timeStamp: detailModel.time)
-                content = formatterDate + String(format:"(%@)", arguments:[compareDate])
+                content = NSDate.getFormatterTime(timeStamp: String(detailModel.time), formatter: "yyyy/MM/dd HH:mm")
             case TNTradeDetailRow.unit.rawValue:
                 content = detailModel.unit
             case TNTradeDetailRow.status.rawValue:

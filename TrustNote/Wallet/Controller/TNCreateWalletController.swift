@@ -29,7 +29,7 @@ class TNCreateWalletController: TNNavigationController {
     var syncLoadingView : TNCustomAlertView?
     
     private let titleTextLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Create a TTT wallet", comment: "")
+        $0.text =  "Create TTT wallet".localized
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
     }

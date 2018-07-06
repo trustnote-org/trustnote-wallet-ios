@@ -30,7 +30,7 @@ class TNProfileHeaderView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         containerView.layer.cornerRadius = kCornerRadius
-        containerView.setupShadow(Offset: CGSize(width: 0, height: 8), opacity: 0.2, radius: 10)
+        containerView.setupShadow(Offset: CGSize(width: 0, height: 6), opacity: 0.1, radius: 6)
         containerLeftMarginConstraint.constant = IS_iphone5 ? 10 : 20
         if IS_iphone5 {
             descLabel.font = UIFont.systemFont(ofSize: 13)

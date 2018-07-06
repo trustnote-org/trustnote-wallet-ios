@@ -62,7 +62,7 @@ extension TNEditInfoController {
         
         guard (editInfoView.inputTextField.text?.isEmpty)! else {
             
-            guard editInfoView.inputTextField.text!.count < limitedInputCount else {
+            guard editInfoView.inputTextField.text!.count <= limitedInputCount else {
                 editInfoView.warningView.isHidden = false
                 return
             }

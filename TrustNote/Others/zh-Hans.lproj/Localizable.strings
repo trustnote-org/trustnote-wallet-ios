@@ -38,7 +38,7 @@
 "Please enter device name" = "请输入设备名称";
 "Welocme To TrustNote" = "欢迎来到TrustNote钱包";
 "DeviceName.instruction" = "您可以自定义设备名称，朋友加您好友后，在聊天列表里很容易找到您。";
-"DeviceName.warning" = "不超过20个字符";
+
 
 /******* setup password string************/
 "Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
@@ -60,11 +60,11 @@
 "Cancel" = "取消";
 
 
-"Create Wallet" = "创建钱包";
+"Create wallet" = "创建钱包";
 
 "Create.slogan" = "信任 · 通证 · 万物";
 
-"Restore Wallet" = "恢复钱包";
+"Restore wallet" = "恢复钱包";
 
 "Create Wallet and Backup Your Seed Phrase" = "创建钱包并备份您的口令";
 
@@ -72,8 +72,8 @@
 
 /******* beckup seed string************/
 "Backup Your Seed Phrase" = "备份助记词";
-"Backup.detail" = "最后一步：立即备份你的12个助记词";
-"Backup your 12 words mnemonic now" = "立即备份你的12个助记词";
+"Backup your 12 words mnemonic now" = "最后一步：立即备份你的12个助记词";
+
 "Backup.description" = "您只能用这些单词恢复钱包！一旦丢失，资产将无法找回！一旦泄露，资产将会被盗！";
 "Backup.firstWarning" = "建议手写或保存在离线设备中";
 "Backup.lastWarning" = "建议完成备份助记词后立即恢复一次，以确保助记词正确";
@@ -86,11 +86,11 @@
 "Verifying.description" = "根据你记下的助记词，按顺序输入，验证你备份的助记词正确无误";
 "Verification done" = "完成验证";
 "Verification error" = "助记词验证错误，请检查后重试";
-"Verifying words correct" = "验证助记词正确";
+"Verifying words correct" = "助记词验证正确";
 "VerifyingCompletion.instruction" = "您的助记词正确，为了确保您的钱包安全，建议您删除显示在设备中的助记词";
 "Make sure delete words" = "确认删除助记词？";
 "Delete words" = "删除助记词";
-"Skip" = "跳过";
+"Keep it for now" = "暂不删除";
 
 /******* verify password string************/
 "Input password" = "输入密码";
@@ -125,7 +125,7 @@
 "Receive" = "收款";
 "Recent transaction records" = "最近交易记录";
 "My receiving address" = "我的收款地址";
-"Fixed amount" = "设置固定金额";
+"Fixed amount" = "设置金额";
 "Copy the receiving address" = "复制收款地址";
 "Clear the amount" = "清除金额";
 "Send TTT" = "TTT转账";
@@ -149,9 +149,11 @@
 "Invalid" = "无效的";
 
 /******* create wallet string************/
-"Create a TTT wallet" = "创建TTT钱包";
+"Create TTT wallet" = "创建TTT钱包";
 "Common wallet" = "普通钱包";
 "Observe wallet" = "观察钱包";
+"Create the wallet" = "创建钱包";
+"Enter the name of your new TrustNote wallet" = "输入TTT新钱包名称";
 "No more than 20 characters" = "不超过20个字符";
 "CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
 "CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";

@@ -37,9 +37,8 @@
 
 /******* device name string************/
 "Please enter device name" = "Please enter the device name";
-"Welocme To TrustNote" = "Welocme To TrustNote";
-"DeviceName.instruction" = "Your wallet will be created on this device, keep it safe.  See your backup options in the Settings menu. Also in the Settings menu, you will find security options such as setting a password.";
-"DeviceName.warning" = "No more than 20 characters";
+"Welocme To TrustNote" = "Welcome to TrustNote";
+"DeviceName.instruction" = "You can define the name of your device so your friends can easily find you from the chatting list after adding you as friend.";
 
 /******* setup password string************/
 "Password.firstWarning" = "Password strength is critical to safeguard your wallet";
@@ -60,34 +59,33 @@
 "Confirm" = "Confirm";
 "Cancel" = "Cancel";
 
-"Create Wallet" = "CREATE WALLET";
-"Create.slogan" = "信任 · 通证 · 万物";
-"Restore Wallet" = "RESTORE WALLET";
+"Create wallet" = "Create Wallet";
+"Create.slogan" = "Trust · Token · Things";
+"Restore wallet" = "Restore Wallet";
 
 "Create Wallet and Backup Your Seed Phrase" = "Create Wallet and Backup Your Seed Phrase";
 
 "CreateWallet.instruction" = "We highly recommend you write the Mnemonic words(Backup Phrase) on Paper and keep it in a safe place, anyone get it can access or spend your assets. Also get start with a small amout of assets.";
 /******* beckup seed string************/
-"Backup Your Seed Phrase" = "Backup the mnemonic";
-"Backup.detail" = "最后一步：立即备份你的12个助记词";
-"Backup your 12 words mnemonic now" = "Backup your 12 words mnemonic now!";
+"Backup Your Seed Phrase" = "Backup Your Mnemonic";
+"Backup your 12 words mnemonic now" = "Last step: Backup your mnemonic now";
 "Backup.description" = "You can only use these mnemonic to restore your wallet! Your assets cannot be recovered if the mnemonic are lost! Your assets may be stolen if the mnemonic are leaked! ";
 "Backup.firstWarning" = "Write it down or save it in an offline device";
 "Backup.lastWarning" = "Restore your wallet immediately after creating your wallet, to ensure the mnemonic is correct";
-"Backup done" = "完成备份";
-"Backup mode reminding" = "请认真抄写助记词，不要用截屏的方式保管助记词。";
-"Make sure have been backed up" = "确认已经保存了助记词? ";
+"Backup done" = "Backup Complete";
+"Backup mode reminding" = "Please never take a screenshot of the mnemonic. Write it down carefully instead!";
+"Make sure have been backed up" = "Are you sure you saved mnemonic?";
 
 /******* verify seed string************/
-"Verifying notes" = "验证助记词";
-"Verifying.description" = "根据你记下的助记词，按顺序输入，验证你备份的助记词正确无误";
-"Verification done" = "完成验证";
-"Verification error" = "助记词验证错误，请检查后重试";
-"Verifying words correct" = "验证助记词正确";
-"VerifyingCompletion.instruction" = "您的助记词正确，为了确保您的钱包安全，建议您删除显示在设备中的助记词";
-"Make sure delete words" = "Are you sure you want to delete your wallet mnemonic?";
-"Delete words" = "Delete the mnemonic";
-"Skip" = "跳过";
+"Verifying notes" = "Verify Mnemonic";
+"Verifying.description" = "Please make sure your mnemonic was written correctly,  then type in the words in its order to verify the one you wrote down is correct.";
+"Verification done" = "Verification Complete";
+"Verification error" = "The order is not right, please check and try it again";
+"Verifying words correct" = "Mnnemonic is verified ";
+"VerifyingCompletion.instruction" = "Your mnemonic is correct. For your own safety, we suggest you delete the mnemonic from your device";
+"Make sure delete words" = "Are you sure you want to delete the mnemonic?";
+"Delete words" = "Delete Mnemonic";
+"Keep it for now" = "Keep it for now";
 
 /******* verify password string************/
 "Input password" = "输入密码";
@@ -97,10 +95,10 @@
 "Click continue" = "点击继续";
 
 /******* mnemonic string************/
-"Recover wallet" = "恢复钱包";
-"Wallet mnemonic" = "钱包助记词";
-"Use the phrase to restore the wallet" = "使用助记词恢复钱包";
-"Restore the wallet and delete the phrase" = "恢复钱包并删除助记词";
+"Recover wallet" = "Restore Mnemonic";
+"Wallet mnemonic" = "Your wallet's mnemonic";
+"Use the phrase to restore the wallet" = "Restore your wallet";
+"Restore the wallet and delete the phrase" = "Restore wallet and delete the mnemonic";
 "Restore from the mnemonic" = "Restore from the mnemonic";
 
 /******* tabBar string************/
@@ -146,10 +144,12 @@
 "Invalid" = "Invalid";
 
 /******* createwallet string************/
-"Create a TTT wallet" = "创建TTT钱包";
-"Common wallet" = "普通钱包";
-"Observe wallet" = "观察钱包";
-"No more than 20 characters" = "不超过20个字符";
+"Create TTT wallet" = "Create TrustNote wallet";
+"Common wallet" = "Regular wallet";
+"Observe wallet" = "Watch-Only wallet";
+"Create the wallet" = "Create the wallet";
+"Enter the name of your new TrustNote wallet" = "Enter the name of your new TrustNote wallet";
+"No more than 20 characters" = "No more than 20 characters";
 "CreateObserveWallet.firstTip" = "不建议使用PC端作为观察钱包";
 "CreateObserveWallet.lastTip" = "观察钱包发送交易时需要冷钱包配合签名。你可以使用另一台闲置手机，开飞行模式作为冷钱包，配合离线签名。";
 "Next" = "NEXT";

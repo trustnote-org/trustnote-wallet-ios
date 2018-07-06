@@ -12,7 +12,7 @@ class TNModifyRemarkController: TNNavigationController {
     
     var correspondent: TNCorrespondentDevice!
     
-    let limitedInputCount = 10
+    let limitedInputCount = 20
     
     fileprivate lazy var editRemarkView: TNEditRemarkView = {
         let editRemarkView = TNEditRemarkView.editRemarkView()

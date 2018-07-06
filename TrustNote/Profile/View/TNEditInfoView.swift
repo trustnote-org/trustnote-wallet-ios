@@ -25,7 +25,7 @@ class TNEditInfoView: UIView, UITextFieldDelegate {
                 return
             }
             inputTextField.placeholder = "Please enter device name".localized
-            warningLabel.text = "DeviceName.warning".localized
+            warningLabel.text = "No more than 20 characters".localized
             let defaultConfig = TNConfigFileManager.sharedInstance.readConfigFile()
             inputTextField.text = defaultConfig["deviceName"] as? String
         }

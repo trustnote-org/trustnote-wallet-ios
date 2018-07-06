@@ -184,7 +184,9 @@ class TNSynchroHistoryData {
         }
         addressArr.removeAll()
         changeAddressArr.removeAll()
-        operationWallets.removeFirst()
+        if !operationWallets.isEmpty {
+            operationWallets.removeFirst()
+        }
         guard !operationWallets.isEmpty else {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             return

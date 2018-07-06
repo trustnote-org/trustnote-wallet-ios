@@ -10,7 +10,7 @@ import UIKit
 
 class TNVBackupsSeedController: TNBaseViewController {
     
-    let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 26) : 26
+    let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + CGFloat(kLeftMargin)) : CGFloat(kLeftMargin)
     
     private let backBtn = UIButton().then {
         $0.setImage(UIImage(named: "welcome_back"), for: .normal)
@@ -18,28 +18,28 @@ class TNVBackupsSeedController: TNBaseViewController {
     }
     
     private let titleTextLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Backup Your Seed Phrase", comment: "")
+        $0.text =  "Backup Your Seed Phrase".localized
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
     }
     
     private let detailLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Backup.detail", comment: "")
+        $0.text =  "Backup your 12 words mnemonic now".localized
         $0.textColor = kThemeTextColor
-        $0.font = kButtonFont
+        $0.font = UIFont.boldSystemFont(ofSize: TNLocalizationTool.shared.currentLanguage == "en" ? 16 : 18)
         $0.numberOfLines = 0
     }
     
     private let descLabel = UILabel().then {
-        $0.text =  NSLocalizedString("Backup.description", comment: "")
+        $0.text =  "Backup.description".localized
         $0.textColor = kThemeTextColor
-        $0.font = UIFont.systemFont(ofSize: 14.0)
+        $0.font = UIFont(name: "PingFangSC-Light", size: 14)
         $0.numberOfLines = 0
     }
     
     private let doneButton = TNButton().then {
         $0.setBackgroundImage(UIImage.creatImageWithColor(color: kGlobalColor, viewSize: CGSize(width:  kScreenW, height: 48)), for: .normal)
-        $0.setTitle(NSLocalizedString("Backup done", comment: ""), for: .normal)
+        $0.setTitle("Backup done".localized, for: .normal)
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
         $0.addTarget(self, action: #selector(TNVBackupsSeedController.backupCompleted), for: .touchUpInside)
@@ -76,26 +76,24 @@ class TNVBackupsSeedController: TNBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        var  navigationArray = navigationController?.viewControllers
+        if navigationArray?.count == 3 {
+            for (index, vc) in navigationArray!.enumerated() {
+                if vc.isKind(of: TNSetupPasswordController.self) {
+                    navigationArray?.remove(at: index)
+                }
+            }
+            navigationController?.viewControllers = navigationArray!
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if navigationController?.viewControllers.count == 3 {
-            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        }
-        
         guard isNeedAlert else {
             return
         }
-        alertAction(self, NSLocalizedString("Backup mode reminding", comment: ""), message: nil, sureActionText: nil, cancelActionText: NSLocalizedString("Confirm", comment: ""), isChange: false, sureAction: nil)
+        alertAction(self, "Backup mode reminding".localized, message: nil, sureActionText: nil, cancelActionText: NSLocalizedString("Confirm", comment: ""), isChange: false, sureAction: nil)
         isNeedAlert = false
-    }
-    
-    override func viewDidDisappear(_ animated:Bool) {
-        super.viewDidDisappear(animated)
-        if navigationController?.viewControllers.count == 3 {
-             navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        }
     }
 }
 
@@ -170,7 +168,7 @@ extension TNVBackupsSeedController {
     
     @objc fileprivate func backupCompleted() {
         
-        alertAction(self, NSLocalizedString("Make sure have been backed up", comment: ""), message: nil, sureActionText: NSLocalizedString("Confirm", comment: ""), cancelActionText: NSLocalizedString("Cancel", comment: ""), isChange: true) {[weak self] in
+        alertAction(self, "Make sure have been backed up".localized, message: nil, sureActionText: "Confirm".localized, cancelActionText: "Cancel".localized, isChange: true) {[weak self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
                 self?.navigationController?.pushViewController(TNVerifySeedViewController(), animated: true)
             }

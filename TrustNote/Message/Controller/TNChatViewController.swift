@@ -32,7 +32,6 @@ class TNChatViewController: TNNavigationController {
     private let textLabel = UILabel().then {
         $0.textColor = kTitleTextColor
         $0.font = kTitleFont
-        $0.text = "Cocoa"
     }
     
     private let titleView = UIView().then {

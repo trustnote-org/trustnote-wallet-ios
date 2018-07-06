@@ -60,7 +60,7 @@ let kBackgroundColor      = UIColor.hexColor(rgbValue: 0xF6F7F9)
 let kThemeMarkColor       = UIColor.hexColor(rgbValue: 0xF6782F)
 let kLineViewColor        = UIColor.hexColor(rgbValue: 0xCBD5E3)
 let kWarningHintColor     = UIColor.hexColor(rgbValue: 0xEF2B2B)
-let kAlertBackgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1, alpha: 0.8)
+let kAlertBackgroundColor = UIColor.hexColor(rgbValue: 0xD3DFF1, alpha: 0.95)
 
 /// MARK: Notificaton Name
 let TNDidFinishedGetHistoryTransaction         = "TNDidFinishGetHistoryTransaction"

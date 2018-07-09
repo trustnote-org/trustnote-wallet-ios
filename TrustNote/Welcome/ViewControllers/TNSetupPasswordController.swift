@@ -34,28 +34,35 @@ class TNSetupPasswordController: TNBaseViewController {
     @IBOutlet weak var backgroundFrameView: UIView!
     @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var warningTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lastLineHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var firstLineHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tipLabelLeftConstraint: NSLayoutConstraint!
     @IBOutlet weak var confirmBtnBottomConstraint: NSLayoutConstraint!
     
     let securityLevelView =  TNPasswordSecurityView.passwordSecurityView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        titleTextLabel.text = NSLocalizedString("Password.titleText", comment: "")
-        warningDescLabel.text = NSLocalizedString("Password.passwordLengthValid", comment: "")
+        titleTextLabel.text = "Password.titleText".localized
+        warningDescLabel.text = "Password.passwordLengthValid".localized
         confirmBtnBottomConstraint.constant = IS_iphone5 ? 30 : 50
         confirmButton.setupRadiusCorner(radius: kCornerRadius)
-        confirmButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
+        confirmButton.setTitle("Confirm".localized, for: .normal)
         backgroundFrameView.setupRadiusCorner(radius: kCornerRadius) 
         backgroundFrameView.layer.masksToBounds = true
-        conflictLabel.text = NSLocalizedString("Password.checkInput", comment: "")
-        
-        firstWarningLabel.attributedText = firstWarningLabel.getAttributeStringWithString(NSLocalizedString("Password.firstWarning", comment: ""), lineSpace: 5.0)
-        lastWarningLabel.attributedText = lastWarningLabel.getAttributeStringWithString(NSLocalizedString("Password.secondWarning", comment: ""), lineSpace: 5.0)
+        conflictLabel.text = "Password.checkInput".localized
+        inputTextField.placeholder = "Please enter the password".localized
+        confirmTextField.placeholder = "Please re-enter the password".localized
+        firstWarningLabel.attributedText = firstWarningLabel.getAttributeStringWithString("Password.firstWarning".localized, lineSpace: 5.0)
+        lastWarningLabel.attributedText = lastWarningLabel.getAttributeStringWithString("Password.secondWarning".localized, lineSpace: 5.0)
         let fontSize = CGSize(width: kScreenW - 83, height: CGFloat(MAXFLOAT))
-        let firstSize = UILabel.textSize(text: NSLocalizedString("Password.firstWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
-        let lastSize = UILabel.textSize(text: NSLocalizedString("Password.secondWarning", comment: ""), font: firstWarningLabel.font, maxSize: fontSize)
+        let firstSize = UILabel.textSize(text: "Password.firstWarning".localized, font: firstWarningLabel.font, maxSize: fontSize)
+        let lastSize = UILabel.textSize(text: "Password.secondWarning".localized, font: firstWarningLabel.font, maxSize: fontSize)
         frameHeightConstraint.constant = firstSize.height + lastSize.height + 40
-        
+        if TNLocalizationTool.shared.currentLanguage == "en" {
+            warningTopConstraint.constant = CGFloat(kTitleTopMargin)
+        }
         inputTextField.delegate = self
         
         confirmTextField.delegate = self
@@ -78,14 +85,16 @@ extension TNSetupPasswordController {
     }
     
     @IBAction func confirmAction(_ sender: Any) {
-        guard (inputTextField.text?.count)! > textValidCount - 1 else {
+        guard (inputTextField.text?.count)! >= textValidCount else {
             warningIconView.isHidden = false
             warningDescLabel.isHidden = false
+            warningDescLabel.textColor = kWarningHintColor
+            tipLabelLeftConstraint.constant = 47
+            securityLevelView.isHidden = true
             return
         }
         guard inputTextField.text == confirmTextField.text else {
             conflictView.isHidden = false
-            conflictView.shakeAnimation(scope: 5.0)
             return
         }
         let md5Psword = inputTextField.text?.md5()
@@ -110,17 +119,14 @@ extension TNSetupPasswordController {
             if !securityLevelView.isHidden {
                 securityLevelView.isHidden = true
             }
-            if warningDescLabel.isHidden == false {
-                warningDescLabel.isHidden = true
-                warningIconView.isHidden = true
-            }
+            warningDescLabel.isHidden = false
+            warningDescLabel.textColor = UIColor.hexColor(rgbValue: 0xBBBBBB)
+            tipLabelLeftConstraint.constant = CGFloat(kLeftMargin)
         }
         if (sender == lastDeleteBtn) {
             confirmTextField.text = nil
             lastDeleteBtn.isHidden = true
-            if !conflictView.isHidden {
-                conflictView.isHidden = true
-            }
+
         }
         confirmButton.isEnabled = false
         confirmButton.alpha = 0.3
@@ -137,7 +143,7 @@ extension TNSetupPasswordController {
         }
         if textField == inputTextField {
             firstDeleteBtn.isHidden = textField.text?.count == 0 ? true : false
-            if (textField.text?.count)! > textValidCount - 1 {
+            if (textField.text?.count)! > 0 {
                 securityLevelView.isHidden = false
                 if String.isOnlyNumber(str: textField.text!) || String.isAllLetter(str: textField.text!) || String.isAllSpecialCharacter(str: textField.text!) {
                     securityLevelView.level = .weak
@@ -175,18 +181,41 @@ extension TNSetupPasswordController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         
-        if textField == inputTextField  &&  warningDescLabel.isHidden == false {
-            warningDescLabel.isHidden = true
-            warningIconView.isHidden = true
+        if textField == inputTextField {
+            firstLineView.backgroundColor = kGlobalColor
+            firstLineHeightConstraint.constant = 2.0
+            if (textField.text?.isEmpty)! == false {
+                firstDeleteBtn.isHidden = false
+            }
+            if !warningIconView.isHidden {
+                warningDescLabel.isHidden = true
+                warningIconView.isHidden = true
+            }
         }
-        
-        if !conflictView.isHidden {
-            conflictView.isHidden = true
+        if textField == confirmTextField {
+            lastLineView.backgroundColor = kGlobalColor
+            lastLineHeightConstraint.constant = 2.0
+            if (textField.text?.isEmpty)! == false {
+                lastDeleteBtn.isHidden = false
+            }
+            if !conflictView.isHidden {
+                conflictView.isHidden = true
+            }
         }
+       
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
+        if textField == inputTextField {
+            firstLineView.backgroundColor = kLineViewColor
+            firstLineHeightConstraint.constant = 1.0
+            firstDeleteBtn.isHidden = true
+        }
+        if textField == confirmTextField {
+            lastLineView.backgroundColor = kLineViewColor
+            lastLineHeightConstraint.constant = 1.0
+            lastDeleteBtn.isHidden = true
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -238,7 +267,7 @@ extension String {
     }
     
     static func containsNumAndLetterAndSpecialCharacter(str: String) -> Bool {
-        let regex = "^(?![a-zA-Z0-9]+$)(?![^a-zA-Z/D]+$)(?![^0-9/D]+$).{8,}$"
+        let regex = "^(?![a-zA-Z0-9]+$)(?![^a-zA-Z/D]+$)(?![^0-9/D]+$).{0,}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: str)
         return isValid

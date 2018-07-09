@@ -75,6 +75,9 @@ struct TNHubViewModel {
     }
     
     static func getMyHistoryTransaction (addresses: [String], completion: @escaping ([String: Any]) -> Void) {
+        guard !TNGlobalHelper.shared.witnesses.isEmpty else {
+            return
+        }
         TNWebSocketManager.getHistoryTransaction(witnesses: TNGlobalHelper.shared.witnesses, addresses: addresses, requested_joints: nil, known_stable_units: nil, completion: completion)
     }
     

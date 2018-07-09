@@ -44,6 +44,8 @@
 "Password.firstWarning" = "密码用于进入设备和交易授权，强度非常重要";
 "Password.secondWarning" = "TrustNote不存储密码，也无法帮您找回，请务必牢记";
 "Password.titleText" = "设置密码";
+"Please enter the password" = "请输入密码";
+"Please re-enter the password" = "请再次确认密码";
 "Password.passwordLengthValid"  = "不少于8位字符，建议混合大小写字母、数字、特殊符号";
 "Password.passwordSecurity" = "密码强度太弱，极易被黑客破解";
 "Password.checkInput" = "两次输入密码不一致，请重新输入";
@@ -94,7 +96,7 @@
 
 /******* verify password string************/
 "Input password" = "输入密码";
-"Please input password" = "请输入密码";
+"Please input password" = "请输入钱包密码";
 "Verify password error" = "密码错误，请重新输入";
 "The wallet has been encrypted" = "钱包已加密";
 "Click continue" = "点击继续";
@@ -181,7 +183,7 @@
 "Sync Wallets" = "同步钱包";
 "SyncClonedWallets.warning" = "不建议您克隆钱包，保护好您的助记词就是安全的。如果您遇到克隆钱包导致的数据不同步，请在两个钱包上使用克隆钱包同步功能。";
 "SyncLoading" = "同步中，切勿退出软件…";
-"RecoverLoading" = "恢复中，切勿退出软件…";
+"RecoverLoading" = "恢复中，请勿关闭软件";
 "Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
 "Signing succeed" = "授权成功";
 "Scan auth success description" = "使用对应观察钱包扫描上方二维码完成授权";

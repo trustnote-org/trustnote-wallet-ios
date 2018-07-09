@@ -140,10 +140,12 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
         TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
             let jsonObj = anyObject as? [String : Any]
             completion(jsonObj!)
-            let model = TNHistoryTransactionModel.deserialize(from:  jsonObj)
-            let historyRecordsViewModel = TNHistoryRecordsViewModel()
-            historyRecordsViewModel.historyTransactionModel = model!
-            historyRecordsViewModel.processingTheAcquiredData()
+            DispatchQueue.main.async {
+                let model = TNHistoryTransactionModel.deserialize(from:  jsonObj)
+                let historyRecordsViewModel = TNHistoryRecordsViewModel()
+                historyRecordsViewModel.historyTransactionModel = model!
+                historyRecordsViewModel.processingTheAcquiredData()
+            }
         }
         var params: [String: Any] = ["witnesses":witnesses, "addresses":addresses, "last_stable_mci":last_stable_mci]
         if let joints = requested_joints {
@@ -203,7 +205,6 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
         
         let request: [Any] = ["justsaying", sendBody]
         TNWebSocketManager.sharedInstance.sendData("\(JSON(request))")
-        // TNWebSocketManager.sendRequest(api: "hub/delete", params: ["": messageHash], command: .deleteHubCache)
     }
 }
 

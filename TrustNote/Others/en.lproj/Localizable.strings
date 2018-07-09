@@ -43,7 +43,9 @@
 /******* setup password string************/
 "Password.firstWarning" = "Password strength is critical to safeguard your wallet";
 "Password.secondWarning" = "We don’t save your password therefore we can't recover your password, please make sure don’t forget it.";
-"Password.titleText" = "设置密码";
+"Password.titleText" = "Setting the Password";
+"Please enter the password" = "Please enter the password";
+"Please re-enter the password" = "Please re-enter the password";
 "Password.passwordLengthValid"  = "At least 8 characters, suggesting a mix of letters, digits, and special symbols";
 "Password.passwordSecurity" = "Password is too week, easily get hacked";
 "Password.checkInput" = "Passwords are not match, please re-enter";
@@ -88,11 +90,11 @@
 "Keep it for now" = "Keep it for now";
 
 /******* verify password string************/
-"Input password" = "输入密码";
-"Please input password" = "请输入密码";
-"Verify password error" = "密码错误，请重新输入";
-"The wallet has been encrypted" = "钱包已加密";
-"Click continue" = "点击继续";
+"Input password" = "Enter Your Password";
+"Please input password" = "Please enter your password";
+"Verify password error" = "Incorrect password, please re-enter";
+"The wallet has been encrypted" = "Your wallet is encrypted.";
+"Click continue" = "Continue";
 
 /******* mnemonic string************/
 "Recover wallet" = "Restore Mnemonic";
@@ -176,7 +178,7 @@
 "Sync Wallets" = "Sync Wallets";
 "SyncClonedWallets.warning" = "We don't recommend cloning your wallet because your wallet is safe as long as your mnemonic is well protected. However,if you experience data inconsistency issue between the original wallet and its clone,you can fix it by using the\"Sync Cloned Wallets\"feature on both wallets.";
 "SyncLoading" = "同步中，切勿退出软件…";
-"RecoverLoading" = "恢复中，切勿退出软件…";
+"RecoverLoading" = "恢复中，请勿关闭软件";
 "Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
 "Signing succeed" = "Signing succeed";
 "Scan auth success description" = "To complete the authoization process, use the watch-only wallet to scan the signature QR code";

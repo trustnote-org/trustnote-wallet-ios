@@ -50,18 +50,26 @@ class TNProfileBackupController: TNNavigationController {
         } else {
             view.insertSubview(contentView, belowSubview: navigationBar)
         }
-        profileBackupHeadView.profileBackupHeadViewBlock = {[unowned self] isShow in
+        
+        profileBackupHeadView.profileBackupHeadViewBlock = {[unowned self] (isShow, animated) in
             let contentViewY = isShow ? self.kContentY : self.kContentY - (kScreenH -  self.kContentY)
-            UIView.animate(withDuration: 0.3, animations: {
+            if animated {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.contentView.y = contentViewY
+                })
+            } else {
                 self.contentView.y = contentViewY
-            })
+            }
         }
+        
+        profileBackupHeadView.showMnemonic(isShow: profileBackupHeadView.isShow, animated: false)
         
         contentView.profileDeleteMnemonicBlock = {[unowned self] in
             self.alertAction(self, "Make sure delete words".localized, message: nil, sureActionText: "Confirm".localized, cancelActionText: "Cancel".localized, isChange: true) {
                 TNConfigFileManager.sharedInstance.updateProfile(key: "mnemonic", value: "")
                 TNGlobalHelper.shared.mnemonic = ""
-                self.navigationController?.popViewController(animated: true)
+                self.didDeleteMnemonicView.isHidden = false
+                self.view.bringSubview(toFront: self.didDeleteMnemonicView)
             }
         }
     }

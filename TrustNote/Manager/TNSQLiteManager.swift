@@ -364,10 +364,10 @@ extension TNSQLiteManager {
     
     public func queryWalletAllAddresses(walletId: String) -> Array<TNWalletAddressModel> {
         var queryResults: [TNWalletAddressModel] = []
-        let sql = "SELECT address FROM my_addresses WHERE wallet=?"
         guard database.open() else {
             return []
         }
+        let sql = "SELECT * FROM my_addresses WHERE wallet=?"
         do {
             let set = try database.executeQuery(sql, values: [walletId])
             while set.next() {

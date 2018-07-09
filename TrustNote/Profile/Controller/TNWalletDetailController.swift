@@ -14,7 +14,7 @@ class TNWalletDetailController: TNNavigationController {
     var address: String!
     var passwordAlertView: TNPasswordAlertView?
     var verifyPasswordView: TNCustomAlertView?
-    let items = [["title": "Wallet name".localized,  "action": "modifyWalletName"], ["title": "Wallet ID".localized,  "action": ""], ["title": "Cold wallet authentication code".localized,  "action": "checkoutAuthCode"]]
+    let items = [["title": "Wallet name".localized,  "action": "modifyWalletName"], ["title": "Wallet ID".localized,  "action": ""]/*, ["title": "Cold wallet authentication code".localized,  "action": "checkoutAuthCode"]*/]
     
     fileprivate lazy var detailHeaderView: TNWalletDetailHeaderView = {
         let detailHeaderView = TNWalletDetailHeaderView.walletDetailHeaderView()
@@ -104,7 +104,7 @@ extension TNWalletDetailController: UITableViewDelegate, UITableViewDataSource {
             cell.detailLabel.text = walletModel.walletName
         }
         if indexPath.row == 1 {
-            cell.detailLabel.textAlignment = .justified
+            cell.detailLabel.textAlignment = .left
             cell.detailLabel.text = walletModel!.walletId
         }
         cell.cellIndex = indexPath.row
@@ -180,7 +180,7 @@ extension TNWalletDetailController {
     
     fileprivate func verifyWalletPassword(action: String) {
         passwordAlertView = TNPasswordAlertView.loadViewFromNib()
-        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .pop)
+        verifyPasswordView = createPopView(passwordAlertView!, height: 320, animatedType: .none)
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNWalletDetailController.handleTapGesture))
         verifyPasswordView?.addGestureRecognizer(tap)
         passwordAlertView!.verifyCorrectBlock = {[unowned self] in
@@ -197,7 +197,6 @@ extension TNWalletDetailController {
     @objc fileprivate func handleTapGesture() {
         passwordAlertView!.passwordTextField.resignFirstResponder()
     }
-    
 }
 
 /// MARK: Custom Method

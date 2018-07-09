@@ -31,20 +31,26 @@ class TNVerifyPasswordController: TNBaseViewController {
     private let textLabel = UILabel().then {
         $0.textColor = kThemeTextColor
         $0.font = UIFont.systemFont(ofSize: 16.0)
-        $0.text = NSLocalizedString("The wallet has been encrypted", comment: "")
+        $0.text = "The wallet has been encrypted".localized
     }
     
-    private let continueBtn = TNButton().then {
-        $0.setTitle(NSLocalizedString("Click continue", comment: ""), for: .normal)
-        $0.setTitleColor(kGlobalColor, for: .normal)
+    private let continueView = UIView()
+    
+    private let continueLabel = UILabel().then {
+        $0.text = "Click continue".localized
+        $0.textColor = kGlobalColor
+        $0.font = UIFont.systemFont(ofSize: 16.0)
+    }
+    
+    private let continueImgView = UIImageView().then {
+        $0.image = UIImage(named: "arrow_right")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNVerifyPasswordController.handleTapGesture))
-        view.addGestureRecognizer(tap)
+        continueView.addGestureRecognizer(tap)
         passwordAlertView.delegate = self
         IQKeyboardManager.shared.enable = false
         distance = 40.0
@@ -62,6 +68,45 @@ extension TNVerifyPasswordController {
             make.left.right.equalToSuperview()
             make.height.equalTo(190)
         }
+        
+        view.addSubview(textLabel)
+        view.addSubview(continueView)
+        
+        continueView.addSubview(continueLabel)
+        continueView.addSubview(continueImgView)
+        continueLabel.snp.makeConstraints { (make) in
+            make.left.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
+        continueImgView.snp.makeConstraints { (make) in
+            make.left.equalTo(continueLabel.snp.right).offset(6)
+            make.centerY.equalTo(continueLabel.snp.centerY)
+        }
+        if TNLocalizationTool.shared.currentLanguage == "en" {
+            textLabel.snp.makeConstraints { (make) in
+                make.top.equalTo(topView.snp.bottom).offset(155 * scale)
+                make.centerX.equalToSuperview()
+            }
+            continueView.snp.makeConstraints { (make) in
+                make.centerX.equalToSuperview().offset(20)
+                make.top.equalTo(textLabel.snp.bottom)
+                make.height.equalTo(30)
+                make.width.equalTo(120)
+            }
+            
+        } else {
+            textLabel.snp.makeConstraints { (make) in
+                make.top.equalTo(topView.snp.bottom).offset(155 * scale)
+                make.centerX.equalToSuperview().offset(-40)
+            }
+            continueView.snp.makeConstraints { (make) in
+                make.left.equalTo(textLabel.snp.right).offset(6)
+                make.centerY.equalTo(textLabel.snp.centerY)
+                make.height.equalTo(30)
+                make.width.equalTo(120)
+            }
+        }
+        
         layoutDynamicSubviews()
     }
     

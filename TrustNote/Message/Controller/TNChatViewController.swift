@@ -139,7 +139,9 @@ extension TNChatViewController {
     
     fileprivate func autoRollToLastRow(animated: Bool)  {
         
-        tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: animated)
+        if !messages.isEmpty {
+            tableView.scrollToRow(at: IndexPath(row: messages.count - 1, section: 0), at: .bottom, animated: animated)
+        }
     }
     
     fileprivate func getMessageList() {

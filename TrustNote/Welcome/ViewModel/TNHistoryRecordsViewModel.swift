@@ -29,8 +29,7 @@ extension TNHistoryRecordsViewModel {
         if let proofBalls = historyTransactionModel.proofchain_balls {
             fixIsStableFlag(balls: proofBalls)
         }
-        
-         NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishUpdateDatabaseNotification), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishUpdateDatabaseNotification), object: nil)
     }
     
     func saveDataToUnitsTable(unit: TNUnitModel) {

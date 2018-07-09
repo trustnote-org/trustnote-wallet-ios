@@ -178,6 +178,9 @@ extension TNTransferViewModel {
             authors.append(author)
         }
         units.authors = authors
+        if authors.count > 1 {
+             units.earned_headers_commission_recipients = [["address" : changeOutput.address, "earned_headers_commission_share": 100]]
+        }
     }
     
     private func genChange() {
@@ -259,9 +262,7 @@ extension TNTransferViewModel {
             newAuthorsDict.append(dict)
         }
         unitDict!["authors"] = newAuthorsDict
-        if authorsDict.count > 1 {
-            unitDict!["earned_headers_commission_recipients"] = [["address" : changeOutput.address, "earned_headers_commission_share": 100]]
-        } else {
+        if authorsDict.count == 1 {
             unitDict!.removeValue(forKey: "earned_headers_commission_recipients")
         }
         unitObject = unitDict!

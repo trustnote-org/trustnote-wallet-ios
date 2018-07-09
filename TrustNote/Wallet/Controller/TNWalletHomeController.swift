@@ -26,7 +26,7 @@ class TNWalletHomeController: TNBaseViewController {
     var isReachable: Bool = true
     var totalAssert = 0.0
     var selectWalletListView: TNCustomAlertView?
-    var syncOperation: TNSynchroHistoryData?
+    var syncOperation: TNSyncWalletData?
     var scanningResult: String?
     
     private let tableView = UITableView().then {
@@ -77,7 +77,7 @@ class TNWalletHomeController: TNBaseViewController {
         registerNotification()
         
         if TNGlobalHelper.shared.isNeedLoadData {
-            syncOperation = TNSynchroHistoryData()
+            syncOperation = TNSyncWalletData()
             loadData()
         }
     }
@@ -302,10 +302,9 @@ extension TNWalletHomeController {
     
     public func syncData() {
         if let syncOperation = syncOperation {
-            syncOperation.syncHistoryData(wallets: dataSource)
+            syncOperation.syncWalletsData(wallets: dataSource)
         } else {
-            syncOperation = TNSynchroHistoryData()
-            syncOperation?.syncHistoryData(wallets: dataSource)
+            TNSyncWalletData().syncWalletsData(wallets: dataSource)
         }
     }
 }
@@ -338,5 +337,8 @@ extension TNWalletHomeController {
             self.refreshAction()
         }).disposed(by: disposeBag)
         
+        NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNModifyWalletNameNotification)).subscribe(onNext: { [unowned self] value in
+           self.refreshAction()
+        }).disposed(by: disposeBag)
     }
 }

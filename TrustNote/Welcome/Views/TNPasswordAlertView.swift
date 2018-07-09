@@ -63,11 +63,11 @@ class TNPasswordAlertView: UIView, TNNibLoadable {
 extension TNPasswordAlertView {
     
     fileprivate func setupProperties() {
-        titleLabel.text = NSLocalizedString("Input password", comment: "")
-        passwordTextField.placeholder = NSLocalizedString("Please input password", comment: "")
-        errorTipLabel.text = NSLocalizedString("Verify password error", comment: "")
-        confirmButton.setTitle(NSLocalizedString("Confirm", comment: ""), for: .normal)
-        cancelButton.setTitle(NSLocalizedString("Cancel", comment: ""), for: .normal)
+        titleLabel.text = "Input password".localized
+        passwordTextField.placeholder = "Please input password".localized
+        errorTipLabel.text = "Verify password error".localized
+        confirmButton.setTitle("Confirm".localized, for: .normal)
+        cancelButton.setTitle("Cancel".localized, for: .normal)
         confirmButton.setupRadiusCorner(radius: kCornerRadius)
         cancelButton.setupRadiusCorner(radius: kCornerRadius)
         cancelButton.layer.borderWidth = 1.0

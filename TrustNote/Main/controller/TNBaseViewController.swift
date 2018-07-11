@@ -84,7 +84,7 @@ class TNBaseViewController: UIViewController {
 extension TNBaseViewController {
     
     /// setup status bar backgroungColor
-    fileprivate func setStatusBarBackgroundColor(color : UIColor) {
+    func setStatusBarBackgroundColor(color : UIColor) {
         let statusBarWindow: UIView = UIApplication.shared.value(forKey: "statusBarWindow") as! UIView
         let statusBar: UIView = statusBarWindow.value(forKey: "statusBar") as! UIView
         if statusBar.responds(to:#selector(setter: UIView.backgroundColor)) {

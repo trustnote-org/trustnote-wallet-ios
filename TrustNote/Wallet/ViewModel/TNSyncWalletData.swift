@@ -12,6 +12,12 @@ class TNSyncWalletData {
     
     let loopCount: Int = 20
     
+    var isLoading = false
+    
+    var isRefresh = false
+    
+    var syncWalletDataComlpetion: (() -> Void)?
+    
     private var recievedAddressIndex = 0
     private var changedAddressIndex = 0
     var currentWallet: TNWalletModel?
@@ -22,18 +28,8 @@ class TNSyncWalletData {
     required init() {}
     
     func syncWalletsData(wallets: Array<TNWalletModel>) {
+        isLoading = true
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        guard self.operationWallets.isEmpty else {
-            let walletsArr = self.operationWallets as NSArray
-            for walletModel in wallets {
-                if walletsArr.contains(walletModel) {
-                    continue
-                }
-                walletsArr.adding(walletModel)
-            }
-            self.operationWallets = walletsArr as! [TNWalletModel]
-            return
-        }
         self.operationWallets += wallets
         self.currentWallet = self.operationWallets.first
         self.queryWalletAllAddress(walletId: self.currentWallet!.walletId)
@@ -54,13 +50,19 @@ class TNSyncWalletData {
     fileprivate func getRecievedAddressHistory(addressesList: [TNWalletAddressModel]) {
         
         _ = getTranscationHistory(addressesList: addressesList)
-        generateWalletAddresses(change: false)
+        if !isRefresh {
+            generateWalletAddresses(change: false)
+        }
     }
     
     fileprivate func getChangedAddressHistory(addressesList: [TNWalletAddressModel]) {
         
         _ = getTranscationHistory(addressesList: addressesList)
-        generateWalletAddresses(change: true)
+        if !isRefresh {
+            generateWalletAddresses(change: true)
+        } else {
+            walletDataSyncCompletion()
+        }
     }
     
     fileprivate func getTranscationHistory(addressesList: [TNWalletAddressModel]) -> [String: Any] {
@@ -97,28 +99,37 @@ class TNSyncWalletData {
                         MBProgress_TNExtension.showViewAfterSecond(title: "请求超时")
                     }
                 } else {
-                  addressArr += tempAddressArr
+                    addressArr += tempAddressArr
                 }
             }
             tempAddressArr.removeAll()
         }
         if change {
-            if !operationWallets.isEmpty {
-                operationWallets.removeFirst()
+           walletDataSyncCompletion()
+        }
+    }
+    
+    fileprivate func walletDataSyncCompletion() {
+        if !operationWallets.isEmpty {
+            operationWallets.removeFirst()
+        }
+        guard !operationWallets.isEmpty else {
+            DispatchQueue.main.async {
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                self.syncWalletDataComlpetion?()
+                self.isLoading = false
+                self.isRefresh = false
             }
-            guard !operationWallets.isEmpty else {
-                DispatchQueue.main.async {
-                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                }
+            if !addressArr.isEmpty {
                 for addressModel in addressArr {
                     walletViewModel.insertWalletAddressToDatabase(walletAddressModel: addressModel)
                 }
-                return
             }
-            currentWallet = operationWallets.first
-            DispatchQueue.main.async {
-                self.queryWalletAllAddress(walletId: self.currentWallet!.walletId)
-            }
+            return
+        }
+        currentWallet = operationWallets.first
+        DispatchQueue.main.async {
+            self.queryWalletAllAddress(walletId: self.currentWallet!.walletId)
         }
     }
 }

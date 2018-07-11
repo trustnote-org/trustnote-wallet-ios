@@ -21,7 +21,7 @@ class TNSyncClonedWalletsView: UIView {
     }
     
     func startAnimation() {
-        let animation:CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
+        let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.rotation.z")
         animation.keyTimes = [0,0.5,0.85,1]
         animation.values = [0,CGFloat(Double.pi), CGFloat(Double.pi) * 1.7, CGFloat(Double.pi) * 2]
         animation.isRemovedOnCompletion = false

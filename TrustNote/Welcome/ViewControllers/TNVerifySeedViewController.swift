@@ -71,7 +71,7 @@ class TNVerifySeedViewController: TNBaseViewController {
             self.warningImageView.isHidden = true
         }).disposed(by: disposeBag)
         
-        seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+       // seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
     }
     
     override func viewDidAppear(_ animated: Bool) {

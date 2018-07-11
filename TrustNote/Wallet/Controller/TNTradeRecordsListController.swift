@@ -21,6 +21,8 @@ class TNTradeRecordsListController: TNNavigationController {
     
     var dataSource: [TNTransactionRecord] = []
     
+    var syncOperation = TNSyncWalletData()
+    
     init(wallet: TNWalletModel) {
         super.init()
         self.wallet = wallet
@@ -81,6 +83,8 @@ class TNTradeRecordsListController: TNNavigationController {
         tableView.dataSource = self
         updateData()
         
+        setRefreshHeader()
+        
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishUpdateDatabaseNotification)).subscribe(onNext: {[unowned self] value in
             TNWalletBalanceViewModel().calculatBalance(self.wallet) { (walletModel) in
                 self.wallet = walletModel
@@ -98,15 +102,16 @@ class TNTradeRecordsListController: TNNavigationController {
         
         viewModel.queryTransactionRecordList(walletId: wallet.walletId) {[unowned self] (records) in
             self.tradeRecordHeaderview.walletModel = self.wallet
-            self.dataSource = records
-            for (index, record) in self.dataSource.enumerated() {
-                if record.action == .move {
-                    self.dataSource.remove(at: index)
-                }
+            self.dataSource = records.filter {
+                return $0.action != .move
             }
             self.containerView.isHidden = self.dataSource.isEmpty ? false : true
             self.tableView.reloadData()
         }
+    }
+    
+    deinit {
+        syncOperation.syncWalletDataComlpetion = nil
     }
 }
 
@@ -152,6 +157,34 @@ extension TNTradeRecordsListController: UITableViewDelegate, UITableViewDataSour
         return tableHeaderView
     }
     
+}
+
+extension TNTradeRecordsListController {
+    
+    fileprivate func setRefreshHeader() {
+        
+        tableView.gtm_addRefreshHeaderView(refreshHeader: TNRefreshHeader()) {
+            [weak self] in
+            self?.pullTorefresh()
+        }
+    }
+    
+    func pullTorefresh() {
+        let homeVC = navigationController?.viewControllers.first as! TNWalletHomeController
+        if syncOperation.isLoading || homeVC.syncOperation!.isLoading {
+            endRefresing()
+            return
+        }
+        syncOperation.isRefresh = true
+        syncOperation.syncWalletDataComlpetion = {[unowned self] in
+            self.endRefresing()
+        }
+        syncOperation.syncWalletsData(wallets: [wallet])
+    }
+    
+    func endRefresing() {
+        tableView.endRefreshing(isSuccess: true)
+    }
 }
 
 extension TNTradeRecordsListController {

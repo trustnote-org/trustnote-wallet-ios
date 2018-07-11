@@ -43,7 +43,7 @@
                     </constraints>
                 </view>
                 <button opaque="NO" alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIj-Zf-vAc">
-                    <rect key="frame" x="26" y="468" width="303" height="48"/>
+                    <rect key="frame" x="26" y="475" width="303" height="48"/>
                     <color key="backgroundColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="dGy-VC-Lkl"/>
@@ -98,7 +98,7 @@
                 <constraint firstItem="R67-JS-PMR" firstAttribute="centerX" secondItem="moO-v9-xe3" secondAttribute="centerX" id="n6a-vM-P6b"/>
                 <constraint firstItem="wvO-Z8-Cuw" firstAttribute="top" secondItem="moO-v9-xe3" secondAttribute="top" constant="37" id="pl3-7y-BGa"/>
                 <constraint firstItem="R67-JS-PMR" firstAttribute="leading" secondItem="moO-v9-xe3" secondAttribute="leading" constant="26" id="uRm-VY-bfI"/>
-                <constraint firstAttribute="bottom" secondItem="iIj-Zf-vAc" secondAttribute="bottom" constant="33" id="y5O-eH-POI"/>
+                <constraint firstAttribute="bottom" secondItem="iIj-Zf-vAc" secondAttribute="bottom" constant="26" id="y5O-eH-POI"/>
                 <constraint firstItem="R67-JS-PMR" firstAttribute="top" secondItem="Iuy-fe-xLb" secondAttribute="bottom" constant="10" id="zUu-lP-Dxm"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

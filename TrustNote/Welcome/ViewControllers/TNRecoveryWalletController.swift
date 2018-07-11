@@ -157,6 +157,7 @@ extension TNRecoveryWalletController {
     }
     
     fileprivate func validationInput(isDelete: Bool) {
+        seedPhrase = ""
         isDeleteMnemonic = isDelete
         loadingView.startAnimation()
         let popX = CGFloat(kLeftMargin)

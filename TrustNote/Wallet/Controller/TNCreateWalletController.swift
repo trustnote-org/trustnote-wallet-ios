@@ -276,12 +276,12 @@ extension TNCreateWalletController {
             make.top.equalTo(switchView.snp.bottom)
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }
-        commonWalletView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - scrollViewTopConstraint - kStatusbarH)
+        commonWalletView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - scrollViewTopConstraint - kStatusbarH - kSafeAreaBottomH)
         scrollView.addSubview(commonWalletView)
         
-        observeWalletView.frame =  CGRect(x: kScreenW, y: 0, width: kScreenW, height: commonWalletView.height)
-        scrollView.addSubview(observeWalletView)
         
+       observeWalletView.frame =  CGRect(x: kScreenW, y: 0, width: kScreenW, height: commonWalletView.height)
+        scrollView.addSubview(observeWalletView)
     }
 }
 

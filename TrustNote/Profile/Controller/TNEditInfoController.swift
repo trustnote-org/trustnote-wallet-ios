@@ -85,5 +85,8 @@ extension TNEditInfoController {
             navigationController?.popViewController(animated: true)
             return
         }
+        let hint = isEditInfo ? "设备名称不能为空" : "钱包名称不能为空"
+        MBProgress_TNExtension.showViewAfterSecond(title: hint)
     }
+    
 }

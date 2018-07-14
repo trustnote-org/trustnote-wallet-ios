@@ -638,4 +638,43 @@ extension TNSQLiteManager {
         completionHandle(messageModel)
     }
     
+    public func queryOutbox(completionHandle: ([TNOutbox]) -> Swift.Void) {
+        
+        var messages: [TNOutbox] = []
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery("SELECT * FROM outbox", values: nil)
+                while set.next() {
+                    var message = TNOutbox()
+                    message.message = set.string(forColumn: "message")!
+                    message.message_hash = set.string(forColumn: "message_hash")!
+                    message.to = set.string(forColumn: "to")!
+                    messages.append(message)
+                }
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        completionHandle(messages)
+    }
+    
+    public func queryContactHubAddress(deviceAddress: String) -> String {
+        var hub = ""
+        guard database.open() else {
+            return hub
+        }
+        let sql = "SELECT * FROM correspondent_devices WHERE device_address=?"
+        do {
+            let set = try database.executeQuery(sql, values: [deviceAddress])
+            while set.next() {
+                hub = set.string(forColumn: "hub")!
+            }
+            set.close()
+        } catch {
+            print("failed: \(error.localizedDescription)")
+        }
+        database.close()
+        return hub
+    }
 }

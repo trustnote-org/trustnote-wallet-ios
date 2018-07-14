@@ -56,6 +56,8 @@ class TNMyReceiveAddressCell: UITableViewCell, RegisterCellFromNib {
         super.awakeFromNib()
         selectionStyle = .none
         setupRadiusCorner(radius: kCornerRadius * 2)
+        //setupShadow(Offset: CGSize(width: 0, height: 2), opacity: 0.2, radius: 10)
+        layer.masksToBounds = true
         copyBtn.setupRadiusCorner(radius: kCornerRadius)
         containerView.layer.borderColor = UIColor.hexColor(rgbValue: 0xF2F2F2).cgColor
         containerView.layer.borderWidth = kCornerRadius

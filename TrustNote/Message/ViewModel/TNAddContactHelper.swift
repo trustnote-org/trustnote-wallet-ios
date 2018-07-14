@@ -15,7 +15,7 @@ class TNPairingHelper {
     var pubkey = ""
     var deviceAddress = ""
     var secret: String?
-    var didBecomeFriendBlock: (() -> Void)?
+    var didBecomeFriendBlock: ((String) -> Void)?
     
     static func getMyDeviceCode(completion: @escaping (String) -> Void) {
         TNEvaluateScriptManager.sharedInstance.generateRandomBytes(num: 9) { (randomBytes) in
@@ -40,7 +40,7 @@ class TNPairingHelper {
             let sql = String(format:"SELECT Count(*) FROM correspondent_devices WHERE device_address = '%@'", arguments:[self.deviceAddress])
             let count = TNSyncOperationManager.shared.queryCount(sql: sql)
             guard count == 0 else {
-                self.didBecomeFriendBlock!()
+                self.didBecomeFriendBlock!(self.deviceAddress)
                 return
             }
             self.saveMessageToDatabase()

@@ -27,6 +27,7 @@ class TNCustomAlertView: UIView {
         super.init(frame: UIScreen.main.bounds)
         
         self.backgroundColor = kAlertBackgroundColor
+        alert.setupShadow(Offset: CGSize(width: 0, height: 2), opacity: 0.2, radius: 10)
         alertView = alert
         alert.frame = alertFrame
         alertBounds = CGRect(x: 0, y: 0, width: alertFrame.size.width, height: alertFrame.size.height)

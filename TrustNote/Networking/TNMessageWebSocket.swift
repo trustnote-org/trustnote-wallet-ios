@@ -19,6 +19,8 @@ class TNMessageWebSocket {
     var currentHub = ""
     var socktConnected: ((String) -> Void)?
     
+    var requestTasks: [[String: Any]] = []
+    
     public var GetOtherTempPubkeyBlock:    ((String) -> Void)?
     public var SendDeviceMessageBlock:     ((String) -> Void)?
     
@@ -63,16 +65,15 @@ class TNMessageWebSocket {
         TNDebugLogManager.debugLog(item:  "send---->\(params)")
     }
     
-    static func sendRequest(api: String, params: Any) {
+    static func sendRequest(api: String, params: Any, command: RequestCommand, blockDict: [String: Any]) {
         DispatchQueue.global().async {
             var request: [String : Any] = ["command": api]
             request["params"] = params
             let objectHash = TNSyncOperationManager.shared.getRequestParamsBase64Hash(request)
-            if api == "hub/get_temp_pubkey" {
-                TNMessageWebSocket.shared.otherTempkeyTag = objectHash
-            } else if api == "hub/deliver" {
-                TNMessageWebSocket.shared.deviceMessageTag = objectHash
-            }
+            var requestTask: [String: Any] = blockDict
+            requestTask["command"] = command
+            requestTask["tag"] = objectHash
+            TNMessageWebSocket.shared.requestTasks.append(requestTask)
             let requestBody = ["command": api, "params": params, "tag": objectHash]
             let requestParams: [Any] = ["request", requestBody]
             let requestJsonStr = "\(JSON(requestParams))"
@@ -106,21 +107,32 @@ extension TNMessageWebSocket: WebSocketDelegate {
         let jsonData = TNWebSocketManager.sharedInstance.getDictionaryFromJSONString(jsonString: text)
         let receiveMessageStyle = jsonData.first as! String
         let handleData = jsonData.last as! [String : Any]
+        
         if receiveMessageStyle == "response" {
+            
             guard handleData.keys.contains("tag") else {return}
             let tag = handleData["tag"] as! String
-            if otherTempkeyTag == tag {
-                if let response = handleData["response"] {
-                    let dict = response as! [String : Any]
-                    GetOtherTempPubkeyBlock!(dict["temp_pubkey"] as! String)
-                }
-            }
-            if deviceMessageTag == tag {
-                if let response = handleData["response"] {
-                    if response is String {
-                        SendDeviceMessageBlock!(response as! String)
+            
+            for (index, requestTask) in requestTasks.enumerated() {
+                
+                if requestTask.keys.contains("tag") && requestTask["tag"] as! String == tag {
+                    if let response = handleData["response"] {
+                        let command = requestTask["command"] as! RequestCommand
+                        //let callBack = requestTask["callBack"] as! (String) -> Void
+                        if command == .otherTempPubkey {
+                            let callBack = requestTask["callBack"] as! (String) -> Void
+                            let dict = response as! [String : Any]
+                            callBack(dict["temp_pubkey"] as! String)
+                        } else if command == .deviceMessageSign {
+                            let callBack = requestTask["callBack"] as! ([String: Any]) -> Void
+                            //callBack(response as! String)
+                            let resonseResult = ["accepted": response, "messageHash": requestTask["messageHash"]!] as [String : Any]
+                            callBack(resonseResult)
+                        }
                     }
                 }
+                requestTasks.remove(at: index)
+                break
             }
         }
     }
@@ -134,8 +146,7 @@ extension TNMessageWebSocket {
      *  @param
      */
     static func getOtherTempPubkey(pubkey: String, completion: @escaping (String) -> Void) {
-        TNMessageWebSocket.shared.GetOtherTempPubkeyBlock = completion
-        TNMessageWebSocket.sendRequest(api: "hub/get_temp_pubkey", params: pubkey)
+        TNMessageWebSocket.sendRequest(api: "hub/get_temp_pubkey", params: pubkey, command: .otherTempPubkey, blockDict: ["callBack": completion])
     }
     
     /**
@@ -143,8 +154,7 @@ extension TNMessageWebSocket {
      *  @param objDeviceMessage
      *  @param
      */
-    static func sendDeliver(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
-        TNMessageWebSocket.shared.SendDeviceMessageBlock = completion
-        TNMessageWebSocket.sendRequest(api: "hub/deliver", params: objDeviceMessage)
+    static func sendDeliver(objDeviceMessage: [String: Any], messageHash: String, completion: @escaping ([String: Any]) -> Void) {
+        TNMessageWebSocket.sendRequest(api: "hub/deliver", params: objDeviceMessage, command: .deviceMessageSign, blockDict: ["callBack": completion, "messageHash": messageHash])
     }
 }

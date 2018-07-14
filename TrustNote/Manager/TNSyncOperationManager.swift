@@ -59,16 +59,16 @@ extension TNSyncOperationManager {
         return response
     }
     
-    func sendDeviceMessageSignature(objDeviceMessage: [String: Any]) -> String {
-        var response = ""
+    func sendDeviceMessageSignature(objDeviceMessage: [String: Any], messageHash: String) -> [String: Any] {
+        var response:[String: Any] = [:]
         let sema = DispatchSemaphore(value: 0)
         if myHub == contactHub {
-            TNHubViewModel.sendDeviceMessage(objDeviceMessage: objDeviceMessage) { (result) in
+            TNHubViewModel.sendDeviceMessage(objDeviceMessage: objDeviceMessage, messageHash: messageHash) { (result) in
                 response = result
                 sema.signal()
             }
         } else {
-            TNMessageWebSocket.sendDeliver(objDeviceMessage: objDeviceMessage) { (result) in
+            TNMessageWebSocket.sendDeliver(objDeviceMessage: objDeviceMessage, messageHash: messageHash) { (result) in
                 response = result
                 sema.signal()
             }

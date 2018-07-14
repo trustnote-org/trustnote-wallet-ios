@@ -94,8 +94,9 @@ struct TNHubViewModel {
         TNWebSocketManager.getOtherTempPubkey(pubkey: pubkey, completion: completion)
     }
     
-    static func sendDeviceMessage(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
-        TNWebSocketManager.sendDeliver(objDeviceMessage: objDeviceMessage, completion: completion)
+    
+    static func sendDeviceMessage(objDeviceMessage: [String: Any], messageHash: String, completion: @escaping ([String: Any]) -> Void) {
+        TNWebSocketManager.sendDeliver(objDeviceMessage: objDeviceMessage, messageHash: messageHash, completion: completion)
     }
     
     static func deleteHubCache(messageHash: String) {

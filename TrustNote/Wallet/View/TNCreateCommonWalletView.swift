@@ -20,6 +20,8 @@ class TNCreateCommonWalletView: UIView {
     
     var ceateCommonWalletCompleted: CreateCommonWalletCompleted?
     
+    var createEmptyWalletBlock: CreateCommonWalletCompleted?
+    
     var passwordAlertView: TNPasswordAlertView?
     var verifyPasswordView: TNCustomAlertView?
     
@@ -61,6 +63,14 @@ extension TNCreateCommonWalletView {
         
         guard (inputTextField.text?.count)! <= maxInputCount else {
             warningView.isHidden = false
+            return
+        }
+        let credentials = TNConfigFileManager.sharedInstance.readWalletCredentials()
+        let filterCredentials = credentials.filter {
+            return Double($0["balance"] as! String) == 0
+        }
+        guard filterCredentials.count < 2 else {
+            createEmptyWalletBlock?()
             return
         }
         verifyWalletPassword()

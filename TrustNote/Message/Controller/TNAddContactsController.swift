@@ -85,10 +85,10 @@ extension TNAddContactsController {
         let addHelper = TNPairingHelper()
         addHelper.paireCode = paireCode
         
-        addHelper.didBecomeFriendBlock = {
+        addHelper.didBecomeFriendBlock = { (device) in
             DispatchQueue.main.async {
-                MBProgress_TNExtension.showViewAfterSecond(title: "对方已经在你的联系人列表中")
-                self.navigationController?.popViewController(animated: true)
+                let chatController = TNChatViewController(device: device)
+                self.navigationController?.pushViewController(chatController, animated: true)
             }
         }
         

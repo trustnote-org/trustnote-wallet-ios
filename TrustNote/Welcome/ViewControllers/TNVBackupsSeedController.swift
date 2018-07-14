@@ -92,7 +92,7 @@ class TNVBackupsSeedController: TNBaseViewController {
         guard isNeedAlert else {
             return
         }
-        alertAction(self, "Backup mode reminding".localized, message: nil, sureActionText: nil, cancelActionText: NSLocalizedString("Confirm", comment: ""), isChange: false, sureAction: nil)
+        alertAction(self, "Backup mode reminding".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
         isNeedAlert = false
     }
 }

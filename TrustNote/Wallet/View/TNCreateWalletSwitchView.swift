@@ -53,6 +53,11 @@ class TNCreateWalletSwitchView: UIView {
     }
     
     func switchCreateWalletStyle(_ sender: UIButton, isCallBack: Bool) {
+        
+        guard sender == commonBtn else {
+            MBProgress_TNExtension.showViewAfterSecond(title: "暂不支持此功能")
+            return
+        }
         if sender != selectedBtn {
             if sender == commonBtn {
                 commonBtn.setTitleColor(kGlobalColor, for: .normal)

@@ -258,23 +258,7 @@ extension TNScanViewController: AVCaptureMetadataOutputObjectsDelegate {
             session.stopRunning()
             let object = metadataObjects[0]
             let resultStr: String = (object as AnyObject).stringValue
-            if resultStr.hasPrefix("http") {
-                guard let url = URL(string: resultStr) else {
-                    return
-                }
-                if UIApplication.shared.canOpenURL(url) {
-                    if #available(iOS 10.0, *) {
-                        UIApplication.shared.open(url)
-                    } else {
-                        UIApplication.shared.openURL(url)
-                    }
-                    if isPush {
-                        navigationController?.popViewController(animated: true)
-                    } else {
-                        dismiss(animated: true, completion: nil)
-                    }
-                }
-            } else if resultStr.hasPrefix(TNScanPrefix) {
+            if resultStr.hasPrefix(TNScanPrefix) {
                 let validStr = resultStr.replacingOccurrences(of: TNScanPrefix, with: "")
                 if let scanningCompletionBlock = scanningCompletionBlock {
                     if isPush {
@@ -296,8 +280,17 @@ extension TNScanViewController: AVCaptureMetadataOutputObjectsDelegate {
                         } else if validStr.verifyRecieverAddress() {
                             goToSendController(validStr: validStr)
                         } else if validStr.verifyDeviceCode() {
-                             goToAddContact(validStr: validStr)
+                            goToAddContact(validStr: validStr)
                         }
+                    }
+                }
+            } else {
+                if isPush {
+                    let resultVC = TNScanErrorController(content: resultStr)
+                    navigationController?.pushViewController(resultVC, animated: true)
+                } else {
+                    dismiss(animated: true) {
+                        self.scanningCompletionBlock?(resultStr)
                     }
                 }
             }

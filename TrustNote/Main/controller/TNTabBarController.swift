@@ -66,12 +66,14 @@ extension UITabBar {
         let badgeView = UIView()
         badgeView.tag = 888 + index
         badgeView.layer.cornerRadius = 3
-        badgeView.backgroundColor = UIColor.hexColor(rgbValue: 0xFF4D46)
         let tabFrame = self.frame
         let x = ceilf(Float(tabFrame.size.width / 2 + 5))
-        let y = ceilf(0.15 * Float(tabFrame.size.height))
-        
-        badgeView.frame = CGRect(x: CGFloat(x), y: CGFloat(y), width: 6, height: 6)
+        let y = ceilf(0.15 * Float(tabFrame.size.height) - 2)
+        let image = UIImage(named: "reddot")
+        badgeView.frame = CGRect(x: CGFloat(x), y: CGFloat(y), width: image!.size.width, height: image!.size.height)
+        let imageView = UIImageView(frame: badgeView.bounds)
+        imageView.image = image
+        badgeView.addSubview(imageView)
         addSubview(badgeView)
     }
     

@@ -23,7 +23,9 @@ class TNSetRecieveAmountCell: UITableViewCell, RegisterCellFromNib {
         selectionStyle = .none
         titleLabel.text = "Fixed amount".localized
         confirmBtn.setTitle("Confirm".localized, for: .normal)
+        //setupShadow(Offset: CGSize(width: 0, height: 2), opacity: 0.2, radius: 10)
         setupRadiusCorner(radius: kCornerRadius * 2)
+        layer.masksToBounds = true
         confirmBtn.setupRadiusCorner(radius: kCornerRadius)
         inputTextField.delegate = self
         inputTextField.addTarget(self, action: #selector(self.textDidChanged(_:)), for: .editingChanged)
@@ -44,6 +46,7 @@ extension TNSetRecieveAmountCell {
         let amount = Double(inputTextField.text!)
         setRecieveAmountBlock?(amount!)
         inputTextField.text = nil
+        deleteBtn.isHidden = true
     }
     
     @objc func textDidChanged(_ textField: UITextField) {
@@ -62,6 +65,9 @@ extension TNSetRecieveAmountCell {
 extension TNSetRecieveAmountCell: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.text?.length == 10 {
+            return false
+        }
         guard (textField.text?.isEmpty)! else {
             if textField.text!.contains(".") {
                 if string == "." {

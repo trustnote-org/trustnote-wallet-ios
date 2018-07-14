@@ -62,8 +62,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      */
     static func getMyWitnessFromHub(completion: @escaping (Any) -> Void) {
         
-        TNWebSocketManager.sharedInstance.GetWitnessCompletionBlock = completion
-        TNWebSocketManager.sendRequest(api: "get_witnesses", params: [:], command: .getWitnesses)
+        TNWebSocketManager.sendRequest(api: "get_witnesses", params: [:], command: .getWitnesses, blockDict: ["callBack": completion])
     }
     
     /**
@@ -91,13 +90,12 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      */
     static func sendTemporaryPublicKeyToHub(_ temp_pubkey: String, pubkey: String, completion: @escaping (Any) -> Void) {
         
-        TNWebSocketManager.sharedInstance.SendTempPubkeyBlock = completion
         let unit: NSDictionary = ["temp_pubkey":temp_pubkey, "pubkey":pubkey]
         let unitString = TNWebSocketManager.getJSONStringFrom(jsonObject: unit)
         
         TNEvaluateScriptManager.sharedInstance.getParamsSign(unit: unitString) { (signature) in
             let params: [String : Any] = ["temp_pubkey":temp_pubkey, "pubkey":pubkey, "signature":signature]
-            TNWebSocketManager.sendRequest(api: "hub/temp_pubkey", params: params, command: .tempPubkey)
+            TNWebSocketManager.sendRequest(api: "hub/temp_pubkey", params: params, command: .tempPubkey, blockDict: ["callBack": completion])
             
         }
     }
@@ -111,7 +109,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      */
     static func getTransactionHistoryRecords(witnesses: [String], addresses: [String], requested_joints: [String]?, last_stable_mci: Int = 0, known_stable_units: [String]?) {
         
-        TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
+        let getHistoryCompletionBlock: HandleRequestMessageBlock = { (anyObject) in
             
             if TNGlobalHelper.shared.recoverStyle == .none {
                 let notificationName = Notification.Name(rawValue: TNDidFinishedGetHistoryTransaction)
@@ -133,11 +131,11 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
         if let units = known_stable_units {
             params["known_stable_units"] = units
         }
-        TNWebSocketManager.sendRequest(api: "light/get_history", params: params, command: .getHistory)
+        TNWebSocketManager.sendRequest(api: "light/get_history", params: params, command: .getHistory, blockDict: ["callBack": getHistoryCompletionBlock])
     }
     
     static func getHistoryTransaction(witnesses: [String], addresses: [String], requested_joints: [String]?, last_stable_mci: Int = 0, known_stable_units: [String]?, completion: @escaping ([String: Any]) -> Void) {
-        TNWebSocketManager.sharedInstance.GetHistoryCompletionBlock = { (anyObject) in
+        let getHistoryCompletionBlock: HandleRequestMessageBlock = { (anyObject) in
             let jsonObj = anyObject as? [String : Any]
             completion(jsonObj!)
             DispatchQueue.main.async {
@@ -154,7 +152,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
         if let units = known_stable_units {
             params["known_stable_units"] = units
         }
-        TNWebSocketManager.sendRequest(api: "light/get_history", params: params, command: .getHistory)
+        TNWebSocketManager.sendRequest(api: "light/get_history", params: params, command: .getHistory, blockDict: ["callBack": getHistoryCompletionBlock])
     }
     
     
@@ -165,8 +163,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      */
     static func getParentsUnit(witnesses: [String], completion: @escaping ([String: Any]) -> Void) {
         
-        TNWebSocketManager.sharedInstance.GetParentsCompletionBlock = completion
-        TNWebSocketManager.sendRequest(api: "light/get_parents_and_last_ball_and_witness_list_unit", params: ["witnesses": witnesses], command: .getParentsUnits)
+        TNWebSocketManager.sendRequest(api: "light/get_parents_and_last_ball_and_witness_list_unit", params: ["witnesses": witnesses], command: .getParentsUnits, blockDict: ["callBack": completion])
     }
     
     /**
@@ -176,8 +173,8 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      */
     static func getTransferResponse(objectJoint: [String: Any], completion: @escaping (String) -> Void) {
         
-        TNWebSocketManager.sharedInstance.GettransferCompletionBlock = completion
-        TNWebSocketManager.sendRequest(api: "post_joint", params: ["unit": objectJoint], command: .postJoint)
+        
+        TNWebSocketManager.sendRequest(api: "post_joint", params: ["unit": objectJoint], command: .postJoint, blockDict: ["callBack": completion])
     }
     
     /**
@@ -186,8 +183,8 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      *  @param
      */
     static func getOtherTempPubkey(pubkey: String, completion: @escaping (String) -> Void) {
-        TNWebSocketManager.sharedInstance.GetOtherTempPubkeyBlock = completion
-        TNWebSocketManager.sendRequest(api: "hub/get_temp_pubkey", params: ["": pubkey], command: .otherTempPubkey)
+       
+        TNWebSocketManager.sendRequest(api: "hub/get_temp_pubkey", params: ["": pubkey], command: .otherTempPubkey, blockDict: ["callBack": completion])
     }
     
     /**
@@ -195,9 +192,9 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      *  @param objDeviceMessage
      *  @param
      */
-    static func sendDeliver(objDeviceMessage: [String: Any], completion: @escaping (String) -> Void) {
-        TNWebSocketManager.sharedInstance.SendDeviceMessageBlock = completion
-        TNWebSocketManager.sendRequest(api: "hub/deliver", params: ["": objDeviceMessage], command: .deviceMessageSign)
+    static func sendDeliver(objDeviceMessage: [String: Any], messageHash: String, completion: @escaping ([String: Any]) -> Void) {
+        
+        TNWebSocketManager.sendRequest(api: "hub/deliver", params: ["": objDeviceMessage], command: .deviceMessageSign, blockDict: ["callBack": completion, "messageHash": messageHash])
     }
     
     static func sendDeleteRequest(messageHash: String) {
@@ -210,7 +207,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
 
 extension TNWebSocketManager {
     
-    static func sendRequest(api: String, params: [String : Any], command: RequestCommand) {
+    static func sendRequest(api: String, params: [String : Any], command: RequestCommand, blockDict: [String: Any]) {
         
         DispatchQueue.global().async {
             var request: [String : Any] = ["command": api]
@@ -222,24 +219,10 @@ extension TNWebSocketManager {
                 }
             }
             let objectHash = TNSyncOperationManager.shared.getRequestParamsBase64Hash(request)
-            switch command {
-            case .getWitnesses:
-                TNWebSocketManager.sharedInstance.responseTag.getWitnessTag = objectHash
-            case .tempPubkey:
-                TNWebSocketManager.sharedInstance.responseTag.tempPubkeyTag = objectHash
-            case .getHistory:
-                TNWebSocketManager.sharedInstance.responseTag.getHistoryTag = objectHash
-            case .getParentsUnits:
-                TNWebSocketManager.sharedInstance.responseTag.getParentsTag = objectHash
-            case .postJoint:
-                TNWebSocketManager.sharedInstance.responseTag.getTransferTag = objectHash
-            case .otherTempPubkey:
-                TNWebSocketManager.sharedInstance.responseTag.otherTempkeyTag = objectHash
-            case .deviceMessageSign:
-                TNWebSocketManager.sharedInstance.responseTag.deviceMessageTag = objectHash
-            case .deleteHubCache:
-                TNWebSocketManager.sharedInstance.responseTag.deleteHubCacheTag = objectHash
-            }
+            var requestTask: [String: Any] = blockDict
+            requestTask["command"] = command
+            requestTask["tag"] = objectHash
+            TNWebSocketManager.sharedInstance.requestTasks.append(requestTask)
             var requestBody: [String : Any] = ["command": api, "tag": objectHash]
             if !params.isEmpty {
                 if params.keys.contains("") {

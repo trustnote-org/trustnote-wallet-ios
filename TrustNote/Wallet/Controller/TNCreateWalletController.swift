@@ -74,6 +74,11 @@ class TNCreateWalletController: TNNavigationController {
             self.navigationController?.popViewController(animated: true
             )
         }
+        
+        commonWalletView.createEmptyWalletBlock = {[unowned self] in
+            self.alertAction(self, "您不能创建更多的空钱包", message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
+        }
+      
         observeWalletView.clickedImportButtonBlock = {[unowned self] in
             let marginX: CGFloat = 6.0
             let marginY: CGFloat = 58.0

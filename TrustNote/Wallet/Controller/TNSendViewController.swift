@@ -114,7 +114,7 @@ extension TNSendViewController {
     fileprivate func verifyWalletPassword() {
         passwordAlertView = TNPasswordAlertView.loadViewFromNib()
         passwordAlertView?.delegate = self
-        verifyPasswordView = createPopView(passwordAlertView!, height: kVerifyPasswordAlertHeight, animatedType: .pop)
+        verifyPasswordView = createPopView(passwordAlertView!, height: kVerifyPasswordAlertHeight, animatedType: .none)
         let tap = UITapGestureRecognizer(target: self, action: #selector(TNSendViewController.handleTapGesture))
         verifyPasswordView?.addGestureRecognizer(tap)
     }

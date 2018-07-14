@@ -132,6 +132,7 @@ extension TNVerifyPasswordController: TNPasswordAlertViewDelegate {
             let xPrivkey = TNGlobalHelper.shared.getPrivkey()
             TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: xPrivkey) {
                 TNHubViewModel.loginHub()
+                TNChatManager.sendMessagesAgain()
             }
             TNEvaluateScriptManager.sharedInstance.generateRootPublicKey(xPrivKey: xPrivkey)
         } else {

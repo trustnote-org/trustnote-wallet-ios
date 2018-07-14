@@ -83,9 +83,10 @@ extension TNMyReceiveAddressController: UITableViewDelegate, UITableViewDataSour
             }
             return setupCell
         }
+        
         let cell: TNMyReceiveAddressCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
+        
         if cellStyle == .setupCompleted {
-            
             cell.amount = amount!
             cell.clearBtn.isHidden = false
             cell.setAmountBtn.isHidden = true

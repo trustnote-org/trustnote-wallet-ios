@@ -19,16 +19,8 @@ class TNWebSocketManager {
         var isLogin: Bool?
     }
     
-    struct ResponseTag {
-        var tempPubkeyTag: String    = ""
-        var getHistoryTag: String    = ""
-        var getWitnessTag: String    = ""
-        var getParentsTag: String    = ""
-        var getTransferTag: String   = ""
-        var otherTempkeyTag: String   = ""
-        var deviceMessageTag: String  = ""
-        var deleteHubCacheTag: String = ""
-    }
+    var requestTasks: [[String: Any]] = []
+    
     
     fileprivate var heartBeat: Timer!
     fileprivate let rootHubs: [String] = ["shawtest.trustnote.org", "raytest.trustnote.org"]
@@ -38,17 +30,7 @@ class TNWebSocketManager {
     public var heatBeatTag: String?
     public var isConnected: Bool = false
     public var hubStatus: HubConnectedStatus = HubConnectedStatus(isLogin: false)
-    public var responseTag = ResponseTag()
     public var tempPubkeyTimeConsume = 0
-    
-    
-    public var GetHistoryCompletionBlock:  HandleRequestMessageBlock?
-    public var SendTempPubkeyBlock:        HandleRequestMessageBlock?
-    public var GetWitnessCompletionBlock:  HandleRequestMessageBlock?
-    public var GetParentsCompletionBlock:  (([String: Any]) -> Void)?
-    public var GettransferCompletionBlock: ((String) -> Void)?
-    public var GetOtherTempPubkeyBlock:    ((String) -> Void)?
-    public var SendDeviceMessageBlock:     ((String) -> Void)?
     
     public var HandleHubMessageBlock:      (([String: Any]) -> Void)?
     public var recieveTransferUnitBlock:   (([String: Any]) -> Void)?
@@ -56,6 +38,7 @@ class TNWebSocketManager {
     
     public var generateNewPrivkeyBlock: (() -> Void)?
     public var socketDidConnectedBlock: (() -> Void)?
+    public var checkOutboxMessageBlock: (() -> Void)?
     
     class var sharedInstance: TNWebSocketManager {
         
@@ -112,6 +95,7 @@ extension TNWebSocketManager: WebSocketDelegate {
         initHeartBeat()
         isConnected = true
         socketDidConnectedBlock?()
+        checkOutboxMessageBlock?()
         TNHubViewModel.getMyWitnessesList()
         if let generateNewPrivkeyBlock = generateNewPrivkeyBlock {
             generateNewPrivkeyBlock()
@@ -171,7 +155,7 @@ extension TNWebSocketManager {
     }
     
     func getDictionaryFromJSONString(jsonString: String) -> [Any] {
-
+        
         let jsonData: Data = jsonString.data(using: .utf8)!
         let dataArr = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers) as! Array<Any>
         if dataArr != nil {
@@ -215,28 +199,36 @@ extension TNWebSocketManager {
         
         if handleData.keys.contains("tag") {
             let tag = handleData["tag"] as! String
-            if let response = handleData["response"] {
-                switch tag {
-                case responseTag.tempPubkeyTag:
-                    SendTempPubkeyBlock!(response)
-                case responseTag.getHistoryTag:
-                    GetHistoryCompletionBlock!(response)
-                case responseTag.getWitnessTag:
-                    GetWitnessCompletionBlock!(response)
-                case responseTag.getParentsTag:
-                    GetParentsCompletionBlock!(response as! [String : Any])
-                case responseTag.getTransferTag:
-                    if response is String {
-                        GettransferCompletionBlock!(response as! String)
+            for (index, requestTask) in requestTasks.enumerated() {
+                if requestTask.keys.contains("tag") && requestTask["tag"] as! String == tag {
+                    
+                    let command = requestTask["command"] as! RequestCommand
+                    if let response = handleData["response"] {
+                        switch command {
+                        case .getWitnesses, .getHistory, .tempPubkey:
+                            let callBack = requestTask["callBack"] as! HandleRequestMessageBlock
+                            callBack(response)
+                        case .getParentsUnits:
+                            let callBack = requestTask["callBack"] as! ([String: Any]) -> Void
+                            callBack(response as! [String : Any])
+                        case .postJoint:
+                            let callBack = requestTask["callBack"] as! (String) -> Void
+                            if response is String {
+                                callBack(response as! String)
+                            }
+                        case .deviceMessageSign:
+                            let callBack = requestTask["callBack"] as! ([String: Any]) -> Void
+                            let resonseResult = ["accepted": response, "messageHash": requestTask["messageHash"]!] as [String : Any]
+                            callBack(resonseResult)
+                        case .otherTempPubkey:
+                            let callBack = requestTask["callBack"] as! (String) -> Void
+                            let dict = response as! [String : Any]
+                            callBack(dict["temp_pubkey"] as! String)
+                        case .deleteHubCache:
+                            break
+                        }
                     }
-                case responseTag.otherTempkeyTag:
-                    let dict = response as! [String : Any]
-                    GetOtherTempPubkeyBlock!(dict["temp_pubkey"] as! String)
-                case responseTag.deviceMessageTag:
-                    if response is String {
-                        SendDeviceMessageBlock!(response as! String)
-                    }
-                default:
+                    requestTasks.remove(at: index)
                     break
                 }
             }

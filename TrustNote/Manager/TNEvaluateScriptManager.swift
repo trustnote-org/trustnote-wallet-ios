@@ -469,7 +469,11 @@ extension TNEvaluateScriptManager {
         let js = String(format:"window.Client.decryptPackage('%@', '%@', '%@', '%@')", arguments:[json, privkey, prePrivKey, m1PrivKey])
         webView.evaluateJavaScript(js) {(any, _) in
             if let decryptPackage = any {
-                completionHandler!(decryptPackage as! String)
+                if decryptPackage is Int && (decryptPackage as! Int) == 0 {
+                    completionHandler!(String(decryptPackage as! Int))
+                } else {
+                    completionHandler!(decryptPackage as! String)
+                }
             }
         }
     }

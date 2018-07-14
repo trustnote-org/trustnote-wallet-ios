@@ -272,6 +272,7 @@ extension TNTransferViewModel {
     private func postNewUnitToHub() {
         guard !(payload.inputs?.isEmpty)! else {return}
         let response = TNSyncOperationManager.shared.postTransferUnit(objectJoint: unitObject)
+        TNGlobalHelper.shared.password = nil
         DispatchQueue.main.async {
             if response == "accepted" {
                 let viewModel = TNHistoryRecordsViewModel()

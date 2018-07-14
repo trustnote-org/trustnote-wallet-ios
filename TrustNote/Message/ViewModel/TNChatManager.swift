@@ -20,8 +20,20 @@ class TNChatManager: TNJSONSerializationProtocol {
         }
         return Static.instance
     }
-    
     required init() {}
+    
+    static func sendMessagesAgain() {
+        if TNWebSocketManager.sharedInstance.isConnected {
+            DispatchQueue.global().async {
+                TNChatManager.checkOutbox()
+            }
+        }
+        TNWebSocketManager.sharedInstance.checkOutboxMessageBlock = {
+            DispatchQueue.global().async {
+                TNChatManager.checkOutbox()
+            }
+        }
+    }
     
     static func recieveHubMessage() {
         TNWebSocketManager.sharedInstance.HandleHubMessageBlock = { (body) in
@@ -115,14 +127,34 @@ class TNChatManager: TNJSONSerializationProtocol {
         let json =  TNChatManager.getJSONStringFrom(jsonObject: packageBody)
         let encryptedStr = TNSyncOperationManager.shared.createEncryptedPackage(json: json, pubkey: tempKey)
         let encryptedObj = TNChatManager.getDictionaryFromJsonString(json: encryptedStr)
-        var objDeviceMessage = ["encrypted_package": encryptedObj, "to": TNChatManager.shared.deviceAddress, "pubkey": TNGlobalHelper.shared.ecdsaPubkey] as [String : Any]
+        sendMessageToHub(package: ["encrypted_package": encryptedObj], messageHash: TNChatManager.shared.messageHash, to: TNChatManager.shared.deviceAddress)
+    }
+    
+    static fileprivate func sendMessageToHub(package: [String: Any], messageHash: String, to: String) {
+        var objDeviceMessage = ["to": to, "pubkey": TNGlobalHelper.shared.ecdsaPubkey] as [String : Any]
+        objDeviceMessage["encrypted_package"] = package["encrypted_package"]
         let messageStr = TNChatManager.getJSONStringFrom(jsonObject: objDeviceMessage)
         let signature = TNSyncOperationManager.shared.getDeviceMessageHashToSign(unit: messageStr)
         objDeviceMessage["signature"] = signature
-        let response = TNSyncOperationManager.shared.sendDeviceMessageSignature(objDeviceMessage: objDeviceMessage)
-        if response == "accepted" {
+        let response = TNSyncOperationManager.shared.sendDeviceMessageSignature(objDeviceMessage: objDeviceMessage,messageHash: messageHash)
+        if response["accepted"] as! String == "accepted" {
             let sql = "DELETE FROM outbox WHERE message_hash=?"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [TNChatManager.shared.messageHash])
+            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [response["messageHash"] as! String])
+        }
+    }
+    
+    static fileprivate func checkOutbox() {
+        TNSQLiteManager.sharedManager.queryOutbox { (outboxes) in
+            if !outboxes.isEmpty {
+                for outbox in outboxes {
+                    TNSyncOperationManager.shared.contactHub = TNSQLiteManager.sharedManager.queryContactHubAddress(deviceAddress: outbox.to)
+                    let connnect = TNSyncOperationManager.shared.openSocket()
+                    if connnect == "connected" {
+                        let package = TNChatManager.getDictionaryFromJsonString(json: outbox.message)
+                        sendMessageToHub(package: package, messageHash: outbox.message_hash, to: outbox.to)
+                    }
+                }
+            }
         }
     }
     
@@ -132,6 +164,13 @@ class TNChatManager: TNJSONSerializationProtocol {
         let prePrivKey = TNGlobalHelper.shared.prevTempDeviceKey
         let m1PrivKey = TNGlobalHelper.shared.ecdsaPrivkey
         let decryptedJson = TNSyncOperationManager.shared.getDecryptedPackage(json: package, privkey: privkey, prePrivKey: prePrivKey, m1PrivKey: m1PrivKey)
+        
+        /// If you can't decrypt the data, delete the Hub cache
+        if decryptedJson == "0" {
+            TNHubViewModel.deleteHubCache(messageHash: messageHash)
+            return
+        }
+        
         let decryptedObj = TNChatManager.getDictionaryFromJsonString(json: decryptedJson)
         let subject = decryptedObj["subject"] as! String
         
@@ -211,7 +250,7 @@ extension TNChatManager {
     
     static fileprivate func getTempPubkey(pubkey: String) -> String {
         let connnect = TNSyncOperationManager.shared.openSocket()
-        if (connnect == "connected") {
+        if connnect == "connected" {
             let otherTempPubkey = TNSyncOperationManager.shared.getOherTempPubkeyFromHub(pubkey: pubkey)
             return otherTempPubkey
         }

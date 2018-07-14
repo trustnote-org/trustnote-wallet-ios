@@ -78,24 +78,24 @@ struct TNChatDate {
     }
     
     static func showTimeFormatter(_ time: String) -> String {
-        let timeDate = getDateFromFormatterTime(time)
-        if timeDate.isToday {
-            return timeDate.toFormat("HH:mm")
+        let timeDate = time.toDate()
+        if timeDate!.isToday {
+            return timeDate!.toFormat("HH:mm", locale: Locales.chinese)
         }
-        if timeDate.isYesterday {
-            return "昨天 " + timeDate.toFormat("HH:mm")
+        if timeDate!.isYesterday {
+            return "昨天 " + timeDate!.toFormat("HH:mm")
         }
-        return timeDate.toFormat("yyyy-MM-dd HH:mm")
+        return timeDate!.toFormat("yyyy-MM-dd HH:mm")
     }
     
     static func showListTimeFormatter(_ time: String) -> String {
-        let timeDate = getDateFromFormatterTime(time)
-        if timeDate.isToday {
-            return timeDate.toFormat("HH:mm")
+        let timeDate = time.toDate()
+        if timeDate!.isToday {
+            return timeDate!.toFormat("HH:mm", locale: Locales.chinese)
         }
-        if timeDate.isYesterday {
+        if timeDate!.isYesterday {
             return "昨天"
         }
-        return timeDate.toFormat("yyyy-MM-dd")
+        return timeDate!.toFormat("yyyy-MM-dd")
     }
 }

@@ -42,3 +42,9 @@ struct TNCorrespondentDevice {
     var is_confirmed = false
     var unreadCount = 0
 }
+
+struct TNOutbox {
+    var message_hash = ""
+    var to = ""
+    var message = ""
+}

@@ -7,29 +7,27 @@
 */
 
 /*******protocol page string************/
-"Protocol.first" = "您即将使用的是一款免费开源的数字钱包软件。";
+"Protocol.first" = "1、您即将使用的是一款免费开源的数字钱包软件。";
 
-"Protocol.second" = "本软件不会开设账户，以使软件开发者或其它第三方机构成为您的TTT或其它有价资产的金融中介或保管者。";
+"Protocol.second" = "2、您知悉TrustNote钱包不会开设账户，在TrustNote上的钱包密码、私钥、助记词并不存储或同步至服务器，TrustNote不提供找回您的密码、私钥、助记词服务。";
 
-"Protocol.third" = "鉴于本软件已完成公开测试并会根据开源用户和开发者社区的反馈进行持续改进，我们不保证本软件不存在缺陷。";
+"Protocol.third" = "3、您知悉，您的交易记录是否公开，TrustNote并没有控制权，因为基于区块链交易系统开源属性，您的交易记录在整个区块链上都是公开透明的。";
 
-"Protocol.fourth" = "请您确定使用本软件是您自己的决定并遵守所有适用的法律。";
+"Protocol.fourth" = "4、您知悉可以通过“钱包”模块修改您的钱包名称、进行转账及收款等活动。";
 
-"Protocol.fifth" = "您有责任妥善保管您的登录口令、私钥、交易密码和您用以访问本软件的其它代码。";
+"Protocol.fifth" = "5、您知悉可以通过“消息”模块添加好友、进行聊天等活动。";
 
-"Protocol.sixth" = "若您失去对本钱包的控制权，您知悉并接受任何与本钱包关联的TTT和其它有价资产将无法找回。";
+"Protocol.sixth" = "6、您可以在TrustNote中查看条款，我们鼓励您在每次访问TrustNote时都查阅条款。";
 
-"Protocol.seventh" = "软件作者无法帮您恢复丢失或忘记的私钥或密码，也不能保证交易会被确认，因为他们并没有TrustNote网络的控制权。";
+"Protocol.seventh" = "7、在法律允许的最大范围内，本软件会以当前形式提供，不存在一切其它明示或默示保证，包括（但不限于）关于适销性、合理性或某一特定用途以及非侵权的默示保证。";
 
-"Protocol.eighth" = "在法律允许的最大范围内，本软件会以当前形式提供，不存在一切其它明示或默示保证，包括（但不限于）关于适销性、合理性或某一特定用途以及非侵权的默示保证。";
+"Protocol.eighth" = "8、根据社区用户和开发者社区用户的需求反馈，本软件公开测试后开源，我们不保证本软件不存在缺陷，以后将持续更新。";
 
-"Protocol.ninth" = "您自愿承担与使用本软件相关的所有风险和其它后果。";
+"Protocol.ninth" = "9、请确认本软件的使用是您自己的决定，您将自愿承担使用本软件相关的所有风险和其它后果，并严格遵守所有适用的法律。";
 
-"Protocol.tenth" = "任何情况下，本软件的作者不对任何合同诉讼、侵权行为或其它与本软件无关或相关内容产生的任何索赔、损伤或其它责任负责。";
+"Protocol.tenth" = "10.任何情况下，本软件的作者不对任何合同诉讼、侵权行为或其它与本软件无关或相关内容产生的任何索赔、损伤或其它责任负责。\n我们保留更新此声明的权利。";
 
-"Protocol.eleventh" = "我们保留更新此声明的权利。";
-
-"Protocol.agree" = "我确定我已经读过，理解并且同意这些条款。";
+"Protocol.agree" = "我已经仔细阅读并同意服务与隐私条款";
 "Button.agree" = "同意";
 
 "Terms of Use" = "使用条款";
@@ -149,6 +147,21 @@
 "Confirmed" = "已确认";
 "Unconfirmed" = "未确认";
 "Invalid" = "无效的";
+"No records" = "暂无记录哦~";
+"Received (MN)" = "收款金额(MN)";
+"No address" = "没有地址";
+"Scan results" = "扫描结果";
+"Transaction Details" = "交易详情";
+"Received" = "已收到";
+"Sent" = "已发送";
+"Receiver" = "接收方";
+"Sender" = "发送方";
+"Fee" = "费用";
+"Date" = "日期";
+"Unit" = "单元";
+"Status" = "状态";
+"Choose the wallet to pay" = "选择付款钱包";
+"You can't create more no TTT wallets" = "您不能创建更多的空钱包";
 
 /******* create wallet string************/
 "Create TTT wallet" = "创建TTT钱包";
@@ -205,8 +218,10 @@
 "Delete the wallet warning" = "即将删除此钱包，若您想生成该钱包，则需要您使用助记词恢复钱包！";
 "Unable to delete hints" = "该钱包内有资产，无法删除钱包";
 "No more than 10 characters" = "不超过10个字符";
+"Assets (MN)" = "资产(MN)";
 
 /******* message wallet string************/
+"Contacts" = "联系人";
 "Add Contacts" = "添加联系人";
 "Device Code" = "配对码";
 "Add" = "添加";
@@ -219,6 +234,7 @@
 "Clear Chat History" = "清空聊天记录";
 "add contact success" = "你已添加对方为好友，现在可以开始聊天";
 "Set Alias" = "设置备注名";
+"No contacts" = "没有联系人";
 
 "Backup.instruction" = "口令用于恢复钱包，将它准确地写到纸上，并存放在只有你知道的地方";
 "Confirm your mnemonic words" = "确认您的钱包口令";

@@ -86,15 +86,15 @@ extension TNMessageWebSocket: WebSocketDelegate {
     func websocketDidConnect(socket: WebSocketClient) {
         
         isConnected = true
-        socktConnected!("connected")
+        socktConnected?("connected")
         socktConnected = nil
-        TNDebugLogManager.debugLog(item: "Websocket Connected")
+        TNDebugLogManager.debugLog(item: "messageWebsocket Connected")
     }
     
     func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
         
         isConnected = false
-        TNDebugLogManager.debugLog(item: "websocket is disconnected: \(String(describing: error?.localizedDescription))")
+        TNDebugLogManager.debugLog(item: "messageWebsocket is disconnected: \(String(describing: error?.localizedDescription))")
     }
     
     func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
@@ -122,7 +122,11 @@ extension TNMessageWebSocket: WebSocketDelegate {
                         if command == .otherTempPubkey {
                             let callBack = requestTask["callBack"] as! (String) -> Void
                             let dict = response as! [String : Any]
-                            callBack(dict["temp_pubkey"] as! String)
+                            if dict.keys.contains("temp_pubkey") {
+                               callBack(dict["temp_pubkey"] as! String)
+                            } else {
+                                callBack("")
+                            }
                         } else if command == .deviceMessageSign {
                             let callBack = requestTask["callBack"] as! ([String: Any]) -> Void
                             //callBack(response as! String)

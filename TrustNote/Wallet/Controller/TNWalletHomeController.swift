@@ -13,12 +13,11 @@ import ReusableKit
 class TNWalletHomeController: TNBaseViewController {
     
     struct Reusable {
-        static let totalAssertCell = "\(TNTotalAssertCell.self.self)"
         static let walletCell = "\(TNWalletCell.self)"
     }
     let walletCellHeight: CGFloat = 86.0
-    let networkStatusCellHeight: CGFloat = 46.0
-    let totalAssertCellHeight: CGFloat = 140.0
+    let totalAssertHeight: CGFloat = 140.0
+    let topBarHeight: CGFloat = 44.0
     let tableViewHeight: CGFloat = kScreenH - kSafeAreaBottomH - 44 - kStatusbarH
     
     var dataSource: [TNWalletModel] = []
@@ -26,12 +25,13 @@ class TNWalletHomeController: TNBaseViewController {
     var isReachable: Bool = true
     var totalAssert = 0.0
     var selectWalletListView: TNCustomAlertView?
-    var syncOperation: TNSyncWalletData?
+    var syncOperation = TNSyncWalletData()
     var scanningResult: String?
+    
+    let totalAssertView: TNTotalAssertView = TNTotalAssertView .totalAssertView()
     
     private let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
-        $0.register(UINib(nibName: Reusable.totalAssertCell, bundle: nil), forCellReuseIdentifier: Reusable.totalAssertCell)
         $0.register(UINib(nibName: Reusable.walletCell, bundle: nil), forCellReuseIdentifier: Reusable.walletCell)
         $0.separatorStyle = .none
         $0.tableFooterView = UIView()
@@ -50,8 +50,8 @@ class TNWalletHomeController: TNBaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setStatusBarBackgroundColor(color: UIColor.white)
         view.backgroundColor = kBackgroundColor
+        setStatusBarBackgroundColor(color: UIColor.white)
         if TNGlobalHelper.shared.isVerifyPasswdForMain {
             let vc = TNVerifyPasswordController()
             navigationController?.present(vc, animated: false) {
@@ -60,15 +60,15 @@ class TNWalletHomeController: TNBaseViewController {
             }
         }
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setStatusBarBackgroundColor(color: UIColor.clear)
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        observeNetworkStatus()
+        // observeNetworkStatus()
         getWalletList()
         tableView.delegate = self
         tableView.dataSource = self
@@ -86,10 +86,11 @@ class TNWalletHomeController: TNBaseViewController {
         
         registerNotification()
         
-        if TNGlobalHelper.shared.isNeedLoadData {
-            syncOperation = TNSyncWalletData()
-            loadData()
+        syncOperation.syncWalletDataComlpetion = {[weak self] in
+            self?.endRefresing()
         }
+        
+        loadData()
     }
     
     fileprivate func setupUI() {
@@ -97,19 +98,20 @@ class TNWalletHomeController: TNBaseViewController {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(kStatusbarH)
-            make.left.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.left.right.bottom.equalToSuperview()
         }
     }
     
     fileprivate func setupTableViewFooterView() {
-        var footerHeight = tableViewHeight - 44 - totalAssertCellHeight - walletCellHeight * CGFloat(dataSource.count)
-        if !isReachable {
-            footerHeight -= networkStatusCellHeight
-        }
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: kScreenW, height: footerHeight))
-        footerView.backgroundColor = UIColor.white
-        tableView.tableFooterView = footerView
+       
+        let footerHeight = tableViewHeight - (topBarHeight + totalAssertHeight) - CGFloat(dataSource.count) * walletCellHeight
+        if footerHeight > 0 {
+            let footerView = UIView(frame: CGRect(x: 0, y: 0, width: kScreenW, height: footerHeight))
+            footerView.backgroundColor = UIColor.white
+            tableView.tableFooterView = footerView
+        } else {
+            tableView.tableFooterView = UIView()
+       }
     }
     
     deinit {
@@ -119,70 +121,46 @@ class TNWalletHomeController: TNBaseViewController {
 
 extension TNWalletHomeController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }
         return dataSource.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let totalAssertCell = tableView.dequeueReusableCell(withIdentifier: Reusable.totalAssertCell) as! TNTotalAssertCell
-            totalAssertCell.totalAssert = totalAssert
-            totalAssertCell.selectionStyle = .none
-            return totalAssertCell
-        }
+
         let cell = tableView.dequeueReusableCell(withIdentifier: Reusable.walletCell) as! TNWalletCell
         cell.model = dataSource[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return totalAssertCellHeight
-        }
+      
         return walletCellHeight
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section == 0 {
-            let headerView = UIView()
-            headerView.backgroundColor = UIColor.red
-            headerView.addSubview(topBar)
-            topBar.snp.makeConstraints { (make) in
-                make.top.left.right.equalToSuperview()
-                make.height.equalTo(44)
-            }
-            headerView.addSubview(networkStatus)
-            networkStatus.snp.makeConstraints { (make) in
-                make.top.equalTo(topBar.snp.bottom)
-                make.left.right.bottom.equalToSuperview()
-            }
-            networkStatus.isHidden = isReachable ? true : false
-            return headerView
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.white
+        headerView.addSubview(topBar)
+        topBar.snp.makeConstraints { (make) in
+            make.top.left.right.equalToSuperview()
+            make.height.equalTo(44)
         }
-        return nil
+        headerView.addSubview(totalAssertView)
+        totalAssertView.snp.makeConstraints { (make) in
+            make.left.right.bottom.equalToSuperview()
+            make.top.equalTo(topBar.snp.bottom)
+        }
+        totalAssertView.totalAssert = totalAssert
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            if isReachable {
-                return 44
-            }
-            return networkStatusCellHeight + 44
-        }
-        return 0
+        return topBarHeight + totalAssertHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section != 0 else {
-            return
-        }
+
         tableView.deselectRow(at: indexPath, animated: true)
         let walletModel = dataSource[indexPath.row]
         let listVC = TNTradeRecordsListController(wallet: walletModel)
@@ -242,16 +220,14 @@ extension TNWalletHomeController {
             [weak self] in
             self?.pullTorefresh()
         }
-       // tableView.triggerRefreshing()
     }
     
     func pullTorefresh() {
-        if let syncOperation = syncOperation {
-            if syncOperation.isLoading {
-                endRefresing()
-                return
-            }
+        if syncOperation.isLoading {
+            endRefresing()
+            return
         }
+
         syncData(true)
     }
     
@@ -356,20 +332,8 @@ extension TNWalletHomeController {
 extension TNWalletHomeController {
     
     public func syncData(_ isRefresh: Bool) {
-        if let syncOperation = syncOperation {
-            syncOperation.isRefresh = isRefresh
-            syncOperation.syncWalletDataComlpetion = {[unowned self] in
-                self.endRefresing()
-            }
-            syncOperation.syncWalletsData(wallets: dataSource)
-        } else {
-            let newSyncOperation = TNSyncWalletData()
-            newSyncOperation.isRefresh = isRefresh
-            newSyncOperation.syncWalletDataComlpetion = {[unowned self] in
-                self.endRefresing()
-            }
-            newSyncOperation.syncWalletsData(wallets: dataSource)
-        }
+        syncOperation.isRefresh = isRefresh
+        syncOperation.syncWalletsData(wallets: dataSource)
     }
 }
 
@@ -385,8 +349,13 @@ extension TNWalletHomeController {
                 self.setupTableViewFooterView()
             })
         }).disposed(by: disposeBag)
+        
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNCreateCommonWalletNotification)).subscribe(onNext: {[unowned self] value in
             self.refreshAction()
+        }).disposed(by: disposeBag)
+        
+   NotificationCenter.default.rx.notification(Notification.Name.UIApplicationWillEnterForeground).subscribe(onNext: {[unowned self] value in
+            self.pullTorefresh()
         }).disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(NSNotification.Name(rawValue: TNDidFinishSyncClonedWalletNotify)).subscribe(onNext: {[unowned self] value in

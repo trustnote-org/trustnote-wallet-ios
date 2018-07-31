@@ -179,7 +179,7 @@ extension TNProfileViewController {
         let dataArr = [
             [["title" : "Version".localized, "detail" : version, "action" : "", "isCanSelected" : false],
              ["title" : "Hash value".localized, "detail" : gitSHA, "action" : "", "isCanSelected" : false],
-             ["title" : "Terms of Use".localized, "detail" : "", "action" : "", "isCanSelected" : true]]
+             ["title" : "Terms of Use".localized, "detail" : "", "action" : "viewTermsOfUse", "isCanSelected" : true]]
             ] as [Any]
         let vc = TNGeneralViewController(dataSource: dataArr, titleText: "About trustNote".localized)
         navigationController?.pushViewController(vc, animated: true)

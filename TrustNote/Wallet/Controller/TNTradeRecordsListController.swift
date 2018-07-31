@@ -57,7 +57,7 @@ class TNTradeRecordsListController: TNNavigationController {
     let emptyRecordsLabel = UILabel().then {
         $0.textColor = UIColor.hexColor(rgbValue: 0x8EA0B8)
         $0.font = UIFont.systemFont(ofSize: 14)
-        $0.text = "暂无记录哦~"
+        $0.text = "No records".localized
     }
     
     let containerView = UIView().then {
@@ -171,7 +171,7 @@ extension TNTradeRecordsListController {
     
     func pullTorefresh() {
         let homeVC = navigationController?.viewControllers.first as! TNWalletHomeController
-        if syncOperation.isLoading || homeVC.syncOperation!.isLoading {
+        if syncOperation.isLoading || homeVC.syncOperation.isLoading {
             endRefresing()
             return
         }

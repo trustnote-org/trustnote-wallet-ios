@@ -245,7 +245,7 @@ extension TNRecoveryWalletController {
         TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
         TNGlobalHelper.shared.isVerifyPasswdForMain = delegate.isTabBarRootController() ? true : false
-        TNGlobalHelper.shared.isNeedLoadData = false
+
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {

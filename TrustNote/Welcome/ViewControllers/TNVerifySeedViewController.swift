@@ -178,7 +178,7 @@ extension TNVerifySeedViewController {
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
-                    TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
+                   // TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
                 })
             }
         }

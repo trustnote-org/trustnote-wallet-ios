@@ -33,7 +33,7 @@ class TNModifyRemarkController: TNNavigationController {
         editRemarkView.inputTextField.text = correspondent.name
         setBackButton()
         navigationBar.titleText = "Set Alias".localized
-        _ = navigationBar.setRightButtonTitle(title: "完成", target: self, action: #selector(self.editDone))
+        _ = navigationBar.setRightButtonTitle(title: "Done".localized, target: self, action: #selector(self.editDone))
         view.addSubview(editRemarkView)
         editRemarkView.snp.makeConstraints { (make) in
             make.top.equalTo(navigationBar.snp.bottom).offset(10)
@@ -63,5 +63,6 @@ extension TNModifyRemarkController {
             navigationController?.popViewController(animated: true)
             return
         }
+        MBProgress_TNExtension.showViewAfterSecond(title: "备注名不能为空")
     }
 }

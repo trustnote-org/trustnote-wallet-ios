@@ -10,6 +10,7 @@ import UIKit
 
 class TNWalletDetailHeaderView: UIView {
     
+    @IBOutlet weak var unitLabel: UILabel!
     @IBOutlet weak var walletNameLabel: UILabel!
     @IBOutlet weak var assertLabel: UILabel!
     @IBOutlet weak var decimalLabel: UILabel!
@@ -26,6 +27,7 @@ class TNWalletDetailHeaderView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        unitLabel.text = "Assets (MN)".localized
     }
 }
 

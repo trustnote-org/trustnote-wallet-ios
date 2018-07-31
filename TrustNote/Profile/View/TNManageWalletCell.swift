@@ -43,6 +43,7 @@ class TNManageWalletCell: UITableViewCell, RegisterCellFromNib {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
+        unitLabel.text = "Assets (MN)".localized
         containerView.layer.cornerRadius = kCornerRadius
         containerView.setupShadow(Offset: CGSize(width: 0, height: 6), opacity: 0.1, radius: 6)
         markLabel.layer.borderColor = kThemeMarkColor.cgColor

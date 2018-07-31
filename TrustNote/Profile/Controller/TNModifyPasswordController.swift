@@ -71,6 +71,7 @@ extension TNModifyPasswordController {
     
     @objc fileprivate func setupCompleted() {
         passwordView.passwordSecurityView.isHidden = true
+        
         guard (passwordView.newTextField.text?.length)! >= textValidCount else {
             passwordView.passwdRuleLabel.isHidden = false
             passwordView.passwordRuleImgView.isHidden = false
@@ -84,10 +85,16 @@ extension TNModifyPasswordController {
         }
         let md5Str = passwordView.originTextField.text?.md5()
         guard md5Str == Preferences[.encryptionPassword] else {
-            alertAction(self, "Original password input error".localized, message: nil, sureActionText: nil, cancelActionText: NSLocalizedString("Confirm", comment: ""), isChange: false, sureAction: nil)
+            alertAction(self, "Original password input error".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
             return
         }
-        Preferences[.encryptionPassword] = md5Str
+        Preferences[.encryptionPassword] = passwordView.newTextField.text?.md5()
+        let xPrivkey = AES128CBC_Unit.aes128Decrypt(TNGlobalHelper.shared.encryptePrivKey, key: passwordView.originTextField.text)
+        let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivkey, key: passwordView.newTextField.text)
+        TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+        TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+        MBProgress_TNExtension.showViewAfterSecond(title: "密码设置成功")
+        navigationController?.popViewController(animated: true)
     }
 }
 

@@ -24,12 +24,12 @@ class TNTradeDetailHeaderView: UIView {
                 assertLabel.text = "+" + assertStr
                 assertLabel.textColor = kGlobalColor
                 decimalLabel.textColor = kGlobalColor
-                descLabel.text = "已收到(MN)"
+                descLabel.text = "Received".localized + "(MN)"
             } else {
                 assertLabel.text = "-" + assertStr
                 assertLabel.textColor = kThemeTextColor
                 decimalLabel.textColor = kThemeTextColor
-                descLabel.text = "已发送(MN)"
+                descLabel.text = "Sent".localized + "(MN)"
             }
             
             decimalLabel.text = assert.substring(fromIndex: assert.length - TNGlobalHelper.shared.unitDecimals)
@@ -38,7 +38,8 @@ class TNTradeDetailHeaderView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         frameView.layer.cornerRadius = kCornerRadius * 2
-        frameView.layer.masksToBounds = true
+        titleTextLabel.text = "Transaction Details".localized
+        setupShadow(Offset: CGSize(width: 0, height: 6), opacity: 0.08, radius: 6.0)
     }
 }
 

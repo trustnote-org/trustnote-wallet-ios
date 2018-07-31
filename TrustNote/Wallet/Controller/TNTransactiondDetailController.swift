@@ -36,10 +36,10 @@ class TNTransactiondDetailController: TNNavigationController {
         super.init()
         self.detailModel = detailModel
         guard detailModel.action?.rawValue == "RECEIVED" else {
-            dataSource = ["接收方","费用", "日期", "单元", "状态"]
+            dataSource = ["Receiver".localized,"Fee".localized, "Date".localized, "Unit".localized, "Status".localized]
             return
         }
-        dataSource = ["发送方","接收方", "日期", "单元", "状态"]
+        dataSource = ["Sender".localized,"Receiver".localized, "Date".localized, "Unit".localized, "Status".localized]
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -87,18 +87,18 @@ extension TNTransactiondDetailController: UITableViewDataSource, UITableViewDele
         cell.contentLabel.textAlignment = rowHeightArr[indexPath.row] > 15.0 ? .left : .right
         cell.lineView.isHidden = indexPath.row == tableView.numberOfRows(inSection: 0) - 1 ? true : false
         cell.contentLabel.textColor = indexPath.row == TNTradeDetailRow.unit.rawValue ? kGlobalColor : kTitleTextColor
-        cell.statusView.isHidden = indexPath.row == TNTradeDetailRow.status.rawValue ? false : true
+        cell.statusImgView.isHidden = indexPath.row == TNTradeDetailRow.status.rawValue ? false : true
         if indexPath.row == TNTradeDetailRow.status.rawValue {
             var title = detailModel.confirmations ? "Confirmed".localized : "Unconfirmed".localized
             let titleColor = detailModel.confirmations ? kGlobalColor : UIColor.hexColor(rgbValue: 0xEE7A23)
-            cell.statusView.setTitleColor(titleColor, for: .normal)
+            cell.contentLabel.textColor = titleColor
             var imageName = ""
             if let action = detailModel.action {
                 switch action {
                 case .invalid:
                     title = "Invalid".localized
                     imageName = "send_invalid"
-                    cell.statusView.setTitleColor(UIColor.hexColor(rgbValue: 0xE33B1B), for: .normal)
+                    cell.contentLabel.textColor = UIColor.hexColor(rgbValue: 0xE33B1B)
                 case .sent:
                     imageName = detailModel.confirmations ? "send_confirmed" : "send_unconfirmed"
                 case .received:
@@ -107,8 +107,9 @@ extension TNTransactiondDetailController: UITableViewDataSource, UITableViewDele
                     break
                 }
             }
-            cell.statusView.setImage(UIImage(named: imageName), for: .normal)
-            cell.statusView.setTitle(title, for: .normal)
+            cell.statusImgView.image = UIImage(named: imageName)
+            cell.contentLabel.text = title
+            cell.imgRightConstraint.constant = -(UILabel.textSize(text: title, font: UIFont.systemFont(ofSize: 14), maxSize: CGSize(width: CGFloat.greatestFiniteMagnitude, height: 15)).width)
         }
         return cell
     }

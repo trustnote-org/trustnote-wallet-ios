@@ -60,6 +60,7 @@ class TNChatViewController: TNNavigationController {
         super.viewDidLoad()
         containerViewHeight =  kScreenH - kTitleViewHeight - kSafeAreaBottomH - kNavBarHeight
         setBackButton()
+        navigationBar.isNeedMove = true
         _ = navigationBar.setRightButtonImage(imageName: "message_menu", target: self, action: #selector(self.popChatMenu))
         setupUI()
         setupContainerView()
@@ -150,7 +151,7 @@ extension TNChatViewController {
             self.correspondentDevice = correspondent
             self.textLabel.text = correspondent.name
         }
-        
+       
         TNSQLiteManager.sharedManager.queryChatMessages(deviceAddress: deviceAddress) {[unowned self] (messageModels) in
             let sortArr = TNChatDate.sortResult(sortedArray: messageModels)
             self.messages =  TNChatDate.computeVisibleTime(dataArray: sortArr)
@@ -244,7 +245,7 @@ extension TNChatViewController {
     @objc fileprivate func popChatMenu() {
         let popW: CGFloat = TNLocalizationTool.shared.currentLanguage == "en" ? 194 : 174
         let popH: CGFloat = popRowHeight
-        let popX = kScreenW - popW - popRightMargin 
+        let popX = kScreenW - popW - popRightMargin
         let popY: CGFloat = navigationBar.frame.maxY + 8.0
         let imageNameArr = ["message_edit", "message_delete", "message_clear"]
         let titleArr = ["Set Alias".localized, "Delete Contact".localized, "Clear Chat History".localized]

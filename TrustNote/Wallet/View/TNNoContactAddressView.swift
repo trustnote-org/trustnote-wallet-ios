@@ -17,6 +17,7 @@ class TNNoContactAddressView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         detailLabel.text = "NoContactAddress".localized
+        descLabel.text = "No address".localized
     }
     
 }

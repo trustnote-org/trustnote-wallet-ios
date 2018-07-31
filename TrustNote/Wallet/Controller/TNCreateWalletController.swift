@@ -13,7 +13,7 @@ import SwiftyJSON
 
 class TNCreateWalletController: TNNavigationController {
     
-    let scrollViewTopConstraint: CGFloat = 142
+    let scrollViewTopConstraint: CGFloat = 96
     
     let walletViewModel = TNWalletViewModel()
     let recoverOperation = TNRecoverObserveWallet()
@@ -38,7 +38,7 @@ class TNCreateWalletController: TNNavigationController {
         $0.showsHorizontalScrollIndicator = false
         $0.bounces = false
         $0.isPagingEnabled = true
-        $0.contentSize = CGSize(width: 2 * kScreenW, height: 0)
+        $0.contentSize = CGSize(width: kScreenW, height: 0)
     }
     
     fileprivate lazy var loadingView: TNSyncClonedWalletsView = {
@@ -76,7 +76,7 @@ class TNCreateWalletController: TNNavigationController {
         }
         
         commonWalletView.createEmptyWalletBlock = {[unowned self] in
-            self.alertAction(self, "您不能创建更多的空钱包", message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
+            self.alertAction(self, "You can't create more no TTT wallets".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
         }
       
         observeWalletView.clickedImportButtonBlock = {[unowned self] in
@@ -268,17 +268,17 @@ extension TNCreateWalletController {
             make.left.equalToSuperview().offset(kLeftMargin)
         }
         
-        view.addSubview(switchView)
-        switchView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
-            make.top.equalTo(titleTextLabel.snp.bottom).offset(19)
-            make.height.equalTo(46)
-        }
-        
+//        view.addSubview(switchView)
+//        switchView.snp.makeConstraints { (make) in
+//            make.left.right.equalToSuperview()
+//            make.top.equalTo(titleTextLabel.snp.bottom).offset(19)
+//            make.height.equalTo(46)
+//        }
+//
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            make.top.equalTo(switchView.snp.bottom)
+            make.top.equalTo(titleTextLabel.snp.bottom).offset(19)
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }
         commonWalletView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - scrollViewTopConstraint - kStatusbarH - kSafeAreaBottomH)

@@ -232,6 +232,19 @@ extension TNSQLiteManager {
         database.close()
     }
     
+    public func syncUpdateData(sql: String, values: [Any]?) {
+        let sema = DispatchSemaphore(value: 0)
+        dbQueue.inDatabase { (database) in
+            do {
+                try database.executeUpdate(sql, values: values)
+                sema.signal()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+    }
+    
     public func updateDataByExecutingStatements(sql: String) {
         
         dbQueue.inDatabase { (database) in
@@ -246,7 +259,8 @@ extension TNSQLiteManager {
     
     public func updateChatMessagesTable(address: String, message: String, date: String, isIncoming: Int, type: String) {
         let sql = "INSERT INTO chat_messages (correspondent_address, message, creation_date, is_incoming, type) VALUES(?,?,?,?,?)"
-        updateData(sql: sql, values: [address, message, date, isIncoming, type])
+        //updateData(sql: sql, values: [address, message, date, isIncoming, type])
+        syncUpdateData(sql: sql, values: [address, message, date, isIncoming, type])
     }
     
     public func queryDataFromWitnesses(sql: String, completionHandle: (([Any]) -> Swift.Void)?) {

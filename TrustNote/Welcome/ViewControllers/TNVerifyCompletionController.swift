@@ -52,7 +52,7 @@ class TNVerifyCompletionController: TNBaseViewController {
         layoutAllSubviews()
         TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
-        TNGlobalHelper.shared.isNeedLoadData = false
+        //TNGlobalHelper.shared.isNeedLoadData = false
         deleteBtn.rx.tap.asObservable().subscribe(onNext: {[unowned self] _ in
             self.deleteSeedPhrase()
         }).disposed(by: self.disposeBag)

@@ -28,6 +28,8 @@ class TNContactViewController: TNBaseViewController {
         
         topBarheightConstraint.constant = IS_iPhoneX ? 118 : 94
         detailLabel.text = "NoContactsDesc".localized
+        descLabel.text = "No contacts".localized
+        titleLabel.text = "Contacts".localized
         configTableView()
         
         topBar.setupShadow(Offset: CGSize(width: 0, height: 5), opacity: 0, radius: 5)
@@ -76,6 +78,13 @@ extension TNContactViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TNContactCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
         cell.model = dataSource[indexPath.row]
+        if indexPath.row % 3 == 2 {
+            cell.markLabel.backgroundColor = UIColor.hexColor(rgbValue: 0xFFF1DA)
+            cell.markLabel.textColor = UIColor.hexColor(rgbValue: 0xFFF1DA)
+        } else {
+            cell.markLabel.backgroundColor = UIColor.hexColor(rgbValue: 0xEAF2FF)
+            cell.markLabel.textColor = UIColor.hexColor(rgbValue: 0xEAF2FF)
+        }
         return cell
     }
     

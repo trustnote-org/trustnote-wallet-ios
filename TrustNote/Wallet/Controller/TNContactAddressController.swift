@@ -12,6 +12,8 @@ class TNContactAddressController: TNNavigationController {
     
     var addressList: [[String: String]] = []
     
+    var wallet: TNWalletModel!
+    
     var selectAddressCompletion: ((String) -> Void)!
     
     fileprivate lazy var headerView: TNContactAddressHeadView = {
@@ -32,8 +34,9 @@ class TNContactAddressController: TNNavigationController {
         $0.separatorStyle = .none
     }
     
-    init(completion: @escaping (String) -> Void) {
+    init(wallet: TNWalletModel, completion: @escaping (String) -> Void) {
         self.selectAddressCompletion = completion
+        self.wallet = wallet
     }
     
     required convenience init?(coder aDecoder: NSCoder) {
@@ -55,6 +58,7 @@ class TNContactAddressController: TNNavigationController {
         } else {
             let addressDict = TNConfigFileManager.sharedInstance.readAddressFile()
             addressList = addressDict["addressList"] as! [[String: String]]
+           // addressList = addressDict[wallet.walletId] as! [[String: String]]
             reloadListView()
         }
         headerView.addContactAddressBlock = {[unowned self] in
@@ -71,6 +75,7 @@ class TNContactAddressController: TNNavigationController {
 extension TNContactAddressController {
     
     fileprivate func handleAddAddressCompletion() {
+        
         let vc = TNEditAddressController(titleText: "Add address".localized) {[unowned self] (address, remarks) in
             
             let addressItem = ["address": address, "remarks": remarks]

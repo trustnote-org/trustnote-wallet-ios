@@ -61,6 +61,24 @@ extension TNEditAddressController: TNEditAddressViewProtocol {
     }
     
     func didClickedSaveButton() {
+       
+        if titleText == "Add address".localized {
+            if TNConfigFileManager.sharedInstance.isExistAddressFile() {
+                let addressDict = TNConfigFileManager.sharedInstance.readAddressFile()
+                let addressList = addressDict["addressList"] as! [[String: String]]
+                var flag = false
+                for addressItem in addressList {
+                    if addressItem["address"] == editAddressView.addressTextField.text! {
+                        flag = true
+                        break
+                    }
+                }
+                if flag {
+                    MBProgress_TNExtension.showViewAfterSecond(title: "该地址已经在您的地址簿中")
+                    return
+                }
+            }
+        }
         editCompletionBlock(editAddressView.addressTextField.text!, editAddressView.remarkTextField.text!)
         navigationController?.popViewController(animated: true)
     }
@@ -73,6 +91,11 @@ extension TNEditAddressController {
         editAddressView.addressTextField.text = resultStr
         if !resultStr.isEmpty && !(editAddressView.remarkTextField.text?.isEmpty)! {
             editAddressView.setupSaveButton(isValid: true)
+        }
+        TNEvaluateScriptManager.sharedInstance.verifyAddressEffectiveness(address: resultStr) {[unowned self] (isValid) in
+            if isValid && self.editAddressView.addressWarningView.isHidden == false {
+                self.editAddressView.addressWarningView.isHidden = true
+            }
         }
     }
 }

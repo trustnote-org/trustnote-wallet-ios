@@ -14,7 +14,7 @@ class TNNetworkStatusView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        disconnectLabel.text = NSLocalizedString("Network connections are unavailable", comment: "")
+        disconnectLabel.text = "Network connections are unavailable".localized
     }
 
 }

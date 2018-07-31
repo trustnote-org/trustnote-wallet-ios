@@ -34,7 +34,7 @@ class TNEditInfoController: TNNavigationController {
         
         setBackButton()
         navigationBar.titleText = isEditInfo ? "Personal information".localized : "Wallet name".localized
-        _ = navigationBar.setRightButtonTitle(title: "完成", target: self, action: #selector(self.editDone))
+        _ = navigationBar.setRightButtonTitle(title: "Done".localized, target: self, action: #selector(self.editDone))
         limitedInputCount = isEditInfo ? 20 : 10
         editInfoView.isEditInfo = isEditInfo
         if let walletModel = wallet {

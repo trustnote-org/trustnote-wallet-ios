@@ -22,6 +22,7 @@ class TNSetRecieveAmountCell: UITableViewCell, RegisterCellFromNib {
         super.awakeFromNib()
         selectionStyle = .none
         titleLabel.text = "Fixed amount".localized
+        descLabel.text = "Received (MN)".localized
         confirmBtn.setTitle("Confirm".localized, for: .normal)
         //setupShadow(Offset: CGSize(width: 0, height: 2), opacity: 0.2, radius: 10)
         setupRadiusCorner(radius: kCornerRadius * 2)

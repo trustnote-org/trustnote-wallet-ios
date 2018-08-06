@@ -53,7 +53,8 @@ class TNChatManager: TNJSONSerializationProtocol {
         let messageObj = messageBody["message"] as! [String: Any]
         let ePubkey = messageObj["pubkey"] as! String
         let package = getJSONStringFrom(jsonObject: messageObj["encrypted_package"]!)
-        decryptMessagePackage(package: package, ePubkey: ePubkey, messageHash: messageHash)
+        TNHubViewModel.deleteHubCache(messageHash: messageHash)
+        decryptMessagePackage(package: package, ePubkey: ePubkey)
     }
     
     static func sendPairingMessage(isActive: Bool, secret: String, pubkey: String, hub: String) {
@@ -76,6 +77,9 @@ class TNChatManager: TNJSONSerializationProtocol {
         TNSyncOperationManager.shared.contactHub = hub
         createEncryptedPackage(packageBody: jsonBody, pubkey: pubkey)
         let tempPubkey = getTempPubkey(pubkey: pubkey)
+        guard tempPubkey.length > 0 else {
+            return
+        }
         sendDeliverRequest(packageBody: jsonBody, tempKey: tempPubkey)
     }
     
@@ -119,7 +123,8 @@ class TNChatManager: TNJSONSerializationProtocol {
         let deviceAddress = TNSyncOperationManager.shared.getDeviceAddress(pubkey)
         TNChatManager.shared.deviceAddress = deviceAddress
         let sql = "INSERT INTO outbox (message_hash, `to`, message, creation_date) VALUES(?,?,?,?)"
-        TNSQLiteManager.sharedManager.updateData(sql: sql, values: [messageHash, deviceAddress, messageStr, createDate])
+        //TNSQLiteManager.sharedManager.updateData(sql: sql, values: [messageHash, deviceAddress, messageStr, createDate])
+        TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [messageHash, deviceAddress, messageStr, createDate])
     }
     
     /// MARK: 发送 'hub/deliver' request
@@ -137,9 +142,10 @@ class TNChatManager: TNJSONSerializationProtocol {
         let signature = TNSyncOperationManager.shared.getDeviceMessageHashToSign(unit: messageStr)
         objDeviceMessage["signature"] = signature
         let response = TNSyncOperationManager.shared.sendDeviceMessageSignature(objDeviceMessage: objDeviceMessage,messageHash: messageHash)
-        if response["accepted"] as! String == "accepted" {
+        if response["accepted"] != nil {
             let sql = "DELETE FROM outbox WHERE message_hash=?"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [response["messageHash"] as! String])
+            //TNSQLiteManager.sharedManager.updateData(sql: sql, values: [response["messageHash"] as! String])
+             TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [response["messageHash"] as! String])
         }
     }
     
@@ -159,7 +165,7 @@ class TNChatManager: TNJSONSerializationProtocol {
     }
     
     /// MARK: 解密数据包
-    static fileprivate func decryptMessagePackage(package: String, ePubkey: String, messageHash: String) {
+    static fileprivate func decryptMessagePackage(package: String, ePubkey: String) {
         let privkey = TNGlobalHelper.shared.tempDeviceKey
         let prePrivKey = TNGlobalHelper.shared.prevTempDeviceKey
         let m1PrivKey = TNGlobalHelper.shared.ecdsaPrivkey
@@ -167,7 +173,6 @@ class TNChatManager: TNJSONSerializationProtocol {
         
         /// If you can't decrypt the data, delete the Hub cache
         if decryptedJson == "0" {
-            TNHubViewModel.deleteHubCache(messageHash: messageHash)
             return
         }
         
@@ -176,11 +181,11 @@ class TNChatManager: TNJSONSerializationProtocol {
         
         switch subject {
         case TNMessageType.pairing.rawValue:
-            handlePairingMessage(decryptedObj: decryptedObj, ePubkey: ePubkey, messageHash: messageHash)
+            handlePairingMessage(decryptedObj: decryptedObj, ePubkey: ePubkey)
         case TNMessageType.remove.rawValue:
-            handleDeleteContactMessage(decryptedObj: decryptedObj, messageHash: messageHash)
+            handleDeleteContactMessage(decryptedObj: decryptedObj)
         case TNMessageType.text.rawValue:
-            handleRecieveTextMessage(decryptedObj: decryptedObj, messageHash: messageHash)
+            handleRecieveTextMessage(decryptedObj: decryptedObj)
         default:
             break
         }
@@ -189,49 +194,55 @@ class TNChatManager: TNJSONSerializationProtocol {
 
 extension TNChatManager {
     
-    static fileprivate func handlePairingMessage(decryptedObj: [String: Any], ePubkey: String, messageHash: String) {
+    static fileprivate func handlePairingMessage(decryptedObj: [String: Any], ePubkey: String) {
         let from = decryptedObj["from"] as! String
-        let sql = String(format:"SELECT Count(*) FROM correspondent_devices WHERE device_address = '%@'", arguments:[from])
         let deviceHub = decryptedObj["device_hub"] as! String
         let body = decryptedObj["body"] as! [String: String]
         let deviceName = body["device_name"]
         let createDate = NSDate.getCurrentFormatterTime()
-        let count = TNSyncOperationManager.shared.queryCount(sql: sql)
-        if count == 0 {
+        
+        if checkIsExistContact(from: from) {
+            let sql = "UPDATE correspondent_devices SET is_confirmed=1, name=? WHERE device_address=? AND is_confirmed=0"
+            //TNSQLiteManager.sharedManager.updateData(sql: sql, values: [deviceName!, from])
+            TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [deviceName!, from])
+            
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TNAddContactConfirmedNotification), object: ["from": from, "deviceName": deviceName!])
+        } else {
             let sql = "INSERT INTO correspondent_devices (device_address, name, pubkey, hub, creation_date,is_confirmed, unread) VALUES(?,?,?,?,?,1,1)"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [from, deviceName!, ePubkey, deviceHub, createDate])
-             TNSQLiteManager.sharedManager.updateChatMessagesTable(address: from, message: "add contact success".localized, date: createDate, isIncoming: 1, type: TNMessageType.pairing.rawValue)
+            //TNSQLiteManager.sharedManager.updateData(sql: sql, values: [from, deviceName!, ePubkey, deviceHub, createDate])
+            TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [from, deviceName!, ePubkey, deviceHub, createDate])
+            TNSQLiteManager.sharedManager.updateChatMessagesTable(address: from, message: "add contact success".localized, date: createDate, isIncoming: 1, type: TNMessageType.pairing.rawValue)
             var correspondent: TNCorrespondentDevice = TNCorrespondentDevice()
             correspondent.name = deviceName!
             correspondent.deviceAddress = from
             correspondent.unreadCount = 1
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNAddContactCompletedNotification), object: correspondent)
             sendPairingMessage(isActive: false, secret: body["pairing_secret"]!, pubkey: ePubkey, hub: deviceHub)
-            
-        } else {
-            let sql = "UPDATE correspondent_devices SET is_confirmed=1, name=? WHERE device_address=? AND is_confirmed=0"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [deviceName!, from])
-    
-             NotificationCenter.default.post(name: Notification.Name(rawValue: TNAddContactConfirmedNotification), object: ["from": from, "deviceName": deviceName!])
-        }
-        TNHubViewModel.deleteHubCache(messageHash: messageHash)
+       }
+
     }
     
-    static fileprivate func handleDeleteContactMessage(decryptedObj: [String: Any], messageHash: String) {
+    static fileprivate func handleDeleteContactMessage(decryptedObj: [String: Any]) {
+        guard checkIsExistContact(from: decryptedObj["from"] as! String) else {
+            return
+        }
         let device = decryptedObj["from"] as! String
         let deviceSql = "DELETE FROM correspondent_devices WHERE device_address=?"
-        TNSQLiteManager.sharedManager.updateData(sql: deviceSql, values: [device])
+        //TNSQLiteManager.sharedManager.updateData(sql: deviceSql, values: [device])
+        TNSQLiteManager.sharedManager.syncUpdateData(sql: deviceSql, values: [device])
         let messageSql = "DELETE FROM chat_messages WHERE correspondent_address=?"
-        TNSQLiteManager.sharedManager.updateData(sql: messageSql, values: [device])
+        //TNSQLiteManager.sharedManager.updateData(sql: messageSql, values: [device])
+        TNSQLiteManager.sharedManager.syncUpdateData(sql: messageSql, values: [device])
         NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidRecievedRemovedNotification), object: device)
-        TNHubViewModel.deleteHubCache(messageHash: messageHash)
     }
     
-    static fileprivate func handleRecieveTextMessage(decryptedObj: [String: Any], messageHash: String) {
+    static fileprivate func handleRecieveTextMessage(decryptedObj: [String: Any]) {
+        guard checkIsExistContact(from: decryptedObj["from"] as! String) else {
+            return
+        }
         let createDate = NSDate.getCurrentFormatterTime()
         TNSQLiteManager.sharedManager.updateChatMessagesTable(address: decryptedObj["from"] as! String, message: decryptedObj["body"] as! String, date: createDate, isIncoming: 1, type: TNMessageType.text.rawValue)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidRecievedMessageNotification), object: ["messageObj": decryptedObj, "createDate": createDate])
-        TNHubViewModel.deleteHubCache(messageHash: messageHash)
     }
 }
 
@@ -241,7 +252,7 @@ extension TNChatManager {
         let myHub = config["hub"] as! String
         return myHub
     }
-    
+     
     static fileprivate func getMyDeviceName() -> String {
         let config = TNConfigFileManager.sharedInstance.readConfigFile()
         let deviceName = config["deviceName"] as! String
@@ -255,5 +266,11 @@ extension TNChatManager {
             return otherTempPubkey
         }
         return ""
+    }
+    
+    static fileprivate func checkIsExistContact(from: String) -> Bool {
+        let sql = String(format:"SELECT Count(*) FROM correspondent_devices WHERE device_address = '%@'", arguments:[from])
+        let count = TNSyncOperationManager.shared.queryCount(sql: sql)
+        return count == 0 ? false : true
     }
 }

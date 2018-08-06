@@ -31,6 +31,7 @@ class TNProfileSetupPasswordView: UIView {
     @IBOutlet weak var newPasswdClearBtn: UIButton!
     @IBOutlet weak var confirmPasswdClearBtn: UIButton!
     
+    @IBOutlet weak var originPasswdClearBtn: UIButton!
     @IBOutlet weak var ruleLabelLeftMargin: NSLayoutConstraint!
     @IBOutlet weak var confirmLineHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var newLineHeightConstraint: NSLayoutConstraint!
@@ -41,6 +42,7 @@ class TNProfileSetupPasswordView: UIView {
         passwordSecurityView.isHidden = true
         return passwordSecurityView
     }()
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -95,6 +97,12 @@ extension TNProfileSetupPasswordView {
         }
     }
     
+    @IBAction func clearOriginPasswordText(_ sender: Any) {
+        originTextField.text = nil
+        originPasswdClearBtn.isHidden = true
+        delegate?.inputDidChanged(false)
+    }
+    
     @objc func textInputDidChange(_ textField: UITextField) {
         if !(originTextField.text?.isEmpty)! && !(newTextField.text?.isEmpty)! && !(confirmTextField.text?.isEmpty)! {
             delegate?.inputDidChanged(true)
@@ -122,6 +130,10 @@ extension TNProfileSetupPasswordView {
         if textField == confirmTextField {
             confirmPasswdClearBtn.isHidden = (confirmTextField.text?.length)! > 0 ? false : true
         }
+        
+        if textField == originTextField {
+            originPasswdClearBtn.isHidden = (originTextField.text?.length)! > 0 ? false : true
+        }
     }
 }
 
@@ -131,6 +143,9 @@ extension TNProfileSetupPasswordView: UITextFieldDelegate {
         if textField == originTextField {
             originLine.backgroundColor = kGlobalColor
             originLineHeightConstraint.constant = 2.0
+            if (textField.text?.count)! > 0 {
+                originPasswdClearBtn.isHidden = false
+            }
         }
         if textField == newTextField {
             newLine.backgroundColor = kGlobalColor
@@ -160,6 +175,7 @@ extension TNProfileSetupPasswordView: UITextFieldDelegate {
         if textField == originTextField {
             originLine.backgroundColor = kLineViewColor
             originLineHeightConstraint.constant = 1.0
+            originPasswdClearBtn.isHidden = true
         }
         if textField == newTextField {
             newLine.backgroundColor = kLineViewColor

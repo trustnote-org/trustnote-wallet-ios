@@ -23,7 +23,7 @@ class TNProfileBackupHeadView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         descLabel.text = "Hide the mnemonic".localized
-        setupShadow(Offset: CGSize(width: 0, height: 6), opacity: 0.1, radius: 6.0)
+        setupShadow(Offset: CGSize(width: 0, height: 6), opacity: 0.08, radius: 6.0)
         isShow = Preferences[.isShowMnemonic]
         if isShow {
             upImageView.transform = upImageView.transform.rotated(by: CGFloat(Double.pi))

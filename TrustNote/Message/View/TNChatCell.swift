@@ -114,7 +114,7 @@ extension TNChatCell {
         let bubbleX = messageModel.senderType == .contact ? BubbleShortPadding : (kScreenW - bubbleW - BubbleShortPadding)
         bubbleImgView.frame = CGRect(x: bubbleX, y: topPadding, width: bubbleW, height: bubbleH)
         
-        let padding: CGFloat = 22
+        let padding: CGFloat = 25
         let insets = UIEdgeInsetsMake(padding, padding, padding, padding)
         if messageModel.senderType == .contact {
            // bubbleImgView.image = UIImage(named: "buddle_other")?.stretchableImage(withLeftCapWidth: leftCapHeight, topCapHeight: leftCapHeight)

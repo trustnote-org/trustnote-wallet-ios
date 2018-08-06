@@ -15,6 +15,7 @@ class TNTradeRecordCell: UITableViewCell, RegisterCellFromNib {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var iconView: UIImageView!
+    @IBOutlet weak var lineView: UIView!
     
     var model: TNTransactionRecord? {
         didSet {

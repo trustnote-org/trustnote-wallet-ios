@@ -26,6 +26,7 @@ class TNMyReceiveAddressController: TNNavigationController {
         $0.showsVerticalScrollIndicator = false
         $0.tableFooterView = UIView()
         $0.separatorStyle = .none
+        $0.isScrollEnabled = false
     }
     
     var cellStyle = MyReceiveAddressCellStyle.showQRCode

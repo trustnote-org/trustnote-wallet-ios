@@ -134,6 +134,12 @@ extension TNGeneralViewController {
     @objc fileprivate func setupWalletPassword() {
         navigationController?.pushViewController(TNModifyPasswordController(), animated: true)
     }
+    
+    @objc fileprivate func viewTermsOfUse() {
+        let vc = TNProtocolViewController()
+        vc.isInit = false
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 /// Setup Subviews

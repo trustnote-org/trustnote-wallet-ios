@@ -45,6 +45,7 @@ class TNSelectWalletHeaderView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        titleLabel.text = "Choose the wallet to pay".localized
     }
     
     @IBAction func closeAction(_ sender: Any) {

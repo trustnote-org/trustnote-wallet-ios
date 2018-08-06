@@ -41,13 +41,13 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jft-tS-vYm">
                         <rect key="frame" x="309.5" y="27" width="39.5" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+9999520." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dsZ-cR-seZ">
                         <rect key="frame" x="206" y="22.5" width="103.5" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                        <color key="textColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="textColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cug-zk-liz">
@@ -80,6 +80,7 @@
                 <outlet property="dateLabel" destination="CXw-C0-B7V" id="vnk-ow-YOn"/>
                 <outlet property="decimalLabel" destination="Jft-tS-vYm" id="pbF-fp-gt9"/>
                 <outlet property="iconView" destination="gYI-dr-me3" id="mNB-gr-UlC"/>
+                <outlet property="lineView" destination="Cug-zk-liz" id="tcx-Zz-H1Q"/>
             </connections>
             <point key="canvasLocation" x="34.5" y="82"/>
         </tableViewCell>

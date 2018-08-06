@@ -38,7 +38,7 @@ class TNPushHelper {
             let rootVC = UIApplication.shared.keyWindow?.rootViewController as? TNTabBarController
             let nav = rootVC?.viewControllers?.first as! TNBaseNavigationController
             let homeVC = nav.viewControllers.first as! TNWalletHomeController
-            homeVC.syncData(false)
+            homeVC.syncData(true)
         }
     }
 }

@@ -42,6 +42,21 @@ class TNTradeRecordsListController: TNNavigationController {
         return switchView
     }()
     
+    fileprivate lazy var listHeaderView: UIView = {
+        let tableHeaderView = UIView()
+        tableHeaderView.backgroundColor = kBackgroundColor
+        tableHeaderView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: 42)
+        let titleLabel = UILabel()
+        titleLabel.text = "Recent transaction records".localized
+        titleLabel.textColor = UIColor.hexColor(rgbValue: 0x666666)
+        titleLabel.font = UIFont.systemFont(ofSize: 14.0)
+        titleLabel.sizeToFit()
+        titleLabel.x = CGFloat(kLeftMargin)
+        titleLabel.centerY = tableHeaderView.height * 0.5
+        tableHeaderView.addSubview(titleLabel)
+        return tableHeaderView
+    }()
+    
     let tableView = UITableView().then {
         $0.backgroundColor = UIColor.clear
         $0.tn_registerCell(cell: TNTradeRecordCell.self)
@@ -57,7 +72,7 @@ class TNTradeRecordsListController: TNNavigationController {
     let emptyRecordsLabel = UILabel().then {
         $0.textColor = UIColor.hexColor(rgbValue: 0x8EA0B8)
         $0.font = UIFont.systemFont(ofSize: 14)
-        $0.text = "暂无记录哦~"
+        $0.text = "No records".localized
     }
     
     let containerView = UIView().then {
@@ -126,6 +141,7 @@ extension TNTradeRecordsListController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TNTradeRecordCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
         cell.model = dataSource[indexPath.row]
+        cell.lineView.isHidden = indexPath.row == tableView.numberOfRows(inSection: 0) - 1 ? true : false
         return cell
     }
     
@@ -133,28 +149,10 @@ extension TNTradeRecordsListController: UITableViewDelegate, UITableViewDataSour
         return 70.0
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 42.0
-    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let vc = TNTransactiondDetailController(detailModel: dataSource[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let tableHeaderView = UIView()
-        tableHeaderView.backgroundColor = kBackgroundColor
-        tableHeaderView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: 42)
-        let titleLabel = UILabel()
-        titleLabel.text = "Recent transaction records".localized
-        titleLabel.textColor = UIColor.hexColor(rgbValue: 0x666666)
-        titleLabel.font = UIFont.systemFont(ofSize: 14.0)
-        titleLabel.sizeToFit()
-        titleLabel.x = CGFloat(kLeftMargin)
-        titleLabel.centerY = tableHeaderView.height * 0.5
-        tableHeaderView.addSubview(titleLabel)
-        return tableHeaderView
     }
     
 }
@@ -171,7 +169,7 @@ extension TNTradeRecordsListController {
     
     func pullTorefresh() {
         let homeVC = navigationController?.viewControllers.first as! TNWalletHomeController
-        if syncOperation.isLoading || homeVC.syncOperation!.isLoading {
+        if syncOperation.isLoading || homeVC.syncOperation.isLoading {
             endRefresing()
             return
         }
@@ -204,9 +202,16 @@ extension TNTradeRecordsListController {
             make.height.equalTo(70)
         }
         
+        view.addSubview(listHeaderView)
+        listHeaderView.snp.makeConstraints { (make) in
+            make.left.right.equalToSuperview()
+            make.top.equalTo(switchView.snp.bottom)
+            make.height.equalTo(42)
+        }
+        
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(switchView.snp.bottom)
+            make.top.equalTo(listHeaderView.snp.bottom)
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }

@@ -19,7 +19,7 @@ final class TNGlobalHelper {
     
     var isVerifyPasswdForMain = true
     var recoverStyle: TNWalletRecoverStyle = .none
-    var isNeedLoadData = true
+    //var isNeedLoadData = true
     var password: String? = nil
     var encryptePrivKey = ""
     var tempPrivKey = ""

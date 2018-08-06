@@ -23,7 +23,8 @@ class TNMyPairingCodeView: UIView, TNNibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()
         titlelabel.text = "My pairing code".localized
-        descLabel.text = "PairngCode.desc".localized
+        //descLabel.text = "PairngCode.desc".localized
+        descLabel.attributedText = descLabel.getAttributeStringWithString("PairngCode.desc".localized, lineSpace: 5)
         copyBtn.setTitle("Copy paire code".localized, for: .normal)
         setupRadiusCorner(radius: kCornerRadius * 2)
         layer.masksToBounds = true

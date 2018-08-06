@@ -45,9 +45,9 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j3p-k3-1Te">
-                                    <rect key="frame" x="315" y="0.0" width="60" height="44"/>
+                                    <rect key="frame" x="326" y="0.0" width="54" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="Ghj-DE-7H9"/>
+                                        <constraint firstAttribute="width" constant="54" id="Ghj-DE-7H9"/>
                                     </constraints>
                                     <state key="normal" image="wallet_add"/>
                                     <connections>
@@ -62,7 +62,7 @@
                                 <constraint firstItem="Dzy-oz-pwQ" firstAttribute="centerY" secondItem="DhF-t6-qge" secondAttribute="centerY" id="lda-Ic-44n"/>
                                 <constraint firstItem="Dzy-oz-pwQ" firstAttribute="leading" secondItem="DhF-t6-qge" secondAttribute="leading" constant="20" id="n6T-Hg-y0N"/>
                                 <constraint firstItem="j3p-k3-1Te" firstAttribute="top" secondItem="DhF-t6-qge" secondAttribute="top" id="oJT-5R-9iv"/>
-                                <constraint firstAttribute="trailing" secondItem="j3p-k3-1Te" secondAttribute="trailing" id="xSu-UW-i9Y"/>
+                                <constraint firstAttribute="trailing" secondItem="j3p-k3-1Te" secondAttribute="trailing" constant="-5" id="xSu-UW-i9Y"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -129,6 +129,6 @@
     </objects>
     <resources>
         <image name="message_none" width="220" height="220"/>
-        <image name="wallet_add" width="20" height="20"/>
+        <image name="wallet_add" width="54" height="44"/>
     </resources>
 </document>

@@ -45,10 +45,10 @@ extension MBProgress_TNExtension {
         hud.customView = customView
         hud.bezelView.style = .solidColor
         hud.bezelView.backgroundColor = kTitleTextColor
-        hud.label.textColor = UIColor.hexColor(rgbValue: 0xF4F4F4)
+        hud.label.textColor = UIColor.white
         hud.label.font = UIFont.systemFont(ofSize: 12)
         hud.label.numberOfLines = 0
-        hud.bezelView.alpha = 0.8
+        hud.bezelView.alpha = 0.9
         hud.hide(animated: true, afterDelay: 1.0)
     }
     
@@ -58,6 +58,7 @@ extension MBProgress_TNExtension {
         hud.mode = .text
         hud.label.font = UIFont.systemFont(ofSize: 14.0)
         hud.label.text = title
+        hud.label.textColor = UIColor.white
         hud.bezelView.backgroundColor = UIColor.black.withAlphaComponent(0.9)
         hud.hide(animated: true, afterDelay: 1.0)
     }

@@ -34,12 +34,13 @@ class TNEditInfoController: TNNavigationController {
         
         setBackButton()
         navigationBar.titleText = isEditInfo ? "Personal information".localized : "Wallet name".localized
-        _ = navigationBar.setRightButtonTitle(title: "完成", target: self, action: #selector(self.editDone))
+        let doneBtn = navigationBar.setRightButtonTitle(title: "Done".localized, target: self, action: #selector(self.editDone))
         limitedInputCount = isEditInfo ? 20 : 10
         editInfoView.isEditInfo = isEditInfo
         if let walletModel = wallet {
             editInfoView.inputTextField.text = walletModel.walletName
         }
+        editInfoView.control = doneBtn
         view.addSubview(editInfoView)
         editInfoView.snp.makeConstraints { (make) in
             make.top.equalTo(navigationBar.snp.bottom).offset(10)
@@ -85,8 +86,8 @@ extension TNEditInfoController {
             navigationController?.popViewController(animated: true)
             return
         }
-        let hint = isEditInfo ? "设备名称不能为空" : "钱包名称不能为空"
-        MBProgress_TNExtension.showViewAfterSecond(title: hint)
+//        let hint = isEditInfo ? "设备名称不能为空" : "钱包名称不能为空"
+//        MBProgress_TNExtension.showViewAfterSecond(title: hint)
     }
     
 }

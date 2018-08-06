@@ -27,7 +27,7 @@ class TNScanErrorController: TNNavigationController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationBar.titleText = "扫描结果"
+        navigationBar.titleText = "Scan results".localized
         setBackButton()
         view.addSubview(contentlabel)
         contentlabel.snp.makeConstraints { (make) in

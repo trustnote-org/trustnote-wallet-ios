@@ -192,7 +192,7 @@ extension TNSendViewController: TNWalletSendCellProtocol {
     
     func selectTrancsationAddress() {
         
-        let vc = TNContactAddressController {[unowned self] (seletedAddress) in
+        let vc = TNContactAddressController(wallet: wallet) {[unowned self] (seletedAddress) in
             self.sendCell?.addressTextField.text = seletedAddress
             if !(self.sendCell?.amountTextField.text?.isEmpty)! {
                 self.sendCell?.confirmBtn.isEnabled = true

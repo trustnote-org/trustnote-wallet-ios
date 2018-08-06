@@ -17,6 +17,8 @@ class TNEditInfoView: UIView, UITextFieldDelegate {
     @IBOutlet weak var clearBtn: UIButton!
     @IBOutlet weak var warningView: UIView!
     
+    var control: UIButton?
+    
     var isEditInfo: Bool? {
         didSet {
             guard isEditInfo! else {
@@ -43,9 +45,12 @@ class TNEditInfoView: UIView, UITextFieldDelegate {
             self.inputTextField.text = nil
             self.clearBtn.isHidden = true
             self.warningView.isHidden = true
+            self.control?.isEnabled = false
+            self.control?.alpha = 0.3
         }).disposed(by: disposeBag)
         inputTextField.delegate = self
         inputTextField.becomeFirstResponder()
+        inputTextField.addTarget(self, action: #selector(self.textDidChanged(_:)), for: .editingChanged)
     }
 }
 
@@ -58,10 +63,20 @@ extension TNEditInfoView {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == " " {
-            return false
-        }
+//        if string == " " {
+//            return false
+//        }
         return true
+    }
+    
+    @objc func textDidChanged(_ textField: UITextField) {
+        if textField.text!.isEmpty {
+            control?.isEnabled = false
+            control?.alpha = 0.3
+        } else {
+            control?.isEnabled = true
+            control?.alpha = 1.0
+        }
     }
 }
 

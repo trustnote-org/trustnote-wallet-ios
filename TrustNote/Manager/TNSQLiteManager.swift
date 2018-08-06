@@ -232,6 +232,19 @@ extension TNSQLiteManager {
         database.close()
     }
     
+    public func syncUpdateData(sql: String, values: [Any]?) {
+        let sema = DispatchSemaphore(value: 0)
+        dbQueue.inDatabase { (database) in
+            do {
+                try database.executeUpdate(sql, values: values)
+                sema.signal()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
+    }
+    
     public func updateDataByExecutingStatements(sql: String) {
         
         dbQueue.inDatabase { (database) in
@@ -246,7 +259,8 @@ extension TNSQLiteManager {
     
     public func updateChatMessagesTable(address: String, message: String, date: String, isIncoming: Int, type: String) {
         let sql = "INSERT INTO chat_messages (correspondent_address, message, creation_date, is_incoming, type) VALUES(?,?,?,?,?)"
-        updateData(sql: sql, values: [address, message, date, isIncoming, type])
+        //updateData(sql: sql, values: [address, message, date, isIncoming, type])
+        syncUpdateData(sql: sql, values: [address, message, date, isIncoming, type])
     }
     
     public func queryDataFromWitnesses(sql: String, completionHandle: (([Any]) -> Swift.Void)?) {
@@ -268,23 +282,24 @@ extension TNSQLiteManager {
     
     public func queryDataFromOutputs(sql: String) -> [Any] {
         var queryResults: [Any] = []
-        guard database.open() else {
-            return []
-        }
-        do {
-            let set = try database.executeQuery(sql, values: nil)
-            while set.next() {
-                let unit = set.string(forColumn: "unit")
-                let message_index = set.string(forColumn: "message_index")
-                let output_index = set.string(forColumn: "output_index")
-                let rows: [Any] = [unit!, message_index!, output_index!]
-                queryResults.append(rows)
+        let sema = DispatchSemaphore(value: 0)
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: nil)
+                while set.next() {
+                    let unit = set.string(forColumn: "unit")
+                    let message_index = set.string(forColumn: "message_index")
+                    let output_index = set.string(forColumn: "output_index")
+                    let rows: [Any] = [unit!, message_index!, output_index!]
+                    queryResults.append(rows)
+                }
+                set.close()
+                sema.signal()
+            } catch {
+                print("failed: \(error.localizedDescription)")
             }
-            set.close()
-        } catch {
-            print("failed: \(error.localizedDescription)")
         }
-        database.close()
+        _ = sema.wait(timeout:  DispatchTime.distantFuture)
         return queryResults
     }
     

@@ -40,6 +40,7 @@ class TNPasswordAlertView: UIView, TNNibLoadable {
         setupProperties()
         setupRadiusCorner(radius: kCornerRadius * 2)
         setupShadow(Offset: CGSize(width: 0, height: 2.0), opacity: 0.2, radius: 20)
+        passwordTextField.addTarget(self, action: #selector(self.textDidChanged(_:)), for: .editingChanged)
         cancelButton.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             UIView.animate(withDuration: 0.5,
                            delay:0.01,
@@ -96,6 +97,15 @@ extension TNPasswordAlertView {
         passwordTextField.resignFirstResponder()
     }
     
+    @objc func textDidChanged(_ textField: UITextField) {
+        if textField.text!.isEmpty {
+            confirmButton.isEnabled = false
+            confirmButton.alpha = 0.3
+        } else {
+            confirmButton.isEnabled = true
+            confirmButton.alpha = 1.0
+        }
+    }
 }
 
 extension TNPasswordAlertView: UITextFieldDelegate {

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erJ-JE-LbR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="erJ-JE-LbR">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,15 +18,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchImage" translatesAutoresizingMaskIntoConstraints="NO" id="Uhz-yD-HJ9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_background" translatesAutoresizingMaskIntoConstraints="NO" id="Tbt-C6-3nq">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_logo" translatesAutoresizingMaskIntoConstraints="NO" id="L55-Z5-mAt">
+                                <rect key="frame" x="111.5" y="190" width="151" height="144"/>
+                            </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="Uhz-yD-HJ9" firstAttribute="top" secondItem="O1J-Q4-ydc" secondAttribute="top" id="0Rb-qt-mAE"/>
-                            <constraint firstItem="w99-jW-Vu0" firstAttribute="trailing" secondItem="Uhz-yD-HJ9" secondAttribute="trailing" id="1Hr-At-Ic4"/>
-                            <constraint firstAttribute="bottom" secondItem="Uhz-yD-HJ9" secondAttribute="bottom" id="r3e-ou-4Dt"/>
-                            <constraint firstItem="Uhz-yD-HJ9" firstAttribute="leading" secondItem="w99-jW-Vu0" secondAttribute="leading" id="rQk-RM-27J"/>
+                            <constraint firstItem="Tbt-C6-3nq" firstAttribute="top" secondItem="O1J-Q4-ydc" secondAttribute="top" id="Clz-Zz-k2Q"/>
+                            <constraint firstItem="w99-jW-Vu0" firstAttribute="trailing" secondItem="Tbt-C6-3nq" secondAttribute="trailing" id="DST-px-79W"/>
+                            <constraint firstItem="L55-Z5-mAt" firstAttribute="top" secondItem="O1J-Q4-ydc" secondAttribute="top" constant="190" id="EmP-Ac-Qg2"/>
+                            <constraint firstItem="L55-Z5-mAt" firstAttribute="centerX" secondItem="O1J-Q4-ydc" secondAttribute="centerX" id="SMt-fS-DXH"/>
+                            <constraint firstAttribute="bottom" secondItem="Tbt-C6-3nq" secondAttribute="bottom" id="cXo-uX-rzv"/>
+                            <constraint firstItem="Tbt-C6-3nq" firstAttribute="leading" secondItem="w99-jW-Vu0" secondAttribute="leading" id="qaM-yz-Boj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="w99-jW-Vu0"/>
                     </view>
@@ -37,6 +43,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="launchImage" width="720" height="1280"/>
+        <image name="launch_background" width="375" height="667"/>
+        <image name="launch_logo" width="151" height="144"/>
     </resources>
 </document>

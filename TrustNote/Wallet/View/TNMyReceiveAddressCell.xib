@@ -21,16 +21,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RIE-pF-GAv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wallet_recieve_address" translatesAutoresizingMaskIntoConstraints="NO" id="kD7-As-rRg">
-                                <rect key="frame" x="18" y="12" width="26" height="26"/>
+                                <rect key="frame" x="18" y="14" width="26" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="26" id="fwB-3L-78g"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我的收款地址" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XsA-af-2h7">
-                                <rect key="frame" x="50" y="15.5" width="260" height="19.5"/>
+                                <rect key="frame" x="50" y="17.5" width="260" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                 <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -43,17 +43,17 @@
                             <constraint firstItem="XsA-af-2h7" firstAttribute="centerY" secondItem="kD7-As-rRg" secondAttribute="centerY" id="eue-fP-s0Y"/>
                             <constraint firstItem="XsA-af-2h7" firstAttribute="leading" secondItem="kD7-As-rRg" secondAttribute="trailing" constant="6" id="tBN-cL-uDX"/>
                             <constraint firstItem="kD7-As-rRg" firstAttribute="leading" secondItem="RIE-pF-GAv" secondAttribute="leading" constant="18" id="wLL-AA-W3I"/>
-                            <constraint firstAttribute="height" constant="50" id="xn1-NV-0K1"/>
+                            <constraint firstAttribute="height" constant="54" id="xn1-NV-0K1"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ZKWUHD6P3CRLTX64TGPIDQ7U4PM7R7AI232342354254252" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NQd-TA-av2">
-                        <rect key="frame" x="20" y="70" width="280" height="33.5"/>
+                        <rect key="frame" x="20" y="74" width="280" height="33.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="il8-un-006">
-                        <rect key="frame" x="81" y="123.5" width="158" height="158"/>
+                        <rect key="frame" x="81" y="137.5" width="158" height="158"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FaB-Pg-mLv">
                                 <rect key="frame" x="2" y="2" width="154" height="154"/>
@@ -69,13 +69,13 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="528-4K-jgd">
-                        <rect key="frame" x="20" y="299.5" width="280" height="30"/>
+                        <rect key="frame" x="20" y="313.5" width="280" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="zNo-Nt-If1"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title="设置金额">
-                            <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                         </state>
                         <connections>
                             <action selector="setupRecievedAmount:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="VQC-eM-QDt"/>
@@ -83,7 +83,7 @@
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6FC-1h-uwP">
                         <rect key="frame" x="30" y="406.5" width="260" height="48"/>
-                        <color key="backgroundColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="48" id="ORx-3f-6SP"/>
                         </constraints>
@@ -96,19 +96,19 @@
                         </connections>
                     </button>
                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9909." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NfY-fh-QGT" customClass="TNVerticalAlignLabel">
-                        <rect key="frame" x="114" y="291.5" width="92" height="41"/>
+                        <rect key="frame" x="114" y="305.5" width="92" height="41"/>
                         <fontDescription key="fontDescription" type="system" pointSize="34"/>
                         <color key="textColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ON6-zG-wTc">
-                        <rect key="frame" x="20" y="340" width="280" height="30"/>
+                        <rect key="frame" x="20" y="354" width="280" height="30"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="lgB-pc-u2w"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <state key="normal" title="清除金额(MN)">
-                            <color key="titleColor" red="0.0" green="0.32156862749999998" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                         </state>
                         <connections>
                             <action selector="clearAmount:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="oGt-Y5-pLg"/>
@@ -120,7 +120,7 @@
                     <constraint firstItem="RIE-pF-GAv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="241-PC-kFC"/>
                     <constraint firstItem="6FC-1h-uwP" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="298-mQ-NJE"/>
                     <constraint firstItem="NQd-TA-av2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="3dX-OA-0kU"/>
-                    <constraint firstItem="il8-un-006" firstAttribute="top" secondItem="NQd-TA-av2" secondAttribute="bottom" constant="20" id="52X-52-0bi"/>
+                    <constraint firstItem="il8-un-006" firstAttribute="top" secondItem="NQd-TA-av2" secondAttribute="bottom" constant="30" id="52X-52-0bi"/>
                     <constraint firstItem="ON6-zG-wTc" firstAttribute="leading" secondItem="528-4K-jgd" secondAttribute="leading" id="BNR-6G-GcX"/>
                     <constraint firstItem="il8-un-006" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="81" id="E54-u7-YuP"/>
                     <constraint firstAttribute="trailing" secondItem="RIE-pF-GAv" secondAttribute="trailing" id="HR6-kA-U1Q"/>

@@ -13,7 +13,7 @@ import RxSwift
 
 class TNCreateAndRestoreWalletController: TNBaseViewController {
     
-    let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 80) : 80
+    let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 64) : 64
     let topPadding = IS_iphone5 ? (88 + kStatusbarH) : (128 + kStatusbarH)
    
     private let creatWalletBtn = TNButton().then {

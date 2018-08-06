@@ -28,6 +28,9 @@ class TNSyncWalletData {
     required init() {}
     
     func syncWalletsData(wallets: Array<TNWalletModel>) {
+        guard !wallets.isEmpty else {
+            return
+        }
         isLoading = true
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         self.operationWallets += wallets

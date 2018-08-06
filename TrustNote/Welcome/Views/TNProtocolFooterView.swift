@@ -12,6 +12,7 @@ import RxCocoa
 
 class TNProtocolFooterView: UIView {
 
+    @IBOutlet weak var circleView: UIImageView!
     
     @IBOutlet weak var protocolLabel: UILabel!
     
@@ -19,13 +20,17 @@ class TNProtocolFooterView: UIView {
     
     private(set) var disposeBag = DisposeBag()
     
+    @IBOutlet weak var buttonTopConstraint: NSLayoutConstraint!
+    var isSelected = false
     override func awakeFromNib() {
         super.awakeFromNib()
-        protocolLabel.text = NSLocalizedString("Protocol.agree", comment: "")
-        agreeButton.setTitle(NSLocalizedString("Button.agree", comment: ""), for: .normal)
-        agreeButton.layer.cornerRadius = agreeButton.height / 2
+        protocolLabel.text = "Protocol.agree".localized
+        agreeButton.setTitle("Confirm".localized, for: .normal)
+        agreeButton.layer.cornerRadius = kCornerRadius
         agreeButton.layer.masksToBounds = true
-        
+//        if TNLocalizationTool.shared.currentLanguage == "en" {
+//            buttonTopConstraint.constant = 6
+//        }
         
         // Subscribe button click events
         agreeButton.rx.tap.asObservable().subscribe(onNext: { _ in
@@ -34,6 +39,19 @@ class TNProtocolFooterView: UIView {
             TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 2)
             
         }).disposed(by: self.disposeBag)
+    }
+    
+    @IBAction func didClickedCircleButton(_ sender: UIButton) {
+        isSelected = !isSelected
+        if isSelected {
+            circleView.image = UIImage(named: "protocol_selected")
+            agreeButton.isEnabled = true
+            agreeButton.alpha = 1.0
+        } else {
+            circleView.image = UIImage(named: "protocol_normal")
+            agreeButton.isEnabled = false
+            agreeButton.alpha = 0.3
+        }
     }
 }
 

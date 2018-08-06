@@ -28,6 +28,8 @@ class TNContactViewController: TNBaseViewController {
         
         topBarheightConstraint.constant = IS_iPhoneX ? 118 : 94
         detailLabel.text = "NoContactsDesc".localized
+        descLabel.text = "No contacts".localized
+        titleLabel.text = "Contacts".localized
         configTableView()
         
         topBar.setupShadow(Offset: CGSize(width: 0, height: 5), opacity: 0, radius: 5)
@@ -76,6 +78,13 @@ extension TNContactViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TNContactCell = tableView.tn_dequeueReusableCell(indexPath: indexPath)
         cell.model = dataSource[indexPath.row]
+        if indexPath.row % 3 == 2 {
+            cell.markLabel.backgroundColor = UIColor.hexColor(rgbValue: 0xFFF1DA)
+            cell.markLabel.textColor = UIColor.hexColor(rgbValue: 0xFF9300)
+        } else {
+            cell.markLabel.backgroundColor = UIColor.hexColor(rgbValue: 0xEAF2FF)
+            cell.markLabel.textColor = kGlobalColor
+        }
         return cell
     }
     
@@ -120,7 +129,7 @@ extension TNContactViewController {
         let popY: CGFloat = topBar.frame.maxY - 22
         let imageNameArr = ["wallet_sao", "wallet_contact", "wallet_group", "wallet_code"]
         let titleArr = ["Scan QR Code".localized, "Add Contact".localized,"Create Wallet".localized, "My Matching Code".localized]
-        let popView = TNPopView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), imageNameArr: imageNameArr, titleArr: titleArr)
+        let popView = TNPopView(frame: CGRect(x: popX, y: popY, width: popW, height: popH), imageNameArr: imageNameArr, titleArr: titleArr, superView: UIApplication.shared.keyWindow!)
         popView.delegate = self
     }
     

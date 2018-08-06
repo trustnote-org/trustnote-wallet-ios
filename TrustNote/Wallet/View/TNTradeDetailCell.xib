@@ -20,16 +20,16 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="发送方" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IU-Eh-dUT">
-                        <rect key="frame" x="26" y="8.5" width="44" height="26"/>
+                        <rect key="frame" x="26" y="8.5" width="58" height="26"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="44" id="54c-Aa-TPe"/>
+                            <constraint firstAttribute="width" constant="58" id="54c-Aa-TPe"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epJ-c1-d7q">
-                        <rect key="frame" x="88" y="21.5" width="208" height="0.0"/>
+                        <rect key="frame" x="89" y="21.5" width="211" height="0.0"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.066666666666666666" green="0.066666666666666666" blue="0.066666666666666666" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -41,36 +41,34 @@
                             <constraint firstAttribute="height" constant="0.5" id="vrP-AI-vxp"/>
                         </constraints>
                     </view>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j5e-Up-5Rg">
-                        <rect key="frame" x="204" y="9" width="90" height="26"/>
+                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recieve_confirmed" translatesAutoresizingMaskIntoConstraints="NO" id="Bue-iV-QVa">
+                        <rect key="frame" x="280" y="12" width="20" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="90" id="2XA-FJ-Rpy"/>
+                            <constraint firstAttribute="width" constant="20" id="jta-T2-sJc"/>
+                            <constraint firstAttribute="height" constant="20" id="lgJ-Ue-a4C"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <state key="normal" title="已确认" image="recieve_confirmed">
-                            <color key="titleColor" red="0.0" green="0.32156862745098036" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="9qg-ew-oKB" secondAttribute="trailing" id="2ud-wZ-6Nm"/>
-                    <constraint firstAttribute="trailing" secondItem="epJ-c1-d7q" secondAttribute="trailing" constant="24" id="36a-mn-5ic"/>
-                    <constraint firstAttribute="trailing" secondItem="j5e-Up-5Rg" secondAttribute="trailing" constant="26" id="6r3-oI-sZN"/>
+                    <constraint firstAttribute="trailing" secondItem="epJ-c1-d7q" secondAttribute="trailing" constant="20" id="36a-mn-5ic"/>
                     <constraint firstItem="9IU-Eh-dUT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="26" id="9Hy-eK-sYC"/>
-                    <constraint firstItem="epJ-c1-d7q" firstAttribute="leading" secondItem="9IU-Eh-dUT" secondAttribute="trailing" constant="18" id="AVd-SA-TEN"/>
-                    <constraint firstItem="j5e-Up-5Rg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Uh4-x5-abK"/>
+                    <constraint firstItem="epJ-c1-d7q" firstAttribute="leading" secondItem="9IU-Eh-dUT" secondAttribute="trailing" constant="5" id="AVd-SA-TEN"/>
                     <constraint firstItem="9IU-Eh-dUT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Zfc-aJ-Pz6"/>
                     <constraint firstItem="9qg-ew-oKB" firstAttribute="leading" secondItem="9IU-Eh-dUT" secondAttribute="leading" id="aOQ-qO-dZK"/>
                     <constraint firstItem="9qg-ew-oKB" firstAttribute="top" secondItem="9IU-Eh-dUT" secondAttribute="bottom" constant="8" id="d4z-yP-Dyf"/>
                     <constraint firstAttribute="bottom" secondItem="9qg-ew-oKB" secondAttribute="bottom" id="g5W-kM-cH7"/>
+                    <constraint firstItem="Bue-iV-QVa" firstAttribute="centerY" secondItem="epJ-c1-d7q" secondAttribute="centerY" id="j2t-GB-L2P"/>
+                    <constraint firstItem="Bue-iV-QVa" firstAttribute="trailing" secondItem="epJ-c1-d7q" secondAttribute="trailing" id="nhh-K5-RWy"/>
                     <constraint firstItem="epJ-c1-d7q" firstAttribute="centerY" secondItem="9IU-Eh-dUT" secondAttribute="centerY" id="yVu-wH-y7V"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="contentLabel" destination="epJ-c1-d7q" id="bdB-UU-yLj"/>
+                <outlet property="imgRightConstraint" destination="nhh-K5-RWy" id="xg1-h4-UBz"/>
                 <outlet property="lineView" destination="9qg-ew-oKB" id="naM-w4-19N"/>
-                <outlet property="statusView" destination="j5e-Up-5Rg" id="IBJ-PA-bj5"/>
+                <outlet property="statusImgView" destination="Bue-iV-QVa" id="e9O-il-ycG"/>
                 <outlet property="titleTextLabel" destination="9IU-Eh-dUT" id="2v9-oB-UJB"/>
             </connections>
         </tableViewCell>

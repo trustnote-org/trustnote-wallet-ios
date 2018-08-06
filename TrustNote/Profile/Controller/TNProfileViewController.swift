@@ -179,7 +179,7 @@ extension TNProfileViewController {
         let dataArr = [
             [["title" : "Version".localized, "detail" : version, "action" : "", "isCanSelected" : false],
              ["title" : "Hash value".localized, "detail" : gitSHA, "action" : "", "isCanSelected" : false],
-             ["title" : "Terms of Use".localized, "detail" : "", "action" : "", "isCanSelected" : true]]
+             ["title" : "Terms of Use".localized, "detail" : "", "action" : "viewTermsOfUse", "isCanSelected" : true]]
             ] as [Any]
         let vc = TNGeneralViewController(dataSource: dataArr, titleText: "About trustNote".localized)
         navigationController?.pushViewController(vc, animated: true)
@@ -204,7 +204,7 @@ extension TNProfileViewController {
         
         view.addSubview(profileHeaderView)
         profileHeaderView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(titleLabel.snp.bottom).offset(28)
             make.left.right.equalToSuperview()
             make.height.equalTo(134)
         }

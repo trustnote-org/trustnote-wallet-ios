@@ -162,7 +162,7 @@ extension UILabel {
         
         paragraphStye.lineSpacing = lineSpace
         let rang = NSMakeRange(0, CFStringGetLength(string as CFString!))
-        attributedString .addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStye, range: rang)
+        attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStye, range: rang)
         return attributedString
     }
 }

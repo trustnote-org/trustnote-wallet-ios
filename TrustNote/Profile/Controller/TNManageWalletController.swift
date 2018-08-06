@@ -134,7 +134,7 @@ extension TNManageWalletController {
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.top.equalTo(titleLabel.snp.bottom).offset(28)
             make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().offset(-kSafeAreaBottomH)
         }

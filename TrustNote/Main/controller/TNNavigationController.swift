@@ -14,6 +14,8 @@ private let Nav_Bar_Button_Height: CGFloat = 44
 
 class TNNavigationBar: UIView {
     
+    var isNeedMove = false
+    
     var leftBarButton: UIButton?
     
     var rightBarButton: UIButton?
@@ -122,8 +124,9 @@ extension TNNavigationBar {
     
     private func layoutNavBarRightItem(_ navButton: UIButton) {
         
+        let offset = isNeedMove ? 5 : 0
         navButton.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-15)
+            make.right.equalToSuperview().offset(-(15 - offset))
             make.bottom.equalToSuperview()
             make.width.equalTo(Nav_Bar_Button_Width)
             make.height.equalTo(Nav_Bar_Button_Height)

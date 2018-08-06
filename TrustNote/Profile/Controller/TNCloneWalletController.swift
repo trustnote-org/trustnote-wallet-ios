@@ -40,11 +40,12 @@ class TNCloneWalletController: TNBaseViewController {
         syncBtn.layer.borderColor = kGlobalColor.cgColor
         syncBtn.layer.borderWidth = 1.0
         containerView.setupRadiusCorner(radius: kCornerRadius)
-        contentLabel.text = "SyncClonedWallets.warning".localized
+       // contentLabel.text = "SyncClonedWallets.warning".localized
+        contentLabel.attributedText = contentLabel.getAttributeStringWithString("SyncClonedWallets.warning".localized, lineSpace: 4)
         contentLabel.textAlignment = .justified
         let fontSize = CGSize(width: kScreenW - 87, height: CGFloat(MAXFLOAT))
         let textSize = UILabel.textSize(text: "SyncClonedWallets.warning".localized, font: contentLabel.font, maxSize: fontSize)
-        containerViewheightConstraint.constant = textSize.height + 20
+        containerViewheightConstraint.constant = textSize.height + 30 + (TNLocalizationTool.shared.currentLanguage == "en" ? 8 : 0)
         topMarginConstraint.constant = kStatusbarH
         if IS_iphone5 {
             if TNLocalizationTool.shared.currentLanguage == "en" {
@@ -60,6 +61,7 @@ class TNCloneWalletController: TNBaseViewController {
             self.loadingView.stopAnimation()
             self.syncLoadingView?.removeFromSuperview()
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishSyncClonedWalletNotify), object: nil)
+            MBProgress_TNExtension.showViewAfterSecond(title: "同步完成")
             self.navigationController?.popViewController(animated: true)
         }).disposed(by: disposeBag)
     }

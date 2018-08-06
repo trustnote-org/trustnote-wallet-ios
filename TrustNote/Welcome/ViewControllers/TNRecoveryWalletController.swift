@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class TNRecoveryWalletController: TNBaseViewController {
     
@@ -18,6 +19,8 @@ class TNRecoveryWalletController: TNBaseViewController {
     var isDeleteMnemonic: Bool?
     var syncLoadingView : TNCustomAlertView?
     var isShowAlert = true
+    
+    var hud: MBProgressHUD?
     
     private let backBtn = UIButton().then {
         $0.setImage(UIImage(named: "welcome_back"), for: .normal)
@@ -159,12 +162,6 @@ extension TNRecoveryWalletController {
     fileprivate func validationInput(isDelete: Bool) {
         seedPhrase = ""
         isDeleteMnemonic = isDelete
-        loadingView.startAnimation()
-        let popX = CGFloat(kLeftMargin)
-        let popH: CGFloat = 190
-        let popY = (kScreenH - popH) / 2
-        let popW = kScreenW - popX * 2
-        syncLoadingView = TNCustomAlertView(alert: loadingView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .none)
         var flag = true
         for (index, textField) in seedView.seedContainerView.textFields.enumerated() {
             if !seedView.seedContainerView.allWords.contains(textField.text!) {
@@ -183,6 +180,7 @@ extension TNRecoveryWalletController {
             warningLabel.isHidden = false
             return
         }
+        hud = MBProgress_TNExtension.showHUDAddedToView(view: self.view, title: "验证中...", animated: true)
         TNGlobalHelper.shared.mnemonic = seedPhrase
         hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: false)
         TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub!)
@@ -195,6 +193,7 @@ extension TNRecoveryWalletController {
     fileprivate func createPrivateKey() {
         
         TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: seedPhrase) {[unowned self] (xPrivKey) in
+            self.hud?.removeFromSuperview()
             if xPrivKey is Int && (xPrivKey as! Int) == 0 {
                 self.loadingView.stopAnimation()
                 self.syncLoadingView?.removeFromSuperview()
@@ -202,6 +201,13 @@ extension TNRecoveryWalletController {
                 self.warningLabel.isHidden = false
             } else if xPrivKey is String {
 
+                self.loadingView.startAnimation()
+                let popX = CGFloat(kLeftMargin)
+                let popH: CGFloat = 190
+                let popY = (kScreenH - popH) / 2
+                let popW = kScreenW - popX * 2
+                self.syncLoadingView = TNCustomAlertView(alert: self.loadingView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .none)
+                
                 TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
                 if let passsword = TNGlobalHelper.shared.password {
                     let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivKey as! String, key: passsword)
@@ -245,7 +251,7 @@ extension TNRecoveryWalletController {
         TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
         TNGlobalHelper.shared.isVerifyPasswdForMain = delegate.isTabBarRootController() ? true : false
-        TNGlobalHelper.shared.isNeedLoadData = false
+
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
@@ -283,7 +289,7 @@ extension TNRecoveryWalletController {
         seedView.snp.makeConstraints { (make) in
             make.left.equalTo(descLabel.snp.left)
             make.centerX.equalToSuperview()
-            make.top.equalTo(descLabel.snp.bottom).offset(26)
+            make.top.equalTo(descLabel.snp.bottom).offset(48)
             make.height.equalTo(284)
         }
         

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,7 +22,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MFe-oR-eU9">
-                    <rect key="frame" x="12" y="68" width="351" height="122"/>
+                    <rect key="frame" x="12" y="66" width="351" height="124"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已收到(MN)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E1a-W3-hEi">
                             <rect key="frame" x="14" y="32" width="76" height="17"/>
@@ -57,7 +57,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="MFe-oR-eU9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="QDC-GS-qa6"/>
-                <constraint firstItem="MFe-oR-eU9" firstAttribute="top" secondItem="3XD-5U-lvY" secondAttribute="bottom" constant="30" id="ZW3-1w-hur"/>
+                <constraint firstItem="MFe-oR-eU9" firstAttribute="top" secondItem="3XD-5U-lvY" secondAttribute="bottom" constant="28" id="ZW3-1w-hur"/>
                 <constraint firstItem="MFe-oR-eU9" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="gZE-Td-8mo"/>
                 <constraint firstAttribute="bottom" secondItem="MFe-oR-eU9" secondAttribute="bottom" constant="10" id="tXS-qU-9dZ"/>
                 <constraint firstItem="3XD-5U-lvY" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="26" id="vwU-25-dtb"/>

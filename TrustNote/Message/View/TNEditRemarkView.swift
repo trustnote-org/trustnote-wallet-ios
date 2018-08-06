@@ -18,6 +18,8 @@ class TNEditRemarkView: UIView {
     @IBOutlet weak var warningLabel: UILabel!
     @IBOutlet weak var warningView: UIView!
     
+    var control: UIButton?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         inputTextField.placeholder = "设置备注名"
@@ -34,6 +36,17 @@ class TNEditRemarkView: UIView {
         }).disposed(by: disposeBag)
         inputTextField.delegate = self
         inputTextField.becomeFirstResponder()
+        inputTextField.addTarget(self, action: #selector(self.textDidChanged(_:)), for: .editingChanged)
+    }
+    
+    @objc func textDidChanged(_ textField: UITextField) {
+        if textField.text!.isEmpty {
+            control?.isEnabled = false
+            control?.alpha = 0.3
+        } else {
+            control?.isEnabled = true
+            control?.alpha = 1.0
+        }
     }
 }
 
@@ -54,9 +67,9 @@ extension TNEditRemarkView: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if string == " " {
-            return false
-        }
+//        if string == " " {
+//            return false
+//        }
         return true
     }
 }

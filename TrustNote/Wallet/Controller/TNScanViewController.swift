@@ -25,10 +25,12 @@ class TNScanViewController: UIViewController {
     
     var isPush: Bool = true
     
+    let lightTextLabel = UILabel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.clear
-        creatControl()
+        createControl()
         startScanning()
     }
     
@@ -37,6 +39,7 @@ class TNScanViewController: UIViewController {
         UIApplication.shared.statusBarStyle = .lightContent
         addTimer()
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.statusBarStyle = .`default`
@@ -51,7 +54,7 @@ class TNScanViewController: UIViewController {
 
 extension TNScanViewController {
     
-    fileprivate func creatControl() {
+    fileprivate func createControl() {
         let scanW: CGFloat = kScreenW * 0.65
         let tabbarH: CGFloat = 84 + kSafeAreaBottomH
         let marginX: CGFloat = (kScreenW - scanW) * 0.5
@@ -92,7 +95,6 @@ extension TNScanViewController {
         borderView.layer.borderWidth = 0.3
         scanView.addSubview(borderView)
         
-        let lightTextLabel = UILabel()
         lightTextLabel.text = "Tap to turn light on".localized
         lightTextLabel.font = UIFont.systemFont(ofSize: 14)
         lightTextLabel.textColor = UIColor.white
@@ -160,6 +162,7 @@ extension TNScanViewController {
 }
 
 extension TNScanViewController {
+    
     fileprivate func startScanning() {
         
         do {
@@ -221,6 +224,7 @@ extension TNScanViewController {
             return
         }
         btn.isSelected = !btn.isSelected
+        lightTextLabel.text = btn.isSelected ? "Tip to close".localized : "Tap to turn light on".localized
         do {
             try device.lockForConfiguration()
         } catch let error as NSError {

@@ -74,14 +74,14 @@ extension TNProfileBackupContentView {
         addSubview(textLabel)
         textLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(kLeftMargin)
-            make.top.equalToSuperview().offset(22)
+            make.top.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
         }
         
         addSubview(descLabel)
         descLabel.snp.makeConstraints { (make) in
             make.left.equalToSuperview().offset(kLeftMargin)
-            make.top.equalTo(textLabel.snp.bottom).offset(12)
+            make.top.equalTo(textLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
         }
         
@@ -89,7 +89,7 @@ extension TNProfileBackupContentView {
         seedView.snp.makeConstraints { (make) in
             make.left.equalTo(descLabel.snp.left)
             make.centerX.equalToSuperview()
-            make.top.equalTo(descLabel.snp.bottom).offset(20  * scale)
+            make.top.equalTo(descLabel.snp.bottom).offset(18  * scale)
             make.height.equalTo(142)
         }
         
@@ -105,7 +105,7 @@ extension TNProfileBackupContentView {
         warningView.snp.makeConstraints { (make) in
             make.left.equalTo(seedView.snp.left)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(deleteButton.snp.top).offset(-24  * scale)
+            make.bottom.equalTo(deleteButton.snp.top).offset(-28  * scale)
             make.height.equalTo(warningView.dynamicHeight)
         }
     }

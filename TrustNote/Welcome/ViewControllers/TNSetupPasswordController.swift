@@ -46,7 +46,7 @@ class TNSetupPasswordController: TNBaseViewController {
         super.viewDidLoad()
         titleTextLabel.text = "Password.titleText".localized
         warningDescLabel.text = "Password.passwordLengthValid".localized
-        confirmBtnBottomConstraint.constant = IS_iphone5 ? 30 : 50
+        //confirmBtnBottomConstraint.constant = IS_iphone5 ? 30 : 50
         confirmButton.setupRadiusCorner(radius: kCornerRadius)
         confirmButton.setTitle("Confirm".localized, for: .normal)
         backgroundFrameView.setupRadiusCorner(radius: kCornerRadius) 
@@ -71,9 +71,7 @@ class TNSetupPasswordController: TNBaseViewController {
         
         setupUI()
         
-        IQKeyboardManager.shared.enable = false
-        distance = IS_iphone5 ? 100 : 0
-        isNeedMove = true
+        IQKeyboardManager.shared.enable = true
     }
 }
 

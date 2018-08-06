@@ -23,7 +23,7 @@ class TNWebSocketManager {
     
     
     fileprivate var heartBeat: Timer!
-    fileprivate let rootHubs: [String] = ["shawtest.trustnote.org", "raytest.trustnote.org"]
+    fileprivate let rootHubs: [String] = /*["dev.trustnote.org/tn"]*/["shawtest.trustnote.org", "raytest.trustnote.org"]
     
     public var socket: WebSocket!
     public var challenge: String?
@@ -223,7 +223,11 @@ extension TNWebSocketManager {
                         case .otherTempPubkey:
                             let callBack = requestTask["callBack"] as! (String) -> Void
                             let dict = response as! [String : Any]
-                            callBack(dict["temp_pubkey"] as! String)
+                            if dict.keys.contains("temp_pubkey") {
+                                callBack(dict["temp_pubkey"] as! String)
+                            } else {
+                                callBack("")
+                            }
                         case .deleteHubCache:
                             break
                         }

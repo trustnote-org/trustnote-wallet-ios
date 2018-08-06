@@ -30,7 +30,7 @@ class TNPopView: UIView {
 
    weak var delegate: TNPopCtrlCellClickDelegate?
     var containerView: UIView?
-    init(frame: CGRect, imageNameArr:[String], titleArr:[String]) {
+    init(frame: CGRect, imageNameArr:[String], titleArr:[String], superView: UIView) {
         super.init(frame: UIScreen.main.bounds)
         self.frame = UIScreen.main.bounds
         self.backgroundColor = UIColor.clear
@@ -75,13 +75,13 @@ class TNPopView: UIView {
         let small_h: CGFloat = 8.0
         let small_y = frame.origin.y - small_h
         
-        var ww: CGFloat
+        let ww: CGFloat = 12
         
-        if UIScreen.main.bounds.size.width == 414.0 {//iphone plus
-            ww = 15.0
-        }else {
-            ww = 12.0
-        }
+//        if UIScreen.main.bounds.size.width == 414.0 {//iphone plus
+//            ww = 15.0
+//        }else {
+//            ww = 12.0
+//        }
         
         let small_x = UIScreen.main.bounds.size.width - 12 - ww - small_w
         var small_rect = CGRect()
@@ -93,7 +93,7 @@ class TNPopView: UIView {
         smallImageView.image = UIImage(named: "wallet_popTop")
         self.addSubview(smallImageView)
         
-        UIApplication.shared.keyWindow?.addSubview(self)
+        superView.addSubview(self)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

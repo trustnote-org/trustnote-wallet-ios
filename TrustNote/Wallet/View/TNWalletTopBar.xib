@@ -23,9 +23,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8fe-ts-gL8">
-                    <rect key="frame" x="295" y="0.0" width="60" height="44"/>
+                    <rect key="frame" x="306" y="0.0" width="54" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="60" id="tuH-gB-HPf"/>
+                        <constraint firstAttribute="width" constant="54" id="tuH-gB-HPf"/>
                     </constraints>
                     <state key="normal" image="wallet_add"/>
                     <connections>
@@ -39,7 +39,7 @@
                 <constraint firstItem="dSZ-xL-8CP" firstAttribute="leading" secondItem="mBV-81-tTZ" secondAttribute="leading" constant="20" id="VNP-2S-Gu2"/>
                 <constraint firstAttribute="bottom" secondItem="8fe-ts-gL8" secondAttribute="bottom" id="ghO-9a-UUC"/>
                 <constraint firstItem="8fe-ts-gL8" firstAttribute="top" secondItem="mBV-81-tTZ" secondAttribute="top" id="jmS-67-d7c"/>
-                <constraint firstItem="mBV-81-tTZ" firstAttribute="trailing" secondItem="8fe-ts-gL8" secondAttribute="trailing" id="yYZ-6X-4Xd"/>
+                <constraint firstItem="mBV-81-tTZ" firstAttribute="trailing" secondItem="8fe-ts-gL8" secondAttribute="trailing" constant="-5" id="yYZ-6X-4Xd"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="mBV-81-tTZ"/>
@@ -47,6 +47,6 @@
         </view>
     </objects>
     <resources>
-        <image name="wallet_add" width="20" height="20"/>
+        <image name="wallet_add" width="54" height="44"/>
     </resources>
 </document>

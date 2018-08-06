@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func resetRootViewController() {
-        TNGlobalHelper.shared.isNeedLoadData = false
+       
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         let tabBarController = TNTabBarController()
         window?.rootViewController = tabBarController

@@ -40,7 +40,7 @@ let kTitleFont = UIFont(name: "PingFangSC-Semibold", size: 24)
 
 let kButtonFont = UIFont.systemFont(ofSize: 18.0)
 
-let TNWebSocketURLScheme: String = "wss://"
+let TNWebSocketURLScheme: String = "ws://"
 
 let TNScanPrefix = "TTT:"
 

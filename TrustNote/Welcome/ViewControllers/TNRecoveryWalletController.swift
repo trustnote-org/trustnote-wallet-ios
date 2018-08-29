@@ -117,7 +117,7 @@ class TNRecoveryWalletController: TNBaseViewController {
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
       
-        seedView.seedContainerView.mnmnemonicsArr = "theme wall plunge fluid circle organ gloom expire coach patient neck clip".components(separatedBy: " ")
+        //seedView.seedContainerView.mnmnemonicsArr = "theme wall plunge fluid circle organ gloom expire coach patient neck clip".components(separatedBy: " ")
         
     }
     

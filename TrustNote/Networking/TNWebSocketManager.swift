@@ -23,7 +23,14 @@ class TNWebSocketManager {
     
     
     fileprivate var heartBeat: Timer!
-    fileprivate let rootHubs: [String] = /*["dev.trustnote.org/tn"]*/["shawtest.trustnote.org", "raytest.trustnote.org"]
+    fileprivate let rootHubs: [String] = [
+        "victor.trustnote.org/tn",
+        "eason.trustnote.org/tn",
+        "lymn.trustnote.org/tn",
+        "bob.trustnote.org/tn",
+        "curry.trustnote.org/tn",
+        "kake.trustnote.org/tn"
+        ]/*["dev.trustnote.org/tn"]["shawtest.trustnote.org", "raytest.trustnote.org"]*/
     
     public var socket: WebSocket!
     public var challenge: String?

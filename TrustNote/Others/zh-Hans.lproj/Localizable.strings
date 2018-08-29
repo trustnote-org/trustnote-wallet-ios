@@ -66,6 +66,8 @@
 
 "Restore wallet" = "恢复钱包";
 
+"The last time the wallet was not completed, please ensure that the network is open and restored" = "上次恢复钱包未完成，请确保网络畅通，重新恢复";
+
 "Create Wallet and Backup Your Seed Phrase" = "创建钱包并备份您的口令";
 
 "CreateWallet.instruction" = "备份钱包，导出“口令”并抄写到安全的地方，千万不要保存到网络上。然后尝试转入，转出小额资产开始使用。";
@@ -197,6 +199,9 @@
 "Sync Wallets" = "同步钱包";
 "SyncClonedWallets.warning" = "不建议您克隆钱包，保护好您的助记词就是安全的。如果您遇到克隆钱包导致的数据不同步，请在两个钱包上使用克隆钱包同步功能。";
 "SyncLoading" = "同步中，请勿关闭软件";
+"Complete synchronization" = "同步完成";
+"validation process" = "验证中...";
+"Restore success" = "恢复成功";
 "RecoverLoading" = "恢复中，请勿关闭软件";
 "Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
 "Signing succeed" = "授权成功";
@@ -207,6 +212,9 @@
 "Backup mnemonic" = "备份助记词";
 "Mnemonic words have been deleted" = "助记词已删除";
 "Profile.setupPassword" = "设置密码";
+"Update" = "系统升级";
+"Download" = "前往下载";
+"Ignore" = "忽略";
 
 
 /******* manage wallet string************/

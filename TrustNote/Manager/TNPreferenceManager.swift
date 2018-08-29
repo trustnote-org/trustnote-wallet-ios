@@ -110,6 +110,7 @@ extension PreferenceKeys {
     static let encryptionPassword = PreferenceKey<String>("EncryptionPassword")
     static let isBackupWords = PreferenceKey<Bool>("IsBackupWords")
     static let isShowMnemonic = PreferenceKey<Bool>("isShowMnemonic")
+    static let isRecoverWallet = PreferenceKey<Int>("isRecoverWallet")
 }
 
 let defaultPreferences: [PreferenceKeys: Any] = [
@@ -117,6 +118,7 @@ let defaultPreferences: [PreferenceKeys: Any] = [
     .launchForWindowRoot: 1,
     .encryptionPassword: "",
     .isBackupWords: false,
-    .isShowMnemonic: false
+    .isShowMnemonic: false,
+    .isRecoverWallet: 1
 ]
 

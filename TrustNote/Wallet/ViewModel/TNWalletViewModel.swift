@@ -48,38 +48,57 @@ extension TNWalletViewModel {
     /// insert new wall to sqlite
     public func insertNewWalletToDatabase(wallet: TNWalletModel) {
         
-        let querySQL = String(format:"SELECT Count(*) FROM wallets WHERE wallet = '%@'", arguments:[wallet.walletId])
-        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (count) in
-            guard count == 0 else {return}
-            let definition_template = ["sig", ["pubkey" : wallet.xPubKey]] as [Any]
-            let creation_date = wallet.creation_date
-            let isLocal = wallet.isLocal ? 1:0
-            let sql = "INSERT INTO wallets (wallet, account, definition_template, creation_date, full_approval_date, ready_date, is_local) VALUES(?,?,?,?,?,?,?)"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, wallet.account, "\(JSON(definition_template))", creation_date, creation_date, creation_date, isLocal])
+//        let querySQL = String(format:"SELECT Count(*) FROM wallets WHERE wallet = '%@'", arguments:[wallet.walletId])
+//        let count = TNSQLiteManager.sharedManager.syncQueryCount(sql: querySQL)
+//        guard count == 0 else {return}
+        let definition_template = ["sig", ["pubkey" : wallet.xPubKey]] as [Any]
+        let creation_date = wallet.creation_date
+        let isLocal = wallet.isLocal ? 1:0
+        let sql = "INSERT INTO wallets (wallet, account, definition_template, creation_date, full_approval_date, ready_date, is_local) VALUES(?,?,?,?,?,?,?)"
+        if Thread.current.isMainThread {
+             TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, wallet.account, "\(JSON(definition_template))", creation_date, creation_date, creation_date, isLocal])
+        } else {
+           TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [wallet.walletId, wallet.account, "\(JSON(definition_template))", creation_date, creation_date, creation_date, isLocal])
         }
     }
     
     public func insertDataIntoExtendedPubkey(wallet: TNWalletModel) {
         
-        let querySQL = String(format:"SELECT Count(*) FROM extended_pubkeys WHERE wallet = '%@' AND device_address = '%@'", arguments:[wallet.walletId, TNGlobalHelper.shared.my_device_address])
-        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (count) in
-            guard count == 0 else {return}
-            let device_address = TNGlobalHelper.shared.my_device_address
-            let creation_date = wallet.creation_date
-            let sql = "INSERT INTO extended_pubkeys (wallet, extended_pubkey, device_address, creation_date, approval_date, member_ready_date) VALUES(?,?,?,?,?,?)"
+//        let querySQL = String(format:"SELECT Count(*) FROM extended_pubkeys WHERE wallet = '%@' AND device_address = '%@'", arguments:[wallet.walletId, TNGlobalHelper.shared.my_device_address])
+//        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (count) in
+//            guard count == 0 else {return}
+//            let device_address = TNGlobalHelper.shared.my_device_address
+//            let creation_date = wallet.creation_date
+//            let sql = "INSERT INTO extended_pubkeys (wallet, extended_pubkey, device_address, creation_date, approval_date, member_ready_date) VALUES(?,?,?,?,?,?)"
+//            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, wallet.xPubKey, device_address, creation_date, creation_date, creation_date])
+//        }
+        let device_address = TNGlobalHelper.shared.my_device_address
+        let creation_date = wallet.creation_date
+        let sql = "INSERT INTO extended_pubkeys (wallet, extended_pubkey, device_address, creation_date, approval_date, member_ready_date) VALUES(?,?,?,?,?,?)"
+        if Thread.current.isMainThread {
             TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, wallet.xPubKey, device_address, creation_date, creation_date, creation_date])
+        } else {
+            TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [wallet.walletId, wallet.xPubKey, device_address, creation_date, creation_date, creation_date])
         }
     }
     
     public func insertDataIntoWalletSigningPath(wallet: TNWalletModel) {
         
-        let querySQL = String(format:"SELECT Count(*) FROM wallet_signing_paths WHERE wallet = '%@' AND signing_path = '%@'", arguments:[wallet.walletId, "r"])
-        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (count) in
-            guard count == 0 else {return}
-            let device_address = TNGlobalHelper.shared.my_device_address
-            let creation_date = wallet.creation_date
-            let sql = "INSERT INTO wallet_signing_paths (wallet, signing_path, device_address, creation_date) VALUES(?,?,?,?)"
+//        let querySQL = String(format:"SELECT Count(*) FROM wallet_signing_paths WHERE wallet = '%@' AND signing_path = '%@'", arguments:[wallet.walletId, "r"])
+//        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (count) in
+//            guard count == 0 else {return}
+//            let device_address = TNGlobalHelper.shared.my_device_address
+//            let creation_date = wallet.creation_date
+//            let sql = "INSERT INTO wallet_signing_paths (wallet, signing_path, device_address, creation_date) VALUES(?,?,?,?)"
+//            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, "r", device_address, creation_date])
+//        }
+        let device_address = TNGlobalHelper.shared.my_device_address
+        let creation_date = wallet.creation_date
+        let sql = "INSERT INTO wallet_signing_paths (wallet, signing_path, device_address, creation_date) VALUES(?,?,?,?)"
+        if Thread.current.isMainThread {
             TNSQLiteManager.sharedManager.updateData(sql: sql, values: [wallet.walletId, "r", device_address, creation_date])
+        } else {
+            TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [wallet.walletId, "r", device_address, creation_date])
         }
     }
     
@@ -123,22 +142,30 @@ extension TNWalletViewModel {
     /// Save wallet address to database
     public func insertWalletAddressToDatabase(walletAddressModel: TNWalletAddressModel) {
         
-        let querySQL = String(format:"SELECT Count(*) FROM my_addresses WHERE address = '%@'", arguments:[walletAddressModel.walletAddress])
-        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (count) in
-            guard count == 0 else {return}
-            let is_change = walletAddressModel.is_change ? 1 : 0
-            self.readNextAddressIndex(walletId: walletAddressModel.walletId, is_change: is_change) { (address_index) in
-                let definition = ["sig", ["pubkey":walletAddressModel.walletAddressPubkey]] as [Any]
-                let is_change = walletAddressModel.is_change
-                let sql = "INSERT INTO my_addresses (wallet, address, is_change, creation_date, definition, address_index) VALUES(?,?,?,?,?,?)"
-                TNSQLiteManager.sharedManager.updateData(sql: sql, values: [walletAddressModel.walletId, walletAddressModel.walletAddress, is_change, walletAddressModel.creation_date!, "\(JSON(definition))", address_index])
-            }
+        let is_change = walletAddressModel.is_change ? 1 : 0
+        let querySQL = String(format:"SELECT Count(*) FROM my_addresses WHERE wallet = '%@' AND is_change = %d", arguments: [walletAddressModel.walletId, is_change])
+        TNSQLiteManager.sharedManager.queryCount(sql: querySQL) { (address_index) in
+            let definition = ["sig", ["pubkey":walletAddressModel.walletAddressPubkey]] as [Any]
+            let sql = "INSERT INTO my_addresses (wallet, address, is_change, creation_date, definition, address_index) VALUES(?,?,?,?,?,?)"
+            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [walletAddressModel.walletId, walletAddressModel.walletAddress, is_change, walletAddressModel.creation_date!, "\(JSON(definition))", address_index])
         }
     }
     
-    private func readNextAddressIndex(walletId: String, is_change: Int, comletionHandle: ((Int) -> Swift.Void)?) {
+    public func insertWalletAddressInBackground(walletAddressModel: TNWalletAddressModel) {
+        let querySQL = String(format:"SELECT Count(*) FROM my_addresses WHERE address = '%@'", arguments:[walletAddressModel.walletAddress])
+        let count = TNSQLiteManager.sharedManager.syncQueryCount(sql: querySQL)
+        guard count == 0 else {return}
+        let is_change = walletAddressModel.is_change ? 1 : 0
+        let address_index = readNextAddressIndex(walletId: walletAddressModel.walletId, is_change: is_change)
+        
+        let definition = ["sig", ["pubkey":walletAddressModel.walletAddressPubkey]] as [Any]
+        let sql = "INSERT INTO my_addresses (wallet, address, is_change, creation_date, definition, address_index) VALUES(?,?,?,?,?,?)"
+        TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [walletAddressModel.walletId, walletAddressModel.walletAddress, is_change, walletAddressModel.creation_date!, "\(JSON(definition))", address_index])
+    }
+    
+    private func readNextAddressIndex(walletId: String, is_change: Int) -> Int {
         
         let sql = String(format:"SELECT Count(*) FROM my_addresses WHERE wallet = '%@' AND is_change = %d", arguments: [walletId, is_change])
-        TNSQLiteManager.sharedManager.queryCount(sql: sql, completionHandle: comletionHandle)
+         return TNSQLiteManager.sharedManager.syncQueryCount(sql: sql)
     }
 }

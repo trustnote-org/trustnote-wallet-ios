@@ -12,7 +12,7 @@ import RxSwift
 
 
 class TNCreateAndRestoreWalletController: TNBaseViewController {
-    
+   
     let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 64) : 64
     let topPadding = IS_iphone5 ? (88 + kStatusbarH) : (128 + kStatusbarH)
    
@@ -44,8 +44,7 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
         creatWalletBtn.rx.tap.asObservable().subscribe(onNext: { [unowned self] _ in
             
             if TNGlobalHelper.shared.encryptePrivKey.isEmpty {
-                TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic) { (any) in
-                    let xPrivkey = any as! String
+                TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: TNGlobalHelper.shared.mnemonic) { (xPrivkey) in
                     TNGlobalHelper.shared.tempPrivKey = xPrivkey
                     if let passsword = TNGlobalHelper.shared.password {
                         let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivkey, key: passsword)
@@ -67,11 +66,19 @@ class TNCreateAndRestoreWalletController: TNBaseViewController {
         
         if Preferences[.isBackupWords] {
             let vc = TNVerifyPasswordController()
-            navigationController?.present(vc, animated: false) {
+            vc.verifyPasswordCompletionBlock = {[unowned self] in
+                if Preferences[.isRecoverWallet] == 2 {
+                    TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
+                    TNSQLiteManager.sharedManager.deleteAllLocalData()
+                    self.alertAction(self, "The last time the wallet was not completed, please ensure that the network is open and restored".localized, message: nil, sureActionText: nil, cancelActionText: "Confirm".localized, isChange: false, sureAction: nil)
+                }
+            }
+            self.present(vc, animated: false) {
                 vc.passwordAlertView.passwordTextField.becomeFirstResponder()
             }
         }
     }
+    
 }
 
 extension TNCreateAndRestoreWalletController {

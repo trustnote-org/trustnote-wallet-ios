@@ -39,14 +39,15 @@ class TNSyncWalletData {
     }
     
     func queryWalletAllAddress(walletId: String) {
-        let addressList = TNSQLiteManager.sharedManager.queryWalletAllAddresses(walletId: walletId)
-        let recievedAddressList =  addressList.filter { return $0.is_change == false}
-        recievedAddressIndex = recievedAddressList.count
-        let changeAddressList = addressList.filter { return $0.is_change == true}
-        changedAddressIndex = changeAddressList.count
-        DispatchQueue.global().async {
-            self.getRecievedAddressHistory(addressesList: recievedAddressList)
-            self.getChangedAddressHistory(addressesList: changeAddressList)
+        TNSQLiteManager.sharedManager.queryWalletAllAddresses(walletId: walletId) {[unowned self] (addressList) in
+            let recievedAddressList =  addressList.filter { return $0.is_change == false}
+            self.recievedAddressIndex = recievedAddressList.count
+            let changeAddressList = addressList.filter { return $0.is_change == true}
+            self.changedAddressIndex = changeAddressList.count
+            DispatchQueue.global().async {
+                self.getRecievedAddressHistory(addressesList: recievedAddressList)
+                self.getChangedAddressHistory(addressesList: changeAddressList)
+            }
         }
     }
     
@@ -125,7 +126,7 @@ class TNSyncWalletData {
             }
             if !addressArr.isEmpty {
                 for addressModel in addressArr {
-                    walletViewModel.insertWalletAddressToDatabase(walletAddressModel: addressModel)
+                    walletViewModel.insertWalletAddressInBackground(walletAddressModel: addressModel)
                 }
             }
             return

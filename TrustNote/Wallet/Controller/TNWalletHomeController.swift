@@ -54,6 +54,9 @@ class TNWalletHomeController: TNBaseViewController {
         setStatusBarBackgroundColor(color: UIColor.white)
         if TNGlobalHelper.shared.isVerifyPasswdForMain {
             let vc = TNVerifyPasswordController()
+            vc.verifyPasswordCompletionBlock = {[unowned self] in
+                self.promptUpgrades()
+            }
             navigationController?.present(vc, animated: false) {
                 TNGlobalHelper.shared.mnemonic = ""
                 vc.passwordAlertView.passwordTextField.becomeFirstResponder()
@@ -325,6 +328,25 @@ extension TNWalletHomeController {
                 self.syncData(false)
                 TNWebSocketManager.sharedInstance.socketDidConnectedBlock = nil
             }
+        }
+    }
+    
+    fileprivate func promptUpgrades() {
+        if !TNGlobalHelper.shared.updateDict.isEmpty {
+            let updateHints = TNLocalizationTool.shared.currentLanguage == "en" ? TNGlobalHelper.shared.updateDict["en"] : TNGlobalHelper.shared.updateDict["cn"]
+            let msgArr = updateHints as! [String]
+            let msg = msgArr.joined(separator: "\n")
+            let coverView = UIView(frame: UIScreen.main.bounds)
+            coverView.backgroundColor = UIColor.hexColor(rgbValue: 0x000000, alpha: 0.4)
+            let upgradeAlertView = TNUpgrateAlertView.upgrateAlertView(msg: msg) {
+                coverView.removeFromSuperview()
+            }
+            coverView.addSubview(upgradeAlertView)
+            upgradeAlertView.snp.makeConstraints { (make) in
+                make.centerX.centerY.equalToSuperview()
+                make.size.equalTo(CGSize(width: 270, height: upgradeAlertView.alertHeight))
+            }
+            UIApplication.shared.keyWindow?.addSubview(coverView)
         }
     }
 }

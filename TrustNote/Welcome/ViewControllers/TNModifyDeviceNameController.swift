@@ -103,14 +103,12 @@ class TNModifyDeviceNameController: TNBaseViewController {
     func generateMnemonic() {
         
         let hud = MBProgress_TNExtension.showHUDAddedToView(view: self.view, title: "", animated: true)
-        DispatchQueue.global().async {
-            TNGlobalHelper.shared.mnemonic = TNSyncOperationManager.shared.getNewMnemonic()
-            DispatchQueue.main.async {
-                hud.removeFromSuperview()
-                TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 3)
-                TNConfigFileManager.sharedInstance.updateConfigFile(key: "deviceName", value: self.deviceTextField.text!)
-                UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .newWallet)
-            }
+        TNEvaluateScriptManager.sharedInstance.generateMnemonic { (result) in
+            TNGlobalHelper.shared.mnemonic = result
+            hud.removeFromSuperview()
+            TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 3)
+            TNConfigFileManager.sharedInstance.updateConfigFile(key: "deviceName", value: self.deviceTextField.text!)
+            UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .newWallet)
         }
     }
     

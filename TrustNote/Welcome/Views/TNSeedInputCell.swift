@@ -263,7 +263,7 @@ extension TNSeedContainerView: UICollectionViewDelegate, UICollectionViewDataSou
             cell.textField.text = mnmnemonicsArr[indexPath.item]
             return cell
         }
-        //cell.textField.text = mnmnemonicsArr[indexPath.item]
+        cell.textField.text = mnmnemonicsArr[indexPath.item]
         cell.textField.isEnabled = isCanEdit
         cell.textField.delegate = self
         cell.textField.inputView = containerView

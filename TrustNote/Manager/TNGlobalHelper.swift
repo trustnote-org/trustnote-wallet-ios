@@ -17,9 +17,10 @@ enum TNWalletRecoverStyle {
 
 final class TNGlobalHelper {
     
+    var updateDict: [String: Any] = [:]
     var isVerifyPasswdForMain = true
     var recoverStyle: TNWalletRecoverStyle = .none
-    //var isNeedLoadData = true
+    var appVersion = ""
     var password: String? = nil
     var encryptePrivKey = ""
     var tempPrivKey = ""
@@ -46,6 +47,8 @@ final class TNGlobalHelper {
     }
     
     public func createGlobalParameters() {
+        
+        getAppVersion()
         
         guard TNConfigFileManager.sharedInstance.isExistProfileFile() else {
             return
@@ -83,6 +86,11 @@ final class TNGlobalHelper {
         }
     }
     
+    func getAppVersion() {
+        let infoDictionary = Bundle.main.infoDictionary
+        appVersion = infoDictionary!["CFBundleShortVersionString"] as! String
+    }
+    
     func createNewWallet() {
         
         let walletViewModel = TNWalletViewModel()
@@ -91,7 +99,7 @@ final class TNGlobalHelper {
             walletViewModel.saveWalletDataToDatabase(TNGlobalHelper.shared.currentWallet)
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
-                    walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
+                   walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
                     TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
                 })
             }

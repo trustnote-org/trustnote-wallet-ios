@@ -61,7 +61,7 @@ class TNCloneWalletController: TNBaseViewController {
             self.loadingView.stopAnimation()
             self.syncLoadingView?.removeFromSuperview()
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidFinishSyncClonedWalletNotify), object: nil)
-            MBProgress_TNExtension.showViewAfterSecond(title: "同步完成")
+            MBProgress_TNExtension.showViewAfterSecond(title: "Complete synchronization".localized)
             self.navigationController?.popViewController(animated: true)
         }).disposed(by: disposeBag)
     }

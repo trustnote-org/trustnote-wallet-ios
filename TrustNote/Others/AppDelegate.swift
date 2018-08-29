@@ -33,8 +33,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TNEvaluateScriptManager.sharedInstance.evaluatingJavaScriptString(fileString: file)
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        let config: NSDictionary = TNConfigFileManager.sharedInstance.readConfigFile()
-        UIWindow.setWindowRootController(window, rootVC: TNWindowRoot(rawValue: config["keywindowRoot"] as! Int)!)
+        if Preferences[.isRecoverWallet] == 2 {
+            UIWindow.setWindowRootController(window, rootVC: .newWallet)
+        } else {
+            let config: NSDictionary = TNConfigFileManager.sharedInstance.readConfigFile()
+            UIWindow.setWindowRootController(window, rootVC: TNWindowRoot(rawValue: config["keywindowRoot"] as! Int)!)
+        }
         window?.makeKeyAndVisible()
         return true
     }

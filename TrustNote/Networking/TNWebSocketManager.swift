@@ -84,7 +84,7 @@ extension TNWebSocketManager {
     
     private func initHeartBeat() {
         
-        heartBeat = Timer.scheduledTimer(timeInterval: 20, target: self, selector:#selector(self.sendHeartBeatRequest), userInfo: nil, repeats: true)
+        heartBeat = Timer.scheduledTimer(timeInterval: 30, target: self, selector:#selector(self.sendHeartBeatRequest), userInfo: nil, repeats: true)
     }
 }
 
@@ -190,6 +190,9 @@ extension TNWebSocketManager {
             recieveTransferUnitBlock?(handleData["body"] as! [String : Any])
         case "light/have_updates":
             recieveTransferUpdateBlock?()
+       case "new_version":
+            let body = handleData["body"] as! [String: Any]
+            TNGlobalHelper.shared.updateDict = body["msg"] as! [String : Any]
         default:
             break
         }

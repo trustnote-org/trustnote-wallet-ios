@@ -34,6 +34,8 @@ class TNTransferViewModel: NSObject, TNJSONSerializationProtocol {
     private var authors: [TNAuthors] = []
     private var inputs: [TNInputModel] = []
     
+    private var isReturn = false
+    
     init(paymentInfo: TNPaymentInfo) {
         super.init()
         self.sendPaymentInfo = paymentInfo
@@ -48,7 +50,9 @@ extension TNTransferViewModel {
             let response = TNSyncOperationManager.shared.getParentUnit()
             self.parentUnit = TNParentsUnit.deserialize(from: response)
             self.composeUnits()
-            self.postNewUnitToHub()
+            if !self.isReturn {
+              self.postNewUnitToHub()
+            }
         }
     }
     
@@ -71,6 +75,7 @@ extension TNTransferViewModel {
         
         genPayloadInputs()
         guard !(payload.inputs?.isEmpty)! else {
+            isReturn = true
             DispatchQueue.main.async {
                 self.sendFailureBlock?()
             }
@@ -81,6 +86,7 @@ extension TNTransferViewModel {
         genCommission()
         
         guard receiverOutput.amount + units.headers_commission + units.payload_commission <= totalAsset else {
+            isReturn = true
             DispatchQueue.main.async {
                 self.sendFailureBlock?()
             }

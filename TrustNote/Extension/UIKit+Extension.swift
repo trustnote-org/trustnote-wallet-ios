@@ -151,7 +151,7 @@ extension UICollectionView {
 
 extension UILabel {
     
-     static func textSize(text : String , font : UIFont , maxSize : CGSize) -> CGSize {
+     static func textSize(text: String , font: UIFont , maxSize: CGSize) -> CGSize {
         return text.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font : font], context: nil).size  
     }
     
@@ -159,11 +159,16 @@ extension UILabel {
         ) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(string: string)
         let paragraphStye = NSMutableParagraphStyle()
-        
         paragraphStye.lineSpacing = lineSpace
         let rang = NSMakeRange(0, CFStringGetLength(string as CFString!))
         attributedString.addAttribute(NSAttributedStringKey.paragraphStyle, value: paragraphStye, range: rang)
         return attributedString
+    }
+    
+    static func textSizeWithLinespace(text: String , font: UIFont , maxSize: CGSize, lineSpace: CGFloat) -> CGSize {
+        let paragraphStye = NSMutableParagraphStyle()
+        paragraphStye.lineSpacing = lineSpace
+        return text.boundingRect(with: maxSize, options: [.usesLineFragmentOrigin], attributes: [NSAttributedStringKey.font: font, NSAttributedStringKey.paragraphStyle: paragraphStye], context: nil).size
     }
 }
 

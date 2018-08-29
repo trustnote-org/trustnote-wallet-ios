@@ -17,6 +17,8 @@ class TNVerifyPasswordController: TNBaseViewController {
     
     var verifyPasswordView: TNCustomAlertView?
     
+    var verifyPasswordCompletionBlock: (() -> Void)?
+    
     public var passwordAlertView = TNPasswordAlertView.loadViewFromNib()
     
     fileprivate lazy var topView: TNCreateWalletTopView = {
@@ -144,9 +146,11 @@ extension TNVerifyPasswordController: TNPasswordAlertViewDelegate {
             }
         }
         TNGlobalHelper.shared.isVerifyPasswdForMain = false
-        self.dismiss(animated: true, completion: nil)
         if delegate.isTabBarRootController() {
             TNGlobalHelper.shared.password = nil
+        }
+        dismiss(animated: true) {
+            self.verifyPasswordCompletionBlock?()
         }
     }
     

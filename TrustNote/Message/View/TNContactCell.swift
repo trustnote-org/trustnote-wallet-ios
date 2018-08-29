@@ -45,9 +45,10 @@ class TNContactCell: UITableViewCell, RegisterCellFromNib {
     
     fileprivate func setupLastMessage(device: String) {
         TNSQLiteManager.sharedManager.queryLastMessage(deviceAddress: device) {[unowned self] (chatModel) in
-            guard !chatModel.messageText.isEmpty else {return}
             self.messageLabel.text = chatModel.messageText
-            self.dateLabel.text = TNChatDate.showListTimeFormatter(chatModel.messageTime!)
+            if let time = chatModel.messageTime {
+               self.dateLabel.text = TNChatDate.showListTimeFormatter(time)
+            }
         }
     }
 }

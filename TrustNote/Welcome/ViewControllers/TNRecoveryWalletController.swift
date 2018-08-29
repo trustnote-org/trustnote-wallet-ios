@@ -14,7 +14,7 @@ class TNRecoveryWalletController: TNBaseViewController {
     let bottomPadding = IS_iPhoneX ? (kSafeAreaBottomH + 26) : 26
     let delegate = UIApplication.shared.delegate as! AppDelegate
     private var seedPhrase = ""
-    let viewModel = TNRestoreWalletViewModel()
+    var viewModel = TNRestoreWalletViewModel()
     var hub: String?
     var isDeleteMnemonic: Bool?
     var syncLoadingView : TNCustomAlertView?
@@ -116,6 +116,8 @@ class TNRecoveryWalletController: TNBaseViewController {
             }
             self.finishRecoverWallet()
         }).disposed(by: disposeBag)
+      
+        seedView.seedContainerView.mnmnemonicsArr = "theme wall plunge fluid circle organ gloom expire coach patient neck clip".components(separatedBy: " ")
         
     }
     
@@ -174,19 +176,23 @@ extension TNRecoveryWalletController {
             }
         }
         guard flag else {
-            loadingView.stopAnimation()
-            syncLoadingView?.removeFromSuperview()
             warningImageView.isHidden = false
             warningLabel.isHidden = false
             return
         }
-        hud = MBProgress_TNExtension.showHUDAddedToView(view: self.view, title: "验证中...", animated: true)
+        hud = MBProgress_TNExtension.showHUDAddedToView(view: self.view, title: "validation process".localized, animated: true)
         TNGlobalHelper.shared.mnemonic = seedPhrase
         hub = TNWebSocketManager.sharedInstance.generateHUbAddress(isSave: false)
+        guard TNWebSocketManager.sharedInstance.isConnected else {
+            hud?.removeFromSuperview()
+            MBProgress_TNExtension.showViewAfterSecond(title: "请检查您的网络设置")
+            return
+        }
         TNWebSocketManager.sharedInstance.webSocketOpen(hubAddress: hub!)
         TNWebSocketManager.sharedInstance.generateNewPrivkeyBlock = {
             TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: "")
             self.createPrivateKey()
+            TNWebSocketManager.sharedInstance.generateNewPrivkeyBlock = nil
         }
     }
     
@@ -194,13 +200,10 @@ extension TNRecoveryWalletController {
         
         TNEvaluateScriptManager.sharedInstance.generateRootPrivateKeyByMnemonic(mnemonic: seedPhrase) {[unowned self] (xPrivKey) in
             self.hud?.removeFromSuperview()
-            if xPrivKey is Int && (xPrivKey as! Int) == 0 {
-                self.loadingView.stopAnimation()
-                self.syncLoadingView?.removeFromSuperview()
+            if xPrivKey == "0" {
                 self.warningImageView.isHidden = false
                 self.warningLabel.isHidden = false
-            } else if xPrivKey is String {
-
+            } else {
                 self.loadingView.startAnimation()
                 let popX = CGFloat(kLeftMargin)
                 let popH: CGFloat = 190
@@ -208,13 +211,15 @@ extension TNRecoveryWalletController {
                 let popW = kScreenW - popX * 2
                 self.syncLoadingView = TNCustomAlertView(alert: self.loadingView, alertFrame: CGRect(x: popX, y: popY, width: popW, height: popH), AnimatedType: .none)
                 
-                TNGlobalHelper.shared.tempPrivKey = xPrivKey as! String
+                TNGlobalHelper.shared.tempPrivKey = xPrivKey
                 if let passsword = TNGlobalHelper.shared.password {
-                    let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivKey as! String, key: passsword)
-                    TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
-                    TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+                    let encPrivKey = AES128CBC_Unit.aes128Encrypt(xPrivKey, key: passsword)
+                    if encPrivKey?.isEmpty == false {
+                        TNGlobalHelper.shared.encryptePrivKey = encPrivKey!
+                        TNConfigFileManager.sharedInstance.updateProfile(key: "xPrivKey", value: encPrivKey!)
+                    }
                 }
-                TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: xPrivKey as! String) {
+                TNEvaluateScriptManager.sharedInstance.getEcdsaPrivkey(xPrivKey: xPrivKey) {
                     TNHubViewModel.loginHub()
                 }
                 self.finishGeneratePrivateKey()
@@ -226,12 +231,24 @@ extension TNRecoveryWalletController {
         
         TNConfigFileManager.sharedInstance.updateProfile(key: "credentials", value: [])
         TNEvaluateScriptManager.sharedInstance.getMyDeviceAddress(xPrivKey: TNGlobalHelper.shared.tempPrivKey)
-       
+        
         TNSQLiteManager.sharedManager.deleteAllLocalData()
         viewModel.isRecoverWallet = true
         TNGlobalHelper.shared.recoverStyle = .all
-        viewModel.createNewWalletWhenRestoreWallet()
+        Preferences[.isRecoverWallet] = 2
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        viewModel.restoreFailureBlock = {
+            DispatchQueue.main.sync {
+                self.loadingView.stopAnimation()
+                self.syncLoadingView?.removeFromSuperview()
+                self.viewModel = TNRestoreWalletViewModel()
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                MBProgress_TNExtension.showViewAfterSecond(title: "恢复钱包失败，请稍后重试")
+            }
+        }
+        DispatchQueue.global().async {
+            self.viewModel.createNewWalletWhenRestoreWallet()
+        }
     }
     
     fileprivate func finishRecoverWallet() {
@@ -251,13 +268,14 @@ extension TNRecoveryWalletController {
         TNGlobalHelper.shared.mnemonic = ""
         TNGlobalHelper.shared.password = nil
         TNGlobalHelper.shared.isVerifyPasswdForMain = delegate.isTabBarRootController() ? true : false
-
+        
         TNConfigFileManager.sharedInstance.updateConfigFile(key: "keywindowRoot", value: 4)
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.0) {
             self.loadingView.stopAnimation()
             self.syncLoadingView?.removeFromSuperview()
             UIWindow.setWindowRootController(UIApplication.shared.keyWindow, rootVC: .main)
+            MBProgress_TNExtension.showViewAfterSecond(title: "Restore success".localized)
         }
     }
 }

@@ -35,10 +35,14 @@ class TNPushHelper {
     
     func setRecieveTransferUpdate() {
         TNWebSocketManager.sharedInstance.recieveTransferUpdateBlock = {
-            let rootVC = UIApplication.shared.keyWindow?.rootViewController as? TNTabBarController
-            let nav = rootVC?.viewControllers?.first as! TNBaseNavigationController
-            let homeVC = nav.viewControllers.first as! TNWalletHomeController
-            homeVC.syncData(true)
+            let rootVC = UIApplication.shared.keyWindow?.rootViewController
+            if let rootVC = rootVC {
+                if rootVC.isKind(of: TNTabBarController.self) {
+                    let nav = (rootVC as! TNTabBarController).viewControllers?.first as! TNBaseNavigationController
+                    let homeVC = nav.viewControllers.first as! TNWalletHomeController
+                    homeVC.syncData(true)
+                }
+            }
         }
     }
 }

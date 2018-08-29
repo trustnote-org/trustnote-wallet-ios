@@ -50,7 +50,7 @@ extension TNWebSocketManager: TNJSONSerializationProtocol {
      */
     static func sendClientVersion() {
         
-        let sendBody: [String : Any] = ["subject":"version", "body":["protocol_version": "1.0", "alt": "1", "library": "trustnote-common", "library_version":"0.1.0", "program":"TTT", "program_version":"1.1.0"]]
+        let sendBody: [String : Any] = ["subject":"version", "body":["protocol_version": "1.0", "alt": "1", "library": "trustnote-common", "library_version":"0.1.0", "program":"TTT", "program_version":"1.1.0", "new_version": TNGlobalHelper.shared.appVersion]]
         
         let request: [Any] = ["justsaying", sendBody]
         TNWebSocketManager.sharedInstance.sendData("\(JSON(request))")

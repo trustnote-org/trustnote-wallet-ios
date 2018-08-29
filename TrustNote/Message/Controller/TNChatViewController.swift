@@ -376,7 +376,7 @@ extension TNChatViewController {
         }
         alertAction(self, hint, message: nil, sureActionText: "Confirm".localized, cancelActionText: "Cancel".localized, isChange: true) {[unowned self] in
             let sql = "DELETE FROM chat_messages WHERE correspondent_address=?"
-            TNSQLiteManager.sharedManager.updateData(sql: sql, values: [self.correspondentDevice.deviceAddress])
+            TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: [self.correspondentDevice.deviceAddress])
             self.messages.removeAll()
             self.tableView.reloadData()
             NotificationCenter.default.post(name: Notification.Name(rawValue: TNDidRemovedAllChatRecordsNotify), object: self.correspondentDevice.deviceAddress)

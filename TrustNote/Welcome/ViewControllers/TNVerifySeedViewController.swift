@@ -71,7 +71,7 @@ class TNVerifySeedViewController: TNBaseViewController {
             self.warningImageView.isHidden = true
         }).disposed(by: disposeBag)
         
-        seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
+        //seedView.seedContainerView.mnmnemonicsArr = TNGlobalHelper.shared.mnemonic.components(separatedBy: " ")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -178,7 +178,6 @@ extension TNVerifySeedViewController {
             if !TNGlobalHelper.shared.currentWallet.xPubKey.isEmpty {
                 walletViewModel.generateWalletAddress(wallet_xPubKey: TNGlobalHelper.shared.currentWallet.xPubKey, change: false, num: 0, comletionHandle: { (walletAddressModel) in
                     walletViewModel.insertWalletAddressToDatabase(walletAddressModel: walletAddressModel)
-                   // TNHubViewModel.getMyTransactionHistory(addresses: [walletAddressModel.walletAddress])
                 })
             }
         }

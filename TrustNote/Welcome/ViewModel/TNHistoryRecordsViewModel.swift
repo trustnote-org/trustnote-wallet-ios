@@ -44,17 +44,14 @@ extension TNHistoryRecordsViewModel {
         
         let sql = String(format:"INSERT INTO units (%@) VALUES (%@);", arguments:[fields, values])
         let selectSQL = String(format:"SELECT Count(*) FROM units WHERE unit = '%@'", arguments:[unit.unit])
-        TNSQLiteManager.sharedManager.queryCount(sql: selectSQL) { (count) in
-            guard count == 0 else {
-               // TNSQLiteManager.sharedManager.updateData(sql: "UPDATE units SET main_chain_index=? WHERE unit=?", values: [unit.main_chain_index, unit.unit])
-                TNSQLiteManager.sharedManager.syncUpdateData(sql: "UPDATE units SET main_chain_index=? WHERE unit=?", values: [unit.main_chain_index, unit.unit])
-                return
-            }
-            //TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
-            TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: params)
-            self.saveDataToMessagesTable(objUnit: unit)
-            self.saveDataToAuthorsTable(objUnit: unit)
+        let count = TNSQLiteManager.sharedManager.syncQueryCount(sql: selectSQL)
+        guard count == 0 else {
+            TNSQLiteManager.sharedManager.syncUpdateData(sql: "UPDATE units SET main_chain_index=? WHERE unit=?", values: [unit.main_chain_index, unit.unit])
+            return
         }
+        TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: params)
+        self.saveDataToMessagesTable(objUnit: unit)
+        self.saveDataToAuthorsTable(objUnit: unit)
     }
     
     func saveDataToAuthorsTable(objUnit: TNUnitModel) {
@@ -66,10 +63,8 @@ extension TNHistoryRecordsViewModel {
             var definition_chash = String()
             if !definition.isEmpty {
                 definition_chash = author.address
-                //TNSQLiteManager.sharedManager.updateData(sql: "INSERT INTO definitions (definition_chash, definition, has_references) VALUES(?,?,0)", values: [definition_chash, TNHistoryRecordsViewModel.getJSONStringFrom(jsonObject: definition)])
                 TNSQLiteManager.sharedManager.syncUpdateData(sql: "INSERT INTO definitions (definition_chash, definition, has_references) VALUES(?,?,0)", values: [definition_chash, TNHistoryRecordsViewModel.getJSONStringFrom(jsonObject: definition)])
             }
-            //TNSQLiteManager.sharedManager.updateData(sql: "INSERT INTO unit_authors (unit, address, definition_chash) VALUES(?,?,?)", values: [objUnit.unit, author.address, definition_chash])
             TNSQLiteManager.sharedManager.syncUpdateData(sql: "INSERT INTO unit_authors (unit, address, definition_chash) VALUES(?,?,?)", values: [objUnit.unit, author.address, definition_chash])
         }
     }
@@ -81,16 +76,15 @@ extension TNHistoryRecordsViewModel {
             for (index, message) in objUnit.messages!.enumerated() {
                 var text_payload = String()
                 if message.app == "text" {
-                    text_payload = (message.payload?.toJSONString())!
+//                    text_payload = (message.payload?.toJSONString())!
+//                    let sql = "INSERT INTO messages (unit, message_index, app, payload_hash, payload_location, payload) VALUES(?,?,?,?,?,?)"
+//                    let params = [objUnit.unit, index, message.app, message.payload_hash, message.payload_location, text_payload] as [Any]
+//                    TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: params)
                 }
-                let sql = "INSERT INTO messages (unit, message_index, app, payload_hash, payload_location, payload) VALUES(?,?,?,?,?,?)"
-                let params = [objUnit.unit, index, message.app, message.payload_hash, message.payload_location, text_payload] as [Any]
-                //TNSQLiteManager.sharedManager.updateData(sql: sql, values: params)
-                TNSQLiteManager.sharedManager.syncUpdateData(sql: sql, values: params)
                 
                 if message.app == "payment" {
                     saveDataToOutputsTable(playload: message.payload!, messageIndex: index, objUnit: objUnit)
-                    saveDataToInputsTable(playload: message.payload!, messageIndex: index,objUnit: objUnit)
+                    saveDataToInputsTable(playload: message.payload!, messageIndex: index, objUnit: objUnit)
                 }
             }
         }

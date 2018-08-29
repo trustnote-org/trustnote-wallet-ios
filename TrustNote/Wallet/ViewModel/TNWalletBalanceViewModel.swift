@@ -26,7 +26,7 @@ class TNWalletBalanceViewModel: NSObject {
     
     func calculatAllWalletsBalance(_ wallet: TNWalletModel, num: Int, completion: @escaping ([TNWalletModel]) ->Void) {
         
-        TNSQLiteManager.sharedManager.queryAmountFromOutputs(walletId: wallet.walletId) { (results) in
+        TNSQLiteManager.sharedManager.queryAmountFromOutputs(walletId: wallet.walletId, isAll: true) { (results) in
             var balance: Int = 0
             for balanceModel in results as! [TNWalletBalance] {
                 balance += Int(balanceModel.amount)!
@@ -42,7 +42,7 @@ class TNWalletBalanceViewModel: NSObject {
     }
     
     func calculatBalance(_ wallet: TNWalletModel, completion: @escaping (TNWalletModel) ->Void) {
-         TNSQLiteManager.sharedManager.queryAmountFromOutputs(walletId: wallet.walletId) { (results) in
+        TNSQLiteManager.sharedManager.queryAmountFromOutputs(walletId: wallet.walletId, isAll: false ) { (results) in
             var balance: Int = 0
             for balanceModel in results as! [TNWalletBalance] {
                 balance += Int(balanceModel.amount)!

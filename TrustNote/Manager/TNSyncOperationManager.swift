@@ -80,13 +80,12 @@ extension TNSyncOperationManager {
     func getLightHistory(addresses: [String]) -> [String : Any] {
         var response: [String: Any] = [:]
         let sema = DispatchSemaphore(value: 0)
+        response = ["timeout": true]
         TNHubViewModel.getMyHistoryTransaction(addresses: addresses) { (result) in
             response = result
-            response.removeValue(forKey: "timeout")
             sema.signal()
         }
-        response = ["timeout": true]
-        _ = sema.wait(timeout:  DispatchTime.now() + 30)
+        _ = sema.wait(timeout: DispatchTime.now() + 30)
         return response
     }
     
@@ -220,7 +219,7 @@ extension TNSyncOperationManager {
                 newAddress = result.walletAddress
                 var addressModel = result
                 addressModel.walletId = walletId
-                viewModel.insertWalletAddressToDatabase(walletAddressModel: addressModel)
+                viewModel.insertWalletAddressInBackground(walletAddressModel: addressModel)
                 sema.signal()
             }
         }
@@ -400,5 +399,15 @@ extension TNSyncOperationManager {
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         return model
     }
-        
+    
+    func generateNewWallet(_ accountIndex: Int) {
+        let sema = DispatchSemaphore(value: 0)
+        DispatchQueue.main.async {
+             TNEvaluateScriptManager.sharedInstance.getWalletPubkey(xPrivKey: TNGlobalHelper.shared.getPrivkey(), num: accountIndex) {
+                sema.signal()
+            }
+        }
+        let _ = sema.wait(timeout: DispatchTime.distantFuture)
+    }
+    
 }

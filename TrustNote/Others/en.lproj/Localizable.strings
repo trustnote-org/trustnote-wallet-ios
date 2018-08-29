@@ -62,6 +62,7 @@
 
 "Create wallet" = "Create Wallet";
 "Create.slogan" = "Trust · Token · Things";
+"The last time the wallet was not completed, please ensure that the network is open and restored" = "The last time the wallet was not completed, please ensure that the network is open and restored";
 "Restore wallet" = "Restore Wallet";
 
 "Create Wallet and Backup Your Seed Phrase" = "Create Wallet and Backup Your Seed Phrase";
@@ -194,6 +195,9 @@
 "SyncClonedWallets.warning" = "We don't recommend cloning your wallet because your wallet is safe as long as your mnemonic is well protected. However,if you experience data inconsistency issue between the original wallet and its clone,you can fix it by using the\"Sync Cloned Wallets\"feature on both wallets.";
 "SyncLoading" = "Syncing, please don't exit…";
 "RecoverLoading" = "Restoring, please don’t exit...";
+"Complete synchronization" = "Complete synchronization";
+"validation process" = "In the validation process…";
+"Restore success" = "Restore success";
 "Scan cold wallet code" = "请使用观察钱包扫描冷钱包认证码";
 "Signing succeed" = "Signing succeed";
 "Scan auth success description" = "To complete the authoization process, use the watch-only wallet to scan the signature QR code";
@@ -203,6 +207,9 @@
 "Backup mnemonic" = "Backup Mnemonic";
 "Mnemonic words have been deleted" = "Your mnemonic deleted";
 "Profile.setupPassword" = "Set up a password";
+"Update" = "Update";
+"Download" = "Download";
+"Ignore" = "Ignore";
 
 /******* manage wallet string************/
 "Manage wallet" = "Manage wallet";

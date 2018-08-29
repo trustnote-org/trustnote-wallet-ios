@@ -18,7 +18,7 @@ enum TNWindowRoot: Int {
 extension UIWindow {
     
     static func setWindowRootController(_ keyWindow: UIWindow?,  rootVC: TNWindowRoot) {
-        
+    
         var rootController: UIViewController {
             
             switch rootVC {

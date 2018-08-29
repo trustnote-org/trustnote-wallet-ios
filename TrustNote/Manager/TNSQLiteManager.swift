@@ -303,7 +303,7 @@ extension TNSQLiteManager {
         return queryResults
     }
     
-    public func queryAmountFromOutputs(walletId: String, completionHandle: (([Any]) -> Swift.Void)?) {
+    public func queryAmountFromOutputs(walletId: String, isAll: Bool, completionHandle: (([Any]) -> Swift.Void)?) {
         var queryResults: [Any] = []
         let sql = "SELECT outputs.address, COALESCE(outputs.asset, 'base') as asset, sum(outputs.amount) as amount\n" +
             "FROM outputs, my_addresses " +
@@ -312,22 +312,40 @@ extension TNSQLiteManager {
             "AND outputs.is_spent=0 " +
             "GROUP BY outputs.address, outputs.asset " +
         "ORDER BY my_addresses.address_index ASC"
-        guard database.open() else {
-            return
-        }
-        do {
-            let set = try database.executeQuery(sql, values: [walletId])
-            while set.next() {
-                var balanceModel = TNWalletBalance()
-                balanceModel.address = set.string(forColumn: "address")!
-                balanceModel.amount = set.string(forColumn: "amount")!
-                queryResults.append(balanceModel)
+        
+        if isAll {
+            dbQueue.inDatabase { (database) in
+                do {
+                    let set = try database.executeQuery(sql, values: [walletId])
+                    while set.next() {
+                        var balanceModel = TNWalletBalance()
+                        balanceModel.address = set.string(forColumn: "address")!
+                        balanceModel.amount = set.string(forColumn: "amount")!
+                        queryResults.append(balanceModel)
+                    }
+                    completionHandle?(queryResults)
+                    set.close()
+                } catch {
+                    print("failed: \(error.localizedDescription)")
+                }
             }
-            completionHandle!(queryResults)
-            set.close()
-        } catch {
-            print("failed: \(error.localizedDescription)")
+        } else {
+            guard TNSQLiteManager.sharedManager.database.open() else {return}
+            do {
+                let set = try database.executeQuery(sql, values: [walletId])
+                while set.next() {
+                    var balanceModel = TNWalletBalance()
+                    balanceModel.address = set.string(forColumn: "address")!
+                    balanceModel.amount = set.string(forColumn: "amount")!
+                    queryResults.append(balanceModel)
+                }
+                completionHandle?(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
         }
+        
     }
     
     public func queryTxUnitsFromUnits(sql: String, value: String, completionHandle: (([TNTxUnits]) -> Swift.Void)?) {
@@ -377,26 +395,24 @@ extension TNSQLiteManager {
         }
     }
     
-    public func queryWalletAllAddresses(walletId: String) -> Array<TNWalletAddressModel> {
+    public func queryWalletAllAddresses(walletId: String, completionHandle: (([TNWalletAddressModel]) -> Swift.Void)?) {
         var queryResults: [TNWalletAddressModel] = []
-        guard database.open() else {
-            return []
-        }
         let sql = "SELECT * FROM my_addresses WHERE wallet=?"
-        do {
-            let set = try database.executeQuery(sql, values: [walletId])
-            while set.next() {
-                var addressModel = TNWalletAddressModel()
-                addressModel.walletAddress = set.string(forColumn: "address")!
-                addressModel.is_change = set.bool(forColumn: "is_change")
-                queryResults.append(addressModel)
+        dbQueue.inDatabase { (database) in
+            do {
+                let set = try database.executeQuery(sql, values: [walletId])
+                while set.next() {
+                    var addressModel = TNWalletAddressModel()
+                    addressModel.walletAddress = set.string(forColumn: "address")!
+                    addressModel.is_change = set.bool(forColumn: "is_change")
+                    queryResults.append(addressModel)
+                }
+                completionHandle?(queryResults)
+                set.close()
+            } catch {
+                print("failed: \(error.localizedDescription)")
             }
-            set.close()
-        } catch {
-            print("failed: \(error.localizedDescription)")
         }
-        database.close()
-        return queryResults
     }
     
     public func queryFirstWalletAddress(sql: String, walletId: String, completionHandle: (([String]) -> Swift.Void)?) {
@@ -431,6 +447,26 @@ extension TNSQLiteManager {
             }
         }
         completionHandle!(count)
+    }
+    
+    public func syncQueryCount(sql: String) -> Int {
+        var count = 0
+        let sema = DispatchSemaphore(value: 0)
+        dbQueue.inDatabase { (database) in
+            do {
+                
+                let results = try database.executeQuery(sql, values: nil)
+                if results.next() {
+                    count = Int(results.int(forColumnIndex: 0))
+                }
+                results.close()
+                sema.signal()
+            } catch {
+                print("failed: \(error.localizedDescription)")
+            }
+        }
+        _ = sema.wait(timeout: DispatchTime.distantFuture)
+        return count
     }
     
     public func queryUnusedChangeAddress(walletId: String, completionHandle: (([String]) -> Swift.Void)?) {

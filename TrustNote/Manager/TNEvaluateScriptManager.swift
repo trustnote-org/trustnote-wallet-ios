@@ -79,11 +79,11 @@ extension TNEvaluateScriptManager {
      * @param {string}  助记词
      * @return {string} 私钥
      */
-    public func generateRootPrivateKeyByMnemonic(mnemonic: String, completed: ((Any) -> Swift.Void)?) {
+    public func generateRootPrivateKeyByMnemonic(mnemonic: String, completed: ((String) -> Swift.Void)?) {
         let js = String(format:"window.Client.xPrivKey('%@')", arguments:[mnemonic])
         webView.evaluateJavaScript(js) { (any, _) in
             if let xPrivKey = any {
-                completed!(xPrivKey)
+                completed!(xPrivKey as! String)
             }
         }
     }
@@ -469,11 +469,7 @@ extension TNEvaluateScriptManager {
         let js = String(format:"window.Client.decryptPackage('%@', '%@', '%@', '%@')", arguments:[json, privkey, prePrivKey, m1PrivKey])
         webView.evaluateJavaScript(js) {(any, _) in
             if let decryptPackage = any {
-                if decryptPackage is Int && (decryptPackage as! Int) == 0 {
-                    completionHandler!(String(decryptPackage as! Int))
-                } else {
-                    completionHandler!(decryptPackage as! String)
-                }
+                completionHandler!(decryptPackage as! String)
             }
         }
     }
